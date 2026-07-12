@@ -67,13 +67,19 @@ export async function onRequest(context){
     // busca por ID (uuid) OU por slug — o que vier na URL
     // busca por id OU slug (o ?or= testa os dois de uma vez)
     const ref = encodeURIComponent(id);
-    const r = await fetch(`${SB_URL}/rest/v1/imoveis?or=(codigo.eq.${ref},slug.eq.${ref},id.eq.${ref})&select=*&limit=1`, {
-      headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON }
-    });
-    if(r.ok){
-      const arr = await r.json();
-      imovel = Array.isArray(arr) && arr.length ? arr[0] : null;
+    const HDR = { headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON } };
+    // tenta por CÓDIGO → SLUG → ID (um por vez, mais confiável)
+    let r = await fetch(`${SB_URL}/rest/v1/imoveis?codigo=eq.${ref}&select=*&limit=1`, HDR);
+    let arr = r.ok ? await r.json() : [];
+    if (!Array.isArray(arr) || !arr.length) {
+      r = await fetch(`${SB_URL}/rest/v1/imoveis?slug=eq.${ref}&select=*&limit=1`, HDR);
+      arr = r.ok ? await r.json() : [];
     }
+    if (!Array.isArray(arr) || !arr.length) {
+      r = await fetch(`${SB_URL}/rest/v1/imoveis?id=eq.${ref}&select=*&limit=1`, HDR);
+      arr = r.ok ? await r.json() : [];
+    }
+    imovel = Array.isArray(arr) && arr.length ? arr[0] : null;
   }catch(e){ imovel = null; }
 
   let titulo = 'Imóvel no Litoral Norte Gaúcho';

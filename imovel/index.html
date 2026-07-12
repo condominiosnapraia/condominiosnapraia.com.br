@@ -738,9 +738,19 @@ async function init(){
   const cont=document.getElementById('ip-content');
   if(!id){cont.innerHTML=notFound();return;}
   // buscar imóvel + condomínio
-  // aceita CÓDIGO, slug ou id na URL (?id=CNP-042 funciona)
+  // aceita CÓDIGO, slug ou id na URL — tenta um por um (mais confiável que or=)
   const _ref = encodeURIComponent(id);
-  const imv=await sbGet('imoveis','?or=(codigo.eq.'+_ref+',slug.eq.'+_ref+',id.eq.'+_ref+')&limit=1');
+  let imv = [];
+  // 1) tentar pelo CÓDIGO
+  try{ imv = await sbGet('imoveis','?codigo=eq.'+_ref+'&limit=1'); }catch(e){ imv=[]; }
+  // 2) se não achou, tentar pelo SLUG
+  if(!Array.isArray(imv) || !imv.length){
+    try{ imv = await sbGet('imoveis','?slug=eq.'+_ref+'&limit=1'); }catch(e){ imv=[]; }
+  }
+  // 3) se não achou, tentar pelo ID
+  if(!Array.isArray(imv) || !imv.length){
+    try{ imv = await sbGet('imoveis','?id=eq.'+_ref+'&limit=1'); }catch(e){ imv=[]; }
+  }
   if(!Array.isArray(imv)||!imv.length){cont.innerHTML=notFound();return;}
   const im=imv[0];
   let cond={};
