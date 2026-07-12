@@ -661,6 +661,16 @@ const SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', SB_KEY='eyJhbGciOiJIUzI
 const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
 async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
 function qs(k){return new URLSearchParams(location.search).get(k);}
+// pega a referência do imóvel: do caminho (/imovel/CNP-042) OU da query (?id=CNP-042)
+function refImovel(){
+  // 1) tentar pelo caminho: /imovel/CODIGO
+  try{
+    var m = location.pathname.match(/\/imovel\/([^\/?#]+)/i);
+    if(m && m[1]) return decodeURIComponent(m[1]);
+  }catch(e){}
+  // 2) senão, pela query: ?id=CODIGO
+  return qs('id');
+}
 function brl(v){if(v==null||v==='')return 'Sob consulta';const n=Number(v);if(isNaN(n))return String(v);return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});}
 function m2(v){return v?(v+' m²'):'—';}
 function fotosValidas(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
@@ -724,7 +734,7 @@ function condCarrAutoplay(){
 }
 
 async function init(){
-  const id=qs('id');
+  const id=refImovel();
   const cont=document.getElementById('ip-content');
   if(!id){cont.innerHTML=notFound();return;}
   // buscar imóvel + condomínio

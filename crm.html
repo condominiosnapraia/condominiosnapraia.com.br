@@ -5927,6 +5927,19 @@ const FOTOS_SITE_SPACES = {
     ['condominios-capa-1','Capa /condominios — foto 1'],
     ['condominios-capa-2','Capa /condominios — foto 2']
   ],
+  '🚀 Capas dos Lançamentos': [
+    ['lanc-aura-garden-place-xangri-la','Aura Garden Place'],
+    ['lanc-bravia-marina-beach-club-maquine','Bravia Marina Beach Club'],
+    ['lanc-condominio-alegro-curumim','Condomínio Alegro'],
+    ['lanc-cyano-private-resort-osorio','Cyano Private Resort'],
+    ['lanc-enseada-lagoa-dos-quadros-capao-da-canoa','Enseada Lagoa dos Quadros'],
+    ['lanc-la-marina-reserva-maquine','La Marina Reserva'],
+    ['lanc-mirador-playa-arenas-curumim','Mirador Playa Arenas'],
+    ['lanc-monaco-grand-marina-maquine','Mônaco Grand Marina'],
+    ['lanc-origem-natureza-habitada-xangri-la','Origem Natureza Habitada'],
+    ['lanc-vientos-resort-xangri-la','Vientos Resort'],
+    ['lanc-vivendas-da-marina-capao-da-canoa','Vivendas da Marina']
+  ],
   'Praças de Capão da Canoa':[
     ["praca-do-farol__1","Praça do Farol — foto 1"],["praca-do-farol__2","Praça do Farol — foto 2"],["praca-flavio-boianovski__1","Praça Flávio Boianovski — foto 1"],["praca-flavio-boianovski__2","Praça Flávio Boianovski — foto 2"],["praca-luiz-bassani__1","Praça Luiz Bassani — foto 1"],["praca-luiz-bassani__2","Praça Luiz Bassani — foto 2"],["praca-avezon__1","Praça Avezon — foto 1"],["praca-avezon__2","Praça Avezon — foto 2"],["praca-israelita__1","Praça Israelita — foto 1"],["praca-israelita__2","Praça Israelita — foto 2"],["praca-tiaraju__1","Praça Tiaraju — foto 1"],["praca-tiaraju__2","Praça Tiaraju — foto 2"],["largo-do-baronda__1","Largo do Baronda — foto 1"],["largo-do-baronda__2","Largo do Baronda — foto 2"],["praca-dos-camelos__1","Praça dos Camelôs — foto 1"],["praca-dos-camelos__2","Praça dos Camelôs — foto 2"],["praca-do-skate__1","Praça do Skate — foto 1"],["praca-do-skate__2","Praça do Skate — foto 2"],["praca-da-zona-nova__1","Praça da Zona Nova — foto 1"],["praca-da-zona-nova__2","Praça da Zona Nova — foto 2"]
   ],
@@ -6006,7 +6019,7 @@ async function buildFotos(){
   let total=0, preenchidas=0;
   let html='';
   // grupos que começam ABERTOS (cards da home)
-  const abertos=['⭐ Destaques da Home (prioridade)','Navegação Rápida (home)','Cidades (Conheça as Cidades)','Onde Ir (atrações da home)','Bairros de Capão da Canoa','Bairros de Xangri-lá'];
+  const abertos=['⭐ Destaques da Home (prioridade)','🚀 Capas dos Lançamentos','Navegação Rápida (home)','Cidades (Conheça as Cidades)','Onde Ir (atrações da home)','Bairros de Capão da Canoa','Bairros de Xangri-lá'];
   for(const [grupo, itens] of Object.entries(FOTOS_SITE_SPACES)){
     const nDest=itens.filter(([slug])=>_fotosSite[slug]).length;
     const open = abertos.includes(grupo) ? ' open' : '';
