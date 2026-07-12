@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-25TRZRKFLK');
+  gtag('config', 'AW-16759565872');
+  // rastrear cliques no WhatsApp como evento (para medir conversões)
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
+    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+  }, true);
+</script>
+<!-- Fim Google Analytics -->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c4a6e">
+<title>Imóveis à Venda no Litoral Norte Gaúcho | Condomínios na Praia</title>
+<meta name="description" content="Imóveis à venda em condomínios do Litoral Norte Gaúcho: casas, apartamentos e terrenos em Xangri-lá, Capão da Canoa, Osório e região">
+<link rel="canonical" href="https://condominiosnapraia.com.br/imoveis">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Imóveis à Venda no Litoral Norte Gaúcho">
+<meta property="og:description" content="Casas, apartamentos e terrenos em condomínios do Litoral Norte Gaúcho.">
+<meta property="og:url" content="https://condominiosnapraia.com.br/imoveis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cyano Private Resort em Osório — Condomínio Frente Mar de Luxo">
+<meta name="twitter:description" content="Condomínio resort frente mar de alto padrão em Osório, com clube de 2.000m² à beira-mar, rooftop e lotes frente mar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cddgkhkzcnyzzcllgzoz.supabase.co" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ocean:#0d3b54;--om:#0e8a99;--ol:#1fb5c4;--gold:#e0b34d;--gold-d:#c79a3a;--sl:#e8f7f8;--text:#0d3b54;--tm:#5b7585;--areia:#f7f1e8;--espuma:#e8f7f8;--azulclaro:#cdeef2;--border:rgba(31,181,196,.18);--white:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;color:var(--text);background:var(--white);line-height:1.75;font-size:17px}
+img{max-width:100%;display:block}
+header{position:relative;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(253,252,250,.96);border-bottom:1px solid var(--border)}
+header .logo{font-family:'Fraunces',serif;font-weight:600;color:var(--ocean);text-decoration:none;font-size:18px;line-height:1}
+header .logo span{display:block;font-family:'Outfit';font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-d);margin-top:3px}
+header .hcta{font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;background:var(--ocean);color:#fff;padding:11px 22px;border-radius:6px;font-weight:600}
+.wrap{max-width:880px;margin:0 auto;padding:0 24px}
+.crumb{font-size:12.5px;color:var(--tm);padding:18px 0;letter-spacing:.01em}
+.crumb a{color:var(--om);text-decoration:none}
+.crumb a:hover{text-decoration:underline}
+.hero{position:relative;background:linear-gradient(150deg,#0c4a6e 0%,#0e7490 55%,#0891b2 100%);color:#fff;padding:70px 0 90px;overflow:hidden}
+.hero::after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:60px;background:#fff;clip-path:ellipse(60% 100% at 50% 100%)}
+.hero-in{max-width:880px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
+.hero .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.hero h1{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(28px,4.4vw,46px);line-height:1.14;letter-spacing:-.01em;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+
+.foto-hero-wrap{max-width:1080px;margin:-46px auto 0;padding:0 24px;position:relative;z-index:5}
+.foto-hero{margin:0;border-radius:18px;aspect-ratio:21/9;max-height:480px;box-shadow:0 18px 50px rgba(12,74,110,.18)}
+@media(max-width:680px){.foto-hero-wrap{margin-top:-30px;padding:0 14px}.foto-hero{aspect-ratio:16/10;border-radius:14px}}
+.body-content{padding:20px 0 40px}
+.lead{font-size:21px;line-height:1.7;color:var(--ocean);font-weight:400;margin:30px 0}
+.body-content p{margin:18px 0;color:#2e4654}
+.body-content h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(25px,3.4vw,34px);color:var(--ocean);line-height:1.18;margin:54px 0 8px;letter-spacing:-.01em}
+.body-content h2 + .h2-sub{color:var(--gold-d);font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px;font-weight:600}
+.body-content h3{font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:var(--om);margin:36px 0 10px}
+.body-content ul{margin:18px 0 18px 4px;list-style:none}
+.body-content ul li{position:relative;padding-left:28px;margin:11px 0;color:#2e4654}
+.body-content ul li::before{content:"✦";position:absolute;left:0;color:var(--gold);font-size:14px;top:2px}
+.body-content strong{color:var(--ocean);font-weight:600}
+.section-rule{border:none;border-top:1px solid var(--border);margin:8px 0}
+.foto{margin:30px 0;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,var(--azulclaro),var(--espuma));aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--border);background-size:cover;background-position:center}
+.foto .ic{font-size:30px;opacity:.45}
+.foto .cap{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--om);margin-top:8px;opacity:.7;text-align:center;padding:0 12px}
+@media(max-width:560px){.foto{aspect-ratio:4/3}}
+.quickfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:34px 0}
+.qf{background:#fff;padding:20px}
+.qf .l{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--tm)}
+.qf .v{font-family:'Fraunces',serif;font-size:19px;color:var(--ocean);margin-top:5px;line-height:1.2}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:30px 0}
+.stat{background:linear-gradient(135deg,var(--sl),#fff);border:1px solid var(--border);border-radius:14px;padding:22px}
+.stat .n{font-family:'Fraunces',serif;font-size:24px;color:var(--om);line-height:1;font-weight:600}
+.stat .d{font-size:12.5px;color:var(--tm);margin-top:7px;line-height:1.4}
+.tbl-wrap{overflow-x:auto;margin:26px 0}
+table{width:100%;border-collapse:collapse;font-size:15px}
+table th,table td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--border)}
+table th{background:var(--sl);font-family:'Outfit';font-weight:600;color:var(--ocean);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+table td{color:#2e4654}
+table tr:last-child td{border-bottom:none}
+table .yes{color:var(--om);font-weight:600}
+.callout{background:linear-gradient(135deg,var(--sl),#fff);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:22px 26px;margin:30px 0}
+.callout p{margin:0;color:var(--ocean);font-size:16px}
+.faq{margin:18px 0}
+.faq-item{border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;font-weight:600;color:var(--ocean);list-style:none;font-size:16px}
+.faq-q::-webkit-details-marker{display:none}
+.faq-q::after{content:"+";font-size:22px;color:var(--gold);font-weight:300;flex-shrink:0;transition:transform .25s}
+.faq-item[open] .faq-q::after{transform:rotate(45deg)}
+.faq-a{padding:0 22px 20px;color:#2e4654;font-size:15.5px;line-height:1.7}
+.cta-final{background:linear-gradient(150deg,#0c4a6e,#0891b2);color:#fff;border-radius:20px;padding:48px 40px;text-align:center;margin:50px 0}
+.cta-final h2{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(26px,3.6vw,36px);margin-bottom:12px;color:#fff}
+.cta-final h2 em{color:var(--gold);font-style:italic}
+.cta-final p{opacity:.85;max-width:520px;margin:0 auto 28px;font-size:16px}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-wpp{display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#fff;text-decoration:none;font-weight:600;padding:15px 30px;border-radius:100px;font-size:15px;transition:transform .2s}
+.btn-wpp:hover{transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;text-decoration:none;font-weight:600;padding:15px 30px;border-radius:100px;font-size:15px;transition:all .2s}
+.btn-ghost:hover{background:rgba(255,255,255,.2)}
+
+footer .fl{font-family:'Fraunces',serif;font-size:23px}
+footer .fl em{color:var(--gold);font-style:italic}
+footer .fs{font-size:9px;letter-spacing:.22em;text-transform:uppercase;opacity:.5;margin-top:6px}
+footer .ftag{opacity:.65;font-size:13px;max-width:440px;margin:16px auto 0;line-height:1.6}
+.wfloat{position:fixed;right:20px;bottom:20px;width:58px;height:58px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(37,211,102,.4);z-index:90}
+.wfloat svg{width:30px;height:30px;fill:#fff}
+
+@media(max-width:680px){
+  header{padding:11px 16px}
+  header .logo{font-size:15px}
+  header .logo span{font-size:8px;letter-spacing:.16em}
+  header .hcta{padding:9px 14px;font-size:10px;letter-spacing:.04em}
+}
+@media(max-width:380px){
+  header .hcta{padding:8px 11px;font-size:9px}
+}
+@media(max-width:600px){header{padding:12px 16px}.hero{padding:48px 0 70px}body{font-size:16px}.cta-final{padding:36px 22px}}
+
+/* == FOOTER RICO + BARRA FIXA == */
+.ftr-col a{display:block;color:rgba(255,255,255,.72);text-decoration:none;font-size:14px;padding:7px 0;transition:all .2s;cursor:pointer}
+.ftr-col a:hover{color:#fff;transform:translateX(4px)}
+.ftr-tit{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.ftr-bottom{max-width:1140px;margin:0 auto;padding:20px 44px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.02em}
+.ftr-wpp{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:11px 20px;border-radius:100px;transition:all .25s}
+.ftr-wpp:hover{background:var(--gold);border-color:var(--gold);color:var(--ocean);transform:translateY(-2px)}
+.ftr-logo{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.1}
+.ftr-logo em{font-style:italic;color:var(--gold)}
+.ftr-sub{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:6px}
+.ftr-tag{font-size:13px;line-height:1.6;color:rgba(255,255,255,.6);margin:18px 0 22px}
+footer{background:linear-gradient(160deg,#0c4a6e,#0e7490);padding:50px 44px 40px;margin-bottom:0}
+.ftr-wave{position:absolute;top:-1px;left:0;right:0;height:60px;line-height:0;transform:translateY(-99%)}
+.ftr-main{max-width:1140px;margin:0 auto;padding:56px 44px 36px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
+.ftr-col-brand{max-width:340px}
+
+
+
+
+
+
+
+
+
+
+
+@media(max-width:760px){}
+@media(max-width:440px){}
+
+.mob-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:content-box;background:rgba(255,255,255,.92);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border-top:1px solid rgba(13,59,84,.1);z-index:900;box-shadow:0 -2px 16px rgba(13,59,84,.08)}
+.mob-footer-items{display:flex;align-items:stretch;height:100%;max-width:680px;margin:0 auto}
+.mob-footer-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:transparent;color:#8aa1ad;font-family:'Outfit',sans-serif;font-size:9px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:6px 2px 4px;text-decoration:none;transition:color .2s}
+.mob-footer-btn.active,.mob-footer-btn:hover{color:#0c4a6e}
+.mob-footer-ico{font-size:20px;line-height:1}
+.mob-footer-btn.wpp-btn{color:#25d366}
+body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+
+
+/* AJUSTE-DESKTOP: alinhamento e respiro */
+.hero-in{max-width:920px}
+.wrap{max-width:920px}
+.foto-hero-wrap{max-width:920px;margin-top:-40px}
+.foto-hero{aspect-ratio:2/1;max-height:440px}
+@media(min-width:1100px){
+  .body-content{font-size:17.5px}
+  .body-content h2{margin-top:60px}
+}
+@media(max-width:680px){
+  .foto-hero-wrap{margin-top:-26px}
+  .foto-hero{aspect-ratio:16/10}
+}
+
+/* AJUSTE-DESKTOP-V2: foto-hero com leve destaque em telas grandes */
+@media(min-width:1100px){
+  .foto-hero-wrap{max-width:1040px}
+}
+/* === ELEMENTOS DE CONVERSÃO === */
+.hero-badges{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0 20px}
+.hbadge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:12px;font-weight:600;padding:6px 13px;border-radius:100px}
+.hbadge .dot{width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.35)}
+.hero-sub{font-size:17px;line-height:1.6;color:rgba(255,255,255,.92);max-width:560px;margin:8px 0 22px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero .btn-wpp{box-shadow:0 8px 24px rgba(37,211,102,.35)}
+.btn-lead{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:#0d3b54;text-decoration:none;font-weight:700;padding:15px 26px;border-radius:100px;font-size:15px;transition:transform .2s;border:none;cursor:pointer}
+.btn-lead:hover{transform:translateY(-2px)}
+.lead-box{background:linear-gradient(150deg,#0c4a6e,#0891b2);border-radius:20px;padding:34px 30px;margin:38px 0;color:#fff;box-shadow:0 18px 50px rgba(12,74,110,.2)}
+.lead-box h3{font-family:'Fraunces',serif;font-weight:400;font-size:25px;margin-bottom:6px;color:#fff;line-height:1.2}
+.lead-box h3 em{color:var(--gold);font-style:italic}
+.lead-box .sub{opacity:.85;font-size:14.5px;margin-bottom:20px}
+.lead-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lead-form input,.lead-form select{width:100%;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;font-family:'Outfit',sans-serif;font-size:15px;box-sizing:border-box}
+.lead-form input::placeholder{color:rgba(255,255,255,.6)}
+.lead-form select option{color:#0d3b54}
+.lead-form .full{grid-column:1/-1}
+.lead-form button{grid-column:1/-1;background:#25d366;color:#fff;border:none;padding:16px;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .2s}
+.lead-form button:hover{transform:translateY(-2px)}
+.lead-mini{font-size:11.5px;opacity:.7;margin-top:11px;text-align:center}
+@media(max-width:560px){.lead-form{grid-template-columns:1fr}}
+.cta-strip{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:linear-gradient(135deg,var(--sl),#fff);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:14px;padding:20px 24px;margin:30px 0}
+.cta-strip .txt{font-size:15.5px;color:var(--ocean);font-weight:600}
+.cta-strip .btn-wpp{padding:12px 22px;font-size:14px;white-space:nowrap}
+.float-wpp{position:fixed;right:22px;bottom:22px;z-index:950;display:inline-flex;align-items:center;gap:10px;background:#25d366;color:#fff;text-decoration:none;font-weight:700;padding:14px 22px;border-radius:100px;font-size:15px;box-shadow:0 10px 30px rgba(37,211,102,.45);transition:transform .2s}
+.float-wpp:hover{transform:scale(1.05)}
+.float-wpp .pulse{width:9px;height:9px;border-radius:50%;background:#fff;animation:pz 1.6s infinite}
+@keyframes pz{0%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}70%{box-shadow:0 0 0 9px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+@media(max-width:600px){.float-wpp{display:none}}
+.map-embed{border-radius:16px;overflow:hidden;border:1px solid var(--border);margin:22px 0;box-shadow:0 6px 20px rgba(13,59,84,.08)}
+.map-embed iframe{display:block;width:100%;height:340px;border:0}
+.pdf-map{margin:22px 0}
+.pdf-frame{border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 6px 20px rgba(13,59,84,.08);background:#eef3f5}
+.pdf-frame iframe{display:block;width:100%;height:520px;border:0}
+.pdf-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.btn-pdf{display:inline-flex;align-items:center;gap:8px;background:var(--ocean);color:#fff;text-decoration:none;font-weight:600;padding:13px 22px;border-radius:100px;font-size:14px}
+.btn-pdf:hover{background:#0a3850}
+.proof-row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:26px 0;padding:24px;background:var(--sl);border-radius:16px}
+.proof{text-align:center;min-width:120px;flex:1}
+.proof .pn{font-family:'Fraunces',serif;font-size:23px;color:var(--om);font-weight:600;line-height:1}
+.proof .pd{font-size:12px;color:var(--tm);margin-top:6px;line-height:1.35}
+
+
+
+/* Marca d'água e proteção do mapa PDF */
+.pdf-frame{position:relative}
+.pdf-frame .pdf-wm{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;border-radius:16px}
+.pdf-frame .pdf-wm span{position:absolute;white-space:nowrap;color:rgba(13,59,84,.16);font-family:'Outfit',sans-serif;font-weight:700;font-size:20px;transform:rotate(-30deg);letter-spacing:.05em}
+/* camada que bloqueia clique-direito/seleção sobre o PDF, deixando passar o scroll */
+.pdf-frame .pdf-guard{position:absolute;inset:0;z-index:3;background:transparent}
+
+
+/* Mobile: navegadores de celular não renderizam PDF em iframe — usamos card + botão */
+.pdf-mobile{display:none}
+@media(max-width:760px){
+  .pdf-frame{display:none}
+  .pdf-mobile{display:block;position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 6px 20px rgba(13,59,84,.08);background:linear-gradient(150deg,#0c4a6e,#0891b2);min-height:300px}
+  .pdf-mobile .pm-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 26px;min-height:300px;color:#fff}
+  .pdf-mobile .pm-ico{font-size:42px;margin-bottom:14px}
+  .pdf-mobile .pm-t{font-family:'Fraunces',serif;font-size:21px;margin-bottom:8px}
+  .pdf-mobile .pm-d{font-size:14px;opacity:.88;margin-bottom:22px;line-height:1.5;max-width:300px}
+  .pdf-mobile .pm-btn{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:#0d3b54;text-decoration:none;font-weight:700;padding:15px 28px;border-radius:100px;font-size:15px}
+  .pdf-mobile .pdf-wm span{font-size:14px;color:rgba(255,255,255,.18)}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media(max-width:860px){}
+@media(max-width:600px){}
+@media(max-width:560px){}
+@media(max-width:768px){.mob-footer-nav{display:block}body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
+@media(max-width:768px){.ftr-main{grid-template-columns:1fr 1fr;gap:32px 24px;padding:48px 24px 28px}.ftr-col-brand{grid-column:1/-1}.ftr-bottom{flex-direction:column;gap:6px;text-align:center}}
+@media(max-width:600px){
+  .ftr-main{grid-template-columns:1fr;gap:0;padding:44px 26px 24px}
+  .ftr-bottom{flex-direction:column;gap:6px;text-align:center;padding:18px 24px}
+  .ftr-wave{height:36px;transform:translateY(-99%)}.ftr-wave svg{height:36px}
+  .ftr-col-brand{text-align:center;padding-bottom:28px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .ftr-col-brand .ftr-logo-svg{margin:0 auto}
+  .ftr-tag{margin:16px auto 20px;max-width:300px}
+  .ftr-wpp{display:flex;justify-content:center;width:100%;box-sizing:border-box;font-size:15px;padding:15px 26px;background:#25d366;border-color:#25d366;color:#fff;font-weight:700;box-shadow:0 8px 22px rgba(37,211,102,.32)}
+  .ftr-wpp:hover{background:#1eb857;border-color:#1eb857;color:#fff;transform:none}
+  .ftr-col:not(.ftr-col-brand){text-align:left;margin-bottom:26px;display:grid;grid-template-columns:1fr;gap:0}
+  .ftr-col:not(.ftr-col-brand):last-child{margin-bottom:0}
+  .ftr-tit{font-size:11px;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid rgba(224,179,77,.28)}
+  .ftr-col:not(.ftr-col-brand) .ftr-tit{grid-column:1/-1}
+  .ftr-links-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+  .ftr-col a{font-size:14px;padding:9px 0;line-height:1.3}
+  .ftr-col a:hover{transform:none;color:var(--gold)}
+  .ftr-bottom{gap:4px;padding:22px 24px 26px;margin-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+  .ftr-bottom span:first-child{font-size:10.5px;opacity:.55;line-height:1.5}
+  .ftr-bottom-r{font-size:11px;color:var(--gold);opacity:.85;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+}
+@media(max-width:380px){.ftr-links-grid{grid-template-columns:1fr 1fr;gap:2px 12px}.ftr-tit{border-bottom:none}}
+/* === Card Venda Premium (captação de proprietários) === */
+.vpc{max-width:1080px;margin:0 auto;padding:0 22px}
+.vpc-in{background:linear-gradient(135deg,#0d3b54,#0e8a99);border-radius:24px;padding:40px 38px;color:#fff;position:relative;overflow:hidden;display:flex;align-items:center;gap:36px;box-shadow:0 20px 50px rgba(13,59,84,.2)}
+.vpc-in::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 15%,rgba(224,179,77,.18),transparent 55%);pointer-events:none}
+.vpc-txt{flex:1;min-width:0;position:relative;z-index:1}
+.vpc-badge{display:inline-block;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#e0b34d;font-weight:700;border:1px solid rgba(224,179,77,.4);padding:6px 15px;border-radius:100px;margin-bottom:14px}
+.vpc-txt h3{font-family:'Fraunces',serif;font-size:clamp(22px,2.8vw,30px);font-weight:600;line-height:1.15;margin-bottom:10px}
+.vpc-txt h3 em{color:#e0b34d;font-style:italic}
+.vpc-txt p{font-size:14.5px;line-height:1.6;opacity:.9;margin:0;max-width:520px}
+.vpc-side{flex-shrink:0;position:relative;z-index:1;text-align:center}
+.vpc-btn{display:inline-flex;align-items:center;gap:9px;background:#e0b34d;color:#0d3b54;font-weight:700;font-size:15px;padding:15px 28px;border-radius:100px;text-decoration:none;box-shadow:0 12px 30px rgba(224,179,77,.3);transition:transform .2s;white-space:nowrap}
+.vpc-btn:hover{transform:translateY(-3px)}
+.vpc-sub{font-size:12px;opacity:.7;margin-top:10px}
+@media(max-width:760px){.vpc-in{flex-direction:column;text-align:center;gap:22px;padding:34px 24px}.vpc-txt p{margin:0 auto}.vpc-btn{width:100%;box-sizing:border-box;justify-content:center}}
+
+.il-hero{position:relative;min-height:340px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;overflow:hidden;isolation:isolate}
+.il-hero-slides{position:absolute;inset:0;z-index:-2}
+.il-hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;background-image:linear-gradient(150deg,#0c4a6e,#0891b2);opacity:0;transition:opacity 1.4s ease-in-out;transform:scale(1.04);animation:ilZoom 14s ease-in-out infinite alternate}
+.il-hero-slide.on{opacity:1}
+@keyframes ilZoom{from{transform:scale(1.04)}to{transform:scale(1.12)}}
+.il-hero-grad{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(13,59,84,.55) 0%,rgba(13,59,84,.42) 45%,rgba(13,59,84,.78) 100%)}
+.il-hero-in{position:relative;z-index:1;padding:60px 24px}
+.il-hero h1{font-family:'Fraunces',serif;font-size:clamp(32px,5.2vw,54px);font-weight:600;margin:0;text-shadow:0 4px 24px rgba(0,0,0,.45);letter-spacing:-.01em}
+@media(max-width:640px){.il-hero{min-height:260px}.il-hero-in{padding:44px 20px}}
+</style>
+<style>
+.rf-hero{background:linear-gradient(150deg,#0c4a6e,#0891b2);color:#fff;padding:56px 22px 44px;text-align:center;border-radius:0 0 30px 30px;margin-bottom:36px}
+.rf-hero .eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#cdeef2;margin-bottom:12px}
+.rf-hero h1{font-family:'Fraunces',serif;font-size:34px;font-weight:600;margin-bottom:14px;line-height:1.2}
+.rf-hero h1 em{color:var(--gold);font-style:italic}
+.rf-hero p{opacity:.92;font-size:17px;max-width:600px;margin:0 auto 24px}
+.rf-hero .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.rf-wpp{display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#fff;text-decoration:none;font-weight:700;padding:15px 28px;border-radius:100px;font-size:15px;box-shadow:0 8px 24px rgba(37,211,102,.35)}
+.rf-ghost{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;text-decoration:none;font-weight:600;padding:15px 26px;border-radius:100px;font-size:15px}
+.rf-wrap{max-width:880px;margin:0 auto;padding:6px 22px 60px}
+.rf-wrap h2{font-family:'Fraunces',serif;font-size:23px;color:var(--ocean);margin:30px 0 12px}
+.rf-wrap p{color:#3a4d59;font-size:16px;line-height:1.75;margin-bottom:14px}
+.rf-wrap strong{color:var(--ocean)}
+.rf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0}
+@media(max-width:600px){.rf-stats{grid-template-columns:1fr}}
+.rf-stat{background:var(--sl);border-radius:14px;padding:20px;text-align:center}
+.rf-stat .n{font-family:'Fraunces',serif;font-size:22px;color:var(--om);font-weight:600;line-height:1.1}
+.rf-stat .d{font-size:13px;color:var(--tm);margin-top:6px;line-height:1.4}
+.rf-list{margin:0 0 16px 0;padding:0;list-style:none}
+.rf-list li{padding:10px 0 10px 32px;position:relative;color:#3a4d59;font-size:15.5px;line-height:1.55;border-bottom:1px solid var(--border)}
+.rf-list li:before{content:"✓";position:absolute;left:0;top:10px;color:#fff;background:var(--om);width:20px;height:20px;border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.rf-steps{counter-reset:s;margin:18px 0}
+.rf-step{display:flex;gap:16px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border)}
+.rf-step .num{counter-increment:s;flex-shrink:0;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--om),var(--ol));color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+.rf-step .num:before{content:counter(s)}
+.rf-step .tx{font-size:15.5px;color:#3a4d59;line-height:1.5}
+.rf-step .tx strong{color:var(--ocean)}
+.rf-box{background:linear-gradient(150deg,#0c4a6e,#0891b2);border-radius:20px;padding:34px 30px;margin:34px 0;color:#fff;text-align:center}
+.rf-box h3{font-family:'Fraunces',serif;font-weight:400;font-size:25px;margin-bottom:8px}
+.rf-box h3 em{color:var(--gold);font-style:italic}
+.rf-box p{opacity:.9;font-size:15px;margin-bottom:20px;color:#fff}
+.rf-warn{background:#fff8ec;border:1px solid #f0e0bd;border-radius:12px;padding:16px 18px;font-size:14px;color:#7a5b1e;margin:20px 0;line-height:1.55}
+.faq{margin:14px 0}
+.faq-item{border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;background:#fff}
+.faq-q{padding:16px 18px;font-weight:600;color:var(--ocean);cursor:pointer;font-size:15.5px;list-style:none;display:flex;justify-content:space-between}
+.faq-q::-webkit-details-marker{display:none}
+.faq-q:after{content:"+";color:var(--ol);font-weight:700}
+details[open] .faq-q:after{content:"−"}
+.faq-a{padding:0 18px 16px;color:#3a4d59;font-size:15px;line-height:1.65}
+.float-wpp{position:fixed;right:22px;bottom:22px;z-index:950;display:inline-flex;align-items:center;gap:10px;background:#25d366;color:#fff;text-decoration:none;font-weight:700;padding:14px 22px;border-radius:100px;font-size:15px;box-shadow:0 10px 30px rgba(37,211,102,.45)}
+@media(max-width:600px){.float-wpp{display:none}}
+</style>
+<style>
+.dec-hero{background:linear-gradient(150deg,#0c4a6e,#0891b2);color:#fff;padding:60px 22px 48px;text-align:center;border-radius:0 0 30px 30px}
+.dec-hero .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#cdeef2;margin-bottom:14px}
+.dec-hero h1{font-family:'Fraunces',serif;font-size:clamp(28px,4.6vw,42px);font-weight:600;line-height:1.14;max-width:800px;margin:0 auto 14px}
+.dec-hero h1 em{color:var(--gold);font-style:italic}
+.dec-hero p{opacity:.92;font-size:17px;max-width:640px;margin:0 auto;line-height:1.55}
+.dec-wrap{max-width:920px;margin:0 auto;padding:14px 22px 40px}
+.dec-bread{font-size:12.5px;color:var(--tm);padding:14px 0 0}
+.dec-bread a{color:var(--om);text-decoration:none}
+.dec-sec{margin:46px 0}
+.dec-eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:center;display:block;margin-bottom:8px}
+.dec-sec h2{font-family:'Fraunces',serif;font-size:clamp(22px,3.3vw,30px);color:var(--ocean);font-weight:600;text-align:center;margin-bottom:14px;line-height:1.2}
+.dec-sec h2 em{color:var(--om);font-style:italic}
+.dec-lead{color:var(--tm);font-size:16.5px;line-height:1.75;max-width:720px;margin:0 auto 18px;text-align:center}
+.dec-sec p{color:#3a4d59;font-size:16px;line-height:1.75;margin-bottom:14px}
+.dec-vs{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}
+@media(max-width:640px){.dec-vs{grid-template-columns:1fr}}
+.dec-col{background:#fff;border:1px solid var(--border);border-radius:18px;padding:28px 24px;box-shadow:0 6px 20px rgba(13,59,84,.06)}
+.dec-col h3{font-family:'Fraunces',serif;font-size:22px;color:var(--ocean);margin-bottom:6px}
+.dec-col .tagline{font-size:13px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
+.dec-col ul{list-style:none;padding:0;margin:0}
+.dec-col li{padding:9px 0 9px 26px;position:relative;font-size:14.5px;color:#3a4d59;line-height:1.5;border-bottom:1px solid rgba(31,181,196,.1)}
+.dec-col li:last-child{border-bottom:none}
+.dec-col li:before{content:"✓";position:absolute;left:0;color:var(--om);font-weight:700}
+.dec-tablewrap{overflow-x:auto;margin-top:24px;border-radius:14px;border:1px solid var(--border)}
+.dec-table{width:100%;border-collapse:collapse;min-width:560px;background:#fff}
+.dec-table th,.dec-table td{padding:13px 15px;text-align:left;font-size:14px;border-bottom:1px solid var(--border)}
+.dec-table thead th{background:var(--ocean);color:#fff;font-weight:600;font-size:13px}
+.dec-table td:first-child{font-weight:600;color:var(--ocean)}
+.dec-table tbody tr:nth-child(even){background:#f7fbfc}
+.dec-verdict{background:var(--sl);border-radius:18px;padding:28px 26px;margin-top:26px}
+.dec-verdict h3{font-family:'Fraunces',serif;font-size:19px;color:var(--ocean);margin-bottom:10px;text-align:center}
+.dec-verdict p{font-size:15px;line-height:1.7;margin-bottom:0}
+.dec-faq{margin:22px 0}
+.dec-faq-item{border:1px solid var(--border);border-radius:12px;margin-bottom:9px;overflow:hidden;background:#fff}
+.dec-faq-q{padding:15px 18px;font-weight:600;color:var(--ocean);cursor:pointer;font-size:15px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.dec-faq-q::-webkit-details-marker{display:none}
+.dec-faq-q:after{content:"+";color:var(--ol);font-weight:700}
+details[open] .dec-faq-q:after{content:"−"}
+.dec-faq-a{padding:0 18px 15px;color:#3a4d59;font-size:14.5px;line-height:1.65}
+.dec-cta{background:linear-gradient(150deg,#0c4a6e,#0891b2);border-radius:22px;padding:42px 30px;text-align:center;color:#fff;margin:48px 0 20px}
+.dec-cta h2{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(23px,3.6vw,30px);margin-bottom:10px;color:#fff}
+.dec-cta h2 em{color:var(--gold);font-style:italic}
+.dec-cta p{opacity:.9;font-size:16px;margin-bottom:24px;color:#fff}
+.dec-btn{display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#fff;text-decoration:none;font-weight:700;padding:15px 30px;border-radius:100px;font-size:15px;box-shadow:0 10px 28px rgba(37,211,102,.35);transition:transform .2s}
+.dec-btn:hover{transform:translateY(-2px)}
+.dec-links{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
+.dec-links a{background:#fff;border:1px solid var(--border);border-radius:100px;padding:9px 18px;font-size:13.5px;color:var(--om);font-weight:600;text-decoration:none;transition:all .2s}
+.dec-links a:hover{background:var(--om);color:#fff}
+</style>
+</head>
+<style>
+
+
+
+.il-wrap{max-width:1200px;margin:0 auto;padding:24px}
+.il-filters{display:flex;flex-wrap:wrap;gap:12px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:24px;box-shadow:0 4px 18px rgba(13,59,84,.06);position:sticky;top:12px;z-index:20}
+.il-fg{flex:1;min-width:150px}
+.il-fg label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);font-weight:700;margin-bottom:5px}
+.il-fg select,.il-fg input{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:11px 12px;font-size:14px;font-family:inherit;color:#2b3d48;background:#fbfdfd}
+.il-fg select:focus,.il-fg input:focus{outline:none;border-color:var(--om)}
+.il-count{font-size:14px;color:var(--tm);margin-bottom:16px}
+.il-count b{color:var(--ocean)}
+.il-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:900px){.il-grid{grid-template-columns:repeat(2,1fr)}.il-filters{position:static}}
+@media(max-width:560px){.il-grid{grid-template-columns:1fr}}
+.il-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(13,59,84,.06);transition:transform .22s,box-shadow .22s}
+.il-card:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(13,59,84,.14)}
+.il-card-img{aspect-ratio:16/11;background:linear-gradient(135deg,var(--ocean),var(--om));display:flex;align-items:center;justify-content:center;font-size:40px;color:rgba(255,255,255,.5);position:relative;overflow:hidden}
+.il-card-img img{width:100%;height:100%;object-fit:cover}
+.il-badge{position:absolute;top:12px;left:12px;background:rgba(12,74,110,.88);color:#fff;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:4px 11px;border-radius:100px}
+.il-badge.status{right:12px;left:auto;background:rgba(10,125,50,.9)}
+.il-card-b{padding:18px;flex:1;display:flex;flex-direction:column}
+.il-card-tipo{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px}
+.il-card-t{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:var(--ocean);line-height:1.22;margin-bottom:6px}
+.il-card-loc{font-size:12.5px;color:var(--tm);margin-bottom:12px}
+.il-card-specs{display:flex;gap:14px;font-size:12.5px;color:#41535f;margin-bottom:12px;flex-wrap:wrap}
+.il-card-price{margin-top:auto;font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--ocean)}
+.il-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--tm)}
+.il-empty .em{font-size:46px;opacity:.35;margin-bottom:12px}
+.il-loading{text-align:center;padding:70px;color:var(--tm)}
+.il-loading .sp{width:38px;height:38px;border:3px solid var(--sl);border-top-color:var(--om);border-radius:50%;animation:ilspin 1s linear infinite;margin:0 auto 14px}
+@keyframes ilspin{to{transform:rotate(360deg)}}
+.il-clear{background:none;border:none;color:var(--om);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;align-self:flex-end;padding:11px 0}
+</style>
+
+<body>
+<nav class="mob-footer-nav">
+  <div class="mob-footer-items">
+    <a class="mob-footer-btn" href="/#busca-rapida">
+      <span class="mob-footer-ico">🔍</span>
+      <span class="mob-footer-lbl">Explorar</span>
+    </a>
+    <a class="mob-footer-btn" href="/lancamentos">
+      <span class="mob-footer-ico">🚀</span>
+      <span class="mob-footer-lbl">Lançamentos</span>
+    </a>
+    <a class="mob-footer-btn wpp-btn" href="https://wa.me/5551999442252" rel="nofollow">
+      <span class="mob-footer-ico"><svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="12" fill="#25D366"/><path fill="#fff" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></span>
+      <span class="mob-footer-lbl">WhatsApp</span>
+    </a>
+    <a class="mob-footer-btn" href="/#imoveis">
+      <span class="mob-footer-ico">🏘️</span>
+      <span class="mob-footer-lbl">Imóveis</span>
+    </a>
+    <a class="mob-footer-btn" href="/#condominios">
+      <span class="mob-footer-ico">🏖️</span>
+      <span class="mob-footer-lbl">Condomínios</span>
+    </a>
+  </div>
+</nav>
+
+<section class="il-hero">
+  <div class="il-hero-slides">
+    <div class="il-hero-slide on" data-foto-card="imoveis-capa-1"></div>
+    <div class="il-hero-slide"    data-foto-card="imoveis-capa-2"></div>
+  </div>
+  <div class="il-hero-grad"></div>
+  <div class="il-hero-in">
+    <h1>Imóveis à Venda</h1>
+  </div>
+</section>
+
+<div class="il-wrap">
+  <div class="il-filters">
+    <div class="il-fg"><label>Cidade</label><select id="f-cidade" onchange="aplicar()"><option value="">Todas</option></select></div>
+    <div class="il-fg"><label>Tipo</label><select id="f-tipo" onchange="aplicar()"><option value="">Todos</option></select></div>
+    <div class="il-fg"><label>Quartos (mín.)</label><select id="f-quartos" onchange="aplicar()"><option value="">Qualquer</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></div>
+    <div class="il-fg"><label>Preço até</label><select id="f-preco" onchange="aplicar()"><option value="">Sem limite</option><option value="500000">R$ 500 mil</option><option value="1000000">R$ 1 milhão</option><option value="2000000">R$ 2 milhões</option><option value="3000000">R$ 3 milhões</option><option value="5000000">R$ 5 milhões</option></select></div>
+    <button class="il-clear" onclick="limpar()">Limpar</button>
+  </div>
+  <div class="il-count" id="il-count"></div>
+  <div class="il-grid" id="il-grid">
+    <div class="il-loading"><div class="sp"></div>Carregando imóveis...</div>
+  </div>
+</div>
+
+<section class="vpc" style="padding-top:52px;padding-bottom:52px">
+  <div class="vpc-in">
+    <div class="vpc-txt">
+      <span class="vpc-badge">⭐ Venda Premium · Alta Performance</span>
+      <h3>Tem um imóvel para <em>vender</em>?</h3>
+      <p>Entre no nosso programa exclusivo de venda inteligente: avaliação estratégica, produção premium, marketing digital e inteligência artificial trabalhando para vender seu imóvel pelo melhor valor.</p>
+    </div>
+    <div class="vpc-side">
+      <a class="vpc-btn" href="/exclusividade-imobiliaria">Quero uma Avaliação Gratuita →</a>
+      <div class="vpc-sub">Sem compromisso · CRECI-RS 72.386</div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
+  <div class="ftr-main">
+    <div class="ftr-col ftr-col-brand">
+      <div class="ftr-logo"><svg class="ftr-logo-svg" viewBox="0 0 280 76" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Os melhores condomínios do litoral" style="width:230px;height:auto;display:block"><defs><linearGradient id="lgwave" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1fb5c4"/><stop offset="1" stop-color="#0e8a99"/></linearGradient></defs><g transform="translate(2,8)"><path d="M30 6 L52 24 L46 24 L46 44 L14 44 L14 24 L8 24 Z" fill="none" stroke="#e0b34d" stroke-width="2.4" stroke-linejoin="round"/><path d="M22 44 L22 32 L30 32 L30 44" fill="none" stroke="#e0b34d" stroke-width="2.2" stroke-linejoin="round"/><path d="M4 52 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="url(#lgwave)" stroke-width="3" stroke-linecap="round"/><path d="M4 60 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="#1fb5c4" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/></g><text x="70" y="30" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" fill="#ffffff">Os melhores</text><text x="70" y="52" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" font-style="italic" fill="#e0b34d">condomínios</text><text x="70" y="70" font-family="Outfit, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="3" fill="#cdeef2">DO LITORAL</text></svg></div>
+      <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
+      <a class="ftr-wpp" href="https://wa.me/5551999442252"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
+    </div>
+    <div class="ftr-col"><div class="ftr-tit">Navegar</div><div class="ftr-links-grid">
+      <a onclick="showAllCond()">Condomínios</a>
+      <a onclick="showAllImov()">Imóveis</a>
+      <a href="/lancamentos">Lançamentos</a>
+      <a href="/contemplado-imoveis">Crédito Contemplado</a>
+      <a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/contato">Contato</a><a href="/politica-privacidade">Política de Privacidade</a>
+    </div></div>
+    <div class="ftr-col"><div class="ftr-tit">Descobrir</div><div class="ftr-links-grid">
+      <a onclick="document.getElementById('guias-cidades').scrollIntoView({behavior:'smooth'})">Cidades</a>
+      <a onclick="openTurismo()">Turismo no Litoral</a>
+      <a onclick="document.getElementById('onde-ir').scrollIntoView({behavior:'smooth'})">Onde Ir</a>
+      <a onclick="openBlog()">Blog &amp; Notícias</a>
+    </div></div>
+    <div class="ftr-col"><div class="ftr-tit">Cidades</div><div class="ftr-links-grid">
+      <a href="/xangri-la">Xangri-lá</a>
+      <a href="/capao-da-canoa">Capão da Canoa</a>
+      <a href="/osorio">Osório</a>
+      <a href="/maquine">Maquiné</a>
+    </div></div>
+  </div>
+  <div class="ftr-bottom">
+    <span>© 2025 Os melhores condomínios do litoral · Todos os direitos reservados</span>
+    <span class="ftr-bottom-r">Litoral Norte Gaúcho · RS</span>
+  </div>
+</footer>
+
+<script>
+const SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
+async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
+function brl(v){if(v==null||v==='')return 'Sob consulta';const n=Number(v);if(isNaN(n))return String(v);return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});}
+function fotos(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
+let TODOS=[], CONDS={};
+
+async function carregar(){
+  const conds=await sbGet('condominios','?select=id,nome,cidade');
+  if(Array.isArray(conds)) conds.forEach(c=>CONDS[c.id]=c);
+  let imv=await sbGet('imoveis','?order=created_at.desc');
+  TODOS=Array.isArray(imv)?imv.filter(i=>i.publicar!==false&&i.status!=='Vendido'):[];
+  // popular filtros de cidade e tipo
+  const cidades=new Set(), tipos=new Set();
+  TODOS.forEach(i=>{
+    const cid=(CONDS[i.cond_id]||{}).cidade||i.cidade; if(cid)cidades.add(cid);
+    if(i.tipo)tipos.add(i.tipo);
+  });
+  const fc=document.getElementById('f-cidade'); [...cidades].sort().forEach(c=>fc.innerHTML+='<option value="'+c+'">'+c+'</option>');
+  // filtro de tipo FIXO: só trabalhamos com Casa e Terreno
+  const ft=document.getElementById('f-tipo');
+  ['Casa','Terreno'].forEach(t=>ft.innerHTML+='<option value="'+t+'">'+t+'</option>');
+  // ler query params (?cidade=&tipo=)
+  const q=new URLSearchParams(location.search);
+  if(q.get('cidade'))fc.value=q.get('cidade');
+  if(q.get('tipo'))ft.value=q.get('tipo');
+  aplicar();
+}
+
+function aplicar(){
+  const cid=document.getElementById('f-cidade').value;
+  const tp=document.getElementById('f-tipo').value;
+  const qt=parseInt(document.getElementById('f-quartos').value)||0;
+  const pmax=parseInt(document.getElementById('f-preco').value)||0;
+  const lista=TODOS.filter(i=>{
+    const icid=(CONDS[i.cond_id]||{}).cidade||i.cidade||'';
+    if(cid&&icid!==cid)return false;
+    if(tp&&i.tipo!==tp)return false;
+    if(qt&&(parseInt(i.quartos)||0)<qt)return false;
+    if(pmax&&Number(i.preco)>pmax)return false;
+    return true;
+  });
+  render(lista);
+}
+function limpar(){['f-cidade','f-tipo','f-quartos','f-preco'].forEach(id=>document.getElementById(id).value='');aplicar();}
+
+function render(lista){
+  const grid=document.getElementById('il-grid');
+  const cnt=document.getElementById('il-count');
+  cnt.innerHTML='<b>'+lista.length+'</b> '+(lista.length===1?'imóvel encontrado':'imóveis encontrados');
+  if(!lista.length){grid.innerHTML='<div class="il-empty"><div class="em">🔍</div><p>Nenhum imóvel encontrado com esses filtros.<br>Tente ampliar a busca ou fale conosco.</p></div>';return;}
+  grid.innerHTML=lista.map(i=>{
+    const cond=CONDS[i.cond_id]||{};
+    const cidade=cond.cidade||i.cidade||'';
+    const f=fotos(i.fotos_no_site||i.fotos);
+    const img=f.length?'<img src="'+f[0]+'" alt="'+(i.titulo||'')+'" loading="lazy">':'🏠';
+    const specs=[];
+    if(i.area)specs.push('📐 '+i.area+' m²');
+    if(i.quartos)specs.push('🛏️ '+i.quartos);
+    if(i.vagas)specs.push('🚗 '+i.vagas);
+    return '<a class="il-card" href="/imovel?id='+encodeURIComponent(i.id)+'">'+
+      '<div class="il-card-img">'+img+
+        (cidade?'<span class="il-badge">'+cidade+'</span>':'')+
+        (i.status==='Disponível'?'<span class="il-badge status">Disponível</span>':'')+
+      '</div>'+
+      '<div class="il-card-b">'+
+        '<div class="il-card-tipo">'+(i.tipo||'Imóvel')+'</div>'+
+        '<div class="il-card-t">'+(i.titulo||'—')+'</div>'+
+        (cond.nome?'<div class="il-card-loc">📍 '+cond.nome+'</div>':'')+
+        (specs.length?'<div class="il-card-specs">'+specs.map(s=>'<span>'+s+'</span>').join('')+'</div>':'')+
+        '<div class="il-card-price">'+brl(i.preco)+'</div>'+
+      '</div></a>';
+  }).join('');
+}
+carregar();
+</script>
+
+<script>
+/* carrossel da capa: alterna as 2 fotos */
+(function(){
+  function iniciarCapa(){
+    var slides=document.querySelectorAll('.il-hero-slide');
+    if(slides.length<2) return;
+    var i=0;
+    setInterval(function(){
+      slides[i].classList.remove('on');
+      i=(i+1)%slides.length;
+      slides[i].classList.add('on');
+    }, 5500);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', iniciarCapa);
+  else iniciarCapa();
+})();
+</script>
+
+
+<script>
+/* carregador de fotos do CRM (config fotos_site) para a capa */
+(function(){
+  function aplicar(el, url){
+    el.style.backgroundImage='url("'+url+'")';
+    el.style.backgroundSize='cover';
+    el.style.backgroundPosition='center';
+    el.classList.add('tem-foto');
+  }
+  async function carregarFotosCapa(){
+    var els=document.querySelectorAll('[data-foto-card]');
+    if(!els.length) return;
+    var mapa=null;
+    try{
+      var r=await fetch(SB_URL+'/rest/v1/configuracoes?chave=eq.fotos_site&select=valor',
+        {headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}});
+      if(r.ok){ var d=await r.json(); if(d&&d[0]&&d[0].valor) mapa=d[0].valor; }
+    }catch(e){}
+    if(!mapa || typeof mapa!=='object') return;
+    els.forEach(function(el){
+      var slug=el.getAttribute('data-foto-card');
+      var url=mapa[slug];
+      if(!url) return;
+      var test=new Image();
+      test.onload=function(){ aplicar(el, url); };
+      test.src=url;
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', carregarFotosCapa);
+  else carregarFotosCapa();
+})();
+</script>
+
+</body>
+</html>

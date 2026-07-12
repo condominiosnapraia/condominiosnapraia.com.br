@@ -1,0 +1,63 @@
+═══════════════════════════════════════════════════════
+   TODOS OS NOMES DE ARQUIVO DE IMAGEM DO SITE
+   Coloque na pasta /img com EXATAMENTE estes nomes
+═══════════════════════════════════════════════════════
+
+REGRAS (causa nº1 de foto não aparecer):
+  • tudo minúsculo
+  • com hífen (-), sem espaço
+  • SEM acento (é->e, ã->a, ç->c)
+  • extensão .jpg  (NÃO .jpeg, NÃO .JPG, NÃO .png)
+  • tamanho ideal: 400x260px
+
+── Cidades (Conheça as Cidades) ── (4 fotos)
+   card-capao-da-canoa.jpg
+   card-maquine.jpg
+   card-osorio.jpg
+   card-xangri-la.jpg
+
+── Onde Ir (atrações da home) ── (8 fotos)
+   card-cascata-da-forqueta.jpg
+   card-cascata-do-garapia.jpg
+   card-lagoa-dos-quadros.jpg
+   card-marina-park.jpg
+   card-morro-da-borussia.jpg
+   card-parque-eolico-de-osorio.jpg
+   card-plataforma-de-atlantida.jpg
+   card-praia-de-atlantida.jpg
+
+── Bairros de Capão ── (5 fotos)
+   card-capao-da-canoa-arco-iris.jpg
+   card-capao-da-canoa-centro.jpg
+   card-capao-da-canoa-guarani.jpg
+   card-capao-da-canoa-navegantes.jpg
+   card-capao-da-canoa-zona-nova.jpg
+
+── Bairros de Xangri-lá ── (4 fotos)
+   card-xangri-la-atlantida.jpg
+   card-xangri-la-centro.jpg
+   card-xangri-la-rainha-do-mar.jpg
+   card-xangri-la-remanso.jpg
+
+── Aba Turismo (menu) ── (11 fotos)
+   card-lagoa-dos-barros.jpg
+   card-marina-de-xangri-la.jpg
+   card-mirantes-de-osorio.jpg
+   card-o-que-fazer-em-capao-da-canoa.jpg
+   card-o-que-fazer-em-maquine.jpg
+   card-o-que-fazer-em-osorio.jpg
+   card-o-que-fazer-em-xangri-la.jpg
+   card-paradouros-a-beira-mar.jpg
+   card-praca-do-mini-golf.jpg
+   card-praia-de-capao-da-canoa.jpg
+   card-trilha-do-garapia-ecoturismo.jpg
+
+TOTAL: 32 arquivos de imagem de card
+
+Capas das páginas internas (hero) e og-image são à parte.
+── Bairros de Xangri-lá (restantes) ── (5 fotos)
+   card-xangri-la-marina.jpg
+   card-xangri-la-noiva-do-mar.jpg
+   card-xangri-la-maristela.jpg
+   card-xangri-la-arpoador.jpg
+   card-xangri-la-coqueiros.jpg

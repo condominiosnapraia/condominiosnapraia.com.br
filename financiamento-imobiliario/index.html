@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-25TRZRKFLK');
+  gtag('config', 'AW-16759565872');
+  // rastrear cliques no WhatsApp como evento (para medir conversões)
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
+    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+  }, true);
+</script>
+<!-- Fim Google Analytics -->
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c4a6e">
+<title>Financiamento Imobiliário no Litoral Norte RS | Simulador e Taxas</title>
+<meta name="description" content="Simule seu financiamento imobiliário e compare as taxas de juros da Caixa, Itaú, Santander, Bradesco e Banco do Brasil. Financie até 90% do seu imóvel no">
+<link rel="canonical" href="https://condominiosnapraia.com.br/financiamento-imobiliario">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Financiamento Imobiliário | Condomínios na Praia">
+<meta property="og:description" content="Simule seu financiamento e compare as taxas dos principais bancos. Financie até 90% do seu imóvel no litoral norte gaúcho.">
+<meta property="og:url" content="https://condominiosnapraia.com.br/financiamento-imobiliario">
+<meta property="og:image" content="https://condominiosnapraia.com.br/og-image.png">
+<meta property="og:locale" content="pt_BR">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FinancialProduct","name":"Financiamento Imobiliário","description":"Simulação de financiamento imobiliário com comparação de taxas dos principais bancos para imóveis no litoral norte gaúcho.","provider":{"@type":"Organization","name":"Condomínios na Praia","url":"https://condominiosnapraia.com.br/"},"areaServed":"Litoral Norte do Rio Grande do Sul"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://condominiosnapraia.com.br/"},{"@type":"ListItem","position":2,"name":"Financiamento Imobiliário","item":"https://condominiosnapraia.com.br/financiamento-imobiliario"}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--ocean:#0d3b54;--om:#0e8a99;--ol:#1fb5c4;--gold:#e0b34d;--gl:#f0c95f;--sl:#e8f7f8;--text:#0d3b54;--tm:#5b7585;--areia:#f7f1e8;--espuma:#e8f7f8;--azulclaro:#cdeef2;--border:rgba(31,181,196,.22)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;color:var(--text);line-height:1.7;background:#fff}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+header{background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60%,#0891b2 100%);color:#fff;padding:14px 0;position:sticky;top:0;z-index:50}
+header .wrap{display:flex;justify-content:space-between;align-items:center}
+header a{color:#fff;text-decoration:none}.logo{font-family:'Fraunces',serif;font-weight:600;font-size:18px}
+nav.crumb{font-size:13px;color:var(--tm);padding:14px 0}nav.crumb a{color:var(--om);text-decoration:none}
+.hero{position:relative;background:radial-gradient(900px 380px at 82% -10%,var(--azulclaro) 0,transparent 60%),linear-gradient(180deg,#fffefb,var(--espuma));padding:48px 0 70px;overflow:hidden}
+.hero .wrap{position:relative;z-index:2}
+.hero .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--om);background:#fff;border:1px solid var(--border);padding:5px 14px;border-radius:20px;margin-bottom:16px}
+h1{font-family:'Fraunces',serif;font-size:clamp(30px,5vw,48px);font-weight:600;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+h1 em{font-style:italic;color:var(--om)}
+.hero p{font-size:17px;color:var(--tm);max-width:680px}
+.wave{position:absolute;left:0;right:0;bottom:-1px;z-index:1;line-height:0}.wave svg{width:100%;height:60px;display:block}
+section{padding:44px 0}
+h2{font-family:'Fraunces',serif;font-size:clamp(24px,3.5vw,34px);font-weight:600;color:var(--ocean);margin-bottom:10px;line-height:1.15}
+h2 em{font-style:italic;color:var(--gold)}
+.lead{font-size:16px;color:var(--tm);max-width:720px;margin-bottom:26px}
+/* CALCULADORA */
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}
+.calc-form,.calc-result{background:var(--sl);border:1px solid var(--border);border-radius:16px;padding:28px}
+.calc-result{background:var(--ocean);color:#fff}
+.fg{margin-bottom:18px}
+.fl{display:block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);margin-bottom:7px}
+.fl strong{color:var(--om)}
+.fi,.fse{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:15px;font-family:'Outfit',sans-serif;color:var(--ocean);background:#fff;outline:none}
+.fi:focus,.fse:focus{border-color:var(--om)}
+.rng{width:100%;accent-color:var(--gold);height:6px;cursor:pointer}
+.einfo{font-size:12.5px;color:var(--om);background:rgba(224,179,77,.12);border:1px solid rgba(224,179,77,.4);border-radius:8px;padding:10px 12px;margin-top:6px}
+.res-big-lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gl);margin-bottom:6px}
+.res-big{font-family:'Fraunces',serif;font-size:40px;font-weight:600;line-height:1;margin-bottom:4px}
+.res-sub{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:20px}
+.res-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:14px;color:rgba(255,255,255,.85)}
+.res-row strong{color:#fff;font-family:'Fraunces',serif;font-size:16px}
+.res-cta{display:block;text-align:center;background:#25d366;color:#fff;padding:14px;border-radius:10px;font-weight:700;text-decoration:none;margin-top:20px;transition:background .2s}
+.res-cta:hover{background:#1eb858}
+.res-pdf{display:block;width:100%;text-align:center;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4);padding:12px;border-radius:10px;font-weight:600;cursor:pointer;margin-top:10px;font-family:'Outfit',sans-serif;font-size:14px}
+.res-pdf:hover{border-color:var(--gl);color:var(--gl)}
+.disc{font-size:12px;color:var(--tm);margin-top:20px;line-height:1.6}
+/* BANCOS */
+.bancos-sec{background:var(--areia)}
+.bancos-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+.banco-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:24px;transition:all .2s;border-left:4px solid var(--om)}
+.banco-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(13,59,84,.1)}
+.banco-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.banco-logo{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;background:#f0f4f7}
+.banco-logo img{width:100%;height:100%;object-fit:contain}
+.banco-nome{font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--ocean)}
+.banco-taxa{font-size:12px;color:var(--om);font-weight:700}
+.banco-desc{font-size:13.5px;color:var(--tm);line-height:1.6;margin-bottom:16px}
+.banco-btn{display:inline-flex;align-items:center;gap:7px;background:var(--ocean);color:#fff;padding:10px 18px;border-radius:100px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}
+.banco-btn:hover{background:var(--om);gap:11px}
+.destaque-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--gold);padding:2px 9px;border-radius:12px;margin-left:8px}
+/* INFO */
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.info-card{background:var(--sl);border-radius:14px;padding:22px;text-align:center}
+.info-ico{font-size:30px;margin-bottom:10px}
+.info-card h3{font-family:'Fraunces',serif;font-size:18px;color:var(--ocean);margin-bottom:6px}
+.info-card p{font-size:13.5px;color:var(--tm);line-height:1.55}
+.cta-final{background:linear-gradient(135deg,var(--ocean),var(--om));color:#fff;text-align:center;padding:54px 0}
+.cta-final h2{color:#fff}
+.cta-final p{color:rgba(255,255,255,.85);max-width:600px;margin:0 auto 22px}
+.btn-wpp{display:inline-block;background:#25d366;color:#fff;padding:14px 30px;border-radius:100px;font-weight:700;text-decoration:none}
+.wpp-float{position:fixed;right:18px;bottom:80px;background:#25d366;color:#fff;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:27px;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:99}
+
+/* ── FOOTER SOFISTICADO ── */
+footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60%,#0891b2 100%);color:#fff;margin:0;padding:0;text-align:left;font-size:inherit}
+.ftr-wave{position:absolute;top:-1px;left:0;right:0;height:50px;line-height:0;transform:translateY(-99%)}
+.ftr-wave svg{width:100%;height:50px;display:block}
+.ftr-main{max-width:1140px;margin:0 auto;padding:52px 32px 32px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
+.ftr-col-brand{max-width:340px}
+.ftr-logo{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.1}
+.ftr-logo em{font-style:italic;color:var(--gold,#e0b34d)}
+.ftr-sub{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:6px}
+.ftr-tag{font-size:13px;line-height:1.6;color:rgba(255,255,255,.6);margin:18px 0 22px}
+.ftr-wpp{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:11px 20px;border-radius:100px;transition:all .25s}
+.ftr-wpp:hover{background:var(--gold,#e0b34d);border-color:var(--gold,#e0b34d);color:#0c4a6e;transform:translateY(-2px)}
+.ftr-tit{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold,#e0b34d);margin-bottom:16px}
+.ftr-col a{display:block;color:rgba(255,255,255,.72);text-decoration:none;font-size:14px;padding:7px 0;transition:all .2s;cursor:pointer}
+.ftr-col a:hover{color:#fff;transform:translateX(4px)}
+.ftr-bottom{max-width:1140px;margin:0 auto;padding:20px 32px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,.4)}
+@media(max-width:860px){.ftr-main{grid-template-columns:1fr 1fr;gap:32px 24px;padding:44px 20px 26px}.ftr-col-brand{grid-column:1/-1;max-width:none}}
+@media(max-width:600px){.ftr-main{grid-template-columns:1fr 1fr}.ftr-bottom{flex-direction:column;gap:6px;text-align:center;padding:18px 20px}.ftr-wave{height:32px}.ftr-wave svg{height:32px}}
+footer a{color:#fff;text-decoration:none}
+@media(max-width:760px){.calc{grid-template-columns:1fr}.bancos-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}}
+/* RODAPÉ FIXO MOBILE */
+.mob-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:content-box;background:rgba(255,255,255,.72);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border-top:1px solid rgba(255,255,255,.5);z-index:900;box-shadow:0 -2px 16px rgba(13,59,84,.08)}
+.mob-footer-items{display:flex;align-items:stretch;height:100%;max-width:600px;margin:0 auto}
+.mob-footer-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:transparent;color:#aaa;font-family:'Outfit',sans-serif;font-size:9px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:6px 2px 4px;text-decoration:none}
+.mob-footer-btn.wpp-btn{color:#25d366}.mob-footer-ico{font-size:20px;line-height:1}
+@media(max-width:768px){.mob-footer-nav{display:block}body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}.wpp-float{bottom:78px}}
+@media(max-width:768px){.ftr-main{grid-template-columns:1fr 1fr;gap:32px 24px;padding:48px 24px 28px}.ftr-col-brand{grid-column:1/-1}.ftr-bottom{flex-direction:column;gap:6px;text-align:center}}
+@media(max-width:600px){
+  .ftr-main{grid-template-columns:1fr;gap:0;padding:44px 26px 24px}
+  .ftr-bottom{flex-direction:column;gap:6px;text-align:center;padding:18px 24px}
+  .ftr-wave{height:36px;transform:translateY(-99%)}.ftr-wave svg{height:36px}
+  .ftr-col-brand{text-align:center;padding-bottom:28px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .ftr-col-brand .ftr-logo-svg{margin:0 auto}
+  .ftr-tag{margin:16px auto 20px;max-width:300px}
+  .ftr-wpp{display:flex;justify-content:center;width:100%;box-sizing:border-box;font-size:15px;padding:15px 26px;background:#25d366;border-color:#25d366;color:#fff;font-weight:700;box-shadow:0 8px 22px rgba(37,211,102,.32)}
+  .ftr-wpp:hover{background:#1eb857;border-color:#1eb857;color:#fff;transform:none}
+  .ftr-col:not(.ftr-col-brand){text-align:left;margin-bottom:26px;display:grid;grid-template-columns:1fr;gap:0}
+  .ftr-col:not(.ftr-col-brand):last-child{margin-bottom:0}
+  .ftr-tit{font-size:11px;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid rgba(224,179,77,.28)}
+  .ftr-col:not(.ftr-col-brand) .ftr-tit{grid-column:1/-1}
+  .ftr-links-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+  .ftr-col a{font-size:14px;padding:9px 0;line-height:1.3}
+  .ftr-col a:hover{transform:none;color:var(--gold)}
+  .ftr-bottom{gap:4px;padding:22px 24px 26px;margin-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+  .ftr-bottom span:first-child{font-size:10.5px;opacity:.55;line-height:1.5}
+  .ftr-bottom-r{font-size:11px;color:var(--gold);opacity:.85;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+}
+@media(max-width:380px){.ftr-links-grid{grid-template-columns:1fr 1fr;gap:2px 12px}.ftr-tit{border-bottom:none}}
+</style>
+</head>
+<body>
+<nav class="crumb wrap"><a href="/">Início</a> › <span>Financiamento Imobiliário</span></nav>
+
+<div class="hero"><div class="wrap">
+<span class="tag">Realize o sonho da casa própria</span>
+<h1>Financie até <em>90%</em> do seu novo imóvel</h1>
+<p>Use nossa calculadora para simular as parcelas, compare as taxas de juros dos principais bancos do Brasil e descubra a melhor condição para o seu imóvel no litoral norte gaúcho.</p>
+</div>
+<div class="wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path fill="#fff" d="M0,30 C240,60 480,60 720,35 C960,10 1200,10 1440,33 L1440,60 L0,60 Z"></path></svg></div>
+</div>
+
+<!-- CALCULADORA -->
+<section><div class="wrap">
+<h2>Calculadora de <em>Financiamento</em></h2>
+<p class="lead">Simule a parcela do seu financiamento pela Tabela SAC. Ajuste o valor, o banco e o prazo para ver o resultado na hora.</p>
+<div class="calc">
+  <div class="calc-form">
+    <div class="fg"><label class="fl">Valor do imóvel</label>
+      <input class="fi" id="sim-valor" inputmode="numeric" placeholder="R$ 500.000" oninput="simMask(this);simCalc()"></div>
+    <div class="fg"><label class="fl">Banco</label>
+      <select class="fse" id="sim-banco" onchange="simCalc()">
+        <option value="10.26|80|caixa.gov.br">Caixa — 10,26% a.a. (até 80%)</option>
+        <option value="11.49|80|bb.com.br">Banco do Brasil — 11,49% a.a. (até 80%)</option>
+        <option value="11.60|80|itau.com.br">Itaú — 11,60% a.a. (até 80%)</option>
+        <option value="11.69|90|santander.com.br">Santander — 11,69% a.a. (até 90%)</option>
+        <option value="11.70|80|bradesco.com.br">Bradesco — 11,70% a.a. (até 80%)</option>
+      </select></div>
+    <div class="fg"><label class="fl">Prazo: <strong id="sim-prazo-lbl">360 meses (30 anos)</strong></label>
+      <input type="range" class="rng" id="sim-prazo" min="120" max="420" step="12" value="360" oninput="simPrazoLbl();simCalc()"></div>
+    <div class="einfo" id="sim-entrada-info"></div>
+  </div>
+  <div class="calc-result">
+    <div id="sim-banco-logo" style="text-align:center;margin-bottom:12px;min-height:32px"></div>
+    <div class="res-big-lbl">1ª Parcela (aprox.)</div>
+    <div class="res-big" id="sim-parcela">R$ —</div>
+    <div class="res-sub" id="sim-decrescente">Parcelas decrescentes (Tabela SAC)</div>
+    <div class="res-row"><span>Entrada necessária</span><strong id="sim-entrada">—</strong></div>
+    <div class="res-row"><span>Valor financiado</span><strong id="sim-financiado">—</strong></div>
+    <div class="res-row"><span>Renda mínima sugerida</span><strong id="sim-renda">—</strong></div>
+    <a class="res-cta" id="sim-wpp" href="#" target="_blank">💬 Falar com consultor sobre financiamento</a>
+    <button class="res-pdf" onclick="simGerarPDF()">📄 Baixar simulação em PDF</button>
+  </div>
+</div>
+<p class="disc">⚠️ Simulação aproximada para fins informativos, pela Tabela SAC. As taxas variam conforme análise de crédito, relacionamento bancário e perfil do proponente. Não inclui seguros obrigatórios (MIP/DFI), taxa de administração e variação da TR. Consulte um consultor para valores exatos e condições atualizadas.</p>
+</div></section>
+
+<!-- BANCOS -->
+<section class="bancos-sec"><div class="wrap">
+<h2>Taxas de juros por <em>banco</em></h2>
+<p class="lead">Cada banco tem suas vantagens. Comparar as condições antes de assinar pode representar uma economia de dezenas de milhares de reais ao longo do financiamento. Veja os diferenciais de cada um (taxas de referência de 2026, a partir de, + TR):</p>
+<div class="bancos-grid">
+
+  <div class="banco-card" style="border-left-color:#0066b3">
+    <div class="banco-top">
+      <div class="banco-logo"><img src="https://www.google.com/s2/favicons?domain=caixa.gov.br&sz=128" alt="Caixa" onerror="this.parentElement.innerHTML='<b style=color:#0066b3>CEF</b>'"></div>
+      <div><div class="banco-nome">Caixa <span class="destaque-tag">Menor taxa</span></div><div class="banco-taxa">A partir de 10,26% a.a. + TR</div></div>
+    </div>
+    <p class="banco-desc">A Caixa Econômica Federal lidera o mercado com a menor taxa, por usar recursos da poupança (SBPE). Domina cerca de 70% do crédito imobiliário do país, permite uso do FGTS e tem linhas especiais (pró-cotista) com taxas ainda menores para quem tem FGTS. Melhor opção para a maioria dos perfis.</p>
+    <a class="banco-btn" href="https://wa.me/5551999442252?text=Ol%C3%A1%21%20Quero%20simular%20financiamento%20pela%20Caixa." rel="nofollow">Simular pela Caixa →</a>
+  </div>
+
+  <div class="banco-card" style="border-left-color:#fae128;background:#fff">
+    <div class="banco-top">
+      <div class="banco-logo" style="background:#fae128"><img src="https://www.google.com/s2/favicons?domain=bb.com.br&sz=128" alt="Banco do Brasil" onerror="this.parentElement.innerHTML='<b style=color:#003399>BB</b>'"></div>
+      <div><div class="banco-nome">Banco do Brasil</div><div class="banco-taxa">A partir de 11,49% a.a. + TR</div></div>
+    </div>
+    <p class="banco-desc">O Banco do Brasil é competitivo, especialmente para correntistas e servidores públicos, que conseguem condições diferenciadas e crédito pré-aprovado. Tem boa estrutura para composição de renda e linhas pró-cotista com FGTS. Vale a pena se você já tem relacionamento com o banco.</p>
+    <a class="banco-btn" href="https://wa.me/5551999442252?text=Ol%C3%A1%21%20Quero%20simular%20financiamento%20pelo%20Banco%20do%20Brasil." rel="nofollow">Simular pelo BB →</a>
+  </div>
+
+  <div class="banco-card" style="border-left-color:#ec7000">
+    <div class="banco-top">
+      <div class="banco-logo"><img src="https://www.google.com/s2/favicons?domain=itau.com.br&sz=128" alt="Itaú" onerror="this.parentElement.innerHTML='<b style=color:#ec7000>ITA</b>'"></div>
+      <div><div class="banco-nome">Itaú <span class="destaque-tag">Mais rápido</span></div><div class="banco-taxa">A partir de 11,60% a.a. + TR</div></div>
+    </div>
+    <p class="banco-desc">O Itaú é o banco privado mais competitivo e aprova crédito com agilidade — ideal para quem tem pressa ou compra em leilão. Clientes Personnalité e com bom relacionamento conseguem descontos adicionais na taxa. Boa escolha para quem busca rapidez e atendimento premium.</p>
+    <a class="banco-btn" href="https://wa.me/5551999442252?text=Ol%C3%A1%21%20Quero%20simular%20financiamento%20pelo%20Ita%C3%BA." rel="nofollow">Simular pelo Itaú →</a>
+  </div>
+
+  <div class="banco-card" style="border-left-color:#ec0000">
+    <div class="banco-top">
+      <div class="banco-logo"><img src="https://www.google.com/s2/favicons?domain=santander.com.br&sz=128" alt="Santander" onerror="this.parentElement.innerHTML='<b style=color:#ec0000>SAN</b>'"></div>
+      <div><div class="banco-nome">Santander <span class="destaque-tag">Até 90%</span></div><div class="banco-taxa">A partir de 11,69% a.a. + TR</div></div>
+    </div>
+    <p class="banco-desc">O Santander se destaca por financiar até 90% do imóvel (a maior cota entre os grandes) e é o mais flexível para autônomos. Permite composição de renda entre pessoas sem vínculo familiar — inclusive amigos comprando juntos — e financia as despesas de cartório dentro do contrato.</p>
+    <a class="banco-btn" href="https://wa.me/5551999442252?text=Ol%C3%A1%21%20Quero%20simular%20financiamento%20pelo%20Santander." rel="nofollow">Simular pelo Santander →</a>
+  </div>
+
+  <div class="banco-card" style="border-left-color:#cc092f">
+    <div class="banco-top">
+      <div class="banco-logo"><img src="https://www.google.com/s2/favicons?domain=bradesco.com.br&sz=128" alt="Bradesco" onerror="this.parentElement.innerHTML='<b style=color:#cc092f>BRA</b>'"></div>
+      <div><div class="banco-nome">Bradesco</div><div class="banco-taxa">A partir de 11,70% a.a. + TR</div></div>
+    </div>
+    <p class="banco-desc">O Bradesco tem uma das maiores redes de engenharia credenciada do Brasil, o que acelera a vistoria do imóvel. Para clientes com relacionamento bancário consolidado, costuma oferecer condições melhores que a taxa de balcão anunciada. Boa opção para quem já é cliente.</p>
+    <a class="banco-btn" href="https://wa.me/5551999442252?text=Ol%C3%A1%21%20Quero%20simular%20financiamento%20pelo%20Bradesco." rel="nofollow">Simular pelo Bradesco →</a>
+  </div>
+
+  <div class="banco-card" style="border-left-color:var(--gold);display:flex;flex-direction:column;justify-content:center;background:linear-gradient(135deg,var(--sl),#fff)">
+    <div class="banco-nome" style="margin-bottom:8px">Não sabe qual escolher?</div>
+    <p class="banco-desc">Comparar 4 ou mais bancos pode economizar dezenas de milhares de reais. Nosso consultor compara as condições para o seu perfil e indica a melhor opção — sem custo.</p>
+    <a class="banco-btn" style="background:#25d366" href="https://wa.me/5551999442252?text=Ol%C3%A1%21%20Quero%20ajuda%20para%20escolher%20o%20melhor%20banco%20para%20financiar%20meu%20im%C3%B3vel." rel="nofollow">💬 Falar com consultor</a>
+  </div>
+
+</div>
+</div></section>
+
+<!-- COMO FUNCIONA -->
+<section><div class="wrap">
+<h2>O que você precisa <em>saber</em></h2>
+<div class="info-grid">
+  <div class="info-card"><div class="info-ico">💰</div><h3>Entrada mínima</h3><p>Os bancos financiam de 80% a 90% do imóvel. Você precisa ter de 10% a 20% de entrada. Quanto maior a entrada, menores os juros totais.</p></div>
+  <div class="info-card"><div class="info-ico">📅</div><h3>Prazo</h3><p>O financiamento pode ir de 12 até 420 meses (35 anos). Prazos maiores reduzem a parcela, mas aumentam o total de juros pago no fim.</p></div>
+  <div class="info-card"><div class="info-ico">📊</div><h3>Comprometimento de renda</h3><p>A parcela não deve passar de 30% da sua renda. Acima disso, a aprovação fica difícil. Simule sempre o cenário real.</p></div>
+  <div class="info-card"><div class="info-ico">🏦</div><h3>Teto do SFH</h3><p>Em 2026, imóveis de até R$ 2,25 milhões entram no SFH, com juros regulados e uso de FGTS — inclusive imóveis de alto padrão.</p></div>
+  <div class="info-card"><div class="info-ico">🧮</div><h3>SAC x Price</h3><p>Na Tabela SAC (usada aqui), as parcelas começam maiores e diminuem com o tempo, e você paga menos juros no total que na Price.</p></div>
+  <div class="info-card"><div class="info-ico">🔑</div><h3>Use o FGTS</h3><p>O FGTS pode ser usado na entrada ou para amortizar o saldo, reduzindo bastante os juros. Linhas pró-cotista têm taxas menores.</p></div>
+</div>
+</div></section>
+
+<!-- CTA -->
+<div class="cta-final"><div class="wrap">
+<h2>Pronto para realizar o sonho?</h2>
+<p>Fale com um consultor especializado no litoral norte. Ajudamos você a escolher o melhor banco, simular as parcelas e organizar a documentação — do início ao fim.</p>
+<a class="btn-wpp" href="https://wa.me/5551999442252?text=Ol%C3%A1%21%20Quero%20ajuda%20com%20financiamento%20imobili%C3%A1rio." rel="nofollow">💬 Falar com Especialista</a>
+</div></div>
+
+<footer>
+  <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
+  <div class="ftr-main">
+    <div class="ftr-col ftr-col-brand">
+      <div class="ftr-logo"><svg class="ftr-logo-svg" viewBox="0 0 280 76" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Os melhores condomínios do litoral" style="width:230px;height:auto;display:block"><defs><linearGradient id="lgwave" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1fb5c4"/><stop offset="1" stop-color="#0e8a99"/></linearGradient></defs><g transform="translate(2,8)"><path d="M30 6 L52 24 L46 24 L46 44 L14 44 L14 24 L8 24 Z" fill="none" stroke="#e0b34d" stroke-width="2.4" stroke-linejoin="round"/><path d="M22 44 L22 32 L30 32 L30 44" fill="none" stroke="#e0b34d" stroke-width="2.2" stroke-linejoin="round"/><path d="M4 52 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="url(#lgwave)" stroke-width="3" stroke-linecap="round"/><path d="M4 60 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="#1fb5c4" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/></g><text x="70" y="30" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" fill="#ffffff">Os melhores</text><text x="70" y="52" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" font-style="italic" fill="#e0b34d">condomínios</text><text x="70" y="70" font-family="Outfit, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="3" fill="#cdeef2">DO LITORAL</text></svg></div>
+      <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
+      <a class="ftr-wpp" href="https://wa.me/5551999442252" rel="nofollow"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
+    </div>
+    <div class="ftr-col"><div class="ftr-tit">Navegar</div><div class="ftr-links-grid">
+      <a href="/#sec-condominios">Condomínios</a>
+      <a href="/#sec-imoveis">Imóveis</a>
+      <a href="/contemplado-imoveis">Crédito Contemplado</a>
+      <a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/refinanciamento-imobiliario">Refinanciamento</a><a href="/exclusividade-imobiliaria">Venda seu Imóvel</a><a href="/contato">Contato</a><a href="/sobre">Sobre</a><a href="/politica-privacidade">Política de Privacidade</a><a href="/termos">Termos de Uso</a>
+    </div></div>
+    <div class="ftr-col"><div class="ftr-tit">Descobrir</div><div class="ftr-links-grid">
+      <a href="/#guias-cidades">Cidades</a>
+      <a href="/#onde-ir">Onde Ir</a>
+      <a href="/o-que-fazer-em-capao-da-canoa">Turismo</a>
+      <a href="/">Blog &amp; Notícias</a>
+    </div></div>
+    <div class="ftr-col"><div class="ftr-tit">Cidades</div><div class="ftr-links-grid">
+      <a href="/xangri-la">Xangri-lá</a>
+      <a href="/capao-da-canoa">Capão da Canoa</a>
+      <a href="/osorio">Osório</a>
+      <a href="/maquine">Maquiné</a>
+    </div></div>
+  </div>
+  <div class="ftr-bottom">
+    <span>© 2025 Os melhores condomínios do litoral · Todos os direitos reservados</span>
+    <span>Litoral Norte Gaúcho · RS</span>
+  </div>
+</footer>
+<a class="wpp-float" href="https://wa.me/5551999442252?text=Ol%C3%A1%21%20Quero%20ajuda%20com%20financiamento." rel="nofollow" aria-label="WhatsApp">💬</a>
+
+<nav class="mob-footer-nav">
+  <div class="mob-footer-items">
+    <a class="mob-footer-btn" href="/#busca-rapida">
+      <span class="mob-footer-ico">🔍</span>
+      <span class="mob-footer-lbl">Explorar</span>
+    </a>
+    <a class="mob-footer-btn" href="/lancamentos">
+      <span class="mob-footer-ico">🚀</span>
+      <span class="mob-footer-lbl">Lançamentos</span>
+    </a>
+    <a class="mob-footer-btn wpp-btn" href="https://wa.me/5551999442252" rel="nofollow">
+      <span class="mob-footer-ico"><svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="12" fill="#25D366"/><path fill="#fff" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></span>
+      <span class="mob-footer-lbl">WhatsApp</span>
+    </a>
+    <a class="mob-footer-btn" href="/#imoveis">
+      <span class="mob-footer-ico">🏘️</span>
+      <span class="mob-footer-lbl">Imóveis</span>
+    </a>
+    <a class="mob-footer-btn" href="/#condominios">
+      <span class="mob-footer-ico">🏖️</span>
+      <span class="mob-footer-lbl">Condomínios</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+// ── SIMULADOR DE FINANCIAMENTO ──
+function simMask(el){
+  let v = el.value.replace(/\D/g,'');
+  if(!v){ el.value=''; return; }
+  v = (parseInt(v)).toLocaleString('pt-BR');
+  el.value = 'R$ ' + v;
+}
+function simParseBRL(s){
+  return parseFloat((s||'').replace(/\D/g,'')) || 0;
+}
+function simPrazoLbl(){
+  const p = parseInt(document.getElementById('sim-prazo').value);
+  const anos = Math.round(p/12);
+  document.getElementById('sim-prazo-lbl').textContent = p + ' meses (' + anos + ' anos)';
+}
+function simCalc(){
+  const valor = simParseBRL(document.getElementById('sim-valor').value);
+  const banco_parts = document.getElementById('sim-banco').value.split('|');
+  const taxaAA = parseFloat(banco_parts[0]);
+  const cota = parseFloat(banco_parts[1]) / 100;
+  const dominio = banco_parts[2] || '';
+  const prazo = parseInt(document.getElementById('sim-prazo').value);
+
+  // Bank logo
+  const logoEl = document.getElementById('sim-banco-logo');
+  if(logoEl && dominio){
+    logoEl.innerHTML = `<img src="https://www.google.com/s2/favicons?domain=${dominio}&sz=64" style="width:32px;height:32px;border-radius:6px;vertical-align:middle" alt="banco">`;
+  }
+
+  const infoEl = document.getElementById('sim-entrada-info');
+  if(infoEl) infoEl.textContent = `Este banco financia até ${Math.round(cota*100)}% do imóvel. Você precisa ter ${Math.round((1-cota)*100)}% de entrada.`;
+
+  if(!valor || valor < 1000){
+    document.getElementById('sim-parcela').textContent = 'R$ —';
+    document.getElementById('sim-entrada').textContent = '—';
+    document.getElementById('sim-financiado').textContent = '—';
+    document.getElementById('sim-renda').textContent = '—';
+    return;
+  }
+
+  const financiado = valor * cota;
+  const entrada = valor - financiado;
+
+  // SAC: amortização constante
+  const amort = financiado / prazo;
+  const taxaAM = Math.pow(1 + taxaAA/100, 1/12) - 1; // taxa mensal equivalente
+  const primeiraParcela = amort + (financiado * taxaAM);
+
+  // Renda mínima: parcela não pode passar de 30% da renda
+  const rendaMin = primeiraParcela / 0.30;
+
+  const fmt = n => 'R$ ' + Math.round(n).toLocaleString('pt-BR');
+
+  document.getElementById('sim-parcela').textContent = fmt(primeiraParcela);
+  document.getElementById('sim-entrada').textContent = fmt(entrada);
+  document.getElementById('sim-financiado').textContent = fmt(financiado);
+  document.getElementById('sim-renda').textContent = fmt(rendaMin);
+
+  // WhatsApp link
+  const _bsel = document.getElementById('sim-banco'); const bancoNome = _bsel.options[_bsel.selectedIndex].text.split(' —')[0];
+  const msg = `Olá! Fiz uma simulação no site:\n\n🏠 Imóvel: ${fmt(valor)}\n🏦 Banco: ${bancoNome}\n💰 Entrada: ${fmt(entrada)}\n📊 Financiado: ${fmt(financiado)}\n📅 Prazo: ${prazo} meses\n💵 1ª parcela: ${fmt(primeiraParcela)}\n\nGostaria de mais informações sobre financiamento.`;
+  document.getElementById('sim-wpp').href = 'https://wa.me/5551999442252?text=' + encodeURIComponent(msg);
+}
+// Init on load
+setTimeout(()=>{ simPrazoLbl(); simCalc(); }, 500);
+
+
+// ── GERAR PDF DA SIMULAÇÃO ──
+async function simGerarPDF(){
+  const valor = simParseBRL(document.getElementById('sim-valor').value);
+  if(!valor || valor < 1000){ alert('Preencha o valor do imóvel primeiro.'); return; }
+
+  const _bp = document.getElementById('sim-banco').value.split('|');
+  const taxaAA = parseFloat(_bp[0]);
+  const cota = parseFloat(_bp[1]) / 100;
+  const dominio = _bp[2] || '';
+  const prazo = parseInt(document.getElementById('sim-prazo').value);
+  const bancoSel = document.getElementById('sim-banco');
+  const bancoNome = bancoSel.options[bancoSel.selectedIndex].text.split(' —')[0];
+
+  const financiado = valor * cota;
+  const entrada = valor - financiado;
+  const amort = financiado / prazo;
+  const taxaAM = Math.pow(1 + taxaAA/100, 1/12) - 1;
+  const primeiraParcela = amort + (financiado * taxaAM);
+  const ultimaParcela = amort + (amort * taxaAM);
+  const rendaMin = primeiraParcela / 0.30;
+  const totalPago = (primeiraParcela + ultimaParcela) / 2 * prazo;
+
+  const fmt = n => 'R$ ' + Math.round(n).toLocaleString('pt-BR');
+  const hoje = new Date().toLocaleDateString('pt-BR');
+
+  // WhatsApp link with simulation data
+  const msg = `Olá Felipe! Fiz uma simulação no site:\n\n🏠 Imóvel: ${fmt(valor)}\n🏦 Banco: ${bancoNome}\n💰 Entrada: ${fmt(entrada)}\n📊 Financiado: ${fmt(financiado)}\n📅 Prazo: ${prazo} meses\n💵 1ª parcela: ${fmt(primeiraParcela)}\n\nGostaria de mais informações.`;
+  const wppUrl = 'https://wa.me/5551999442252?text=' + encodeURIComponent(msg);
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const W = 210;
+
+  // Header - white background
+  doc.setFillColor(255, 255, 255);
+  doc.rect(0, 0, W, 48, 'F');
+  // Gold accent line at bottom
+  doc.setFillColor(184, 147, 90);
+  doc.rect(0, 48, W, 2.5, 'F');
+
+  // Logo: light blue rounded square with "RZN"
+  doc.setFillColor(56, 152, 199);
+  doc.roundedRect(20, 13, 24, 24, 4, 4, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.text('RZN', 32, 27, { align: 'center' });
+
+  // Brand name - light blue
+  doc.setTextColor(56, 152, 199);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.text('RZN Contempladas', 50, 24);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(184, 147, 90);
+  doc.text('CRÉDITO CONTEMPLADO & FINANCIAMENTO', 50, 31);
+  doc.setTextColor(120, 120, 120);
+  doc.setFontSize(10);
+  doc.text('Simulação de Financiamento Imobiliário', 50, 39);
+
+  doc.setFontSize(7);
+  doc.setTextColor(150, 150, 150);
+  doc.text('Emitido em: ' + hoje, W - 20, 44, { align: 'right' });
+
+  // Load bank logo (async)
+  let bancoLogoData = null;
+  if(dominio){
+    try{
+      const logoUrl = 'https://www.google.com/s2/favicons?domain=' + dominio + '&sz=128';
+      const resp = await fetch(logoUrl);
+      const blob = await resp.blob();
+      bancoLogoData = await new Promise((res)=>{
+        const reader = new FileReader();
+        reader.onloadend = ()=>res(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    }catch(e){ console.warn('logo load failed', e); }
+  }
+
+  // Add bank logo top-right of header
+  if(bancoLogoData){
+    try{
+      doc.addImage(bancoLogoData, 'PNG', W - 44, 13, 22, 22);
+    }catch(e){ console.warn('addImage failed', e); }
+  }
+
+  let y = 62;
+
+  // Consultor info
+  doc.setFillColor(248, 250, 248);
+  doc.setDrawColor(220, 225, 220);
+  doc.roundedRect(20, y-6, W-40, 16, 2, 2, 'FD');
+  doc.setTextColor(15, 37, 53);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('Consultor: Felipe Ranzolin', 28, y+1);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(22, 163, 74);
+  doc.text('WhatsApp: (51) 99944-2252', 28, y+7);
+  y += 22;
+
+  // Section: Dados
+  doc.setTextColor(15, 37, 53);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Dados da Simulação', 20, y);
+  y += 4;
+  doc.setDrawColor(184, 147, 90);
+  doc.setLineWidth(0.5);
+  doc.line(20, y, 70, y);
+  y += 12;
+
+  const rows = [
+    ['Banco', bancoNome],
+    ['Taxa de juros', taxaAA.toFixed(2).replace('.',',') + '% a.a. + TR'],
+    ['Valor do imóvel', fmt(valor)],
+    ['Percentual financiado', Math.round(cota*100) + '%'],
+    ['Sistema de amortização', 'SAC (parcelas decrescentes)'],
+  ];
+
+  doc.setFontSize(10);
+  rows.forEach(([k,v])=>{
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(100, 100, 100);
+    doc.text(k, 22, y);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 30, 30);
+    doc.text(v, W - 22, y, { align: 'right' });
+    y += 9;
+  });
+
+  y += 8;
+
+  // Resultado box
+  doc.setFillColor(248, 250, 248);
+  doc.setDrawColor(220, 225, 220);
+  doc.roundedRect(20, y, W - 40, 75, 3, 3, 'FD');
+  y += 12;
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(15, 37, 53);
+  doc.text('Resultado', 28, y);
+  y += 11;
+
+  const resRows = [
+    ['Entrada necessária', fmt(entrada)],
+    ['Valor financiado', fmt(financiado)],
+    ['Quantidade de parcelas', prazo + ' meses (' + Math.round(prazo/12) + ' anos)'],
+    ['1ª parcela (maior)', fmt(primeiraParcela)],
+    ['Última parcela (menor)', fmt(ultimaParcela)],
+    ['Renda mínima sugerida', fmt(rendaMin)],
+  ];
+  doc.setFontSize(10);
+  resRows.forEach(([k,v])=>{
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(90, 90, 90);
+    doc.text(k, 28, y);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(15, 37, 53);
+    doc.text(v, W - 28, y, { align: 'right' });
+    y += 9.5;
+  });
+
+  y += 14;
+
+  // WhatsApp CTA button (clickable link)
+  doc.setFillColor(22, 163, 74);
+  doc.roundedRect(20, y, W - 40, 24, 3, 3, 'F');
+  doc.link(20, y, W - 40, 24, { url: wppUrl });
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text('FALAR COM FELIPE NO WHATSAPP', 105, y + 10, { align: 'center' });
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Clique aqui • (51) 99944-2252', 105, y + 18, { align: 'center' });
+  y += 34;
+
+  // Disclaimer
+  doc.setFontSize(7);
+  doc.setTextColor(150, 150, 150);
+  const disc = 'Simulacao aproximada para fins informativos. Os valores podem variar conforme analise de credito, relacionamento bancario, perfil do proponente e politica vigente de cada instituicao. Nao inclui seguros obrigatorios (MIP/DFI), taxa de administracao mensal e variacao da TR. Consulte o consultor para valores exatos e condicoes atualizadas.';
+  const lines = doc.splitTextToSize(disc, W - 40);
+  doc.text(lines, 20, y);
+
+  doc.save('Simulacao-RZN-Contempladas.pdf');
+}
+
+
+
+// Init
+setTimeout(()=>{ simPrazoLbl(); simCalc(); }, 300);
+</script>
+</body>
+</html>

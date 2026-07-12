@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-25TRZRKFLK');
+  gtag('config', 'AW-16759565872');
+  // rastrear cliques no WhatsApp como evento (para medir conversões)
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
+    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+  }, true);
+</script>
+<!-- Fim Google Analytics -->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c4a6e">
+<title>Condomínio — Condomínios na Praia</title>
+<meta name="description" content="">
+<link rel="canonical" id="cond-canonical" href="https://condominiosnapraia.com.br/condominio">
+<meta property="og:type" content="website">
+<meta property="og:title" id="cond-og-title" content="Condomínios na Praia">
+<meta property="og:description" id="cond-og-desc" content="">
+<meta property="og:url" id="cond-og-url" content="https://condominiosnapraia.com.br/condominio">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#f7f1e8;--sand-light:#fffefb;--ocean:#0d3b54;--ocean-mid:#0e8a99;
+  --ocean-light:#1fb5c4;--gold:#e0b34d;--gold-light:#f0c95f;--white:#fffefb;
+  --text:#0d3b54;--text-muted:#5b7585;--border:rgba(31,181,196,0.22);
+  --green:#3a9d6b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);overflow-x:hidden}
+
+/* ── HEADER ── */
+header{position:relative;top:auto;left:auto;right:auto;z-index:100;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(253,252,250,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:all .3s}
+.logo{font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--ocean);text-decoration:none;display:flex;flex-direction:column;line-height:1}
+.logo span{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color .2s}
+.back-btn:hover{color:var(--ocean)}
+.header-cta{background:var(--ocean);color:var(--white);padding:9px 20px;border-radius:2px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:all .2s}
+.header-cta:hover{background:var(--ocean-mid)}
+
+/* ── HERO GALERIA ── */
+.hero-gallery{margin-top:0;height:70vh;min-height:420px;position:relative;overflow:hidden;background:var(--ocean)}
+.gallery-main{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .4s}
+.gallery-main.loading{opacity:0}
+.gallery-no-photo{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:linear-gradient(135deg,#1a3a4a 0%,#2d5f7a 50%,#4a8fa8 100%)}
+.gallery-no-photo span{font-size:46px;opacity:.4}
+.gallery-no-photo p{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,58,74,.7) 0%,transparent 50%)}
+.gallery-nav{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:2}
+.gallery-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .2s;border:none;padding:0}
+.gallery-dot.active{background:var(--gold-light);width:24px;border-radius:4px}
+.gallery-prev,.gallery-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.35);border:none;color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:2;backdrop-filter:blur(4px)}
+.gallery-prev{left:20px}.gallery-next{right:20px}
+.gallery-prev:hover,.gallery-next:hover{background:rgba(0,0,0,.6)}
+.gallery-count{position:absolute;top:20px;right:20px;background:rgba(0,0,0,.5);color:#fff;font-size:11px;padding:4px 12px;border-radius:20px;letter-spacing:.05em;backdrop-filter:blur(4px)}
+.gallery-thumbs{position:absolute;bottom:0;right:0;display:flex;gap:4px;padding:12px;z-index:2}
+.gallery-thumb{width:60px;height:45px;object-fit:cover;border-radius:3px;cursor:pointer;border:2px solid transparent;transition:all .2s;opacity:.7}
+.gallery-thumb.active{border-color:var(--gold-light);opacity:1}
+
+/* ── CONTENT ── */
+.content{max-width:1140px;margin:0 auto;padding:0 40px}
+
+/* ── INFO SECTION ── */
+.info-section{padding:48px 0;display:block;gap:48px;align-items:start}
+.cond-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.cond-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+.cond-title{font-family:'Fraunces',serif;font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--ocean);line-height:1.05;margin-bottom:16px}
+.cond-title em{font-style:italic;color:var(--gold)}
+.cond-location{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);letter-spacing:.08em;margin-bottom:20px}
+.cond-desc{font-size:6px;line-height:1.7;color:var(--text-muted);font-weight:300;margin-top:28px;margin-bottom:24px}
+.cond-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.badge{padding:4px 14px;border:1px solid var(--border);border-radius:2px;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted)}
+.badge.highlight{background:var(--ocean);color:var(--white);border-color:var(--ocean)}
+
+/* ── DADOS RÁPIDOS ── */
+.dados-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:28px}
+.dado{background:var(--white);padding:14px 16px}
+.dado-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px}
+.dado-val{font-family:'Fraunces',serif;font-size:18px;color:var(--ocean);font-weight:600}
+
+/* ── AMENIDADES ── */
+.amenidades-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
+.amenidades-list{display:flex;flex-wrap:wrap;gap:8px}
+.amenidade{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--sand-light);border-radius:2px;font-size:11px;letter-spacing:.08em;color:var(--text-muted)}
+.amenidade::before{content:'✓';color:var(--gold);font-size:10px;font-weight:600}
+
+/* ── CARD LATERAL ── */
+.side-card{background:var(--ocean);border-radius:4px;padding:28px;position:sticky;top:80px}
+.side-card-title{font-family:'Fraunces',serif;font-size:18px;color:var(--white);margin-bottom:6px}
+.side-card-sub{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-light);margin-bottom:22px}
+.side-stat{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.side-stat:last-of-type{border-bottom:none}
+.side-stat-label{font-size:11px;color:rgba(255,255,255,.5)}
+.side-stat-val{font-family:'Fraunces',serif;font-size:18px;color:var(--gold-light)}
+.btn-wpp{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:2px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;margin-top:20px;text-decoration:none;transition:all .2s}
+.btn-wpp:hover{background:#1eb856;transform:translateY(-1px)}
+.btn-wpp svg{width:18px;height:18px;fill:#fff;flex-shrink:0}
+.btn-consult{display:block;text-align:center;padding:12px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-size:10px;letter-spacing:.18em;text-transform:uppercase;border-radius:2px;margin-top:10px;text-decoration:none;transition:all .2s}
+.btn-consult:hover{border-color:var(--gold-light);color:var(--gold-light)}
+
+/* ── SEÇÕES ── */
+.section-divider{border:none;border-top:1px solid var(--border);margin:0}
+/* FAQ */
+.faq-section{padding:56px 0;max-width:820px;margin:0 auto}
+.faq-head{margin-bottom:28px}
+.faq-eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+.faq-title{font-family:'Fraunces',serif;font-size:clamp(22px,2.6vw,28px);font-weight:600;color:var(--ocean);line-height:1.15}
+.faq-title em{font-style:normal;color:var(--ocean)}
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-item{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--white)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;font-size:16px;font-weight:600;color:var(--ocean);list-style:none;line-height:1.4}
+.faq-q::-webkit-details-marker{display:none}
+.faq-q::after{content:'+';font-size:22px;color:var(--gold);font-weight:300;flex-shrink:0;transition:transform .25s}
+.faq-item[open] .faq-q::after{transform:rotate(45deg)}
+.faq-a{padding:0 22px 20px;font-size:15.5px;line-height:1.7;color:#2e4654}
+@media(max-width:600px){.faq-q{font-size:15px;padding:16px 18px}.faq-a{font-size:14.5px;padding:0 18px 18px}}
+.sec-header{display:flex;align-items:center;gap:16px;margin-bottom:32px}
+.sec-num{font-family:'Fraunces',serif;font-size:28px;color:rgba(184,147,90,.15);line-height:1;font-weight:300}
+.sec-info{}
+.sec-title{font-family:'Fraunces',serif;font-size:22px;color:var(--ocean);line-height:1}
+.sec-sub{font-size:11px;color:var(--text-muted);letter-spacing:.05em;margin-top:3px}
+
+/* ── IMÓVEIS GRID ── */
+.imoveis-section{padding:56px 0}
+.imoveis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.imovel-card{background:var(--white);border:1px solid var(--border);border-radius:3px;overflow:hidden;transition:all .25s;cursor:pointer}
+.imovel-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(26,58,74,.1);border-color:rgba(184,147,90,.4)}
+.ic-img{height:160px;position:relative;overflow:hidden;background:var(--sand-light);display:flex;align-items:center;justify-content:center;font-size:26px}
+.ic-img img{width:100%;height:100%;object-fit:cover;display:block}
+.ic-status{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:2px;font-size:9px;letter-spacing:.15em;text-transform:uppercase;font-weight:600}
+.ic-status.disp{background:rgba(62,207,142,.9);color:#fff}
+.ic-status.neg{background:rgba(232,168,71,.9);color:#fff}
+.ic-body{padding:16px}
+.ic-tipo{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.ic-titulo{font-family:'Fraunces',serif;font-size:18px;color:var(--ocean);font-weight:600;margin-bottom:8px;line-height:1.2}
+.ic-specs{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.ic-spec{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px}
+.ic-spec-ico{font-size:12px}
+.ic-difs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.ic-dif{font-size:9px;padding:2px 8px;background:var(--sand-light);border-radius:2px;color:var(--text-muted);letter-spacing:.08em}
+.ic-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--border)}
+.ic-preco{font-family:'Fraunces',serif;font-size:20px;color:var(--ocean);font-weight:600}
+.ic-cta{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ocean);display:flex;align-items:center;gap:5px}
+.no-imoveis{text-align:center;padding:60px 20px;color:var(--text-muted)}
+.no-imoveis-ico{font-size:28px;margin-bottom:16px;opacity:.3}
+
+/* ── FORMULÁRIO DE CONTATO ── */
+.contact-section{padding:56px 0;background:var(--sand-light);margin:0 -40px;padding-left:40px;padding-right:40px}
+.contact-inner{max-width:1140px;margin:0 auto}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.contact-info{}
+.contact-title{font-family:'Fraunces',serif;font-size:28px;color:var(--ocean);margin-bottom:12px}
+.contact-title em{font-style:italic;color:var(--gold)}
+.contact-desc{font-size:13px;line-height:1.8;color:var(--text-muted);font-weight:300;margin-bottom:28px}
+.contact-detail{display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:13px;color:var(--text-muted)}
+.contact-detail-ico{width:36px;height:36px;background:var(--ocean);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.contact-form{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:32px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
+.form-input,.form-select,.form-textarea{background:var(--sand-light);border:1px solid var(--border);border-radius:2px;padding:11px 14px;color:var(--text);font-family:'Outfit',sans-serif;font-size:12.5px;outline:none;transition:border-color .2s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--ocean)}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--text-muted)}
+.form-select option{background:var(--white)}
+.form-textarea{resize:vertical;min-height:100px}
+.form-submit{width:100%;padding:14px;background:var(--ocean);color:var(--white);border:none;border-radius:2px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.form-submit:hover{background:var(--ocean-mid)}
+.form-submit.sending{opacity:.6;pointer-events:none}
+.form-success{display:none;text-align:center;padding:24px}
+.form-success-ico{font-size:30px;margin-bottom:12px}
+.form-success h3{font-family:'Fraunces',serif;font-size:22px;color:var(--ocean);margin-bottom:8px}
+.form-success p{font-size:12px;color:var(--text-muted)}
+
+/* ── MODAL IMÓVEL ── */
+.im-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.im-overlay.open{display:flex}
+@media(min-width:769px){.im-overlay{align-items:center}}
+.im-modal{background:var(--white);width:100%;max-width:760px;max-height:90vh;overflow-y:auto;border-radius:12px 12px 0 0;animation:slideUp .3s ease}
+@media(min-width:769px){.im-modal{border-radius:8px;animation:fadeIn .25s ease}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.im-modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:2}
+.im-modal-title{font-family:'Fraunces',serif;font-size:22px;color:var(--ocean)}
+.im-modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);padding:4px;line-height:1}
+.im-modal-gallery{height:260px;position:relative;overflow:hidden;background:var(--sand-light);display:flex;align-items:center;justify-content:center;font-size:30px}
+.im-modal-gallery img{width:100%;height:100%;object-fit:cover}
+.im-modal-body{padding:20px 24px}
+.im-modal-preco{font-family:'Fraunces',serif;font-size:26px;color:var(--ocean);margin-bottom:4px}
+.im-modal-tipo{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.im-specs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:3px;overflow:hidden;margin-bottom:18px}
+.im-spec-item{background:var(--white);padding:12px;text-align:center}
+.im-spec-ico{font-size:16px;margin-bottom:4px}
+.im-spec-val{font-family:'Fraunces',serif;font-size:18px;color:var(--ocean);font-weight:600;line-height:1}
+.im-spec-lbl{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-top:2px}
+.im-desc{font-size:13px;line-height:1.75;color:var(--text-muted);margin-bottom:16px;font-weight:300}
+.im-difs-title{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.im-difs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.im-dif-tag{padding:4px 10px;background:var(--sand-light);border-radius:2px;font-size:10px;color:var(--text-muted)}
+.im-modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;position:sticky;bottom:0;background:var(--white)}
+.im-btn-wpp{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;background:#25D366;color:#fff;border:none;border-radius:2px;font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .2s}
+.im-btn-wpp:hover{background:#1eb856}
+.im-btn-wpp svg{width:16px;height:16px;fill:#fff}
+.im-btn-form{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;background:var(--ocean);color:#fff;border:none;border-radius:2px;font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.im-btn-form:hover{background:var(--ocean-mid)}
+
+/* ── FOOTER ── */
+
+
+
+
+/* ── WHATSAPP FLOAT ── */
+.wpp-float{position:fixed;bottom:24px;right:24px;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.45);z-index:200;text-decoration:none;transition:all .25s}
+.wpp-float:hover{transform:scale(1.1)}
+.wpp-float svg{width:24px;height:24px;fill:#fff}
+
+/* ── SKELETON LOADER ── */
+.skeleton{background:linear-gradient(90deg,var(--sand-light) 25%,var(--sand) 50%,var(--sand-light) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  header{padding:12px 20px}
+  .hero-gallery{height:55vw;min-height:260px}
+  .gallery-thumb{display:none}
+  .content{padding:0 20px}
+  .info-section{grid-template-columns:1fr;gap:28px;padding:32px 0}
+  .side-card{position:static}
+  .contact-section{margin:0 -20px;padding:40px 20px;box-sizing:border-box;max-width:100vw;overflow:hidden}
+  .contact-grid{grid-template-columns:1fr;gap:32px}
+  .imoveis-grid{grid-template-columns:1fr 1fr}
+  .imoveis-section{padding:40px 0}
+  .form-row{grid-template-columns:1fr}
+  .dados-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .hero-gallery{height:60vw;min-height:220px}
+  .imoveis-grid{grid-template-columns:1fr}
+  .im-specs-grid{grid-template-columns:1fr 1fr}
+  .im-modal-footer{flex-direction:column}
+}
+
+/* ── FOOTER PADRÃO SOFISTICADO ── */
+.page-footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60%,#0891b2 100%);color:#fff;padding:0;text-align:left}
+.ftr-wave{position:absolute;top:-1px;left:0;right:0;height:50px;line-height:0;transform:translateY(-99%)}
+.ftr-wave svg{width:100%;height:50px;display:block}
+.ftr-main{max-width:1140px;margin:0 auto;padding:52px 32px 32px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
+.ftr-col-brand{max-width:340px}
+.ftr-logo{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.1}
+.ftr-logo em{font-style:italic;color:var(--gold,#e0b34d)}
+.ftr-sub{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:6px}
+.ftr-tag{font-size:13px;line-height:1.6;color:rgba(255,255,255,.6);margin:18px 0 22px}
+.ftr-wpp{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:11px 20px;border-radius:100px;transition:all .25s}
+.ftr-wpp:hover{background:var(--gold,#e0b34d);border-color:var(--gold,#e0b34d);color:#0c4a6e}
+.ftr-tit{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold,#e0b34d);margin-bottom:16px}
+.ftr-col a{display:block;color:rgba(255,255,255,.72);text-decoration:none;font-size:14px;padding:7px 0;transition:all .2s}
+.ftr-col a:hover{color:#fff;transform:translateX(4px)}
+.ftr-bottom{max-width:1140px;margin:0 auto;padding:20px 32px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,.4)}
+@media(max-width:860px){.ftr-main{grid-template-columns:1fr 1fr;gap:32px 24px;padding:44px 20px 26px}.ftr-col-brand{grid-column:1/-1;max-width:none}}
+@media(max-width:600px){
+  .ftr-main{grid-template-columns:1fr;gap:0;padding:44px 26px 24px}
+  .ftr-bottom{flex-direction:column;gap:6px;text-align:center;padding:18px 24px}
+  .ftr-wave{height:36px;transform:translateY(-99%)}.ftr-wave svg{height:36px}
+  .ftr-col-brand{text-align:center;padding-bottom:28px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .ftr-col-brand .ftr-logo-svg{margin:0 auto}
+  .ftr-tag{margin:16px auto 20px;max-width:300px}
+  .ftr-wpp{display:flex;justify-content:center;width:100%;box-sizing:border-box;font-size:15px;padding:15px 26px;background:#25d366;border-color:#25d366;color:#fff;font-weight:700;box-shadow:0 8px 22px rgba(37,211,102,.32)}
+  .ftr-wpp:hover{background:#1eb857;border-color:#1eb857;color:#fff;transform:none}
+  .ftr-col:not(.ftr-col-brand){text-align:left;margin-bottom:26px;display:grid;grid-template-columns:1fr;gap:0}
+  .ftr-col:not(.ftr-col-brand):last-child{margin-bottom:0}
+  .ftr-tit{font-size:11px;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid rgba(224,179,77,.28)}
+  .ftr-col:not(.ftr-col-brand) .ftr-tit{grid-column:1/-1}
+  .ftr-links-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+  .ftr-col a{font-size:14px;padding:9px 0;line-height:1.3}
+  .ftr-col a:hover{transform:none;color:var(--gold)}
+  .ftr-bottom{gap:4px;padding:22px 24px 26px;margin-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+  .ftr-bottom span:first-child{font-size:10.5px;opacity:.55;line-height:1.5}
+  .ftr-bottom-r{font-size:11px;color:var(--gold);opacity:.85;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+}
+@media(max-width:380px){.ftr-links-grid{grid-template-columns:1fr 1fr;gap:2px 12px}}
+@media(max-width:768px){.ftr-main{grid-template-columns:1fr 1fr;gap:32px 24px;padding:48px 24px 28px}.ftr-col-brand{grid-column:1/-1}.ftr-bottom{flex-direction:column;gap:6px;text-align:center}}
+/* === Card Venda Premium (captação de proprietários) === */
+.vpc{max-width:1080px;margin:0 auto;padding:0 22px}
+.vpc-in{background:linear-gradient(135deg,#0d3b54,#0e8a99);border-radius:24px;padding:40px 38px;color:#fff;position:relative;overflow:hidden;display:flex;align-items:center;gap:36px;box-shadow:0 20px 50px rgba(13,59,84,.2)}
+.vpc-in::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 15%,rgba(224,179,77,.18),transparent 55%);pointer-events:none}
+.vpc-txt{flex:1;min-width:0;position:relative;z-index:1}
+.vpc-badge{display:inline-block;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#e0b34d;font-weight:700;border:1px solid rgba(224,179,77,.4);padding:6px 15px;border-radius:100px;margin-bottom:14px}
+.vpc-txt h3{font-family:'Fraunces',serif;font-size:clamp(22px,2.8vw,30px);font-weight:600;line-height:1.15;margin-bottom:10px}
+.vpc-txt h3 em{color:#e0b34d;font-style:italic}
+.vpc-txt p{font-size:14.5px;line-height:1.6;opacity:.9;margin:0;max-width:520px}
+.vpc-side{flex-shrink:0;position:relative;z-index:1;text-align:center}
+.vpc-btn{display:inline-flex;align-items:center;gap:9px;background:#e0b34d;color:#0d3b54;font-weight:700;font-size:15px;padding:15px 28px;border-radius:100px;text-decoration:none;box-shadow:0 12px 30px rgba(224,179,77,.3);transition:transform .2s;white-space:nowrap}
+.vpc-btn:hover{transform:translateY(-3px)}
+.vpc-sub{font-size:12px;opacity:.7;margin-top:10px}
+@media(max-width:760px){.vpc-in{flex-direction:column;text-align:center;gap:22px;padding:34px 24px}.vpc-txt p{margin:0 auto}.vpc-btn{width:100%;box-sizing:border-box;justify-content:center}}
+
+</style>
+<script type="application/ld+json" id="ld-cond">{}</script>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Condomínios na Praia<span>Litoral Norte Gaúcho</span></a>
+  <a href="index.html" class="back-btn">← Todos os Condomínios</a>
+  <a href="#contato" class="header-cta">Falar com Consultor</a>
+</header>
+
+<!-- HERO GALERIA -->
+<div class="hero-gallery" id="hero-gallery">
+  <div class="gallery-no-photo" id="gallery-no-photo">
+    <span>🏘</span>
+    <p>Fotos em breve</p>
+  </div>
+  <img class="gallery-main" id="gallery-main" src="" alt="" style="display:none">
+  <div class="gallery-overlay" id="gallery-overlay" style="display:none"></div>
+  <button class="gallery-prev" id="gallery-prev" onclick="galNav(-1)" style="display:none">‹</button>
+  <button class="gallery-next" id="gallery-next" onclick="galNav(1)" style="display:none">›</button>
+  <div class="gallery-nav" id="gallery-dots"></div>
+  <div class="gallery-count" id="gallery-count" style="display:none"></div>
+  <div class="gallery-thumbs" id="gallery-thumbs"></div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+
+  <!-- INFO + SIDE CARD -->
+  <div class="info-section">
+    <div>
+      <div class="cond-eyebrow" id="cond-cidade">Carregando...</div>
+      <h1 class="cond-title" id="cond-title">—</h1>
+      <div class="cond-badges" id="cond-badges"></div>
+
+      <div class="dados-grid" id="dados-grid"></div>
+
+      <div id="amenidades-wrap" style="display:none">
+        <div class="amenidades-title">Infraestrutura e Amenidades</div>
+        <div class="amenidades-list" id="amenidades-list"></div>
+      </div>
+
+      <div class="cond-location" id="cond-location" style="margin-top:20px">
+        <span>📍</span><span id="cond-location-text">—</span>
+      </div>
+
+      <p class="cond-desc" id="cond-desc" style="margin-top:20px">Carregando informações...</p>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<hr class="section-divider">
+
+<!-- IMÓVEIS DISPONÍVEIS -->
+<div class="content">
+  <div class="imoveis-section" id="imoveis-section">
+    <div class="sec-header">
+      <div class="sec-num" id="imoveis-count-num">0</div>
+      <div class="sec-info">
+        <div class="sec-title">Imóveis <em style="font-style:italic;color:var(--gold)">Disponíveis</em></div>
+        <div class="sec-sub" id="imoveis-count-sub">Nenhum imóvel disponível no momento</div>
+      </div>
+    </div>
+    <div class="imoveis-grid" id="imoveis-grid"></div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- FORMULÁRIO DE CONTATO -->
+<div class="contact-section" id="contato">
+  <div class="contact-inner">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p class="cond-eyebrow" style="margin-bottom:12px">Entre em Contato</p>
+        <h2 class="contact-title">Fale com um <em>Consultor</em></h2>
+        <p class="contact-desc">Nossa equipe especializada está pronta para atender você. Tire dúvidas, agende visitas e receba uma proposta personalizada.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-ico">📱</div>
+          <div>
+            <div style="font-weight:500;font-size:13px;color:var(--ocean)">WhatsApp</div>
+            <div style="font-size:12px;color:var(--text-muted)">(51) 99999-9999</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-ico">📧</div>
+          <div>
+            <div style="font-weight:500;font-size:13px;color:var(--ocean)">E-mail</div>
+            <div style="font-size:12px;color:var(--text-muted)">contato@condominiosnapraia.com.br</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-ico">🕐</div>
+          <div>
+            <div style="font-weight:500;font-size:13px;color:var(--ocean)">Atendimento</div>
+            <div style="font-size:12px;color:var(--text-muted)">Seg–Sex 8h–18h · Sáb 8h–13h</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form" id="contact-form-wrap">
+        <div id="form-content">
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Nome *</label>
+              <input class="form-input" id="f-nome" placeholder="Seu nome completo">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Telefone / WhatsApp *</label>
+              <input class="form-input" id="f-tel" placeholder="(51) 99999-9999">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">E-mail</label>
+            <input class="form-input" id="f-email" type="email" placeholder="seu@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tenho interesse em</label>
+            <select class="form-select" id="f-interesse">
+              <option value="">Selecione...</option>
+              <option>Comprar imóvel neste condomínio</option>
+              <option>Terreno para construir</option>
+              <option>Investimento</option>
+              <option>Informações gerais</option>
+              <option>Agendar visita</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Faixa de investimento</label>
+            <select class="form-select" id="f-faixa">
+              <option value="">Selecione...</option>
+              <option>Até R$ 500.000</option>
+              <option>R$ 500k – R$ 1M</option>
+              <option>R$ 1M – R$ 2M</option>
+              <option>R$ 2M – R$ 5M</option>
+              <option>Acima de R$ 5M</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mensagem</label>
+            <textarea class="form-textarea" id="f-msg" placeholder="Conte mais sobre o que você busca..."></textarea>
+          </div>
+          <button class="form-submit" id="form-submit-btn" onclick="submitForm()">
+            Enviar Mensagem ✉
+          </button>
+          <p style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:10px;letter-spacing:.04em">Seus dados são confidenciais e não serão compartilhados.</p>
+        </div>
+        <div class="form-success" id="form-success">
+          <div class="form-success-ico">✅</div>
+          <h3>Mensagem Enviada!</h3>
+          <p>Em breve um de nossos consultores entrará em contato. Enquanto isso, pode nos chamar pelo WhatsApp.</p>
+          <a href="#" class="btn-wpp" id="wpp-success" style="margin-top:16px;display:inline-flex;width:auto;padding:12px 24px">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Falar no WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<hr class="section-divider">
+
+<!-- FAQ -->
+<div class="content">
+  <div class="faq-section" id="faq-section">
+    <div class="faq-head">
+      <h2 class="faq-title">Perguntas Frequentes</h2>
+    </div>
+    <div class="faq-list" id="faq-list"></div>
+  </div>
+</div>
+
+<section class="vpc" style="padding-top:52px;padding-bottom:52px">
+  <div class="vpc-in">
+    <div class="vpc-txt">
+      <span class="vpc-badge">⭐ Venda Premium · Alta Performance</span>
+      <h3>Tem um imóvel para <em>vender</em>?</h3>
+      <p>Entre no nosso programa exclusivo de venda inteligente: avaliação estratégica, produção premium, marketing digital e inteligência artificial trabalhando para vender seu imóvel pelo melhor valor.</p>
+    </div>
+    <div class="vpc-side">
+      <a class="vpc-btn" href="/exclusividade-imobiliaria">Quero uma Avaliação Gratuita →</a>
+      <div class="vpc-sub">Sem compromisso · CRECI-RS 72.386</div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="page-footer">
+  <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
+  <div class="ftr-main">
+    <div class="ftr-col ftr-col-brand">
+      <div class="ftr-logo"><svg class="ftr-logo-svg" viewBox="0 0 280 76" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Os melhores condomínios do litoral" style="width:230px;height:auto;display:block"><defs><linearGradient id="lgwave" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1fb5c4"/><stop offset="1" stop-color="#0e8a99"/></linearGradient></defs><g transform="translate(2,8)"><path d="M30 6 L52 24 L46 24 L46 44 L14 44 L14 24 L8 24 Z" fill="none" stroke="#e0b34d" stroke-width="2.4" stroke-linejoin="round"/><path d="M22 44 L22 32 L30 32 L30 44" fill="none" stroke="#e0b34d" stroke-width="2.2" stroke-linejoin="round"/><path d="M4 52 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="url(#lgwave)" stroke-width="3" stroke-linecap="round"/><path d="M4 60 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="#1fb5c4" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/></g><text x="70" y="30" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" fill="#ffffff">Os melhores</text><text x="70" y="52" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" font-style="italic" fill="#e0b34d">condomínios</text><text x="70" y="70" font-family="Outfit, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="3" fill="#cdeef2">DO LITORAL</text></svg></div>
+      <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
+      <a class="ftr-wpp" href="https://wa.me/5551999442252" rel="nofollow"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
+    </div>
+    <div class="ftr-col"><div class="ftr-tit">Navegar</div><div class="ftr-links-grid">
+      <a href="/#sec-condominios">Condomínios</a>
+      <a href="/#sec-imoveis">Imóveis</a>
+      <a href="/contemplado-imoveis">Crédito Contemplado</a>
+      <a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/refinanciamento-imobiliario">Refinanciamento</a><a href="/exclusividade-imobiliaria">Venda seu Imóvel</a><a href="/contato">Contato</a><a href="/sobre">Sobre</a><a href="/politica-privacidade">Política de Privacidade</a><a href="/termos">Termos de Uso</a>
+    </div></div>
+    <div class="ftr-col"><div class="ftr-tit">Descobrir</div><div class="ftr-links-grid">
+      <a href="/#guias-cidades">Cidades</a>
+      <a href="/#onde-ir">Onde Ir</a>
+      <a href="/o-que-fazer-em-capao-da-canoa">Turismo</a>
+      <a href="/">Blog &amp; Notícias</a>
+    </div></div>
+    <div class="ftr-col"><div class="ftr-tit">Cidades</div><div class="ftr-links-grid">
+      <a href="/xangri-la">Xangri-lá</a>
+      <a href="/capao-da-canoa">Capão da Canoa</a>
+      <a href="/osorio">Osório</a>
+      <a href="/maquine">Maquiné</a>
+    </div></div>
+  </div>
+  <div class="ftr-bottom">
+    <span>© 2025 Os melhores condomínios do litoral · Todos os direitos reservados</span>
+    <span>Litoral Norte Gaúcho · RS</span>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="#" class="wpp-float" id="wpp-float" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- MODAL IMÓVEL -->
+<div class="im-overlay" id="im-overlay" onclick="closeImModal(event)">
+  <div class="im-modal" id="im-modal">
+    <div class="im-modal-header">
+      <div class="im-modal-title" id="im-modal-title">Imóvel</div>
+      <button class="im-modal-close" onclick="closeImModal()">✕</button>
+    </div>
+    <div class="im-modal-gallery" id="im-modal-gallery">🏠</div>
+    <div class="im-modal-body">
+      <div class="im-modal-preco" id="im-modal-preco">—</div>
+      <div class="im-modal-tipo" id="im-modal-tipo">—</div>
+      <div class="im-specs-grid" id="im-specs-grid"></div>
+      <p class="im-desc" id="im-modal-desc"></p>
+      <div id="im-difs-wrap" style="display:none">
+        <div class="im-difs-title">Diferenciais</div>
+        <div class="im-difs" id="im-difs"></div>
+      </div>
+      <div id="im-docs-wrap" style="margin-top:12px;font-size:12px;color:var(--text-muted)"></div>
+    </div>
+    <div class="im-modal-footer">
+      <a href="#" class="im-btn-wpp" id="im-wpp-btn" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <button class="im-btn-form" onclick="closeImModal();setTimeout(()=>document.getElementById('contato').scrollIntoView({behavior:'smooth'}),200)">
+        📧 Solicitar Informações
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const WPP_NUM = '5551999442252';
+const brl = n => n ? 'R$ ' + Number(n).toLocaleString('pt-BR') : '—';
+const m2  = n => n ? Number(n).toLocaleString('pt-BR') + 'm²' : '—';
+
+// ── LOAD DATA ──
+// Credenciais Supabase (mesmas da home) para buscar dados direto do banco —
+// essencial para o Google indexar a página (localStorage não é visível ao Googlebot).
+const SUPABASE_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+
+// Busca os condomínios: 1º tenta o Supabase (indexável), com fallback ao localStorage.
+async function getData() {
+  // tenta Supabase
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/condominios?select=*', {
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+    });
+    if (r.ok) {
+      const dados = await r.json();
+      if (Array.isArray(dados) && dados.length) return dados;
+    }
+  } catch (e) { /* segue para o fallback */ }
+  // fallback: localStorage (caso offline ou Supabase indisponível)
+  try { return JSON.parse(localStorage.getItem('cnp_condominios') || '[]'); } catch { return []; }
+}
+
+const params = new URLSearchParams(location.search);
+const condId = params.get('id');
+let cond = null;
+let galIdx = 0;
+
+async function init() {
+  const all = await getData();
+  // aceita id por campo 'id' ou 'slug' (mais amigável para URLs)
+  cond = all.find(c => String(c.id) === String(condId) || c.slug === condId);
+  if (!cond) {
+    document.querySelector('.cond-title').textContent = 'Condomínio não encontrado';
+    document.querySelector('.cond-desc').textContent = 'Este condomínio pode ter sido removido ou o link está incorreto.';
+    return;
+  }
+
+  // SEO
+  document.title = cond.nome + ' — Condomínios na Praia';
+  const metaDesc = document.querySelector('meta[name="description"]');
+  const descSeo = (cond.descricao || cond.nome || '').slice(0,155);
+  if (metaDesc) metaDesc.content = descSeo;
+  // canonical + Open Graph dinâmicos (cada condomínio com sua URL única)
+  const condUrlAbs = 'https://condominiosnapraia.com.br/condominio?id=' + encodeURIComponent(cond.slug || cond.id);
+  const setAttr = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
+  setAttr('cond-canonical', 'href', condUrlAbs);
+  setAttr('cond-og-url', 'content', condUrlAbs);
+  setAttr('cond-og-title', 'content', cond.nome + ' — Condomínios na Praia');
+  setAttr('cond-og-desc', 'content', descSeo);
+
+  // Dados estruturados (schema) — ajuda o Google a entender que é um condomínio/local
+  const ldEl = document.getElementById('ld-cond');
+  if (ldEl) {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "ApartmentComplex",
+      "name": cond.nome,
+      "url": condUrlAbs,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": cond.localizacao || cond.cidade || '',
+        "addressRegion": "RS",
+        "addressCountry": "BR"
+      }
+    };
+    if (descSeo) schema.description = descSeo;
+    if (cond.bairro) schema.address.streetAddress = cond.bairro;
+    const cf = (cond.fotos_no_site || cond.fotos || []).filter(f => f && String(f).startsWith('http'));
+    if (cf.length) schema.photo = cf.slice(0, 5);
+    if (Array.isArray(cond.amenidades) && cond.amenidades.length) {
+      schema.amenityFeature = cond.amenidades.map(a => ({ "@type": "LocationFeatureSpecification", "name": a, "value": true }));
+    }
+    ldEl.textContent = JSON.stringify(schema);
+  }
+
+  // Header info
+  document.getElementById('cond-cidade').textContent = cond.localizacao || cond.cidade || '';
+  document.getElementById('cond-title').innerHTML = cond.nome.replace(/(\s\S+)$/, '<em>$1</em>');
+  document.getElementById('cond-location-text').textContent =
+    [cond.bairro, cond.localizacao || cond.cidade].filter(Boolean).join(', ');
+  document.getElementById('cond-desc').textContent = cond.descricao || '';
+
+  // Badges
+  const badges = [];
+  if (cond.padrao) badges.push({ t: cond.padrao, h: true });
+  if (cond.tipo)   badges.push({ t: cond.tipo, h: false });
+  if (cond.ano)    badges.push({ t: 'Entrega ' + cond.ano, h: false });
+  document.getElementById('cond-badges').innerHTML =
+    badges.map(b => `<span class="badge ${b.h ? 'highlight' : ''}">${b.t}</span>`).join('');
+
+  // Dados rápidos
+  const dados = [];
+  if (cond.areaTotalM2) dados.push(['Área Total', m2(cond.areaTotalM2)]);
+  if (cond.lotes)       dados.push(['Nº de Lotes', cond.lotes]);
+  if (cond.incorporadora) dados.push(['Incorporadora', cond.incorporadora]);
+  if (cond.ano)         dados.push(['Ano Entrega', cond.ano]);
+  const imoveis = (cond.imoveis || []).filter(i => i.status === 'Disponível');
+  dados.push(['Disponíveis', imoveis.length]);
+  document.getElementById('dados-grid').innerHTML = dados.map(([l, v]) =>
+    `<div class="dado"><div class="dado-label">${l}</div><div class="dado-val">${v}</div></div>`).join('');
+
+  // Amenidades
+  if (cond.amenidades && cond.amenidades.length) {
+    document.getElementById('amenidades-wrap').style.display = '';
+    document.getElementById('amenidades-list').innerHTML =
+      cond.amenidades.map(a => `<div class="amenidade">${a}</div>`).join('');
+  }
+
+  // Side stats
+  const sideItems = [
+    ['Imóveis disponíveis', imoveis.length],
+    ['Cidade', cond.localizacao || cond.cidade || '—'],
+  ];
+  if (cond.padrao) sideItems.push(['Padrão', cond.padrao]);
+  var _sstats = document.getElementById('side-stats');
+  if (_sstats) _sstats.innerHTML =
+    sideItems.map(([l, v]) =>
+      `<div class="side-stat"><span class="side-stat-label">${l}</span><span class="side-stat-val">${v}</span></div>`
+    ).join('');
+
+  // FAQ dinâmica
+  const cidade = cond.localizacao || cond.cidade || 'Litoral Norte';
+  const faqs = [];
+  faqs.push(['Onde fica o ' + cond.nome + '?',
+    `O ${cond.nome} está localizado em ${cidade}, no Litoral Norte gaúcho — uma das regiões mais procuradas para moradia e investimento à beira-mar.`]);
+  if (cond.amenidades && cond.amenidades.length){
+    faqs.push(['Qual a infraestrutura e amenidades do condomínio?',
+      `O condomínio conta com: ${cond.amenidades.join(', ')}. Fale com um consultor para conhecer todos os detalhes da estrutura.`]);
+  }
+  faqs.push(['Há imóveis disponíveis para compra?',
+    imoveis.length > 0
+      ? `Sim, atualmente há ${imoveis.length} imóvel(is) disponível(is) neste condomínio. Os valores e condições podem ser consultados com nossos consultores.`
+      : `No momento não há imóveis listados publicamente para este condomínio, mas frequentemente surgem novas oportunidades. Fale conosco para ser avisado.`]);
+  if (cond.padrao){
+    faqs.push(['Qual o padrão do empreendimento?',
+      `O ${cond.nome} é classificado como ${cond.padrao}, oferecendo acabamento e infraestrutura compatíveis com esse perfil.`]);
+  }
+  faqs.push(['Como faço para agendar uma visita ou tirar dúvidas?',
+    `É só falar com um de nossos consultores pelo WhatsApp ou preencher o formulário nesta página. Atendemos toda a região do Litoral Norte gaúcho.`]);
+  const faqList = document.getElementById('faq-list');
+  if (faqList){
+    faqList.innerHTML = faqs.map(([q,a]) =>
+      `<details class="faq-item"><summary class="faq-q">${q}</summary><div class="faq-a">${a}</div></details>`
+    ).join('');
+  }
+
+  // WPP links
+  const wppMsg = encodeURIComponent(`Olá! Tenho interesse no condomínio *${cond.nome}*. Gostaria de mais informações.`);
+  const wppUrl = `https://wa.me/${WPP_NUM}?text=${wppMsg}`;
+  var _wb = document.getElementById('wpp-btn'); if (_wb) _wb.href = wppUrl;
+  document.getElementById('wpp-float').href = wppUrl;
+  document.getElementById('wpp-success').href = wppUrl;
+
+  // Gallery
+  buildGallery(cond.fotos || []);
+
+  // Imoveis
+  buildImoveis(cond.imoveis || []);
+}
+
+// ── GALLERY ──
+function buildGallery(fotos) {
+  if (!fotos || fotos.length === 0) return;
+  const main = document.getElementById('gallery-main');
+  const no   = document.getElementById('gallery-no-photo');
+  const ov   = document.getElementById('gallery-overlay');
+  const prev = document.getElementById('gallery-prev');
+  const next = document.getElementById('gallery-next');
+  const cnt  = document.getElementById('gallery-count');
+
+  no.style.display = 'none';
+  main.style.display = 'block';
+  ov.style.display = 'block';
+  if (fotos.length > 1) {
+    prev.style.display = next.style.display = 'flex';
+    cnt.style.display = 'block';
+  }
+
+  // dots
+  document.getElementById('gallery-dots').innerHTML =
+    fotos.map((_, i) => `<button class="gallery-dot ${i === 0 ? 'active' : ''}" onclick="galTo(${i})"></button>`).join('');
+
+  // thumbs (desktop)
+  document.getElementById('gallery-thumbs').innerHTML =
+    fotos.slice(0, 5).map((f, i) =>
+      `<img class="gallery-thumb ${i === 0 ? 'active' : ''}" src="${f}" onclick="galTo(${i})" alt="${cond.nome} — foto ${i+1}" loading="lazy">`
+    ).join('');
+
+  galTo(0);
+}
+
+function galTo(idx) {
+  const fotos = cond.fotos || [];
+  if (!fotos.length) return;
+  galIdx = (idx + fotos.length) % fotos.length;
+  const main = document.getElementById('gallery-main');
+  main.src = fotos[galIdx];
+  main.alt = cond.nome + ' — foto ' + (galIdx + 1);
+  document.getElementById('gallery-count').textContent = `${galIdx + 1} / ${fotos.length}`;
+  document.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === galIdx));
+  document.querySelectorAll('.gallery-thumb').forEach((t, i) => t.classList.toggle('active', i === galIdx));
+}
+function galNav(d) { galTo(galIdx + d); }
+
+// swipe support
+let tsX = 0;
+document.getElementById('hero-gallery').addEventListener('touchstart', e => { tsX = e.touches[0].clientX; }, { passive: true });
+document.getElementById('hero-gallery').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tsX;
+  if (Math.abs(dx) > 40) galNav(dx > 0 ? -1 : 1);
+});
+
+// ── IMÓVEIS ──
+function buildImoveis(imoveis) {
+  const disp = imoveis.filter(i => i.status === 'Disponível' || i.status === 'Negociando');
+  const count = disp.length;
+
+  document.getElementById('imoveis-count-num').textContent = count;
+  document.getElementById('imoveis-count-sub').textContent =
+    count === 0 ? 'Nenhum imóvel disponível no momento'
+    : count === 1 ? '1 imóvel disponível para venda'
+    : `${count} imóveis disponíveis para venda`;
+
+  if (count === 0) {
+    document.getElementById('imoveis-grid').innerHTML = `
+      <div class="no-imoveis" style="grid-column:1/-1">
+        <div class="no-imoveis-ico">🏠</div>
+        <p style="font-size:13px">Nenhum imóvel disponível no momento.<br>Entre em contato para novidades.</p>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('imoveis-grid').innerHTML = disp.map(im => {
+    const statusCls = im.status === 'Disponível' ? 'disp' : 'neg';
+    const foto = (im.fotos && im.fotos[0]) ? `<img src="${im.fotos[0]}" alt="${im.titulo}">` : '🏠';
+    const specs = [];
+    if (im.area)    specs.push(`<span class="ic-spec"><span class="ic-spec-ico">📐</span>${m2(im.area)}</span>`);
+    if (im.quartos) specs.push(`<span class="ic-spec"><span class="ic-spec-ico">🛏</span>${im.quartos} qtos</span>`);
+    if (im.suites)  specs.push(`<span class="ic-spec"><span class="ic-spec-ico">🚿</span>${im.suites} suítes</span>`);
+    if (im.vagas)   specs.push(`<span class="ic-spec"><span class="ic-spec-ico">🚗</span>${im.vagas} vagas</span>`);
+    const difs = (im.diferenciais || []).slice(0, 3).map(d => `<span class="ic-dif">${d}</span>`).join('');
+    return `
+      <div class="imovel-card" onclick="openImModal('${im.id}')">
+        <div class="ic-img">
+          ${foto}
+          <div class="ic-status ${statusCls}">${im.status}</div>
+        </div>
+        <div class="ic-body">
+          <div class="ic-tipo">${im.tipo || 'Imóvel'}</div>
+          <div class="ic-titulo">${im.titulo || 'Sem título'}</div>
+          <div class="ic-specs">${specs.join('')}</div>
+          <div class="ic-difs">${difs}</div>
+        </div>
+        <div class="ic-footer">
+          <div class="ic-preco">${brl(im.preco)}</div>
+          <div class="ic-cta">Ver detalhes →</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── MODAL IMÓVEL ──
+function openImModal(imId) {
+  const im = (cond.imoveis || []).find(x => x.id === imId);
+  if (!im) return;
+
+  // gallery
+  const gallery = document.getElementById('im-modal-gallery');
+  if (im.fotos && im.fotos.length) {
+    gallery.innerHTML = `<img src="${im.fotos[0]}" alt="${im.titulo}" style="width:100%;height:100%;object-fit:cover">`;
+    if (im.fotos.length > 1) {
+      let mIdx = 0;
+      gallery.innerHTML += `
+        <button onclick="imGalNav(-1,${JSON.stringify(im.fotos)})" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px">‹</button>
+        <button onclick="imGalNav(1,${JSON.stringify(im.fotos)})"  style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px">›</button>`;
+    }
+  } else {
+    gallery.innerHTML = '🏠';
+  }
+
+  document.getElementById('im-modal-title').textContent = im.titulo || 'Imóvel';
+  document.getElementById('im-modal-preco').textContent = brl(im.preco);
+  document.getElementById('im-modal-tipo').textContent = [im.tipo, im.status].filter(Boolean).join(' · ');
+
+  // specs
+  const specs = [
+    { ico: '📐', val: m2(im.area), lbl: 'Área Total' },
+    { ico: '🛏', val: im.quartos || '—', lbl: 'Quartos' },
+    { ico: '🚿', val: im.suites || '—', lbl: 'Suítes' },
+    { ico: '🚗', val: im.vagas || '—', lbl: 'Vagas' },
+  ];
+  document.getElementById('im-specs-grid').innerHTML = specs.map(s =>
+    `<div class="im-spec-item"><div class="im-spec-ico">${s.ico}</div><div class="im-spec-val">${s.val}</div><div class="im-spec-lbl">${s.lbl}</div></div>`
+  ).join('');
+
+  document.getElementById('im-modal-desc').textContent = im.descricao || '';
+
+  const difs = im.diferenciais || [];
+  const difWrap = document.getElementById('im-difs-wrap');
+  if (difs.length) {
+    difWrap.style.display = '';
+    document.getElementById('im-difs').innerHTML = difs.map(d => `<div class="im-dif-tag">${d}</div>`).join('');
+  } else { difWrap.style.display = 'none'; }
+
+  // docs info
+  const docs = [];
+  if (im.financiamento) docs.push('✓ Aceita financiamento');
+  if (im.permuta)       docs.push('✓ Aceita permuta');
+  if (im.iptu)          docs.push(`IPTU: ${brl(im.iptu)}/ano`);
+  if (im.condTaxa)      docs.push(`Condomínio: ${brl(im.condTaxa)}/mês`);
+  document.getElementById('im-docs-wrap').innerHTML = docs.map(d =>
+    `<span style="display:inline-block;margin-right:12px">${d}</span>`).join('');
+
+  // WPP
+  const wppMsg = encodeURIComponent(`Olá! Tenho interesse no imóvel *${im.titulo}* no condomínio *${cond.nome}*. Preço: ${brl(im.preco)}. Gostaria de mais informações.`);
+  document.getElementById('im-wpp-btn').href = `https://wa.me/${WPP_NUM}?text=${wppMsg}`;
+
+  document.getElementById('im-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeImModal(e) {
+  if (e && e.target !== document.getElementById('im-overlay')) return;
+  document.getElementById('im-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+let imGalCurrent = 0;
+function imGalNav(d, fotos) {
+  imGalCurrent = (imGalCurrent + d + fotos.length) % fotos.length;
+  document.querySelector('#im-modal-gallery img').src = fotos[imGalCurrent];
+}
+
+// ── FORM ──
+function submitForm() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const tel  = document.getElementById('f-tel').value.trim();
+  if (!nome || !tel) { alert('Preencha Nome e Telefone'); return; }
+  const btn = document.getElementById('form-submit-btn');
+  btn.classList.add('sending');
+  btn.textContent = 'Enviando...';
+
+  // Monta mensagem WhatsApp com dados do formulário
+  const interesse = document.getElementById('f-interesse').value;
+  const faixa     = document.getElementById('f-faixa').value;
+  const msg       = document.getElementById('f-msg').value;
+  const wppMsg = encodeURIComponent(
+    `Olá! Venho do site Condomínios na Praia.\n\n` +
+    `*Condomínio:* ${cond ? cond.nome : ''}\n` +
+    `*Nome:* ${nome}\n*Telefone:* ${tel}\n` +
+    (interesse ? `*Interesse:* ${interesse}\n` : '') +
+    (faixa ? `*Investimento:* ${faixa}\n` : '') +
+    (msg ? `\n${msg}` : '')
+  );
+
+  setTimeout(() => {
+    document.getElementById('form-content').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('wpp-success').href = `https://wa.me/${WPP_NUM}?text=${wppMsg}`;
+  }, 800);
+}
+
+// ── ESC key ──
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeImModal(); });
+
+init();
+</script>
+</body>
+</html>

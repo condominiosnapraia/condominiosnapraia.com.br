@@ -1,0 +1,37 @@
+
+═══════════════════════════════════════
+FOTOS DOS CARDS DA HOME (cidade + onde ir)
+═══════════════════════════════════════
+Coloque aqui os arquivos com EXATAMENTE estes nomes (.jpg).
+A foto aparece sozinha no card quando o arquivo existir.
+
+CARDS DE CIDADE ("Conheça as Cidades"):
+  card-xangri-la.jpg
+  card-capao-da-canoa.jpg
+  card-osorio.jpg
+  card-maquine.jpg
+
+CARDS "ONDE IR" (atrações):
+  card-lagoa-dos-quadros.jpg
+  card-marina-park.jpg
+  card-plataforma-de-atlantida.jpg
+  card-praia-de-atlantida.jpg
+  card-morro-da-borussia.jpg
+  card-parque-eolico-de-osorio.jpg
+  card-cascata-do-garapia.jpg
+  card-cascata-da-forqueta.jpg
+
+Tamanho recomendado: 400x260px (ou proporção parecida), formato JPG.
+
+CARDS DE BAIRRO (home "Bairros de Capão da Canoa"):
+  card-capao-da-canoa-centro.jpg
+  card-capao-da-canoa-zona-nova.jpg
+  card-capao-da-canoa-navegantes.jpg
+  card-capao-da-canoa-guarani.jpg
+  card-capao-da-canoa-arco-iris.jpg
+
+CARDS DE BAIRRO XANGRI-LÁ (home "Bairros de Xangri-lá"):
+  card-xangri-la-atlantida.jpg
+  card-xangri-la-centro.jpg
+  card-xangri-la-rainha-do-mar.jpg
+  card-xangri-la-remanso.jpg
