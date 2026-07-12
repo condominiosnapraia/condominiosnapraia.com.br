@@ -56,21 +56,9 @@ export async function onRequest(context){
   const isBot = /whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|googlebot|bingbot|pinterest|skypeuripreview|embedly|redditbot|applebot|googleimageproxy|vkshare|w3c_validator/.test(ua);
   const siteUrl = 'https://condominiosnapraia.com.br/imovel?id=' + id;
 
-  // pessoa comum: serve a página do imóvel MANTENDO a URL bonita (/imovel/CODIGO)
-  // (sem redirect — evita o problema da barra dupla)
+  // pessoa comum: redireciona para a página do imóvel
   if(!isBot){
-    try{
-      const pagina = await context.env.ASSETS.fetch(
-        new Request('https://condominiosnapraia.com.br/imovel/index.html', context.request)
-      );
-      return new Response(pagina.body, {
-        status: 200,
-        headers: { 'Content-Type': 'text/html; charset=utf-8' }
-      });
-    }catch(e){
-      // se falhar, cai no redirect antigo
-      return Response.redirect(siteUrl, 302);
-    }
+    return Response.redirect(siteUrl, 302);
   }
 
   // buscar imóvel

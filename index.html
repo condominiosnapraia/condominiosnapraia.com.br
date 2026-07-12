@@ -3133,7 +3133,7 @@ function rImov(){
         const foto=im.fotos&&im.fotos.find(f=>f&&(f.startsWith('data:')||f.startsWith('http')));
         const sc=im.status==='Disponível'?'st-disp':'st-neg';
         const specs=[im.area?`📐 ${m2(im.area)}`:'',im.quartos?`🛏 ${im.quartos} qtos`:'',im.suites?`🚿 ${im.suites} suítes`:'',im.vagas?`🚗 ${im.vagas}`:''].filter(Boolean).map(x=>`<span class="icspec">${x}</span>`).join('');
-        return`<div class="icard fade-in" onclick="window.location.href='/imovel/'+encodeURIComponent(im.codigo||im.slug||im.id)">
+        return`<div class="icard fade-in" onclick="window.location.href='/imovel?id='+encodeURIComponent(im.codigo||im.slug||im.id)">
           <div class="icimg">${foto?`<img src="${foto}" alt="${im.titulo}" loading="lazy">`:'🏠'}<div class="icst ${sc}">${im.status}</div></div>
           <div class="icbody">
             <div class="ictipo">${im.tipo||'Imóvel'}</div>
@@ -3597,7 +3597,7 @@ function buildDetailImoveis(imoveis){
     const foto=im.fotos&&im.fotos[0];
     const sc=im.status==='Disponível'?'st-disp':'st-neg';
     const specs=[im.area?`📐 ${m2(im.area)}`:'',im.quartos?`🛏 ${im.quartos} qtos`:'',im.suites?`🚿 ${im.suites} suítes`:'',im.vagas?`🚗 ${im.vagas} vagas`:''].filter(Boolean).map(x=>`<span class="icspec">${x}</span>`).join('');
-    return`<div class="icard fade-in" onclick="window.location.href='/imovel/'+encodeURIComponent(im.codigo||im.slug||im.id)">
+    return`<div class="icard fade-in" onclick="window.location.href='/imovel?id='+encodeURIComponent(im.codigo||im.slug||im.id)">
       <div class="icimg">${foto?`<img src="${foto}" alt="${im.titulo}" loading="lazy">`:'🏠'}<div class="icst ${sc}">${im.status}</div></div>
       <div class="icbody">
         <div class="ictipo">${im.tipo||'Imóvel'}</div>
@@ -3998,7 +3998,7 @@ function buildImovCard(i){
     areaVal?`📐 ${areaVal}m²`:null,
     i.vagas?`🚗 ${i.vagas} ${i.vagas==1?'vaga':'vagas'}`:null
   ].filter(Boolean).map(s=>`<span class="icspec">${s}</span>`).join('');
-  return`<div class="icard vis" onclick="window.location.href='/imovel/'+encodeURIComponent(i.codigo||i.slug||i.id)">
+  return`<div class="icard vis" onclick="window.location.href='/imovel?id='+encodeURIComponent(i.codigo||i.slug||i.id)">
     <div class="icimg">${foto?`<img src="${foto}" alt="${i.titulo}" loading="lazy">`:'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
     <div class="icbody">
       <div class="ictipo">${i.tipo||'Imóvel'}</div>
