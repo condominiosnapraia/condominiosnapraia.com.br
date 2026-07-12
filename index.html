@@ -1487,9 +1487,9 @@ body{padding-top:56px}
       </svg>
     </a>
     <nav class="dh-nav">
-      <a href="/#busca-rapida" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
-      <a href="/#imoveis" onclick="if(window.showAllImov){goHome&&goHome();showAllImov();return false;}">Imóveis</a>
-      <a href="/#condominios" onclick="if(window.showAllCond){goHome&&goHome();showAllCond();return false;}">Condomínios</a>
+      <a href="/" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
+      <a href="/imoveis">Imóveis</a>
+      <a href="/condominios">Condomínios</a>
       <a href="/lancamentos">Lançamentos</a>
       <a href="/refinanciamento-imobiliario">Crédito</a>
       <a href="/sobre">Sobre</a>
@@ -2858,8 +2858,8 @@ window.addEventListener('hashchange',()=>{
   if(h.startsWith('#cond/')){const id=h.replace('#cond/','');openDetail(id);}
   else if(h.startsWith('#imovel/')){const id=h.replace('#imovel/','');abrirImovelPorId(id);}
   else if(h==='#turismo'){openTurismo();}
-  else if(h==='#imoveis'){goHome();showAllImov();}
-  else if(h==='#condominios'){goHome();showAllCond();}
+  else if(h==='#imoveis'||h==='#todos-imoveis'){ location.replace('/imoveis'); }
+  else if(h==='#condominios'||h==='#todos-condominios'){ location.replace('/condominios'); }
   else if(h==='#busca-rapida'){irParaBusca();}
   else{
     // hash vazio ou desconhecido → volta pra home (sem re-limpar o hash, evita loop)
@@ -4715,11 +4715,14 @@ async function renderContempladasCards(targetId){
     if(h.startsWith('#cond/')){openDetail(h.replace('#cond/',''));return;}
     if(h.startsWith('#imovel/')){buildHomeDestaques();buildHomeBlog();setTimeout(function(){abrirImovelPorId(h.replace('#imovel/',''));},300);return;}
     if(h==='#turismo'){openTurismo();return;}
-    if(h==='#todos-condominios'){openViewAll('condominios');return;}
-    if(h==='#todos-imoveis'){openViewAll('imoveis');return;}
-    if(h==='#imoveis'){buildHomeDestaques();buildHomeBlog();setTimeout(function(){showAllImov();},400);return;}
-    if(h==='#condominios'){buildHomeDestaques();buildHomeBlog();setTimeout(function(){showAllCond();},400);return;}
+    // rotas antigas (hash) → agora existem páginas dedicadas: redireciona
+    if(h==='#imoveis'||h==='#todos-imoveis'){ location.replace('/imoveis'); return; }
+    if(h==='#condominios'||h==='#todos-condominios'){ location.replace('/condominios'); return; }
     if(h==='#busca-rapida'){buildHomeDestaques();buildHomeBlog();setTimeout(irParaBusca,500);return;}
+    // hash desconhecido (órfão) → limpa a URL para não ficar preso
+    if(h && h.length>1){
+      try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+    }
     document.getElementById('tab-c').style.display='block';
     document.getElementById('tab-i').style.display='none';
     document.getElementById('pt-c').classList.add('on');
