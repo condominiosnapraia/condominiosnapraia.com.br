@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<!-- Google tag (gtag.js) -->
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-25TRZRKFLK');
+  gtag('config', 'AW-16759565872');
+  // rastrear cliques no WhatsApp como evento (para medir conversões)
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
+    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+  }, true);
+</script>
+<!-- Fim Google Analytics -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Teste de Fotos — Condomínios na Praia</title>
+<style>
+body{font-family:system-ui,Arial,sans-serif;background:#0d3b54;color:#fff;margin:0;padding:24px}
+h1{font-size:20px} .sub{opacity:.8;font-size:14px;margin-bottom:20px}
+.resumo{background:rgba(255,255,255,.1);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.item{background:rgba(255,255,255,.07);border-radius:10px;overflow:hidden;border:2px solid transparent}
+.item.ok{border-color:#2ecc71} .item.fail{border-color:#e74c3c}
+.thumb{height:130px;background:#16526e;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:30px}
+.cap{padding:9px 11px;font-size:12px;word-break:break-all}
+.st{font-weight:700;font-size:12px;margin-top:4px} .st.ok{color:#2ecc71} .st.fail{color:#ff7675}
+.fname{opacity:.85}
+</style></head><body>
+<h1>🔍 Teste de Fotos dos Cards</h1>
+<div class="sub">Esta página verifica, ao vivo, quais imagens estão na pasta /img do seu site. Verde = encontrada · Vermelho = faltando ou com nome errado.</div>
+<div class="resumo" id="resumo">Testando...</div>
+<div class="grid" id="grid"></div>
+<script>
+var slugs=["capao-da-canoa","capao-da-canoa-arco-iris","capao-da-canoa-centro","capao-da-canoa-guarani","capao-da-canoa-navegantes","capao-da-canoa-zona-nova","cascata-da-forqueta","cascata-do-garapia","lagoa-dos-barros","lagoa-dos-quadros","maquine","marina-de-xangri-la","marina-park","mirantes-de-osorio","morro-da-borussia","o-que-fazer-em-capao-da-canoa","o-que-fazer-em-maquine","o-que-fazer-em-osorio","o-que-fazer-em-xangri-la","osorio","paradouros-a-beira-mar","parque-eolico-de-osorio","plataforma-de-atlantida","praca-do-mini-golf","praia-de-atlantida","praia-de-capao-da-canoa","trilha-do-garapia-ecoturismo","xangri-la","xangri-la-atlantida","xangri-la-centro","xangri-la-rainha-do-mar","xangri-la-remanso"];
+var grid=document.getElementById('grid'),ok=0,fail=0,done=0;
+slugs.forEach(function(s){
+  var url='/img/card-'+s+'.jpg';
+  var div=document.createElement('div');div.className='item';
+  div.innerHTML='<div class="thumb">⏳</div><div class="cap"><div class="fname">card-'+s+'.jpg</div><div class="st">testando...</div></div>';
+  grid.appendChild(div);
+  var img=new Image();
+  img.onload=function(){
+    ok++;done++;div.classList.add('ok');
+    div.querySelector('.thumb').style.backgroundImage='url("'+url+'")';
+    div.querySelector('.thumb').textContent='';
+    div.querySelector('.st').className='st ok';div.querySelector('.st').textContent='✅ ENCONTRADA';
+    upd();
+  };
+  img.onerror=function(){
+    fail++;done++;div.classList.add('fail');
+    div.querySelector('.thumb').textContent='❌';
+    div.querySelector('.st').className='st fail';div.querySelector('.st').textContent='FALTANDO / nome errado';
+    upd();
+  };
+  img.src=url;
+});
+function upd(){
+  if(done===slugs.length){
+    document.getElementById('resumo').innerHTML='<b>'+ok+'</b> de <b>'+slugs.length+'</b> fotos encontradas. '+(fail>0?('<span style=color:#ff7675><b>'+fail+' faltando</b> (veja em vermelho abaixo).</span>'):'<span style=color:#2ecc71>Tudo certo! 🎉</span>');
+  }
+}
+</script></body></html>

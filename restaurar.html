@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<!-- Google tag (gtag.js) -->
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-25TRZRKFLK');
+  gtag('config', 'AW-16759565872');
+  // rastrear cliques no WhatsApp como evento (para medir conversões)
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
+    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+  }, true);
+</script>
+<!-- Fim Google Analytics -->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurar Dados — Condomínios na Praia</title>
+<style>
+  body{font-family:sans-serif;max-width:600px;margin:60px auto;padding:20px;background:#f5f5f5}
+  .card{background:#fff;border-radius:12px;padding:32px;box-shadow:0 2px 16px rgba(0,0,0,.08)}
+  h1{color:#1a3a4a;font-size:22px;margin-bottom:8px}
+  p{color:#666;line-height:1.6;margin-bottom:20px}
+  .btn{background:#1a3a4a;color:#fff;border:none;padding:14px 28px;border-radius:8px;font-size:15px;cursor:pointer;width:100%;margin-bottom:12px}
+  .btn:hover{background:#2d5f7a}
+  .btn.green{background:#1a9e5c}
+  .btn.green:hover{background:#158a4f}
+  .log{background:#f0f0f0;border-radius:8px;padding:16px;font-family:monospace;font-size:12px;max-height:300px;overflow-y:auto;margin-top:16px;display:none;white-space:pre-wrap}
+  .status{padding:12px;border-radius:8px;margin-bottom:12px;display:none;font-weight:600}
+  .status.ok{background:#d4edda;color:#155724}
+  .status.err{background:#f8d7da;color:#721c24}
+  .status.info{background:#d1ecf1;color:#0c5460}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🔄 Restaurar Dados para o Supabase</h1>
+  <p>Esta ferramenta lê os dados salvos no seu navegador (localStorage) e envia para o Supabase automaticamente.</p>
+  
+  <div class="status" id="status"></div>
+  
+  <button class="btn" onclick="verificar()">1. Verificar dados no navegador</button>
+  <button class="btn green" onclick="restaurar()" id="btn-restaurar" style="display:none">2. Enviar para o Supabase</button>
+  
+  <div class="log" id="log"></div>
+</div>
+
+<script>
+const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+const HEADERS = {
+  'apikey': SB_KEY,
+  'Authorization': 'Bearer ' + SB_KEY,
+  'Content-Type': 'application/json',
+  'Prefer': 'resolution=merge-duplicates,return=representation'
+};
+
+function log(msg) {
+  const el = document.getElementById('log');
+  el.style.display = 'block';
+  el.textContent += msg + '\n';
+  el.scrollTop = el.scrollHeight;
+}
+
+function status(msg, tipo) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = 'status ' + tipo;
+  el.style.display = 'block';
+}
+
+function verificar() {
+  const co = JSON.parse(localStorage.getItem('crm3_co') || '[]');
+  const im = JSON.parse(localStorage.getItem('crm3_im') || '[]');
+  const pr = JSON.parse(localStorage.getItem('crm3_pr') || '[]');
+  const ne = JSON.parse(localStorage.getItem('crm3_ne') || '[]');
+  
+  log('=== DADOS ENCONTRADOS ===');
+  log('Condomínios: ' + co.length);
+  log('Imóveis: ' + im.length);
+  log('Proprietários: ' + pr.length);
+  log('Negociações: ' + ne.length);
+  
+  if (co.length === 0 && im.length === 0) {
+    status('⚠ Nenhum dado encontrado no navegador. Tente abrir esta página no mesmo navegador onde usava o CRM antigo.', 'err');
+  } else {
+    status('✓ ' + co.length + ' condomínios, ' + im.length + ' imóveis, ' + pr.length + ' proprietários encontrados!', 'ok');
+    document.getElementById('btn-restaurar').style.display = 'block';
+  }
+}
+
+async function upsert(table, row) {
+  const res = await fetch(SB_URL + '/rest/v1/' + table, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify(row)
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message);
+  }
+  return true;
+}
+
+async function restaurar() {
+  const btn = document.getElementById('btn-restaurar');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  
+  const raw_co = JSON.parse(localStorage.getItem('crm3_co') || '[]');
+  const raw_im = JSON.parse(localStorage.getItem('crm3_im') || '[]');
+  const raw_pr = JSON.parse(localStorage.getItem('crm3_pr') || '[]');
+  const raw_ne = JSON.parse(localStorage.getItem('crm3_ne') || '[]');
+
+  let ok = 0, err = 0;
+
+  // Condomínios
+  log('\n=== ENVIANDO CONDOMÍNIOS ===');
+  for (const c of raw_co) {
+    try {
+      await upsert('condominios', {
+        id: c.id, nome: c.nome,
+        cidade: c.localizacao || c.cidade || '',
+        bairro: c.bairro || '',
+        descricao: c.descricao || '',
+        seo: c.seo || '',
+        area_total_m2: c.areaTotalM2 || c.area_total_m2 || '',
+        lotes: c.lotes || '',
+        incorporadora: c.incorporadora || '',
+        ano: c.ano || '',
+        padrao: c.padrao || 'Alto Padrão',
+        tipo: c.tipo || 'Fechado',
+        amenidades: c.amenidades || [],
+        endereco: c.endereco || '',
+        maps: c.maps || '',
+        site_oficial: c.siteOficial || c.site_oficial || '',
+        fotos: [], fotos_no_site: [], fotos_para_site: [],
+        ativo: c.ativo !== false,
+        seo_data: c.seoData || c.seo_data || {},
+        updated_at: new Date().toISOString()
+      });
+      ok++;
+      log('✓ ' + c.nome);
+    } catch(e) {
+      err++;
+      log('✗ ' + c.nome + ': ' + e.message);
+    }
+  }
+
+  // Imóveis
+  log('\n=== ENVIANDO IMÓVEIS ===');
+  for (const i of raw_im) {
+    try {
+      await upsert('imoveis', {
+        id: i.id, titulo: i.titulo || '',
+        cond_id: i.condId || i.cond_id || '',
+        ref: i.ref || '',
+        finalidade: i.finalidade || 'venda',
+        tipo: i.tipo || 'Casa',
+        status: i.status || 'Disponível',
+        publicar: i.publicar !== false,
+        destaque: i.destaque || false,
+        quartos: i.quartos || '', suites: i.suites || '',
+        banheiros: i.banheiros || '', vagas: i.vagas || '',
+        area: i.area || '',
+        area_construida: i.areaConstruida || i.area_construida || '',
+        area_privativa: i.areaPrivativa || i.area_privativa || '',
+        preco: i.preco || '', iptu: i.iptu || '',
+        cond_taxa: i.condTaxa || i.cond_taxa || '',
+        descricao: i.descricao || '',
+        diferenciais: i.diferenciais || [],
+        obs: i.obs || '',
+        sol: i.sol || '', andar: i.andar || '',
+        financiamento: i.financiamento || false,
+        permuta: i.permuta || false,
+        fotos: [], fotos_no_site: [], fotos_para_site: [],
+        seo_data: i.seoData || i.seo_data || {},
+        updated_at: new Date().toISOString()
+      });
+      ok++;
+      log('✓ ' + i.titulo);
+    } catch(e) {
+      err++;
+      log('✗ ' + i.titulo + ': ' + e.message);
+    }
+  }
+
+  // Proprietários
+  log('\n=== ENVIANDO PROPRIETÁRIOS ===');
+  for (const p of raw_pr) {
+    try {
+      await upsert('proprietarios', {
+        id: p.id, nome: p.nome || '',
+        cpf: p.doc || p.cpf || '',
+        rg: p.rg || '',
+        email: p.email || '',
+        tel: p.telefone || p.tel || '',
+        wpp: p.whatsapp || p.wpp || '',
+        endereco: p.endereco || '',
+        cidade: p.cidade || '',
+        obs: p.obs || '',
+        historico: p.historico || [],
+        updated_at: new Date().toISOString()
+      });
+      ok++;
+      log('✓ ' + p.nome);
+    } catch(e) {
+      err++;
+      log('✗ ' + p.nome + ': ' + e.message);
+    }
+  }
+
+  log('\n=== RESULTADO ===');
+  log('Enviados com sucesso: ' + ok);
+  log('Erros: ' + err);
+
+  if (ok > 0) {
+    status('✅ ' + ok + ' registros enviados para o Supabase! Abra o CRM para conferir.', 'ok');
+    btn.textContent = '✓ Concluído!';
+  } else {
+    status('❌ Nenhum registro enviado. Veja os erros no log.', 'err');
+    btn.disabled = false;
+    btn.textContent = '2. Tentar novamente';
+  }
+}
+</script>
+</body>
+</html>

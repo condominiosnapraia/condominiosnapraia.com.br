@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta name="robots" content="noindex, nofollow"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exportar Dados — Condomínios e Imóveis</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;max-width:820px;margin:0 auto;padding:24px;background:#f7f1e8;color:#0d3b54;text-align:center}
+h1{font-size:24px}.card{background:#fff;border:1px solid #c9e0e6;border-radius:14px;padding:26px;margin:18px 0}
+.big{font-size:40px;font-weight:800;color:#0e8a99;line-height:1}
+button{background:#0e8a99;color:#fff;border:none;padding:16px 34px;border-radius:100px;font-size:16px;font-weight:700;cursor:pointer;margin-top:14px}
+button:hover{background:#0d3b54}button:disabled{opacity:.5;cursor:wait}
+.warn{color:#c0392b}.ok{color:#0a7d32}small{color:#5b7585;display:block;margin-top:10px}
+</style></head><body>
+<h1>📦 Exportar Dados para o Índice</h1>
+<p>Esta página baixa um arquivo com seus condomínios e imóveis. Depois é só reenviar esse arquivo no chat para gerar o índice completo.</p>
+<div class="card">
+  <div id="status">Lendo o banco...</div>
+  <div class="big" id="counts"></div>
+  <button id="btn" disabled onclick="baixar()">⬇ Baixar arquivo de dados</button>
+  <small>O arquivo (dados-site.json) vai para sua pasta de Downloads.</small>
+</div>
+<script>
+const URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+const H={apikey:KEY,Authorization:'Bearer '+KEY};
+let DADOS=null;
+async function g(p){try{const r=await fetch(URL+'/rest/v1/'+p,{headers:H});return r.ok?await r.json():{__err:r.status};}catch(e){return{__err:e.message};}}
+(async()=>{
+  const cond=await g('condominios?select=id,nome,cidade,ativo,tipo,descricao&order=nome.asc');
+  const imv=await g('imoveis?select=id,codigo,titulo,cond_id,cidade,tipo,status,publicar,quartos,valor&order=created_at.desc');
+  const s=document.getElementById('status');
+  if(cond&&cond.__err){s.innerHTML='<b class="warn">Erro ao ler: '+cond.__err+'</b>';return;}
+  DADOS={condominios:cond||[],imoveis:(imv&&!imv.__err)?imv:[],exportado:new Date().toISOString()};
+  const nc=DADOS.condominios.length, ni=DADOS.imoveis.length;
+  document.getElementById('counts').textContent=nc+' condomínios · '+ni+' imóveis';
+  s.innerHTML='<b class="ok">✓ Dados lidos com sucesso!</b>';
+  document.getElementById('btn').disabled=false;
+})();
+function baixar(){
+  const blob=new Blob([JSON.stringify(DADOS,null,1)],{type:'application/json'});
+  const a=document.createElement('a');a.href=window.URL.createObjectURL(blob);
+  a.download='dados-site.json';a.click();
+}
+</script></body></html>

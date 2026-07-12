@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta name="robots" content="noindex, nofollow"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diagnóstico — Condomínios e Imóveis</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;max-width:860px;margin:0 auto;padding:24px;background:#f7f1e8;color:#0d3b54}
+h1{font-size:22px}h3{margin:0 0 8px}.card{background:#fff;border:1px solid #c9e0e6;border-radius:12px;padding:18px;margin:14px 0}
+.big{font-size:34px;font-weight:800;color:#0e8a99;line-height:1}.ok{color:#0a7d32}.warn{color:#c0392b}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+td,th{border:1px solid #e0ecef;padding:6px 8px;text-align:left}th{background:#0d3b54;color:#fff}
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:700}
+.tag-ok{background:#d7f5df;color:#0a7d32}.tag-no{background:#fde2e2;color:#c0392b}
+.err{background:#fde2e2;border:1px solid #f5b5b5;border-radius:8px;padding:12px;font-size:14px;color:#c0392b}
+small{color:#5b7585}
+</style></head><body>
+<h1>🔍 Diagnóstico — Condomínios e Imóveis</h1>
+<p>Lê o Supabase e mostra por que os itens podem não aparecer na home. <small>Importante: acesse pela URL publicada (condominiosnapraia.com.br/diagnostico), não abra o arquivo direto do PC.</small></p>
+
+<div class="card"><h3>🏘️ Condomínios</h3><div id="c-status">Carregando...</div><div id="c-lista"></div></div>
+<div class="card"><h3>🏠 Imóveis</h3><div id="i-status">Carregando...</div><div id="i-lista"></div></div>
+<div class="card"><h3>⭐ Destaques configurados</h3><div id="dest">...</div></div>
+
+<script>
+const URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+const H={apikey:KEY,Authorization:'Bearer '+KEY};
+async function g(path){
+  try{
+    const r=await fetch(URL+'/rest/v1/'+path,{headers:H});
+    if(!r.ok){const txt=await r.text();return{__err:'HTTP '+r.status+' — '+txt.slice(0,200)};}
+    return await r.json();
+  }catch(e){return{__err:'Falha de rede/CORS: '+e.message};}
+}
+function errBox(msg){return '<div class="err"><b>Erro:</b> '+msg+'</div>';}
+
+(async()=>{
+  // CONDOMÍNIOS
+  const todos=await g('condominios?select=id,nome,cidade,ativo&order=nome.asc');
+  const cs=document.getElementById('c-status');
+  if(todos&&todos.__err){cs.innerHTML=errBox(todos.__err)+'<small>Se aparecer CORS ou 401, o problema é permissão/chave. Se for 404, a tabela tem outro nome.</small>';}
+  else{
+    const total=Array.isArray(todos)?todos.length:0;
+    const nAtivos=Array.isArray(todos)?todos.filter(c=>c.ativo).length:0;
+    cs.innerHTML='<div class="big">'+total+'</div>condomínios no total · <b class="'+(nAtivos?'ok':'warn')+'">'+nAtivos+' ativos</b>'+
+      (total>0&&nAtivos===0?'<br><b class="warn">⚠ Nenhum está ATIVO — por isso não aparecem na home!</b>':'')+
+      (total===0?'<br><b class="warn">⚠ Nenhum condomínio cadastrado ainda.</b>':'');
+    if(total)document.getElementById('c-lista').innerHTML='<table><tr><th>Nome</th><th>Cidade</th><th>Ativo?</th></tr>'+
+      todos.map(c=>'<tr><td>'+(c.nome||'—')+'</td><td>'+(c.cidade||'—')+'</td><td>'+(c.ativo?'<span class=tag tag-ok>SIM</span>':'<span class=tag tag-no>NÃO</span>')+'</td></tr>').join('')+'</table>';
+  }
+
+  // IMÓVEIS
+  const imv=await g('imoveis?select=id,codigo,titulo,cond_id,status,publicar&order=created_at.desc');
+  const is=document.getElementById('i-status');
+  if(imv&&imv.__err){is.innerHTML=errBox(imv.__err);}
+  else{
+    const total=Array.isArray(imv)?imv.length:0;
+    const disp=Array.isArray(imv)?imv.filter(i=>i.status==='Disponível').length:0;
+    const pub=Array.isArray(imv)?imv.filter(i=>i.publicar).length:0;
+    const ok=Array.isArray(imv)?imv.filter(i=>i.status==='Disponível'&&i.publicar).length:0;
+    is.innerHTML='<div class="big">'+total+'</div>imóveis no total · <b>'+disp+' disponíveis</b> · <b>'+pub+' publicáveis</b> · <b class="'+(ok?'ok':'warn')+'">'+ok+' aparecem na home</b>'+
+      (total>0&&ok===0?'<br><b class="warn">⚠ Nenhum imóvel está "Disponível" E "publicar" ao mesmo tempo — a home exige os dois.</b>':'')+
+      (total===0?'<br><b class="warn">⚠ Nenhum imóvel cadastrado ainda.</b>':'');
+    if(total)document.getElementById('i-lista').innerHTML='<table><tr><th>Código</th><th>Título</th><th>Status</th><th>Publicar?</th></tr>'+
+      imv.slice(0,40).map(i=>'<tr><td>'+(i.codigo||'—')+'</td><td>'+(i.titulo||'—')+'</td><td>'+(i.status==='Disponível'?'<span class=tag tag-ok>'+i.status+'</span>':'<span class=tag tag-no>'+(i.status||'—')+'</span>')+'</td><td>'+(i.publicar?'<span class=tag tag-ok>SIM</span>':'<span class=tag tag-no>NÃO</span>')+'</td></tr>').join('')+'</table>'+
+      (total>40?'<small>Mostrando 40 de '+total+'.</small>':'');
+  }
+
+  // DESTAQUES
+  const cfg=await g('configuracoes?chave=eq.destaques_cond&select=valor');
+  const d=document.getElementById('dest');
+  if(cfg&&cfg.__err){d.innerHTML=errBox(cfg.__err);}
+  else if(!Array.isArray(cfg)||!cfg.length){d.innerHTML='Nenhum destaque configurado — a home mostra os 8 primeiros ativos automaticamente. <b class="ok">(isso está OK)</b>';}
+  else{const v=cfg[0].valor;const ids=Array.isArray(v)?v:(v&&v.ids?v.ids:[]);d.innerHTML=(ids.length||0)+' condomínios marcados como destaque.';}
+})();
+</script></body></html>

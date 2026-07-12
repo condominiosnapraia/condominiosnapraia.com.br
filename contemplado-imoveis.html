@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<!-- Google tag (gtag.js) -->
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-25TRZRKFLK');
+  gtag('config', 'AW-16759565872');
+  // rastrear cliques no WhatsApp como evento (para medir conversões)
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
+    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+  }, true);
+</script>
+<!-- Fim Google Analytics -->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0c4a6e">
+<title>Cartas Contempladas para Imóveis | RZN Contempladas — Litoral Norte RS</title>
+<meta name="description" content="646 cartas contempladas disponíveis para imóveis. Bradesco, Porto, Servopa, HS Consórcios e mais. Crédito disponível agora.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ocean:#0d3b54;
+  --ocean2:#0e8a99;
+  --gold:#e0b34d;
+  --gold-light: #f5e6d0;
+  --gold-dark: #8a6b3d;
+  --green: #16a34a;
+  --green-light: #dcfce7;
+  --green-mid: #bbf7d0;
+  --green-dark: #0f7234;
+  --cream: #faf8f5;
+  --pagebg: #eceef1;
+  --white: #ffffff;
+  --text: #0d3b54;
+  --text2: #4a5568;
+  --text3: #718096;
+  --border: #e8e4de;
+  --border2: #d4cfc7;
+  --r: 10px;
+  --r-lg: 14px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; background: var(--pagebg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+/* ── HEADER ── */
+.hdr {
+  background: linear-gradient(165deg,#0c4a6e 0%,#0e7490 60%,#0891b2 100%);
+  position: sticky; top: 0; z-index: 200;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.hdr-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding: 0 24px; height: 62px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.hdr-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.hdr-logo-mark {
+  width: 38px; height: 38px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+}
+.hdr-brand { font-size: 16px; font-weight: 700; color: #fff; line-height: 1.2; letter-spacing: .02em; }
+.hdr-sub { font-size: 9px; color: var(--gold); text-transform: uppercase; letter-spacing: .14em; }
+.hdr-back {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: rgba(255,255,255,.5); text-decoration: none;
+  padding: 6px 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 6px;
+  transition: all .2s;
+}
+.hdr-back:hover { color: #fff; border-color: rgba(255,255,255,.3); }
+.hdr-wpp {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--green); color: #fff;
+  padding: 8px 16px; border-radius: 7px;
+  font-size: 12px; font-weight: 700; text-decoration: none;
+  transition: background .2s; white-space: nowrap;
+}
+.hdr-wpp:hover { background: var(--green-dark); }
+.hdr-wpp svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+/* ── HERO ── */
+.hero {
+  background: #f0f4f7;
+  padding: 44px 24px 36px;
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ocean); font-weight: 700;
+  background: rgba(26,58,74,.07); border: 1px solid rgba(26,58,74,.14);
+  padding: 5px 16px; border-radius: 20px; margin-bottom: 16px;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 80% 50%, rgba(26,58,74,.04), transparent);
+}
+
+.hero-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+
+.hero-desc { font-size: 14px; color: var(--text2); line-height: 1.7; margin-top: 14px; text-align: center; }
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(28px, 5vw, 52px);
+  color: var(--ocean); font-weight: 300; line-height: 1.2;
+  text-align: center; margin: 0 auto;
+}
+.hero-title em { color: var(--gold); font-style: italic; }
+
+
+
+
+
+
+
+
+/* ── FILTROS ── */
+.filtros-wrap {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 62px; z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,.04);
+}
+.filtros-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding: 14px 24px;
+  display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap;
+}
+.fgroup { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 130px; }
+.flbl { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); font-weight: 600; }
+.fsel, .finp {
+  width: 100%; padding: 8px 12px;
+  border: 1px solid var(--border2); border-radius: 7px;
+  font-size: 12px; font-family: 'Outfit', sans-serif;
+  color: var(--text); background: var(--cream);
+  appearance: none; cursor: pointer; transition: border .2s;
+}
+.fsel:focus, .finp:focus { outline: none; border-color: var(--gold); }
+.fbtn {
+  background: var(--ocean); color: #fff;
+  border: none; padding: 9px 20px; border-radius: 7px;
+  font-size: 11px; font-weight: 700; cursor: pointer;
+  font-family: 'Outfit', sans-serif; white-space: nowrap;
+  height: 34px; align-self: flex-end; transition: background .2s;
+}
+.fbtn:hover { background: var(--ocean2); }
+.fclr {
+  background: transparent; color: var(--text3);
+  border: 1px solid var(--border2); padding: 9px 14px; border-radius: 7px;
+  font-size: 11px; cursor: pointer; height: 34px; align-self: flex-end;
+  font-family: 'Outfit', sans-serif; transition: all .2s;
+}
+.fclr:hover { border-color: var(--ocean); color: var(--ocean); }
+.fcnt { font-size: 11px; color: var(--text3); white-space: nowrap; align-self: flex-end; padding-bottom: 8px; }
+
+/* ── MAIN ── */
+.main { max-width: 1280px; margin: 0 auto; padding: 28px 24px; }
+.main-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+}
+.main-ttl { font-size: 13px; color: var(--text3); }
+.main-ttl strong { color: var(--text); font-weight: 600; }
+.sort-wrap { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text3); }
+.sort-sel {
+  border: 1px solid var(--border2); border-radius: 6px;
+  padding: 6px 10px; font-size: 11px; background: var(--white);
+  font-family: 'Outfit', sans-serif; cursor: pointer;
+}
+
+/* ── GRID ── */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(295px, 1fr)); gap: 16px; }
+.empty { grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text3); }
+.empty-ico { font-size: 42px; margin-bottom: 14px; }
+
+/* ── CARTA CARD ── */
+.carta {
+  background: var(--white);
+  border: 1px solid #e8edf0;
+  border-radius: var(--r-lg);
+  overflow: hidden; cursor: pointer;
+  transition: all .22s; position: relative;
+  box-shadow: 0 2px 10px rgba(26,58,74,.05);
+}
+.carta:hover {
+  border-color: var(--gold,#f5b841);
+  box-shadow: 0 10px 30px rgba(26,58,74,.12);
+  transform: translateY(-3px);
+}
+.carta-ribbon {
+  position: absolute; top: 12px; right: 12px;
+  font-size: 8px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 20px;
+}
+.carta-ribbon.disp { background: var(--green-light); color: var(--green-dark); }
+.carta-ribbon.dest { background: var(--gold-light); color: var(--gold-dark); border: 1px solid rgba(184,147,90,.25); }
+
+.carta-top {
+  background: var(--white);
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid #eef0f0;
+}
+.carta-adm-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.carta-adm-ico {
+  width: 32px; height: 32px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: #fff; flex-shrink: 0;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -.5px; border: 1px solid rgba(255,255,255,.15);
+}
+.carta-adm-nome { font-size: 11px; font-weight: 700; color: var(--ocean); letter-spacing: .04em; }
+.carta-adm-cod { font-size: 9px; color: #aaa; letter-spacing: .1em; margin-top: 1px; }
+.carta-credito-lbl { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .14em; margin-bottom: 5px; }
+.carta-credito {
+  font-family: 'Outfit', sans-serif;
+  font-size: 26px; color: var(--ocean); font-weight: 800; line-height: 1; letter-spacing: -.5px;
+}
+.carta-credito span { font-size: 14px; color: var(--gold,#f5b841); font-weight: 600; vertical-align: 2px; margin-right: 2px; }
+
+.carta-body { padding: 14px 16px; }
+.carta-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 11px; }
+.spec { background: var(--cream); border-radius: 6px; padding: 7px 9px; }
+.spec-full { grid-column: 1/-1; }
+.spec-lbl { font-size: 8px; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 2px; }
+.spec-val { font-size: 12px; font-weight: 700; color: var(--ocean); }
+.carta-entrada {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: 11px; color: var(--text2);
+  background: var(--cream); border-radius: 6px;
+  padding: 8px 10px; margin-bottom: 12px;
+  border: 1px dashed var(--border);
+}
+.carta-footer { display: flex; gap: 8px; }
+.btn-ver { flex: 1; background: #fff; color: var(--ocean); border: 1.5px solid var(--ocean); border-radius: 5px; padding: 8px 10px; font-size: 10px; font-weight: 700; text-align:center; letter-spacing:.07em; text-transform:uppercase; cursor: pointer; transition: all .2s; }
+.carta:hover .btn-ver{background:var(--ocean);color:#fff}
+.btn-ver:hover { background: var(--ocean); color: #fff; }
+.btn-wpp { background: #16a34a; color: #fff; border: none; border-radius: 5px; padding: 8px 12px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; text-decoration: none; white-space: nowrap; transition: background .2s; }
+.btn-wpp:hover { background: var(--green-dark); }
+.btn-wpp svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* ── PAGINATION ── */
+.pag {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; margin-top: 32px; flex-wrap: wrap;
+}
+.pag-btn {
+  background: var(--white); border: 1px solid var(--border2);
+  border-radius: 7px; padding: 7px 13px;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  font-family: 'Outfit', sans-serif; color: var(--ocean);
+  transition: all .18s;
+}
+.pag-btn:hover { background: var(--ocean); color: #fff; border-color: var(--ocean); }
+.pag-btn.on { background: var(--ocean); color: #fff; border-color: var(--ocean); }
+.pag-btn:disabled { opacity: .35; cursor: default; pointer-events: none; }
+.pag-info { font-size: 11px; color: var(--text3); padding: 0 4px; }
+
+/* ── MODAL ── */
+.modal-ov {
+  display: none; position: fixed; inset: 0;
+  background: rgba(15,37,53,.7); z-index: 500;
+  align-items: center; justify-content: center;
+  padding: 16px; backdrop-filter: blur(4px);
+}
+.modal-ov.open { display: flex; }
+.modal-box {
+  background: var(--white); border-radius: 18px;
+  max-width: 480px; width: 100%; max-height: 88vh;
+  overflow-y: auto; animation: su .26s ease;
+  border: 1px solid var(--border);
+}
+@keyframes su { from { opacity:0; transform:translateY(16px) } to { opacity:1; transform:translateY(0) } }
+.mhdr {
+  background: var(--ocean2);
+  padding: 22px 22px 18px;
+  border-radius: 18px 18px 0 0;
+  border-bottom: 3px solid var(--gold,#f5b841);
+  position: relative;
+}
+.mclose {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(255,255,255,.1); border: none; color: #fff;
+  width: 30px; height: 30px; border-radius: 50%;
+  cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.mclose:hover { background: rgba(255,255,255,.22); }
+.madm-row { display: flex; align-items: center; gap: 11px; margin-bottom: 14px; }
+.madm-ico {
+  width: 42px; height: 42px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: #fff;
+  font-family: 'Outfit', sans-serif; letter-spacing: -.5px;
+}
+.madm-nome { font-size: 14px; font-weight: 700; color: var(--ocean); }
+.madm-cod { font-size: 10px; color: #aaa; letter-spacing: .1em; margin-top: 2px; }
+.mcred-lbl { font-size: 9px; color: #aaa; text-transform: uppercase; letter-spacing: .14em; margin-bottom: 4px; }
+.mcred {
+  font-family: 'Fraunces', serif;
+  font-size: 40px; color: #fff; font-weight: 300; line-height: 1;
+}
+.mcred span { font-size: 18px; color: var(--gold); font-weight: 600; font-family: 'Outfit', sans-serif; vertical-align: 2px; margin-right: 3px; }
+.mbody { padding: 20px 22px; }
+.mspecs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.mspec { background: var(--cream); border-radius: 8px; padding: 12px 14px; }
+.mspec-lbl { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 4px; }
+.mspec-val { font-size: 15px; font-weight: 700; color: var(--ocean); }
+.mentrada {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--gold-light); border: 1px solid rgba(184,147,90,.2);
+  border-radius: 8px; padding: 11px 14px; margin-bottom: 16px;
+  font-size: 13px; color: var(--gold-dark);
+}
+.mentrada strong { font-weight: 700; }
+.mactions { display: flex; flex-direction: column; gap: 10px; }
+.mwpp {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--green); color: #fff; padding: 14px;
+  border-radius: 9px; font-size: 14px; font-weight: 700;
+  text-decoration: none; transition: background .2s;
+}
+.mwpp:hover { background: var(--green-dark); }
+.mwpp svg { width: 19px; height: 19px; }
+.mtel {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--cream); color: var(--ocean);
+  border: 1px solid var(--border2); padding: 12px; border-radius: 9px;
+  font-size: 13px; font-weight: 600; text-decoration: none; transition: all .2s;
+}
+.mtel:hover { border-color: var(--ocean); }
+
+/* ── CTA ── */
+.cta {
+  background: var(--ocean2); margin: 20px 24px 40px;
+  border-radius: 16px; padding: 40px 32px; text-align: center;
+  max-width: 1232px; margin-left: auto; margin-right: auto;
+  border: 1px solid rgba(184,147,90,.15);
+}
+.cta-title { font-family: 'Fraunces', serif; font-size: 28px; color: #fff; font-weight: 300; margin-bottom: 10px; line-height: 1.2; }
+.cta-title em { color: var(--gold); font-style: italic; }
+.cta-sub { font-size: 13px; color: rgba(255,255,255,.5); margin-bottom: 24px; line-height: 1.65; }
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--gold); color: var(--ocean2);
+  padding: 14px 32px; border-radius: 9px;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  transition: all .2s;
+}
+.cta-btn:hover { background: var(--gold-dark); color: #fff; }
+
+/* ── FOOTER ── */
+.ftr { background: var(--ocean2); padding: 20px 24px; text-align: center; border-top: 1px solid rgba(184,147,90,.15); }
+.ftr p { font-size: 11px; color: rgba(255,255,255,.3); }
+.ftr a { color: rgba(255,255,255,.5); text-decoration: none; }
+.ftr a:hover { color: var(--gold); }
+
+/* ── RESPONSIVE ── */
+
+
+@media(max-width:768px){
+  /* CARTAS - botões empilhados */
+  .carta-footer{flex-direction:column;gap:8px}
+  .btn-ver{width:100%;padding:10px;font-size:11px}
+  .btn-wpp{width:100%;justify-content:center;padding:10px;font-size:11px}
+  /* HEADER */
+  .hdr-inner { padding: 0 14px; height: 54px; }
+  .hdr-brand { font-size: 12px; }
+  .hdr-sub { display: none; }
+  .hdr-back { display: none; }
+  .hdr-wpp { padding: 7px 12px; font-size: 11px; }
+  .hdr-logo-mark { width: 30px; height: 30px; font-size: 14px; }
+
+  /* HERO — centralizado */
+  .hero { padding: 28px 16px 48px; text-align: center; }
+  .hero-tag { font-size: 9px; padding: 4px 12px; }
+  .hero-desc { font-size: 14px; color: var(--text2); line-height: 1.7; margin-top: 14px; text-align: center; }
+.hero-title { font-size: 26px; margin-bottom: 10px; }
+  .hero-sub { font-size: 12px; margin-bottom: 22px; text-align: center; margin-left: auto; margin-right: auto; }
+  .hero-stats { justify-content: center; gap: 0; border-top: 1px solid rgba(26,58,74,.1); margin-top: 4px; }
+  .hero-stat { padding: 12px 16px; border-right: 1px solid rgba(26,58,74,.08); text-align: center; }
+  
+  .hero-stat-val { font-size: 20px; }
+  .hero-stat-lbl { font-size: 9px; }
+
+  /* FILTROS */
+  .filtros-wrap { position: static; box-shadow: none; border-bottom: 2px solid var(--border); }
+  .filtros-inner { gap: 8px; padding: 12px 14px; flex-wrap: wrap; }
+  .fgroup { min-width: calc(50% - 4px); flex: none; }
+  .flbl { font-size: 9px; }
+  .fsel { font-size: 12px; padding: 8px 10px; }
+  .fclr { padding: 8px 10px; font-size: 11px; }
+  .fbtn { padding: 8px 14px; font-size: 11px; }
+  .fcnt { width: 100%; text-align: center; padding-bottom: 0; font-size: 11px; }
+
+  /* MAIN GRID — mais espaço entre cards */
+  .main { padding: 22px 16px 40px; }
+  .main-hdr { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 16px; }
+  .grid { grid-template-columns: 1fr; gap: 28px; }
+
+  /* CARTA CARDS — textos centralizados */
+  .carta-top { padding: 18px 16px 14px; text-align: center; }
+  .carta-adm-row { justify-content: center; }
+  .carta-credito { font-size: 26px; }
+  .carta-credito span { font-size: 14px; }
+  .carta-credito-lbl { font-size: 9px; }
+  .carta-adm-nome { font-size: 12px; }
+  .carta-adm-cod { font-size: 9px; }
+  .carta-body { padding: 14px 14px 14px; }
+  .carta-specs { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .spec { padding: 8px 10px; text-align: center; }
+  .spec-lbl { font-size: 9px; }
+  .spec-val { font-size: 13px; }
+  .carta-entrada { font-size: 11px; padding: 7px 10px; justify-content: center; text-align: center; }
+  .carta-ribbon { font-size: 8px; padding: 2px 8px; top: 10px; right: 10px; }
+  .carta-footer { gap: 10px; }
+  .btn-ver { font-size: 12px; padding: 10px; }
+  .btn-wpp { font-size: 12px; padding: 10px 13px; }
+
+  /* MODAL — slide from bottom */
+  .modal-ov { align-items: flex-end; padding: 0; }
+  .modal-box { border-radius: 16px 16px 0 0; max-height: 90vh; width: 100%; }
+  .mhdr { border-radius: 16px 16px 0 0; padding: 20px 18px 16px; text-align: center; }
+  .madm-row { justify-content: center; }
+  .mcred-lbl { font-size: 9px; }
+  .mcred { font-size: 32px; }
+  .mcred span { font-size: 16px; }
+  .mspecs { gap: 8px; }
+  .mspec { padding: 10px; text-align: center; }
+  .mspec-val { font-size: 14px; }
+  .mbody { padding: 16px 16px 24px; }
+  .mwpp { font-size: 13px; padding: 14px; }
+  .mtel { font-size: 12px; padding: 12px; }
+
+  /* PAGINATION */
+  .pag { gap: 6px; margin-top: 24px; }
+  .pag-btn { padding: 7px 12px; font-size: 11px; }
+
+  /* CTA */
+  .cta { margin: 12px 14px 32px; padding: 28px 18px; border-radius: 12px; text-align: center; }
+  .cta-title { font-size: 22px; }
+  .cta-sub { font-size: 12px; }
+  .cta-btn { padding: 13px 24px; font-size: 12px; }
+}
+
+@media(max-width:400px){
+  .hero-stats { flex-direction: column; }
+  .hero-stat { border-right: none; border-bottom: 1px solid rgba(26,58,74,.08); padding: 10px 0; }
+  .fgroup { min-width: 100%; }
+  .grid { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* ── MOBILE FOOTER NAV ── */
+.mob-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:content-box;background:rgba(255,255,255,.72);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border-top:1px solid rgba(255,255,255,.5);z-index:900;box-shadow:0 -2px 16px rgba(13,59,84,.08)}
+.mob-footer-nav::before{
+  content:'';position:absolute;top:0;left:10%;right:10%;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(184,147,90,.5),transparent);
+}
+.mob-footer-items{display:flex;align-items:stretch;height:100%;}
+.mob-footer-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;cursor:pointer;border:none;background:transparent;
+  color:#aaa;font-family:'Outfit',sans-serif;
+  font-size:9.5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 2px 2px;position:relative;transition:all .2s;
+  text-decoration:none;
+}
+.mob-footer-btn:active{transform:scale(.93);}
+.mob-footer-btn.active{color:#0c4a6e;}
+.mob-footer-btn.active .mob-footer-ico{color:#0c4a6e;}
+.mob-footer-btn.active::after{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:28px;height:2px;
+  background:linear-gradient(90deg,transparent,#f5b841,transparent);
+  border-radius:0 0 2px 2px;
+}
+.mob-footer-ico{font-size:20px;line-height:1;transition:all .2s;}
+.mob-footer-lbl{line-height:1;font-size:9.5px;}
+.mob-footer-btn.wpp-btn{color:#25d366;}
+.mob-footer-btn.wpp-btn .mob-footer-ico{display:flex;align-items:center;justify-content:center;margin-top:-4px;}
+.mob-footer-btn.wpp-btn .mob-footer-lbl{color:#25d366;}
+@media(max-width:768px){
+  .mob-footer-nav{display:block;}
+  body{padding-bottom:68px;}
+  .main{padding-bottom:88px;}
+}
+
+/* ── FOOTER SOFISTICADO ── */
+footer.ftr{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60%,#0891b2 100%);color:#fff;margin:0;padding:0;text-align:left;border:none}
+.ftr-wave{position:absolute;top:-1px;left:0;right:0;height:50px;line-height:0;transform:translateY(-99%)}
+.ftr-wave svg{width:100%;height:50px;display:block}
+.ftr-main{max-width:1140px;margin:0 auto;padding:52px 32px 32px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
+.ftr-col-brand{max-width:340px}
+.ftr-logo{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.1}
+.ftr-logo em{font-style:italic;color:var(--gold,#e0b34d)}
+.ftr-sub{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:6px}
+.ftr-tag{font-size:13px;line-height:1.6;color:rgba(255,255,255,.6);margin:18px 0 22px}
+.ftr-wpp{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:11px 20px;border-radius:100px;transition:all .25s}
+.ftr-wpp:hover{background:var(--gold,#e0b34d);border-color:var(--gold,#e0b34d);color:#0c4a6e}
+.ftr-tit{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold,#e0b34d);margin-bottom:16px}
+.ftr-col a{display:block;color:rgba(255,255,255,.72);text-decoration:none;font-size:14px;padding:7px 0;transition:all .2s}
+.ftr-col a:hover{color:#fff;transform:translateX(4px)}
+.ftr-bottom{max-width:1140px;margin:0 auto;padding:20px 32px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,.4)}
+.ftr-bottom a{color:rgba(255,255,255,.6);text-decoration:none}
+.ftr-bottom a:hover{color:var(--gold,#e0b34d)}
+@media(max-width:860px){.ftr-main{grid-template-columns:1fr 1fr;gap:32px 24px;padding:44px 20px 26px}.ftr-col-brand{grid-column:1/-1;max-width:none}}
+@media(max-width:600px){
+  .ftr-main{grid-template-columns:1fr;gap:0;padding:44px 26px 24px}
+  .ftr-bottom{flex-direction:column;gap:6px;text-align:center;padding:18px 24px}
+  .ftr-wave{height:36px;transform:translateY(-99%)}.ftr-wave svg{height:36px}
+  .ftr-col-brand{text-align:center;padding-bottom:28px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .ftr-col-brand .ftr-logo-svg{margin:0 auto}
+  .ftr-tag{margin:16px auto 20px;max-width:300px}
+  .ftr-wpp{display:flex;justify-content:center;width:100%;box-sizing:border-box;font-size:15px;padding:15px 26px;background:#25d366;border-color:#25d366;color:#fff;font-weight:700;box-shadow:0 8px 22px rgba(37,211,102,.32)}
+  .ftr-wpp:hover{background:#1eb857;border-color:#1eb857;color:#fff;transform:none}
+  .ftr-col:not(.ftr-col-brand){text-align:left;margin-bottom:26px;display:grid;grid-template-columns:1fr;gap:0}
+  .ftr-col:not(.ftr-col-brand):last-child{margin-bottom:0}
+  .ftr-tit{font-size:11px;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid rgba(224,179,77,.28)}
+  .ftr-col:not(.ftr-col-brand) .ftr-tit{grid-column:1/-1}
+  .ftr-links-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+  .ftr-col a{font-size:14px;padding:9px 0;line-height:1.3}
+  .ftr-col a:hover{transform:none;color:var(--gold)}
+  .ftr-bottom{gap:4px;padding:22px 24px 26px;margin-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+  .ftr-bottom span:first-child{font-size:10.5px;opacity:.55;line-height:1.5}
+  .ftr-bottom-r{font-size:11px;color:var(--gold);opacity:.85;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+}
+@media(max-width:380px){.ftr-links-grid{grid-template-columns:1fr 1fr;gap:2px 12px}}
+</style>
+<link rel="canonical" href="https://condominiosnapraia.com.br/contemplado-imoveis">
+<meta property="og:title" content="Cartas Contempladas para Imóveis | RZN Contempladas — Litoral Norte RS">
+<meta property="og:description" content="646 cartas contempladas disponíveis para imóveis. Bradesco, Porto, Servopa, HS Consórcios e mais. Crédito disponível agora.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://condominiosnapraia.com.br/contemplado-imoveis">
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-eyebrow">Crédito Contemplado Imóveis</h1>
+  </div>
+</section>
+
+<div class="filtros-wrap">
+  <div class="filtros-inner">
+    <div class="fgroup">
+      <label class="flbl">Valor do crédito</label>
+      <select class="fsel" id="f-vmax" onchange="filtrar()">
+        <option value="">Todos os valores</option>
+        <option value="200000">Até R$ 200.000</option>
+        <option value="300000">Até R$ 300.000</option>
+        <option value="500000">Até R$ 500.000</option>
+        <option value="700000">Até R$ 700.000</option>
+        <option value="1000000">Até R$ 1.000.000</option>
+      </select>
+    </div>
+    <div class="fgroup">
+      <label class="flbl">Parcela máxima</label>
+      <select class="fsel" id="f-parc" onchange="filtrar()">
+        <option value="">Qualquer parcela</option>
+        <option value="1000">Até R$ 1.000</option>
+        <option value="2000">Até R$ 2.000</option>
+        <option value="3000">Até R$ 3.000</option>
+        <option value="5000">Até R$ 5.000</option>
+      </select>
+    </div>
+    <div class="fgroup">
+      <label class="flbl">Prazo máximo</label>
+      <select class="fsel" id="f-prazo" onchange="filtrar()">
+        <option value="">Qualquer prazo</option>
+        <option value="60">Até 60 meses</option>
+        <option value="120">Até 120 meses</option>
+        <option value="180">Até 180 meses</option>
+        <option value="210">Até 210 meses</option>
+      </select>
+    </div>
+    <button class="fclr" onclick="limpar()">✕ Limpar</button>
+    <span class="fcnt" id="fcnt"></span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="main-hdr">
+    <div class="main-ttl"><strong id="ccnt">0</strong> cartas encontradas</div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="pag" id="pag"></div>
+</div>
+
+<div class="cta">
+  <div class="cta-title">Não encontrou a carta <em>ideal?</em></div>
+  <p class="cta-sub">Fale com nosso consultor. Temos acesso a centenas de cartas de todas as administradoras.</p>
+  <a href="https://wa.me/5551999442252?text=Olá! Gostaria de encontrar uma carta contemplada para imóvel. Pode me ajudar?" class="cta-btn" target="_blank">
+    <svg viewBox="0 0 24 24" width="17" height="17" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Falar com consultor
+  </a>
+</div>
+
+<footer class="ftr">
+  <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
+  <div class="ftr-main">
+    <div class="ftr-col ftr-col-brand">
+      <div class="ftr-logo"><svg class="ftr-logo-svg" viewBox="0 0 280 76" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Os melhores condomínios do litoral" style="width:230px;height:auto;display:block"><defs><linearGradient id="lgwave" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1fb5c4"/><stop offset="1" stop-color="#0e8a99"/></linearGradient></defs><g transform="translate(2,8)"><path d="M30 6 L52 24 L46 24 L46 44 L14 44 L14 24 L8 24 Z" fill="none" stroke="#e0b34d" stroke-width="2.4" stroke-linejoin="round"/><path d="M22 44 L22 32 L30 32 L30 44" fill="none" stroke="#e0b34d" stroke-width="2.2" stroke-linejoin="round"/><path d="M4 52 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="url(#lgwave)" stroke-width="3" stroke-linecap="round"/><path d="M4 60 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="#1fb5c4" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/></g><text x="70" y="30" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" fill="#ffffff">Os melhores</text><text x="70" y="52" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" font-style="italic" fill="#e0b34d">condomínios</text><text x="70" y="70" font-family="Outfit, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="3" fill="#cdeef2">DO LITORAL</text></svg></div>
+      <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
+      <a class="ftr-wpp" href="https://wa.me/5551999442252" rel="nofollow"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
+    </div>
+    <div class="ftr-col"><div class="ftr-tit">Navegar</div><div class="ftr-links-grid">
+      <a href="/#sec-condominios">Condomínios</a>
+      <a href="/#sec-imoveis">Imóveis</a>
+      <a href="/contemplado-imoveis">Crédito Contemplado</a>
+      <a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/refinanciamento-imobiliario">Refinanciamento</a><a href="/exclusividade-imobiliaria">Venda seu Imóvel</a><a href="/contato">Contato</a><a href="/sobre">Sobre</a><a href="/politica-privacidade">Política de Privacidade</a><a href="/termos">Termos de Uso</a>
+    </div></div>
+    <div class="ftr-col"><div class="ftr-tit">Descobrir</div><div class="ftr-links-grid">
+      <a href="/#guias-cidades">Cidades</a>
+      <a href="/#onde-ir">Onde Ir</a>
+      <a href="/o-que-fazer-em-capao-da-canoa">Turismo</a>
+      <a href="/">Blog &amp; Notícias</a>
+    </div></div>
+    <div class="ftr-col"><div class="ftr-tit">Cidades</div><div class="ftr-links-grid">
+      <a href="/xangri-la">Xangri-lá</a>
+      <a href="/capao-da-canoa">Capão da Canoa</a>
+      <a href="/osorio">Osório</a>
+      <a href="/maquine">Maquiné</a>
+    </div></div>
+  </div>
+  <div class="ftr-bottom">
+    <span>© 2025 Os melhores condomínios do litoral · Parceria <a href="https://rzncontempladas.manus.space/" target="_blank" rel="nofollow">Ranzolin Contempladas</a></span>
+    <span>(51) 99944-2252</span>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal-ov" onclick="if(event.target===this)closeM()">
+  <div class="modal-box">
+    <div class="mhdr">
+      <button class="mclose" onclick="closeM()">✕</button>
+      <div class="madm-row">
+        <div class="madm-ico" id="m-ico"></div>
+        <div><div class="madm-nome" id="m-nome"></div><div class="madm-cod" id="m-cod"></div></div>
+      </div>
+      <div class="mcred-lbl">Crédito disponível</div>
+      <div class="mcred" id="m-cred"></div>
+    </div>
+    <div class="mbody">
+      <div class="mspecs">
+        <div class="mspec"><div class="mspec-lbl">Crédito</div><div class="mspec-val" id="m-credval"></div></div>
+        <div class="mspec"><div class="mspec-lbl">Parcelas</div><div class="mspec-val" id="m-prazo"></div></div>
+        <div class="mspec" style="grid-column:1/-1"><div class="mspec-lbl">Valor da parcela</div><div class="mspec-val" id="m-parc"></div></div>
+      </div>
+      <div class="mentrada" style="background:var(--cream);border:1px solid var(--border);color:var(--text2);font-style:italic">🔍 Consulte o valor de entrada com nosso consultor</div>
+      <div class="mactions">
+        <a class="mwpp" id="m-wpp" href="#" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Tenho interesse — falar no WhatsApp
+        </a>
+        <a class="mtel" href="tel:+5551999442252">📞 (51) 99944-2252</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ADM_DATA = [{"id": "bb", "nome": "BB Consórcios", "abrev": "BB", "cor": "#f5a623", "logo": "https://www.google.com/s2/favicons?domain=bb.com.br&sz=128", "ativo": true}, {"id": "bradesco", "nome": "Bradesco Consórcios", "abrev": "BRA", "cor": "#cc0000", "logo": "https://www.google.com/s2/favicons?domain=bradesco.com.br&sz=128", "ativo": true}, {"id": "caixa", "nome": "Caixa Consórcios", "abrev": "CEF", "cor": "#003087", "logo": "https://www.google.com/s2/favicons?domain=caixa.gov.br&sz=128", "ativo": true}, {"id": "cnp", "nome": "CNP Consórcios", "abrev": "CNP", "cor": "#00875a", "logo": "https://www.google.com/s2/favicons?domain=cnpconsorcio.com.br&sz=128", "ativo": true}, {"id": "embracon", "nome": "Embracon", "abrev": "EMB", "cor": "#1a6bbf", "logo": "https://www.google.com/s2/favicons?domain=embracon.com.br&sz=128", "ativo": true}, {"id": "gazin", "nome": "Gazin Consórcios", "abrev": "GAZ", "cor": "#e67e00", "logo": "https://www.google.com/s2/favicons?domain=gazin.com.br&sz=128", "ativo": true}, {"id": "hs_consorcios", "nome": "HS Consórcios", "abrev": "HS", "cor": "#276749", "logo": "https://www.google.com/s2/favicons?domain=hsconsorcios.com.br&sz=128", "ativo": true}, {"id": "itau", "nome": "Itaú Consórcios", "abrev": "ITÁ", "cor": "#f47920", "logo": "https://www.google.com/s2/favicons?domain=itau.com.br&sz=128", "ativo": true}, {"id": "magalu", "nome": "Magazine Luiza", "abrev": "MAG", "cor": "#0086ff", "logo": "https://www.google.com/s2/favicons?domain=magazineluiza.com.br&sz=128", "ativo": true}, {"id": "mycon", "nome": "Mycon", "abrev": "MYC", "cor": "#8b2fc9", "logo": "https://www.google.com/s2/favicons?domain=mycon.com.br&sz=128", "ativo": true}, {"id": "porto", "nome": "Porto Seguro", "abrev": "POR", "cor": "#003087", "logo": "https://www.google.com/s2/favicons?domain=portoseguro.com.br&sz=128", "ativo": true}, {"id": "remaza", "nome": "Remaza", "abrev": "REM", "cor": "#c0392b", "logo": "https://www.google.com/s2/favicons?domain=remaza.com.br&sz=128", "ativo": true}, {"id": "rodobens", "nome": "Rodobens", "abrev": "ROD", "cor": "#2e86c1", "logo": "https://www.google.com/s2/favicons?domain=rodobens.com.br&sz=128", "ativo": true}, {"id": "santander", "nome": "Santander Consórcios", "abrev": "SAN", "cor": "#ec0000", "logo": "https://www.google.com/s2/favicons?domain=santander.com.br&sz=128", "ativo": true}, {"id": "serello", "nome": "Serello", "abrev": "SER", "cor": "#6c3483", "logo": "https://www.google.com/s2/favicons?domain=serello.com.br&sz=128", "ativo": true}, {"id": "servopa", "nome": "Servopa", "abrev": "SVP", "cor": "#17a589", "logo": "https://www.google.com/s2/favicons?domain=servopa.com.br&sz=128", "ativo": true}, {"id": "sicoob", "nome": "Sicoob", "abrev": "SIC", "cor": "#005f3b", "logo": "https://www.google.com/s2/favicons?domain=sicoob.com.br&sz=128", "ativo": true}, {"id": "sicoob", "nome": "Sicoob", "abrev": "SIC", "cor": "#005f3b", "logo": "https://www.google.com/s2/favicons?domain=unicoob.coop.br&sz=128", "ativo": true}, {"id": "yamaha", "nome": "Yamaha Motor", "abrev": "YAM", "cor": "#003087", "logo": "https://www.google.com/s2/favicons?domain=yamaha-motor.com.br&sz=128", "ativo": true}];
+const CARTAS = [{"id": 1, "cod": "CI-9063", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 1006000, "prazo": 62, "parcela": 15282.0},
+{"id": 2, "cod": "LM-7241", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 1000000, "prazo": 192, "parcela": 5739.0},
+{"id": 3, "cod": "LM-6021", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 935000, "prazo": 189, "parcela": 5352.0},
+{"id": 4, "cod": "CI-7903", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 934000, "prazo": 190, "parcela": 5352.26},
+{"id": 5, "cod": "7082-88", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 922275, "prazo": 132, "parcela": 7643.56},
+{"id": 6, "cod": "LM-7915", "adm": "UNICOOB", "adm_id": "sicoob", "cor": "#0070b8", "abrev": "UNI", "credito": 860530, "prazo": 96, "parcela": 8121.0},
+{"id": 7, "cod": "FB-6246", "adm": "UNICOOB", "adm_id": "sicoob", "cor": "#0070b8", "abrev": "UNI", "credito": 860530, "prazo": 96, "parcela": 8121.0},
+{"id": 8, "cod": "CI-9829", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 825337, "prazo": 167, "parcela": 5534.0},
+{"id": 9, "cod": "LM-1395", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 805000, "prazo": 192, "parcela": 4866.0},
+{"id": 10, "cod": "CI-9783", "adm": "RODOBENS", "adm_id": "rodobens", "cor": "#2e86c1", "abrev": "ROD", "credito": 804730, "prazo": 133, "parcela": 5482.0},
+{"id": 11, "cod": "CI-1011", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 746957, "prazo": 180, "parcela": 4639.0},
+{"id": 12, "cod": "CI-3132", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 698000, "prazo": 145, "parcela": 4736.63},
+{"id": 13, "cod": "LM-4896", "adm": "CAIXA", "adm_id": "caixa", "cor": "#003087", "abrev": "CEF", "credito": 687500, "prazo": 190, "parcela": 4456.0},
+{"id": 14, "cod": "CI-4159", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 666000, "prazo": 169, "parcela": 4325.0},
+{"id": 15, "cod": "CI-6123", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 637452, "prazo": 182, "parcela": 3879.0},
+{"id": 16, "cod": "FB-5357", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 629323, "prazo": 194, "parcela": 4265.0},
+{"id": 17, "cod": "CI-4843", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 625770, "prazo": 123, "parcela": 3772.0},
+{"id": 18, "cod": "CI-4116", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 600000, "prazo": 196, "parcela": 3614.0},
+{"id": 19, "cod": "CI-6806", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 594630, "prazo": 27, "parcela": 22690.0},
+{"id": 20, "cod": "CI-4846", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 590000, "prazo": 180, "parcela": 3636.76},
+{"id": 21, "cod": "LM-4832", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 589400, "prazo": 198, "parcela": 3217.0},
+{"id": 22, "cod": "LM-1227", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 585200, "prazo": 142, "parcela": 4191.0},
+{"id": 23, "cod": "CI-5118", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 583000, "prazo": 185, "parcela": 3623.0},
+{"id": 24, "cod": "CI-2986", "adm": "RODOBENS", "adm_id": "rodobens", "cor": "#2e86c1", "abrev": "ROD", "credito": 574300, "prazo": 180, "parcela": 3470.0},
+{"id": 25, "cod": "CI-2061", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 571541, "prazo": 168, "parcela": 3549.0},
+{"id": 26, "cod": "FB-9095", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 569832, "prazo": 181, "parcela": 3850.0},
+{"id": 27, "cod": "FB-9700", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 567957, "prazo": 201, "parcela": 3373.0},
+{"id": 28, "cod": "CI-9263", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 567000, "prazo": 169, "parcela": 3736.12},
+{"id": 29, "cod": "FB-6188", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 555619, "prazo": 121, "parcela": 3905.0},
+{"id": 30, "cod": "LM-8302", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 555600, "prazo": 121, "parcela": 3904.0},
+{"id": 31, "cod": "FB-5869", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 550145, "prazo": 201, "parcela": 3367.0},
+{"id": 32, "cod": "FB-8899", "adm": "GAZIN", "adm_id": "gazin", "cor": "#e67e00", "abrev": "GAZ", "credito": 539862, "prazo": 203, "parcela": 3266.0},
+{"id": 33, "cod": "LM-5290", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 536000, "prazo": 183, "parcela": 3105.0},
+{"id": 34, "cod": "FB-6861", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 532948, "prazo": 126, "parcela": 4458.0},
+{"id": 35, "cod": "CI-8175", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 530000, "prazo": 169, "parcela": 3334.0},
+{"id": 36, "cod": "FB-7097", "adm": "MAGALU", "adm_id": "magalu", "cor": "#0086ff", "abrev": "MAG", "credito": 525000, "prazo": 228, "parcela": 2832.0},
+{"id": 37, "cod": "FB-8577", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 521850, "prazo": 200, "parcela": 3290.0},
+{"id": 38, "cod": "LM-4828", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 521000, "prazo": 191, "parcela": 3000.0},
+{"id": 39, "cod": "LM-5150", "adm": "UNICOOB", "adm_id": "sicoob", "cor": "#0070b8", "abrev": "UNI", "credito": 504000, "prazo": 75, "parcela": 3433.0},
+{"id": 40, "cod": "LM-2381", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 503000, "prazo": 191, "parcela": 3088.0},
+{"id": 41, "cod": "CI-9961", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 503000, "prazo": 191, "parcela": 3088.0},
+{"id": 42, "cod": "FB-7214", "adm": "MAGALU", "adm_id": "magalu", "cor": "#0086ff", "abrev": "MAG", "credito": 500779, "prazo": 98, "parcela": 5208.0},
+{"id": 43, "cod": "FB-7176", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 500173, "prazo": 188, "parcela": 3155.0},
+{"id": 44, "cod": "CI-8886", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 500000, "prazo": 192, "parcela": 3108.0},
+{"id": 45, "cod": "FB-5667", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 493832, "prazo": 201, "parcela": 3021.0},
+{"id": 46, "cod": "CI-6980", "adm": "REMAZA", "adm_id": "remaza", "cor": "#c0392b", "abrev": "REM", "credito": 463000, "prazo": 59, "parcela": 9512.92},
+{"id": 47, "cod": "FB-7802", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 461815, "prazo": 194, "parcela": 3236.0},
+{"id": 48, "cod": "FB-4560", "adm": "GAZIN", "adm_id": "gazin", "cor": "#e67e00", "abrev": "GAZ", "credito": 458334, "prazo": 190, "parcela": 3140.0},
+{"id": 49, "cod": "LM-8373", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 451300, "prazo": 170, "parcela": 2702.0},
+{"id": 50, "cod": "CI-2428", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 434500, "prazo": 180, "parcela": 2811.0},
+{"id": 51, "cod": "CI-9726", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 430000, "prazo": 162, "parcela": 2964.0},
+{"id": 52, "cod": "CI-4135", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 429000, "prazo": 135, "parcela": 2816.0},
+{"id": 53, "cod": "CI-2442", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 426000, "prazo": 148, "parcela": 2721.0},
+{"id": 54, "cod": "CI-2813", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 425000, "prazo": 175, "parcela": 2642.0},
+{"id": 55, "cod": "FB-9986", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 415877, "prazo": 180, "parcela": 2698.0},
+{"id": 56, "cod": "LM-4944", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 415000, "prazo": 133, "parcela": 3062.0},
+{"id": 57, "cod": "CI-8000", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 413000, "prazo": 134, "parcela": 3061.0},
+{"id": 58, "cod": "LM-2091", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 400700, "prazo": 123, "parcela": 2741.0},
+{"id": 59, "cod": "FB-6932", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 400497, "prazo": 192, "parcela": 2553.0},
+{"id": 60, "cod": "FB-4108", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 399294, "prazo": 181, "parcela": 2675.0},
+{"id": 61, "cod": "FB-7203", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 388943, "prazo": 169, "parcela": 2494.0},
+{"id": 62, "cod": "6845-76", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 381976, "prazo": 82, "parcela": 3594.9},
+{"id": 63, "cod": "LM-9398", "adm": "EMBRACON", "adm_id": "embracon", "cor": "#1a6bbf", "abrev": "EMB", "credito": 380000, "prazo": 88, "parcela": 3104.0},
+{"id": 64, "cod": "FB-6854", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 377578, "prazo": 199, "parcela": 2409.0},
+{"id": 65, "cod": "FB-6129", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 377578, "prazo": 199, "parcela": 2409.0},
+{"id": 66, "cod": "CI-9424", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 373309, "prazo": 181, "parcela": 2683.8},
+{"id": 67, "cod": "7266-65", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 369324, "prazo": 185, "parcela": 2402.25},
+{"id": 68, "cod": "FB-6185", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 367152, "prazo": 139, "parcela": 2946.0},
+{"id": 69, "cod": "FB-9328", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 362218, "prazo": 201, "parcela": 2369.0},
+{"id": 70, "cod": "LM-2515", "adm": "CAIXA", "adm_id": "caixa", "cor": "#003087", "abrev": "CEF", "credito": 360560, "prazo": 156, "parcela": 2261.0},
+{"id": 71, "cod": "LM-5304", "adm": "RODOBENS", "adm_id": "rodobens", "cor": "#2e86c1", "abrev": "ROD", "credito": 360000, "prazo": 209, "parcela": 2196.0},
+{"id": 72, "cod": "LM-4800", "adm": "CNP", "adm_id": "cnp", "cor": "#00875a", "abrev": "CNP", "credito": 358000, "prazo": 117, "parcela": 3339.0},
+{"id": 73, "cod": "6774-23", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 356199, "prazo": 71, "parcela": 4875.95},
+{"id": 74, "cod": "FB-6395", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 356053, "prazo": 210, "parcela": 2219.0},
+{"id": 75, "cod": "CI-5793", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 350000, "prazo": 191, "parcela": 1923.0},
+{"id": 76, "cod": "7331-88", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 346356, "prazo": 196, "parcela": 2217.62},
+{"id": 77, "cod": "CI-8828", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 346000, "prazo": 102, "parcela": 3927.69},
+{"id": 78, "cod": "LM-8953", "adm": "EMBRACON", "adm_id": "embracon", "cor": "#1a6bbf", "abrev": "EMB", "credito": 344000, "prazo": 142, "parcela": 2317.0},
+{"id": 79, "cod": "LM-6618", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 342000, "prazo": 141, "parcela": 2564.0},
+{"id": 80, "cod": "7382-95", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 340573, "prazo": 173, "parcela": 2331.64},
+{"id": 81, "cod": "LM-3949", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 340000, "prazo": 141, "parcela": 1960.0},
+{"id": 82, "cod": "LM-9060", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 337105, "prazo": 184, "parcela": 1980.0},
+{"id": 83, "cod": "LM-5685", "adm": "RODOBENS", "adm_id": "rodobens", "cor": "#2e86c1", "abrev": "ROD", "credito": 335000, "prazo": 77, "parcela": 4159.0},
+{"id": 84, "cod": "CI-7637", "adm": "RODOBENS", "adm_id": "rodobens", "cor": "#2e86c1", "abrev": "ROD", "credito": 335000, "prazo": 77, "parcela": 4159.0},
+{"id": 85, "cod": "CI-5251", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 335000, "prazo": 123, "parcela": 2414.0},
+{"id": 86, "cod": "CI-9116", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 334000, "prazo": 185, "parcela": 1980.0},
+{"id": 87, "cod": "7345-91", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 333699, "prazo": 176, "parcela": 2341.4},
+{"id": 88, "cod": "CI-9242", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 332000, "prazo": 69, "parcela": 4150.0},
+{"id": 89, "cod": "CI-9768", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 327000, "prazo": 180, "parcela": 2116.0},
+{"id": 90, "cod": "CI-3585", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 326936, "prazo": 21, "parcela": 13171.0},
+{"id": 91, "cod": "CI-7228", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 326754, "prazo": 21, "parcela": 13334.0},
+{"id": 92, "cod": "FB-8435", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 325287, "prazo": 179, "parcela": 2026.0},
+{"id": 93, "cod": "7004-83", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 322167, "prazo": 53, "parcela": 6070.74},
+{"id": 94, "cod": "CI-9910", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 321000, "prazo": 164, "parcela": 2014.0},
+{"id": 95, "cod": "LM-6764", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 320400, "prazo": 229, "parcela": 1698.0},
+{"id": 96, "cod": "CI-7435", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 320000, "prazo": 185, "parcela": 1980.21},
+{"id": 97, "cod": "LM-3925", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 319900, "prazo": 164, "parcela": 2190.0},
+{"id": 98, "cod": "LM-6118", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 317000, "prazo": 53, "parcela": 5884.0},
+{"id": 99, "cod": "LM-2156", "adm": "YAMAHA", "adm_id": "yamaha", "cor": "#003087", "abrev": "YAM", "credito": 316000, "prazo": 148, "parcela": 2064.0},
+{"id": 100, "cod": "FB-9087", "adm": "CNP", "adm_id": "cnp", "cor": "#00875a", "abrev": "CNP", "credito": 313986, "prazo": 183, "parcela": 1890.0},
+{"id": 101, "cod": "LM-7749", "adm": "CNP", "adm_id": "cnp", "cor": "#00875a", "abrev": "CNP", "credito": 313450, "prazo": 183, "parcela": 1890.0},
+{"id": 102, "cod": "CI-3836", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 310900, "prazo": 71, "parcela": 4831.0},
+{"id": 103, "cod": "CI-1938", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 310060, "prazo": 22, "parcela": 13296.0},
+{"id": 104, "cod": "FB-7646", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 306190, "prazo": 184, "parcela": 2095.0},
+{"id": 105, "cod": "7414-76", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 305931, "prazo": 180, "parcela": 1906.79},
+{"id": 106, "cod": "FB-6966", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 303363, "prazo": 184, "parcela": 2069.0},
+{"id": 107, "cod": "LM-8912", "adm": "YAMAHA", "adm_id": "yamaha", "cor": "#003087", "abrev": "YAM", "credito": 303000, "prazo": 101, "parcela": 2470.0},
+{"id": 108, "cod": "FB-7341", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 302161, "prazo": 181, "parcela": 2254.0},
+{"id": 109, "cod": "LM-6576", "adm": "YAMAHA", "adm_id": "yamaha", "cor": "#003087", "abrev": "YAM", "credito": 302000, "prazo": 116, "parcela": 2310.0},
+{"id": 110, "cod": "7111-83", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 295575, "prazo": 197, "parcela": 1814.42},
+{"id": 111, "cod": "7374-75", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 293774, "prazo": 198, "parcela": 1842.04},
+{"id": 112, "cod": "CI-4794", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 292413, "prazo": 135, "parcela": 2283.0},
+{"id": 113, "cod": "CI-2199", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 290000, "prazo": 119, "parcela": 2887.9},
+{"id": 114, "cod": "FB-3069", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 288288, "prazo": 136, "parcela": 2192.0},
+{"id": 115, "cod": "CI-3670", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 286000, "prazo": 116, "parcela": 2800.48},
+{"id": 116, "cod": "6779-35", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 280275, "prazo": 64, "parcela": 4526.66},
+{"id": 117, "cod": "CI-5540", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 280000, "prazo": 168, "parcela": 1827.0},
+{"id": 118, "cod": "7009-57", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 275687, "prazo": 55, "parcela": 5679.0},
+{"id": 119, "cod": "7340-53", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 275415, "prazo": 155, "parcela": 1983.32},
+{"id": 120, "cod": "CI-1713", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 264000, "prazo": 185, "parcela": 1642.1},
+{"id": 121, "cod": "7337-89", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 259559, "prazo": 174, "parcela": 1663.78},
+{"id": 122, "cod": "7044-21", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 259331, "prazo": 182, "parcela": 1752.21},
+{"id": 123, "cod": "7231-41", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 253119, "prazo": 176, "parcela": 1655.0},
+{"id": 124, "cod": "CI-2419", "adm": "RODOBENS", "adm_id": "rodobens", "cor": "#2e86c1", "abrev": "ROD", "credito": 252000, "prazo": 189, "parcela": 1724.09},
+{"id": 125, "cod": "CI-5262", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 252000, "prazo": 192, "parcela": 1561.25},
+{"id": 126, "cod": "FB-3767", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 246733, "prazo": 176, "parcela": 1780.0},
+{"id": 127, "cod": "FB-2465", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 242254, "prazo": 119, "parcela": 2245.0},
+{"id": 128, "cod": "LM-2673", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 240000, "prazo": 39, "parcela": 4358.0},
+{"id": 129, "cod": "CI-6971", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 240000, "prazo": 39, "parcela": 4358.0},
+{"id": 130, "cod": "LM-1165", "adm": "CAIXA", "adm_id": "caixa", "cor": "#003087", "abrev": "CEF", "credito": 235800, "prazo": 164, "parcela": 1094.0},
+{"id": 131, "cod": "FB-2099", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 235088, "prazo": 155, "parcela": 1966.0},
+{"id": 132, "cod": "LM-1917", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 235000, "prazo": 168, "parcela": 1200.0},
+{"id": 133, "cod": "CI-8265", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 232000, "prazo": 128, "parcela": 2107.41},
+{"id": 134, "cod": "FB-9716", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 231062, "prazo": 171, "parcela": 1765.0},
+{"id": 135, "cod": "LM-7709", "adm": "CNP", "adm_id": "cnp", "cor": "#00875a", "abrev": "CNP", "credito": 229200, "prazo": 111, "parcela": 1995.0},
+{"id": 136, "cod": "LM-8895", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 229000, "prazo": 168, "parcela": 1151.0},
+{"id": 137, "cod": "FB-8169", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 227815, "prazo": 176, "parcela": 1648.0},
+{"id": 138, "cod": "LM-2375", "adm": "CAIXA", "adm_id": "caixa", "cor": "#003087", "abrev": "CEF", "credito": 227000, "prazo": 190, "parcela": 980.0},
+{"id": 139, "cod": "LM-3261", "adm": "CAIXA", "adm_id": "caixa", "cor": "#003087", "abrev": "CEF", "credito": 227000, "prazo": 190, "parcela": 956.0},
+{"id": 140, "cod": "FB-9771", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 226864, "prazo": 145, "parcela": 1632.0},
+{"id": 141, "cod": "LM-8877", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 225900, "prazo": 180, "parcela": 1187.0},
+{"id": 142, "cod": "7007-31", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 225126, "prazo": 129, "parcela": 1732.78},
+{"id": 143, "cod": "LM-4139", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 224000, "prazo": 71, "parcela": 1695.0},
+{"id": 144, "cod": "LM-1146", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 221500, "prazo": 125, "parcela": 1590.0},
+{"id": 145, "cod": "FB-6996", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 218314, "prazo": 191, "parcela": 1464.0},
+{"id": 146, "cod": "LM-3457", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 218000, "prazo": 176, "parcela": 1145.0},
+{"id": 147, "cod": "CI-3827", "adm": "MYCON", "adm_id": "mycon", "cor": "#8b2fc9", "abrev": "MYC", "credito": 216889, "prazo": 184, "parcela": 1409.03},
+{"id": 148, "cod": "CI-5512", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 216000, "prazo": 160, "parcela": 1515.34},
+{"id": 149, "cod": "FB-9637", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 213275, "prazo": 160, "parcela": 1534.0},
+{"id": 150, "cod": "CI-7509", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 213000, "prazo": 163, "parcela": 1264.3},
+{"id": 151, "cod": "FB-2498", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 212337, "prazo": 182, "parcela": 1368.0},
+{"id": 152, "cod": "LM-1751", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 211000, "prazo": 197, "parcela": 1106.0},
+{"id": 153, "cod": "CI-3676", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 211000, "prazo": 197, "parcela": 1106.0},
+{"id": 154, "cod": "7286-39", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 210692, "prazo": 229, "parcela": 1172.78},
+{"id": 155, "cod": "FB-6258", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 210214, "prazo": 168, "parcela": 1438.0},
+{"id": 156, "cod": "CI-3995", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 210176, "prazo": 192, "parcela": 1080.0},
+{"id": 157, "cod": "LM-9692", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 210000, "prazo": 62, "parcela": 2424.0},
+{"id": 158, "cod": "6915-35", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 209454, "prazo": 229, "parcela": 1172.12},
+{"id": 159, "cod": "7420-74", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 209418, "prazo": 202, "parcela": 1341.44},
+{"id": 160, "cod": "FB-2604", "adm": "CNP", "adm_id": "cnp", "cor": "#00875a", "abrev": "CNP", "credito": 209317, "prazo": 122, "parcela": 1657.0},
+{"id": 161, "cod": "LM-6507", "adm": "CNP", "adm_id": "cnp", "cor": "#00875a", "abrev": "CNP", "credito": 209300, "prazo": 122, "parcela": 1657.0},
+{"id": 162, "cod": "6874-26", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 208863, "prazo": 138, "parcela": 1721.59},
+{"id": 163, "cod": "CI-3654", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 206970, "prazo": 53, "parcela": 5600.0},
+{"id": 164, "cod": "LM-4331", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 206800, "prazo": 164, "parcela": 1483.0},
+{"id": 165, "cod": "LM-9892", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 205300, "prazo": 140, "parcela": 1363.0},
+{"id": 166, "cod": "6859-96", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 204107, "prazo": 55, "parcela": 3876.56},
+{"id": 167, "cod": "7267-55", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 202594, "prazo": 166, "parcela": 1342.24},
+{"id": 168, "cod": "FB-3448", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 202267, "prazo": 186, "parcela": 1333.0},
+{"id": 169, "cod": "FB-2730", "adm": "EMBRACON", "adm_id": "embracon", "cor": "#1a6bbf", "abrev": "EMB", "credito": 202161, "prazo": 211, "parcela": 1052.0},
+{"id": 170, "cod": "CI-1230", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 202000, "prazo": 132, "parcela": 1863.62},
+{"id": 171, "cod": "FB-4129", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 200000, "prazo": 190, "parcela": 1263.0},
+{"id": 172, "cod": "CI-2895", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 200000, "prazo": 131, "parcela": 1716.24},
+{"id": 173, "cod": "FB-8831", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 199901, "prazo": 188, "parcela": 1330.0},
+{"id": 174, "cod": "FB-5786", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 199831, "prazo": 170, "parcela": 1344.0},
+{"id": 175, "cod": "7265-24", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 198914, "prazo": 181, "parcela": 1305.37},
+{"id": 176, "cod": "CI-1638", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 197160, "prazo": 133, "parcela": 1553.0},
+{"id": 177, "cod": "CI-8221", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 197000, "prazo": 117, "parcela": 1787.07},
+{"id": 178, "cod": "FB-3420", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 196518, "prazo": 76, "parcela": 2267.0},
+{"id": 179, "cod": "LM-2810", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 196500, "prazo": 187, "parcela": 1072.0},
+{"id": 180, "cod": "FB-9677", "adm": "EMBRACON", "adm_id": "embracon", "cor": "#1a6bbf", "abrev": "EMB", "credito": 195109, "prazo": 169, "parcela": 1502.0},
+{"id": 181, "cod": "7119-21", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 194241, "prazo": 167, "parcela": 1406.7},
+{"id": 182, "cod": "FB-7741", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 193641, "prazo": 184, "parcela": 1309.0},
+{"id": 183, "cod": "7369-84", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 192023, "prazo": 229, "parcela": 1152.7},
+{"id": 184, "cod": "7383-98", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 191268, "prazo": 55, "parcela": 3250.42},
+{"id": 185, "cod": "CI-5672", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 189000, "prazo": 151, "parcela": 1480.04},
+{"id": 186, "cod": "CI-5737", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 188000, "prazo": 154, "parcela": 1267.88},
+{"id": 187, "cod": "FB-1811", "adm": "MYCON", "adm_id": "mycon", "cor": "#8b2fc9", "abrev": "MYC", "credito": 186620, "prazo": 147, "parcela": 1390.0},
+{"id": 188, "cod": "FB-2620", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 186500, "prazo": 122, "parcela": 1637.0},
+{"id": 189, "cod": "7274-17", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 182904, "prazo": 189, "parcela": 1142.4},
+{"id": 190, "cod": "7136-97", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 182865, "prazo": 201, "parcela": 1172.67},
+{"id": 191, "cod": "7430-95", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 182797, "prazo": 203, "parcela": 1126.34},
+{"id": 192, "cod": "FB-5123", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 182308, "prazo": 159, "parcela": 1165.0},
+{"id": 193, "cod": "CI-2744", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 181186, "prazo": 169, "parcela": 1197.0},
+{"id": 194, "cod": "LM-1723", "adm": "CAIXA", "adm_id": "caixa", "cor": "#003087", "abrev": "CEF", "credito": 181000, "prazo": 135, "parcela": 1344.0},
+{"id": 195, "cod": "LM-5051", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 178500, "prazo": 180, "parcela": 999.0},
+{"id": 196, "cod": "CI-3441", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 178500, "prazo": 180, "parcela": 999.0},
+{"id": 197, "cod": "LM-3404", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 177000, "prazo": 140, "parcela": 1335.0},
+{"id": 198, "cod": "LM-3937", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 177000, "prazo": 156, "parcela": 951.0},
+{"id": 199, "cod": "CI-9257", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 176000, "prazo": 192, "parcela": 940.0},
+{"id": 200, "cod": "CI-2557", "adm": "MYCON", "adm_id": "mycon", "cor": "#8b2fc9", "abrev": "MYC", "credito": 175321, "prazo": 147, "parcela": 1307.34},
+{"id": 201, "cod": "LM-1422", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 175000, "prazo": 94, "parcela": 1729.0},
+{"id": 202, "cod": "CI-4126", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 175000, "prazo": 94, "parcela": 1729.0},
+{"id": 203, "cod": "LM-5839", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 175000, "prazo": 98, "parcela": 1280.0},
+{"id": 204, "cod": "CI-9641", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 174000, "prazo": 149, "parcela": 1235.72},
+{"id": 205, "cod": "CI-4039", "adm": "MYCON", "adm_id": "mycon", "cor": "#8b2fc9", "abrev": "MYC", "credito": 173237, "prazo": 147, "parcela": 1356.31},
+{"id": 206, "cod": "FB-9483", "adm": "EMBRACON", "adm_id": "embracon", "cor": "#1a6bbf", "abrev": "EMB", "credito": 171992, "prazo": 58, "parcela": 2364.0},
+{"id": 207, "cod": "CI-2185", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 171000, "prazo": 154, "parcela": 1412.05},
+{"id": 208, "cod": "FB-8656", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 170449, "prazo": 113, "parcela": 1357.0},
+{"id": 209, "cod": "6957-93", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 170432, "prazo": 35, "parcela": 3401.66},
+{"id": 210, "cod": "FB-4362", "adm": "MAGALU", "adm_id": "magalu", "cor": "#0086ff", "abrev": "MAG", "credito": 168857, "prazo": 89, "parcela": 2190.0},
+{"id": 211, "cod": "CI-1365", "adm": "YAMAHA", "adm_id": "yamaha", "cor": "#003087", "abrev": "YAM", "credito": 167000, "prazo": 137, "parcela": 1435.0},
+{"id": 212, "cod": "CI-3693", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 166960, "prazo": 63, "parcela": 3700.0},
+{"id": 213, "cod": "FB-6767", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 166948, "prazo": 142, "parcela": 1360.0},
+{"id": 214, "cod": "LM-3204", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 166600, "prazo": 150, "parcela": 1055.0},
+{"id": 215, "cod": "FB-3584", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 166509, "prazo": 140, "parcela": 1353.0},
+{"id": 216, "cod": "CI-4344", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 166183, "prazo": 134, "parcela": 1420.69},
+{"id": 217, "cod": "FB-1492", "adm": "MAGALU", "adm_id": "magalu", "cor": "#0086ff", "abrev": "MAG", "credito": 165879, "prazo": 89, "parcela": 2186.0},
+{"id": 218, "cod": "CI-7423", "adm": "MYCON", "adm_id": "mycon", "cor": "#8b2fc9", "abrev": "MYC", "credito": 165427, "prazo": 147, "parcela": 1336.65},
+{"id": 219, "cod": "CI-4666", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 165000, "prazo": 151, "parcela": 1011.0},
+{"id": 220, "cod": "FB-4559", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 163911, "prazo": 174, "parcela": 1094.0},
+{"id": 221, "cod": "FB-4158", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 163654, "prazo": 172, "parcela": 1165.0},
+{"id": 222, "cod": "7254-38", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 162259, "prazo": 229, "parcela": 958.28},
+{"id": 223, "cod": "7219-65", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 162180, "prazo": 229, "parcela": 958.28},
+{"id": 224, "cod": "7368-79", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 160428, "prazo": 229, "parcela": 958.53},
+{"id": 225, "cod": "FB-5405", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 160091, "prazo": 184, "parcela": 1002.0},
+{"id": 226, "cod": "LM-7893", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 160000, "prazo": 193, "parcela": 813.0},
+{"id": 227, "cod": "LM-1688", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 159300, "prazo": 72, "parcela": 2130.0},
+{"id": 228, "cod": "CI-5943", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 159300, "prazo": 72, "parcela": 2130.0},
+{"id": 229, "cod": "FB-2988", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 159008, "prazo": 184, "parcela": 1002.0},
+{"id": 230, "cod": "CI-7756", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 159000, "prazo": 181, "parcela": 1020.0},
+{"id": 231, "cod": "CI-5041", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 158000, "prazo": 154, "parcela": 1097.0},
+{"id": 232, "cod": "FB-3707", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 157508, "prazo": 173, "parcela": 1145.0},
+{"id": 233, "cod": "7261-46", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 157475, "prazo": 191, "parcela": 1014.03},
+{"id": 234, "cod": "FB-2616", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 157113, "prazo": 180, "parcela": 1078.0},
+{"id": 235, "cod": "FB-1947", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 155085, "prazo": 179, "parcela": 1068.0},
+{"id": 236, "cod": "CI-1334", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 153800, "prazo": 71, "parcela": 3200.0},
+{"id": 237, "cod": "FB-3326", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 153666, "prazo": 180, "parcela": 1082.0},
+{"id": 238, "cod": "LM-9887", "adm": "YAMAHA", "adm_id": "yamaha", "cor": "#003087", "abrev": "YAM", "credito": 153000, "prazo": 234, "parcela": 832.0},
+{"id": 239, "cod": "LM-7462", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 152800, "prazo": 132, "parcela": 894.0},
+{"id": 240, "cod": "LM-8524", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 152300, "prazo": 154, "parcela": 1131.0},
+{"id": 241, "cod": "CI-4285", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 151000, "prazo": 155, "parcela": 1131.0},
+{"id": 242, "cod": "CI-7919", "adm": "RODOBENS", "adm_id": "rodobens", "cor": "#2e86c1", "abrev": "ROD", "credito": 150451, "prazo": 165, "parcela": 1094.0},
+{"id": 243, "cod": "7364-21", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 150392, "prazo": 208, "parcela": 853.5},
+{"id": 244, "cod": "LM-1256", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 150000, "prazo": 126, "parcela": 1209.0},
+{"id": 245, "cod": "CI-5061", "adm": "BRADESCO", "adm_id": "bradesco", "cor": "#cc0000", "abrev": "BRA", "credito": 150000, "prazo": 127, "parcela": 1209.0},
+{"id": 246, "cod": "6690-78", "adm": "SERVOPA", "adm_id": "servopa", "cor": "#17a589", "abrev": "SVP", "credito": 149595, "prazo": 200, "parcela": 903.9},
+{"id": 247, "cod": "FB-6675", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 149384, "prazo": 149, "parcela": 1121.0},
+{"id": 248, "cod": "FB-8943", "adm": "SERELLO", "adm_id": "serello", "cor": "#6c3483", "abrev": "SER", "credito": 149239, "prazo": 214, "parcela": 849.0},
+{"id": 249, "cod": "FB-5311", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 149150, "prazo": 182, "parcela": 1030.0},
+{"id": 250, "cod": "CI-9751", "adm": "ITAU", "adm_id": "itau", "cor": "#f47920", "abrev": "ITÁ", "credito": 149000, "prazo": 144, "parcela": 1215.97},
+{"id": 251, "cod": "FB-9909", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 148891, "prazo": 131, "parcela": 1183.0},
+{"id": 252, "cod": "CI-8057", "adm": "SANTANDER", "adm_id": "santander", "cor": "#ec0000", "abrev": "SAN", "credito": 148500, "prazo": 209, "parcela": 713.0},
+{"id": 253, "cod": "CI-1276", "adm": "PORTO", "adm_id": "porto", "cor": "#003087", "abrev": "POR", "credito": 147560, "prazo": 181, "parcela": 1016.0},
+{"id": 254, "cod": "FB-5134", "adm": "HS CONSÓRCIOS", "adm_id": "hs_consorcios", "cor": "#276749", "abrev": "HS", "credito": 147172, "prazo": 190, "parcela": 979.0}]
+const PER = window.innerWidth < 768 ? 12 : 24;
+let pg = 1, lista = [];
+
+const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:2});
+
+const wppSvg = `<svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+
+const getAdm = id => ADM_DATA.find(a=>a.id===id)||{abrev:'?',cor:'#888',logo:null,nome:id};
+const _logoCache = {};
+const admIcoHtml = (id,sz) => {
+  const a=getAdm(id);
+  return `<div class="carta-adm-ico" style="width:${sz}px;height:${sz}px;background:${a.cor||'#0c4a6e'};border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center">${a.abrev||'?'}</div>`;
+};
+
+function filtrar(){
+  const vmax=parseInt(document.getElementById('f-vmax').value)||0;
+  const parc=parseInt(document.getElementById('f-parc').value)||0;
+  const prazo=parseInt(document.getElementById('f-prazo').value)||0;
+  lista=CARTAS.filter(c=>{
+    if(vmax&&c.credito>vmax) return false;
+    if(parc&&c.parcela>parc) return false;
+    if(prazo&&c.prazo>prazo) return false;
+    return true;
+  });
+  // Ordenar do maior para o menor crédito
+  lista.sort((a,b)=>b.credito-a.credito);
+  document.getElementById('ccnt').textContent=lista.length;
+  document.getElementById('fcnt').textContent=lista.length+' resultado'+(lista.length!==1?'s':'');
+  pg=1; render();
+}
+
+function render(){
+  const start=(pg-1)*PER, pagina=lista.slice(start,start+PER);
+  const grid=document.getElementById('grid');
+  if(!pagina.length){
+    grid.innerHTML='<div class="empty"><div class="empty-ico">🔍</div><p>Nenhuma carta encontrada com esses filtros.</p></div>';
+    document.getElementById('pag').innerHTML='';
+    return;
+  }
+  grid.innerHTML=pagina.map(c=>`
+    <div class="carta" onclick="openM(${c.id})">
+      <div class="carta-top">
+        <div class="carta-adm-row">
+          ${admIcoHtml(c.adm_id,28)}
+          <div><div class="carta-adm-nome">${getAdm(c.adm_id).nome||c.adm_id}</div><div class="carta-adm-cod">CÓD: ${c.cod}</div></div>
+        </div>
+        <div class="carta-credito-lbl">Crédito disponível</div>
+        <div class="carta-credito"><span>R$</span>${c.credito.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+      </div>
+      <div class="carta-body">
+        <div class="carta-specs">
+          <div class="spec"><div class="spec-lbl">Parcelas</div><div class="spec-val">${c.prazo}x</div></div>
+          <div class="spec"><div class="spec-lbl">Valor da parcela</div><div class="spec-val">${brl(c.parcela)}</div></div>
+        </div>
+        <div class="carta-entrada">Consulte o valor de entrada</div>
+        <div class="carta-footer">
+          <button class="btn-ver" onclick="event.stopPropagation();openM(${c.id})">Ver detalhes</button>
+          <a class="btn-wpp" href="https://wa.me/5551999442252?text=${encodeURIComponent('Olá! Tenho interesse na carta '+getAdm(c.adm_id).nome+' cód '+c.cod+' de '+brl(c.credito)+' com parcela de '+brl(c.parcela)+'. Pode me dar mais informações?')}" target="_blank" onclick="event.stopPropagation()">${wppSvg} WhatsApp</a>
+        </div>
+      </div>
+    </div>`).join('');
+  buildPag();
+}
+
+function buildPag(){
+  const tot=Math.ceil(lista.length/PER);
+  if(tot<=1){document.getElementById('pag').innerHTML='';return;}
+  let h=`<button class="pag-btn" onclick="goP(${pg-1})" ${pg===1?'disabled':''}>‹</button>`;
+  const s=Math.max(1,pg-2),e=Math.min(tot,pg+2);
+  if(s>1) h+=`<button class="pag-btn" onclick="goP(1)">1</button>${s>2?'<span class="pag-info">…</span>':''}`;
+  for(let i=s;i<=e;i++) h+=`<button class="pag-btn${i===pg?' on':''}" onclick="goP(${i})">${i}</button>`;
+  if(e<tot) h+=`${e<tot-1?'<span class="pag-info">…</span>':''}<button class="pag-btn" onclick="goP(${tot})">${tot}</button>`;
+  h+=`<button class="pag-btn" onclick="goP(${pg+1})" ${pg===tot?'disabled':''}>›</button><span class="pag-info">${pg} / ${tot}</span>`;
+  document.getElementById('pag').innerHTML=h;
+}
+
+function goP(p){pg=p;render();document.querySelector('.main').scrollIntoView({behavior:'smooth',block:'start'});}
+function limpar(){['f-vmin','f-vmax','f-parc','f-prazo'].forEach(id=>document.getElementById(id).value='');pg=1;filtrar();}
+
+function openM(id){
+  const c=CARTAS.find(x=>x.id===id);if(!c)return;
+  const _adm=getAdm(c.adm_id);
+  if(_adm.logo){
+    document.getElementById('m-ico').style.background='#fff';
+    document.getElementById('m-ico').style.padding='4px';
+    document.getElementById('m-ico').style.border='1px solid #e2e8e2';
+    document.getElementById('m-ico').innerHTML=`<img src="${_adm.logo}" style="width:100%;height:100%;object-fit:contain" alt="Logo" onerror="this.parentElement.style.background='${_adm.cor}';this.parentElement.innerHTML='${_adm.abrev||'?'}'">`;
+  } else {
+    document.getElementById('m-ico').style.background=_adm.cor||'#888';
+    document.getElementById('m-ico').style.padding='0';
+    document.getElementById('m-ico').innerHTML=_adm.abrev||'?';
+  }
+  document.getElementById('m-nome').textContent=_adm.nome||c.adm_id;
+  document.getElementById('m-cod').textContent='Código: '+c.cod;
+  document.getElementById('m-cred').innerHTML=`<span>R$</span>${c.credito.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+  document.getElementById('m-credval').textContent=brl(c.credito);
+  document.getElementById('m-parc').textContent=brl(c.parcela);
+  document.getElementById('m-prazo').textContent=c.prazo+' parcelas';
+  const msg=`Olá! Tenho interesse na carta ${_adm.nome||c.adm_id} código ${c.cod} de ${brl(c.credito)} com ${c.prazo} parcelas de ${brl(c.parcela)}. Pode me dar mais informações?`;
+  document.getElementById('m-wpp').href='https://wa.me/5551999442252?text='+encodeURIComponent(msg);
+  document.getElementById('modal-ov').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeM(){document.getElementById('modal-ov').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
+// Show loading state immediately
+document.getElementById('grid').innerHTML='<div class="empty"><div style="font-size:36px;margin-bottom:12px">⏳</div><p>Carregando cartas...</p></div>';
+// Load after DOM is ready
+setTimeout(()=>{ filtrar(); }, 10);
+</script>
+
+<nav class="mob-footer-nav">
+  <div class="mob-footer-items">
+    <a class="mob-footer-btn" href="/">
+      <span class="mob-footer-ico">🏠</span>
+      <span class="mob-footer-lbl">Início</span>
+    </a>
+    <a class="mob-footer-btn" href="/#condominios">
+      <span class="mob-footer-ico">🏘</span>
+      <span class="mob-footer-lbl">Condomínios</span>
+    </a>
+    <a class="mob-footer-btn wpp-btn" href="https://wa.me/5551999442252?text=Olá! Gostaria de informações sobre crédito contemplado.">
+      <span class="mob-footer-ico">
+        <svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="12" fill="#25D366"/><path fill="#fff" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </span>
+      <span class="mob-footer-lbl">WhatsApp</span>
+    </a>
+    <a class="mob-footer-btn" href="/">
+      <span class="mob-footer-ico">🏠</span>
+      <span class="mob-footer-lbl">Imóveis</span>
+    </a>
+    <a class="mob-footer-btn active" href="/contemplado-imoveis">
+      <span class="mob-footer-ico">$</span>
+      <span class="mob-footer-lbl">Contempladas</span>
+    </a>
+  </div>
+</nav>
+</body>
+</html>

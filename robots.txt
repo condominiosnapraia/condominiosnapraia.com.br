@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://condominiosnapraia.com.br/sitemap.xml
+Sitemap: https://condominiosnapraia.com.br/sitemap-imoveis.xml
+
+# Bloqueia CRM de indexação
+Disallow: /crm.html
+Disallow: /diagnostico
+Disallow: /exportar-dados
+Disallow: /restaurar
+Disallow: /teste-fotos
