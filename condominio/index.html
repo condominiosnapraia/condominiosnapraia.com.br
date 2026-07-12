@@ -29,6 +29,9 @@
 <meta property="og:title" id="cond-og-title" content="Condomínios na Praia">
 <meta property="og:description" id="cond-og-desc" content="">
 <meta property="og:url" id="cond-og-url" content="https://condominiosnapraia.com.br/condominio">
+<meta property="og:image" id="cond-og-image" content="https://condominiosnapraia.com.br/img/og-default.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" id="cond-tw-image" content="https://condominiosnapraia.com.br/img/og-default.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -306,6 +309,26 @@ header{position:relative;top:auto;left:auto;right:auto;z-index:100;padding:14px 
 .vpc-sub{font-size:12px;opacity:.7;margin-top:10px}
 @media(max-width:760px){.vpc-in{flex-direction:column;text-align:center;gap:22px;padding:34px 24px}.vpc-txt p{margin:0 auto}.vpc-btn{width:100%;box-sizing:border-box;justify-content:center}}
 
+
+/* cards dos imóveis do condomínio */
+.ci-card{display:block;background:#fff;border:1px solid var(--border,rgba(31,181,196,.18));border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 3px 14px rgba(13,59,84,.06);transition:transform .25s,box-shadow .25s}
+.ci-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(13,59,84,.14)}
+.ci-foto{position:relative;width:100%;aspect-ratio:4/3;background:linear-gradient(150deg,#0c4a6e,#0891b2);overflow:hidden}
+.ci-foto img{width:100%;height:100%;object-fit:cover;display:block}
+.ci-foto-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:32px;opacity:.4}
+.ci-tag{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.94);color:#0d3b54;font-size:11px;font-weight:700;padding:5px 11px;border-radius:100px;letter-spacing:.03em}
+.ci-body{padding:18px}
+.ci-titulo{font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--ocean,#0d3b54);line-height:1.25;margin-bottom:8px}
+.ci-specs{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--tm,#5b7585);margin-bottom:12px}
+.ci-preco{font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--om,#0e8a99)}
+.ci-cod{font-size:11px;color:#9bb0bd;margin-top:5px;letter-spacing:.03em}
+
+/* botão compartilhar do condomínio */
+.cd-share{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border,rgba(31,181,196,.28));color:var(--ocean,#0d3b54);font-weight:600;font-size:13.5px;padding:10px 18px;border-radius:100px;cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif;margin-top:16px}
+.cd-share:hover{background:var(--sl,#e8f7f8);border-color:var(--om,#0e8a99);transform:translateY(-1px)}
+.cd-share-menu{display:none;flex-direction:column;gap:4px;background:#fff;border:1px solid var(--border,rgba(31,181,196,.2));border-radius:12px;padding:6px;box-shadow:0 12px 34px rgba(13,59,84,.16);position:absolute;z-index:50;min-width:190px;margin-top:6px}
+.cd-share-menu a,.cd-share-menu button{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:8px;text-decoration:none;color:var(--ocean,#0d3b54);font-size:14px;background:none;border:none;cursor:pointer;text-align:left;width:100%;font-family:'Outfit',sans-serif}
+.cd-share-menu a:hover,.cd-share-menu button:hover{background:var(--sl,#e8f7f8)}
 </style>
 <script type="application/ld+json" id="ld-cond">{}</script>
 </head>
@@ -349,6 +372,17 @@ header{position:relative;top:auto;left:auto;right:auto;z-index:100;padding:14px 
         <div class="amenidades-list" id="amenidades-list"></div>
       </div>
 
+      <div style="position:relative;display:inline-block">
+        <button class="cd-share" onclick="compartilharCond()">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
+          Compartilhar
+        </button>
+        <div class="cd-share-menu" id="cd-share-menu">
+          <a id="cd-share-wa" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+          <a id="cd-share-fb" href="#" target="_blank" rel="noopener">📘 Facebook</a>
+          <button onclick="copiarLinkCond(this)">🔗 Copiar link</button>
+        </div>
+      </div>
       <div class="cond-location" id="cond-location" style="margin-top:20px">
         <span>📍</span><span id="cond-location-text">—</span>
       </div>
@@ -481,6 +515,20 @@ header{position:relative;top:auto;left:auto;right:auto;z-index:100;padding:14px 
     <div class="faq-list" id="faq-list"></div>
   </div>
 </div>
+
+<!-- IMÓVEIS DISPONÍVEIS NESTE CONDOMÍNIO -->
+<section class="imoveis-section" id="cond-imoveis-sec" style="display:none">
+  <div class="wrap">
+    <div style="text-align:center;margin-bottom:34px">
+      <div class="cond-eyebrow" style="justify-content:center;margin-bottom:10px">À venda neste condomínio</div>
+      <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,3.4vw,38px);font-weight:600;color:var(--ocean);line-height:1.15">
+        Imóveis <em style="font-style:italic;color:var(--om)">disponíveis</em>
+      </h2>
+      <p id="cond-imov-cnt" style="color:var(--tm);font-size:15px;margin-top:8px"></p>
+    </div>
+    <div class="imoveis-grid" id="cond-imoveis-grid"></div>
+  </div>
+</section>
 
 <section class="vpc" style="padding-top:52px;padding-bottom:52px">
   <div class="vpc-in">
@@ -620,6 +668,21 @@ async function init() {
   setAttr('cond-og-url', 'content', condUrlAbs);
   setAttr('cond-og-title', 'content', cond.nome + ' — Condomínios na Praia');
   setAttr('cond-og-desc', 'content', descSeo);
+  // foto de capa para a prévia (WhatsApp/Facebook)
+  (function(){
+    var fotos = cond.fotos_no_site || cond.fotos || [];
+    if(!Array.isArray(fotos)) fotos = [fotos];
+    var capa = null;
+    for(var i=0;i<fotos.length;i++){
+      var f = fotos[i];
+      if(typeof f === 'string' && f.indexOf('http') === 0){ capa = f; break; }
+      if(f && typeof f === 'object' && f.url){ capa = f.url; break; }
+    }
+    if(capa){
+      setAttr('cond-og-image', 'content', capa);
+      setAttr('cond-tw-image', 'content', capa);
+    }
+  })();
 
   // Dados estruturados (schema) — ajuda o Google a entender que é um condomínio/local
   const ldEl = document.getElementById('ld-cond');
@@ -729,6 +792,9 @@ async function init() {
 
   // Imoveis
   buildImoveis(cond.imoveis || []);
+
+  // carregar os imóveis deste condomínio
+  try{ carregarImoveisDoCondominio(cond); }catch(e){}
 }
 
 // ── GALLERY ──
@@ -935,6 +1001,124 @@ function submitForm() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeImModal(); });
 
 init();
+
+/* ═══ IMÓVEIS DISPONÍVEIS NESTE CONDOMÍNIO ═══ */
+function _brl(v){
+  var n = parseFloat(v);
+  if(isNaN(n) || n<=0) return 'Consulte';
+  return 'R$ ' + n.toLocaleString('pt-BR', {maximumFractionDigits:0});
+}
+function _fotoImovel(im){
+  var arr = im.fotos_no_site || im.fotos || [];
+  if(!Array.isArray(arr)) arr = [arr];
+  for(var i=0;i<arr.length;i++){
+    var f = arr[i];
+    if(typeof f === 'string' && (f.indexOf('http')===0 || f.indexOf('data:')===0)) return f;
+    if(f && typeof f==='object' && f.url) return f.url;
+  }
+  return null;
+}
+async function carregarImoveisDoCondominio(condominio){
+  if(!condominio || !condominio.id) return;
+  var sec  = document.getElementById('cond-imoveis-sec');
+  var grid = document.getElementById('cond-imoveis-grid');
+  var cnt  = document.getElementById('cond-imov-cnt');
+  if(!sec || !grid) return;
+
+  var imoveis = [];
+  try{
+    var r = await fetch(SUPABASE_URL + '/rest/v1/imoveis?cond_id=eq.' + encodeURIComponent(condominio.id) + '&select=*',
+      { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } });
+    if(r.ok) imoveis = await r.json();
+  }catch(e){ imoveis = []; }
+
+  // só os publicados e disponíveis
+  var lista = (Array.isArray(imoveis) ? imoveis : []).filter(function(im){
+    return im.publicar !== false && im.status !== 'Vendido';
+  });
+
+  if(!lista.length){ sec.style.display = 'none'; return; }
+
+  sec.style.display = 'block';
+  cnt.textContent = lista.length === 1
+    ? '1 imóvel à venda neste condomínio'
+    : lista.length + ' imóveis à venda neste condomínio';
+
+  grid.innerHTML = lista.map(function(im){
+    var foto = _fotoImovel(im);
+    var ref  = im.codigo || im.slug || im.id;
+    var specs = [];
+    if(im.area)    specs.push(im.area + ' m²');
+    if(im.quartos) specs.push(im.quartos + ' quartos');
+    if(im.suites)  specs.push(im.suites + ' suítes');
+    if(im.vagas)   specs.push(im.vagas + ' vagas');
+
+    return '<a class="ci-card" href="/imovel?id=' + encodeURIComponent(ref) + '">' +
+      '<div class="ci-foto">' +
+        (foto
+          ? '<img src="' + foto + '" alt="' + (im.titulo || 'Imóvel') + ' no ' + (condominio.nome||'') + '" loading="lazy">'
+          : '<div class="ci-foto-ph">🏠</div>') +
+        (im.tipo ? '<span class="ci-tag">' + im.tipo + '</span>' : '') +
+      '</div>' +
+      '<div class="ci-body">' +
+        '<div class="ci-titulo">' + (im.titulo || 'Imóvel') + '</div>' +
+        (specs.length ? '<div class="ci-specs">' + specs.join(' · ') + '</div>' : '') +
+        '<div class="ci-preco">' + _brl(im.preco) + '</div>' +
+        (im.codigo ? '<div class="ci-cod">Cód: ' + im.codigo + '</div>' : '') +
+      '</div>' +
+    '</a>';
+  }).join('');
+}
+
+
+/* ═══ COMPARTILHAR O CONDOMÍNIO (com prévia de foto) ═══ */
+function urlCompartilharCond(){
+  if(cond){
+    var ref = cond.slug || cond.id;
+    // a URL /condominio/SLUG passa pela Function que gera a prévia com foto
+    return 'https://condominiosnapraia.com.br/condominio/' + encodeURIComponent(ref);
+  }
+  return location.href;
+}
+function compartilharCond(){
+  var url = urlCompartilharCond();
+  var titulo = (cond && cond.nome) || document.title;
+  // mobile: usa o compartilhamento nativo
+  if(navigator.share){
+    navigator.share({title:titulo, url:url}).catch(function(){});
+    return;
+  }
+  // desktop: abre o menu
+  var menu = document.getElementById('cd-share-menu');
+  if(!menu) return;
+  var abrir = menu.style.display !== 'flex';
+  menu.style.display = abrir ? 'flex' : 'none';
+  if(abrir){
+    var wa = document.getElementById('cd-share-wa');
+    var fb = document.getElementById('cd-share-fb');
+    if(wa) wa.href = 'https://wa.me/?text=' + encodeURIComponent(titulo + ' — ' + url);
+    if(fb) fb.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+  }
+}
+function copiarLinkCond(btn){
+  var url = urlCompartilharCond();
+  try{
+    navigator.clipboard.writeText(url);
+    var orig = btn.innerHTML;
+    btn.innerHTML = '✓ Link copiado!';
+    setTimeout(function(){ btn.innerHTML = orig; }, 1800);
+  }catch(e){
+    prompt('Copie o link:', url);
+  }
+}
+// fechar o menu ao clicar fora
+document.addEventListener('click', function(e){
+  var menu = document.getElementById('cd-share-menu');
+  if(menu && !e.target.closest('.cd-share') && !e.target.closest('.cd-share-menu')){
+    menu.style.display = 'none';
+  }
+});
+
 </script>
 </body>
 </html>

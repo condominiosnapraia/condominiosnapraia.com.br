@@ -1803,66 +1803,7 @@ body{padding-top:56px}
 
   
 
-  <!-- ══ LISTAGEM COMPLETA ══ -->
-  <div id="all-listing" style="display:none">
-
-  <!-- PAGE TABS -->
-  <div class="page-tabs" id="tabs-anchor">
-    <div class="ptab on" id="pt-c" onclick="showTab('condominios')">🏘 Condomínios</div>
-    <div class="ptab" id="pt-i" onclick="showTab('imoveis')">🏠 Imóveis à Venda</div>
-    <div class="ptab" id="pt-t" onclick="openTurismo()">🌊 Turismo no Litoral</div>
-  </div>
-
-  <!-- TAB: CONDOMÍNIOS -->
-  <div id="tab-c" style="display:block">
-    <div class="sbar-sec">
-      <div class="sbar sbar-3">
-        <div class="sf"><label>Condomínio</label><input type="text" id="c-s" placeholder="Ex: Santorini..." oninput="rCond()"></div>
-        <div class="sf"><label>Cidade</label>
-          <select id="c-city" onchange="rCond()">
-            <option value="">Todas as cidades</option>
-            <option>Xangri-lá</option><option>Capão da Canoa</option><option>Atlântida</option>
-            <option>Curumim</option><option>Lagoa dos Quadros</option><option>Osório</option>
-          </select>
-        </div>
-        <button class="sgo" onclick="rCond()">Buscar</button>
-      </div>
-    </div>
-    <div class="rhdr">
-      <p class="rcnt">Exibindo <strong id="c-cnt">0</strong> condomínios</p>
-      <p style="font-size:11px;color:var(--tm)">Litoral Norte do RS</p>
-    </div>
-    <div class="gsec"><div class="cgrid" id="c-grid"></div></div>
-  </div>
-
-  <!-- TAB: IMÓVEIS -->
-  <div id="tab-i" style="display:none">
-    <div class="sbar-sec">
-      <div class="sbar sbar-4">
-        <div class="sf"><label>Buscar</label><input type="text" id="i-s" placeholder="Imóvel ou condomínio..." oninput="rImov()"></div>
-        <div class="sf"><label>Tipo</label>
-          <select id="i-tipo" onchange="rImov()">
-            <option value="">Todos</option>
-            <option>Casa</option><option>Terreno</option><option>Apartamento</option><option>Cobertura</option><option>Chalé</option>
-          </select>
-        </div>
-        <div class="sf"><label>Preço máximo</label>
-          <select id="i-preco" onchange="rImov()">
-            <option value="">Qualquer</option>
-            <option value="500000">Até R$ 500k</option><option value="1000000">Até R$ 1M</option>
-            <option value="2000000">Até R$ 2M</option><option value="5000000">Até R$ 5M</option>
-          </select>
-        </div>
-        <button class="sgo" onclick="rImov()">Buscar</button>
-      </div>
-    </div>
-    <div class="rhdr">
-      <p class="rcnt">Exibindo <strong id="i-cnt">0</strong> imóveis disponíveis</p>
-    </div>
-    <div class="gsec"><div class="cgrid" id="i-grid"></div></div>
-  </div>
-
-  </div><!-- /all-listing -->
+  <!-- /all-listing -->
 
 
   
@@ -2855,8 +2796,8 @@ function resolveCond(all,key){
 window.addEventListener('hashchange',()=>{
   if(_navegando) return; // ignora mudanças causadas pela própria limpeza da URL
   const h=location.hash;
-  if(h.startsWith('#cond/')){const id=h.replace('#cond/','');openDetail(id);}
-  else if(h.startsWith('#imovel/')){const id=h.replace('#imovel/','');abrirImovelPorId(id);}
+  if(h.startsWith('#cond/')){ location.replace('/condominio?id='+encodeURIComponent(h.replace('#cond/',''))); }
+  else if(h.startsWith('#imovel/')){ location.replace('/imovel?id='+encodeURIComponent(h.replace('#imovel/',''))); }
   else if(h==='#turismo'){openTurismo();}
   else if(h==='#imoveis'||h==='#todos-imoveis'){ location.replace('/imoveis'); }
   else if(h==='#condominios'||h==='#todos-condominios'){ location.replace('/condominios'); }
@@ -2873,11 +2814,7 @@ window.addEventListener('hashchange',()=>{
 });
 
 // ── SHOW ALL ──
-function showAllCond(){
-  const listing=document.getElementById('all-listing');
-  if(listing) listing.style.display='block';
-  showTab('condominios');
-}
+function showAllCond(){ location.href='/condominios'; }
 
 // ── CARROSSEL CRÉDITO CONTEMPLADO ──
 function ctScroll(dir){
@@ -2981,19 +2918,10 @@ function sfcBuscar(){
   },150);
 }
 
-function showAllImov(){
-  const listing=document.getElementById('all-listing');
-  if(listing) listing.style.display='block';
-  showTab('imoveis');}
+function showAllImov(){ location.href='/imoveis'; }
 
 // ── CONDOMÍNIOS DESTAQUE POR CIDADE (home) ──
-function showAllCondCity(cidade){
-  // pré-seleciona a cidade no filtro e mostra a listagem completa
-  const sel=document.getElementById('c-city');
-  if(sel){ sel.value=cidade; }
-  showTab('condominios');
-  if(typeof rCond==='function') rCond();
-}
+
 function renderDestaquesCidade(){
   getDataResolved().then(all=>{
     let dCapao=[], dXangri=[];
@@ -3026,26 +2954,7 @@ function mfnActive(id){
 }
 
 // ── TABS ──
-function showTab(t){
-  // Show the full listing section
-  const listing=document.getElementById('all-listing');
-  if(listing) listing.style.display='block';
-  // Ensure home is visible, turismo is hidden
-  const vh=document.getElementById('view-home');if(vh)vh.classList.add('on');
-  const vt=document.getElementById('view-turismo');if(vt)vt.classList.remove('on');
-  const vd=document.getElementById('view-detail');if(vd)vd.classList.remove('on');
-  ['c','i'].forEach(x=>{
-    const tab=document.getElementById('tab-'+x);if(tab)tab.style.display=x===t[0]?'block':'none';
-    const pt=document.getElementById('pt-'+x);if(pt)pt.classList.toggle('on',x===t[0]);
-  });
-  const pt=document.getElementById('pt-t');if(pt)pt.classList.remove('on');
-  const nc=document.getElementById('nav-c');if(nc)nc.classList.toggle('nav-active',t==='condominios');
-  const ni=document.getElementById('nav-i');if(ni)ni.classList.toggle('nav-active',t==='imoveis');
-  const nt=document.getElementById('nav-t');if(nt)nt.classList.remove('nav-active');
-  if(t==='imoveis')rImov();else rCond();
-  const anchor=document.getElementById('tabs-anchor');
-  if(anchor)window.scrollTo({top:anchor.offsetTop-60,behavior:'smooth'});
-}
+
 function scrollToTabs(){window.scrollTo({top:document.getElementById('tabs-anchor').offsetTop-60,behavior:'smooth'})}
 
 // ── CONDO GRID ──
@@ -3054,9 +2963,9 @@ function rCond(){
   const city=document.getElementById('c-city').value;
   getDataResolved().then(allData=>{
     const data=allData.filter(c=>c.ativo!==false&&(!s||c.nome.toLowerCase().includes(s))&&(!city||c.localizacao===city||c.cidade===city));
-    document.getElementById('c-cnt').textContent=data.length;
+    (document.getElementById('c-cnt')||{style:{},classList:{add(){},remove(){}}}).textContent=data.length;
     updateHeroStatsFrom(allData);
-    document.getElementById('c-grid').innerHTML=data.length===0
+    (document.getElementById('c-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML=data.length===0
       ?`<div class="empty"><div class="empty-ico">🔍</div><p>Nenhum condomínio encontrado</p></div>`
       :data.map(c=>buildCondCard(c)).join('');
     if(window.iniciarCarrosseisCards)iniciarCarrosseisCards();
@@ -3126,8 +3035,8 @@ function rImov(){
         list.push({...im,_c:c});
       });
     });
-    document.getElementById('i-cnt').textContent=list.length;
-    document.getElementById('i-grid').innerHTML=list.length===0
+    (document.getElementById('i-cnt')||{style:{},classList:{add(){},remove(){}}}).textContent=list.length;
+    (document.getElementById('i-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML=list.length===0
       ?`<div class="empty"><div class="empty-ico">🏠</div><p>Nenhum imóvel com esses filtros</p></div>`
       :list.map(im=>{
         const foto=im.fotos&&im.fotos.find(f=>f&&(f.startsWith('data:')||f.startsWith('http')));
@@ -3944,7 +3853,7 @@ function buildCondCard(c){
   }
   const imd=(c.imoveis||[]).filter(i=>i.status==='Disponível');
   const condUrl=c.slug?('/condominio?id='+encodeURIComponent(c.slug)):('/condominio?id='+encodeURIComponent(c.id));
-  return`<a class="ccard vis" href="${condUrl}" onclick="handleCondClick('${c.id}');return false;" style="text-decoration:none;color:inherit;display:block">
+  return`<a class="ccard vis" href="${condUrl}" style="text-decoration:none;color:inherit;display:block">
     <div class="ci">${imgH}<div class="cbadge">${loc}</div>${imd.length?`<div class="cibadge">${imd.length} imóvel${imd.length>1?'is':''}</div>`:''}</div>
     <div class="cbody">
       <div class="cname">${c.nome}</div>
@@ -4692,15 +4601,15 @@ async function renderContempladasCards(targetId){
 // ── INIT ──
 (async function(){
   // Mostra loading inicial
-  document.getElementById('c-grid').innerHTML='<div class="empty"><div class="empty-ico">⏳</div><p>Carregando condomínios...</p></div>';
-  document.getElementById('i-grid').innerHTML='<div class="empty"><div class="empty-ico">⏳</div><p>Carregando imóveis...</p></div>';
+  (document.getElementById('c-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML='<div class="empty"><div class="empty-ico">⏳</div><p>Carregando condomínios...</p></div>';
+  (document.getElementById('i-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML='<div class="empty"><div class="empty-ico">⏳</div><p>Carregando imóveis...</p></div>';
   
   // Checa se Supabase está configurado
   if(SUPABASE_URL === 'COLE_SUA_URL_AQUI'){
-    document.getElementById('c-grid').innerHTML='<div class="empty"><div class="empty-ico">⚙️</div><p>Configure o Supabase no arquivo index.html</p></div>';
+    (document.getElementById('c-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML='<div class="empty"><div class="empty-ico">⚙️</div><p>Configure o Supabase no arquivo index.html</p></div>';
     // Usa dados locais como fallback
-    document.getElementById('tab-c').style.display='block';
-    document.getElementById('tab-i').style.display='none';
+    (document.getElementById('tab-c')||{style:{},classList:{add(){},remove(){}}}).style.display='block';
+    (document.getElementById('tab-i')||{style:{},classList:{add(){},remove(){}}}).style.display='none';
     buildHomeDestaques();
     buildHomeBlog();
     rCond(); buildCities(); updateHeroStats(); renderDestaquesCidade();
@@ -4712,8 +4621,8 @@ async function renderContempladasCards(targetId){
   try{
     await fetchSiteData();
     const h=location.hash;
-    if(h.startsWith('#cond/')){openDetail(h.replace('#cond/',''));return;}
-    if(h.startsWith('#imovel/')){buildHomeDestaques();buildHomeBlog();setTimeout(function(){abrirImovelPorId(h.replace('#imovel/',''));},300);return;}
+    if(h.startsWith('#cond/')){ location.replace('/condominio?id='+encodeURIComponent(h.replace('#cond/',''))); return; }
+    if(h.startsWith('#imovel/')){ location.replace('/imovel?id='+encodeURIComponent(h.replace('#imovel/',''))); return; }
     if(h==='#turismo'){openTurismo();return;}
     // rotas antigas (hash) → agora existem páginas dedicadas: redireciona
     if(h==='#imoveis'||h==='#todos-imoveis'){ location.replace('/imoveis'); return; }
@@ -4723,10 +4632,10 @@ async function renderContempladasCards(targetId){
     if(h && h.length>1){
       try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
     }
-    document.getElementById('tab-c').style.display='block';
-    document.getElementById('tab-i').style.display='none';
-    document.getElementById('pt-c').classList.add('on');
-    document.getElementById('pt-i').classList.remove('on');
+    (document.getElementById('tab-c')||{style:{},classList:{add(){},remove(){}}}).style.display='block';
+    (document.getElementById('tab-i')||{style:{},classList:{add(){},remove(){}}}).style.display='none';
+    (document.getElementById('pt-c')||{style:{},classList:{add(){},remove(){}}}).classList.add('on');
+    (document.getElementById('pt-i')||{style:{},classList:{add(){},remove(){}}}).classList.remove('on');
     const _ptt=document.getElementById('pt-t'); if(_ptt) _ptt.classList.remove('on');
     buildHomeDestaques();
     buildHomeBlog();
@@ -4737,7 +4646,7 @@ async function renderContempladasCards(targetId){
     if(typeof carregarFotosCarrossel==="function") carregarFotosCarrossel();
   }catch(e){
     console.error('Init error:', e);
-    document.getElementById('c-grid').innerHTML='<div class="empty"><div class="empty-ico">⚠️</div><p>Erro ao carregar dados. Verifique a conexão.</p></div>';
+    (document.getElementById('c-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML='<div class="empty"><div class="empty-ico">⚠️</div><p>Erro ao carregar dados. Verifique a conexão.</p></div>';
   }
 })();
 // ── PROTEÇÃO DE CONTEÚDO ──

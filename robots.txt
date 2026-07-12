@@ -4,6 +4,7 @@ Allow: /
 # Sitemaps
 Sitemap: https://condominiosnapraia.com.br/sitemap.xml
 Sitemap: https://condominiosnapraia.com.br/sitemap-imoveis.xml
+Sitemap: https://condominiosnapraia.com.br/sitemap-condominios.xml
 
 # Painel administrativo (não indexar)
 Disallow: /crm.html
