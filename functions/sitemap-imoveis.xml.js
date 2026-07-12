@@ -39,8 +39,9 @@ export async function onRequest(context) {
   });
 
   const urls = validos.map(im => {
-    const ref = im.slug || im.id;
-    const loc = SITE + '/imovel?id=' + encodeURIComponent(ref);
+    // URL bonita: prioriza o CÓDIGO do imóvel
+    const ref = im.codigo || im.slug || im.id;
+    const loc = SITE + '/imovel/' + encodeURIComponent(ref);
     const data = im.atualizado_em || im.updated_at || im.criado_em || im.created_at;
     let lastmod = '';
     if (data) {

@@ -65,9 +65,9 @@ export async function onRequest(context){
   let imovel = null;
   try{
     // busca por ID (uuid) OU por slug — o que vier na URL
-    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    const campo = UUID_RE.test(id) ? 'id' : 'slug';
-    const r = await fetch(`${SB_URL}/rest/v1/imoveis?${campo}=eq.${encodeURIComponent(id)}&select=*`, {
+    // busca por id OU slug (o ?or= testa os dois de uma vez)
+    const ref = encodeURIComponent(id);
+    const r = await fetch(`${SB_URL}/rest/v1/imoveis?or=(codigo.eq.${ref},slug.eq.${ref},id.eq.${ref})&select=*&limit=1`, {
       headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON }
     });
     if(r.ok){
@@ -118,6 +118,24 @@ export async function onRequest(context){
 <p>Redirecionando... <a href="${esc(siteUrl)}">Clique aqui</a>.</p>
 </body>
 </html>`;
+
+  // diagnóstico: adicione ?debug=1 na URL
+  try{
+    const u = new URL(context.request.url);
+    if(u.searchParams.get('debug')==='1'){
+      return new Response(JSON.stringify({
+        id_procurado: id,
+        imovel_encontrado: !!imovel,
+        titulo: imovel ? imovel.titulo : null,
+        foto_escolhida: foto,
+        campos_de_foto: imovel ? {
+          fotos_no_site: imovel.fotos_no_site,
+          fotos: imovel.fotos
+        } : null
+      }, null, 2), {headers:{'Content-Type':'application/json; charset=utf-8'}});
+    }
+  }catch(e){}
+
 
   return new Response(html, {
     headers: { 'content-type': 'text/html; charset=UTF-8', 'cache-control': 'public, max-age=180' }

@@ -728,7 +728,9 @@ async function init(){
   const cont=document.getElementById('ip-content');
   if(!id){cont.innerHTML=notFound();return;}
   // buscar imóvel + condomínio
-  const imv=await sbGet('imoveis','?id=eq.'+encodeURIComponent(id)+'&limit=1');
+  // aceita CÓDIGO, slug ou id na URL (?id=CNP-042 funciona)
+  const _ref = encodeURIComponent(id);
+  const imv=await sbGet('imoveis','?or=(codigo.eq.'+_ref+',slug.eq.'+_ref+',id.eq.'+_ref+')&limit=1');
   if(!Array.isArray(imv)||!imv.length){cont.innerHTML=notFound();return;}
   const im=imv[0];
   let cond={};
@@ -1039,7 +1041,8 @@ function notFound(){return '<div class="ip-notfound"><h1>Imóvel não encontrado
 function urlCompartilhar(){
   var im = window._imAtual;
   if(im){
-    var ref = im.slug || im.id;
+    // prioridade: CÓDIGO (bonito) → slug → id
+    var ref = im.codigo || im.slug || im.id;
     if(ref) return 'https://condominiosnapraia.com.br/imovel/' + encodeURIComponent(ref);
   }
   return window.location.href;
