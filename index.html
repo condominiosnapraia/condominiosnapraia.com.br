@@ -2615,7 +2615,7 @@ async function fetchSiteData(){
     return _siteCache;
   }catch(e){
     console.error('fetchSiteData error:', e);
-    return { condominios:[], destCond:[], destImov:[], siteCfg:{}, turismoCfg:{} };
+    return { condominios:[], imoveis:[], destCond:[], destImov:[], destCapao:[], destXangri:[], siteCfg:{}, turismoCfg:{} };
   }
 }
 
@@ -2924,6 +2924,11 @@ function showAllImov(){ location.href='/imoveis'; }
 
 function renderDestaquesCidade(){
   getDataResolved().then(all=>{
+    try{
+      console.log('[destaques cidade] condomínios recebidos:', (all||[]).length);
+      var cidades = [...new Set((all||[]).map(function(c){ return c.localizacao || c.cidade || '(sem cidade)'; }))];
+      console.log('[destaques cidade] cidades encontradas no banco:', cidades);
+    }catch(_){}
     let dCapao=[], dXangri=[];
     try{ dCapao=(_siteCache&&_siteCache.destCapao)||[]; }catch(e){}
     try{ dXangri=(_siteCache&&_siteCache.destXangri)||[]; }catch(e){}
@@ -2945,7 +2950,7 @@ function renderDestaquesCidade(){
       grid.innerHTML=lista.map(c=>buildCondCard(c)).join('');
       if(window.iniciarCarrosseisCards)iniciarCarrosseisCards();
     });
-  }).catch(function(e){console.warn('destaques cidade',e);});
+  }).catch(function(e){ console.error('[destaques cidade] ERRO — os cards não vão carregar:', e); });
 }
 function mfnActive(id){
   document.querySelectorAll('.mob-footer-btn').forEach(b=>b.classList.remove('active'));
@@ -2955,22 +2960,13 @@ function mfnActive(id){
 
 // ── TABS ──
 
-function scrollToTabs(){window.scrollTo({top:document.getElementById('tabs-anchor').offsetTop-60,behavior:'smooth'})}
+function scrollToTabs(){ /* listagem interna removida */ }
 
 // ── CONDO GRID ──
 function rCond(){
-  const s=(document.getElementById('c-s').value||'').toLowerCase();
-  const city=document.getElementById('c-city').value;
-  getDataResolved().then(allData=>{
-    const data=allData.filter(c=>c.ativo!==false&&(!s||c.nome.toLowerCase().includes(s))&&(!city||c.localizacao===city||c.cidade===city));
-    (document.getElementById('c-cnt')||{style:{},classList:{add(){},remove(){}}}).textContent=data.length;
-    updateHeroStatsFrom(allData);
-    (document.getElementById('c-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML=data.length===0
-      ?`<div class="empty"><div class="empty-ico">🔍</div><p>Nenhum condomínio encontrado</p></div>`
-      :data.map(c=>buildCondCard(c)).join('');
-    if(window.iniciarCarrosseisCards)iniciarCarrosseisCards();
-    obs();
-  });
+  // a listagem interna foi removida (agora existe a página /condominios).
+  // mantida vazia para não quebrar chamadas antigas.
+  try{ if(typeof updateHeroStats==='function') updateHeroStats(); }catch(e){}
 }
 
 function handleCondClick(id){
@@ -3014,48 +3010,7 @@ function filterImovByCity(cidade){
 }
 
 function rImov(){
-  const s=(document.getElementById('i-s').value||'').toLowerCase();
-  const tipo=document.getElementById('i-tipo').value;
-  const pm=Number(document.getElementById('i-preco').value)||Infinity;
-  getDataResolved().then(all=>{
-    const list=[];
-    all.forEach(c=>{
-      (c.imoveis||[]).forEach(im=>{
-        if(im.status!=='Disponível'&&im.status!=='Negociando')return;
-        if(im.publicar===false)return;
-        if(tipo&&im.tipo!==tipo)return;
-        if(pm!==Infinity&&(+im.preco||0)>pm)return;
-        if(s&&!(im.titulo||'').toLowerCase().includes(s)&&!c.nome.toLowerCase().includes(s))return;
-        if(_imovCityFilter){
-          const cidadeC=(c.cidade||c.localizacao||'').toLowerCase();
-          const bairroC=(c.bairro||'').toLowerCase();
-          const alvo=_imovCityFilter.toLowerCase();
-          if(!cidadeC.includes(alvo) && !bairroC.includes(alvo)) return;
-        }
-        list.push({...im,_c:c});
-      });
-    });
-    (document.getElementById('i-cnt')||{style:{},classList:{add(){},remove(){}}}).textContent=list.length;
-    (document.getElementById('i-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML=list.length===0
-      ?`<div class="empty"><div class="empty-ico">🏠</div><p>Nenhum imóvel com esses filtros</p></div>`
-      :list.map(im=>{
-        const foto=im.fotos&&im.fotos.find(f=>f&&(f.startsWith('data:')||f.startsWith('http')));
-        const sc=im.status==='Disponível'?'st-disp':'st-neg';
-        const specs=[im.area?`📐 ${m2(im.area)}`:'',im.quartos?`🛏 ${im.quartos} qtos`:'',im.suites?`🚿 ${im.suites} suítes`:'',im.vagas?`🚗 ${im.vagas}`:''].filter(Boolean).map(x=>`<span class="icspec">${x}</span>`).join('');
-        return`<div class="icard fade-in" onclick="window.location.href='/imovel?id='+encodeURIComponent(im.codigo||im.slug||im.id)">
-          <div class="icimg">${foto?`<img src="${foto}" alt="${im.titulo}" loading="lazy">`:'🏠'}<div class="icst ${sc}">${im.status}</div></div>
-          <div class="icbody">
-            <div class="ictipo">${im.tipo||'Imóvel'}</div>
-            <div class="ictit">${im.titulo||'—'}</div>
-            <div class="iccond">📍 ${im._c.nome} · ${im._c.localizacao||im._c.cidade||''}</div>
-            <div class="icspecs">${specs}</div>
-            <div class="icdifs">${(im.diferenciais||[]).slice(0,3).map(d=>`<span class="icdif">${d}</span>`).join('')}</div>
-          </div>
-          <div class="icfoot"><div class="icpreco">${brl(im.preco)}</div><span style="font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ocean)">Ver →</span></div>
-        </div>`;
-      }).join('');
-    obs();
-  });
+  // a listagem interna foi removida (agora existe a página /imoveis).
 }
 
 // ── HERO STATS ──
