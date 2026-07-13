@@ -472,6 +472,16 @@ details[open] .faq-q:after{content:"−"}
 .vp-final p{font-size:16px;line-height:1.65;opacity:.92;max-width:600px;margin:0 auto 30px}
 .vp-final-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .vp-note{font-size:13px;opacity:.7;margin-top:18px}
+
+/* correções mobile */
+.ftr-wave svg{width:100%;height:100%;display:block}
+@media(max-width:640px){
+  .ftr-wave{height:36px}
+  .ftr-wave svg{height:36px}
+}
+/* capas: o zoom não pode estourar a largura */
+.il-hero,.cl-hero{overflow:hidden}
+.il-hero-slides,.cl-hero-slides{overflow:hidden}
 </style>
 <body>
 <header class="desk-header" id="desk-header">

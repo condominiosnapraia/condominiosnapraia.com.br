@@ -340,6 +340,16 @@ header{position:relative;top:auto;left:auto;right:auto;z-index:100;padding:14px 
 @media(max-width:980px){.desk-header{display:none}body{padding-top:0}
 body{padding-top:56px}
 @media(max-width:980px){body{padding-top:0}}
+
+/* correções mobile */
+.ftr-wave svg{width:100%;height:100%;display:block}
+@media(max-width:640px){
+  .ftr-wave{height:36px}
+  .ftr-wave svg{height:36px}
+}
+/* capas: o zoom não pode estourar a largura */
+.il-hero,.cl-hero{overflow:hidden}
+.il-hero-slides,.cl-hero-slides{overflow:hidden}
 </style>
 <script type="application/ld+json" id="ld-cond">{}</script>
 </head>

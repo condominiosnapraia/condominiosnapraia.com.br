@@ -351,6 +351,16 @@ body{padding-top:56px}
 .e404-btn:hover{transform:translateY(-2px)}
 .e404-primary{background:linear-gradient(135deg,var(--om),var(--ol));color:#fff}
 .e404-ghost{background:#fff;color:var(--ocean);border:1.5px solid var(--border)}
+
+/* correções mobile */
+.ftr-wave svg{width:100%;height:100%;display:block}
+@media(max-width:640px){
+  .ftr-wave{height:36px}
+  .ftr-wave svg{height:36px}
+}
+/* capas: o zoom não pode estourar a largura */
+.il-hero,.cl-hero{overflow:hidden}
+.il-hero-slides,.cl-hero-slides{overflow:hidden}
 </style>
 </head>
 <body>

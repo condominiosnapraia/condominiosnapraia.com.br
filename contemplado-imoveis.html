@@ -549,6 +549,16 @@ footer.ftr{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e749
 @media(max-width:980px){.desk-header{display:none}body{padding-top:0}
 body{padding-top:56px}
 @media(max-width:980px){body{padding-top:0}}
+
+/* correções mobile */
+.ftr-wave svg{width:100%;height:100%;display:block}
+@media(max-width:640px){
+  .ftr-wave{height:36px}
+  .ftr-wave svg{height:36px}
+}
+/* capas: o zoom não pode estourar a largura */
+.il-hero,.cl-hero{overflow:hidden}
+.il-hero-slides,.cl-hero-slides{overflow:hidden}
 </style>
 <link rel="canonical" href="https://condominiosnapraia.com.br/contemplado-imoveis">
 <meta property="og:title" content="Cartas Contempladas para Imóveis | RZN Contempladas — Litoral Norte RS">

@@ -307,9 +307,9 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 
 .il-hero{position:relative;min-height:340px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;overflow:hidden;isolation:isolate}
 .il-hero-slides{position:absolute;inset:0;z-index:-2}
-.il-hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;background-image:linear-gradient(150deg,#0c4a6e,#0891b2);opacity:0;transition:opacity 1.4s ease-in-out;transform:scale(1.04);animation:ilZoom 14s ease-in-out infinite alternate}
+.il-hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;background-image:linear-gradient(150deg,#0c4a6e,#0891b2);opacity:0;transition:opacity 1.4s ease-in-out;animation:ilZoom 14s ease-in-out infinite alternate;will-change:background-size}
 .il-hero-slide.on{opacity:1}
-@keyframes ilZoom{from{transform:scale(1.04)}to{transform:scale(1.12)}}
+@keyframes ilZoom{from{background-size:106% auto}to{background-size:118% auto}}
 .il-hero-grad{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(13,59,84,.55) 0%,rgba(13,59,84,.42) 45%,rgba(13,59,84,.78) 100%)}
 .il-hero-in{position:relative;z-index:1;padding:60px 24px}
 .il-hero h1{font-family:'Fraunces',serif;font-size:clamp(32px,5.2vw,54px);font-weight:600;margin:0;text-shadow:0 4px 24px rgba(0,0,0,.45);letter-spacing:-.01em}
@@ -452,6 +452,16 @@ details[open] .dec-faq-q:after{content:"−"}
 .il-loading .sp{width:38px;height:38px;border:3px solid var(--sl);border-top-color:var(--om);border-radius:50%;animation:ilspin 1s linear infinite;margin:0 auto 14px}
 @keyframes ilspin{to{transform:rotate(360deg)}}
 .il-clear{background:none;border:none;color:var(--om);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;align-self:flex-end;padding:11px 0}
+
+/* correções mobile */
+.ftr-wave svg{width:100%;height:100%;display:block}
+@media(max-width:640px){
+  .ftr-wave{height:36px}
+  .ftr-wave svg{height:36px}
+}
+/* capas: o zoom não pode estourar a largura */
+.il-hero,.cl-hero{overflow:hidden}
+.il-hero-slides,.cl-hero-slides{overflow:hidden}
 </style>
 
 <body>

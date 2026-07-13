@@ -576,6 +576,16 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-notfound{text-align:center;padding:80px 20px}
 .ip-notfound h1{font-family:'Fraunces',serif;color:var(--ocean);font-size:28px;margin-bottom:10px}
 .ip-notfound a{color:var(--om);font-weight:700;text-decoration:none}
+
+/* correções mobile */
+.ftr-wave svg{width:100%;height:100%;display:block}
+@media(max-width:640px){
+  .ftr-wave{height:36px}
+  .ftr-wave svg{height:36px}
+}
+/* capas: o zoom não pode estourar a largura */
+.il-hero,.cl-hero{overflow:hidden}
+.il-hero-slides,.cl-hero-slides{overflow:hidden}
 </style>
 
 <body>

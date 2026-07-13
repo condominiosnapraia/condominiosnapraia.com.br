@@ -366,6 +366,16 @@ body{padding-top:56px}
 .ab-list li:before{content:"✓";position:absolute;left:0;color:var(--om);font-weight:700}
 .ab-cta{text-align:center;margin:34px 0 10px}
 .ab-wpp{display:inline-flex;align-items:center;gap:10px;background:#25d366;color:#fff;text-decoration:none;font-weight:700;padding:16px 32px;border-radius:100px;font-size:16px;box-shadow:0 10px 30px rgba(37,211,102,.35)}
+
+/* correções mobile */
+.ftr-wave svg{width:100%;height:100%;display:block}
+@media(max-width:640px){
+  .ftr-wave{height:36px}
+  .ftr-wave svg{height:36px}
+}
+/* capas: o zoom não pode estourar a largura */
+.il-hero,.cl-hero{overflow:hidden}
+.il-hero-slides,.cl-hero-slides{overflow:hidden}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"RealEstateAgent","name":"Felipe Ranzolin Fachinello","jobTitle":"Corretor de Imóveis","identifier":"CRECI-RS 72.386","telephone":"+5551999442252","email":"napraiacondominios@gmail.com","areaServed":["Xangri-lá","Capão da Canoa","Osório","Maquiné","Litoral Norte Gaúcho"],"address":{"@type":"PostalAddress","streetAddress":"Av. Central, 248, Loja 07","addressLocality":"Xangri-lá","addressRegion":"RS","addressCountry":"BR"},"url":"https://condominiosnapraia.com.br/sobre"}

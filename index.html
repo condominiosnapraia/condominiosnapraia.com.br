@@ -1436,6 +1436,23 @@ body{padding-top:56px}
 .viv-lagoa .viv-cta:hover{background:#0d7d8a;color:#fff;border-color:#0d7d8a;box-shadow:0 10px 28px rgba(13,125,138,.28);transform:translateY(-2px)}
 .viv-mar .viv-cta{background:transparent;color:#0c4a7a;border-color:rgba(12,90,148,.35);box-shadow:none}
 .viv-mar .viv-cta:hover{background:#0c5a94;color:#fff;border-color:#0c5a94;box-shadow:0 10px 28px rgba(12,90,148,.28);transform:translateY(-2px)}
+
+/* correções mobile */
+.ftr-wave svg{width:100%;height:100%;display:block}
+@media(max-width:640px){
+  .ftr-wave{height:36px}
+  .ftr-wave svg{height:36px}
+}
+/* capas: o zoom não pode estourar a largura */
+.il-hero,.cl-hero{overflow:hidden}
+.il-hero-slides,.cl-hero-slides{overflow:hidden}
+
+/* onde-ir mobile fix */
+@media(max-width:640px){
+  .ondeir-sec{overflow-x:hidden}
+  .oi-grid,.oi-track{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding-bottom:8px}
+  .oi-card{scroll-snap-align:start;min-width:0}
+}
 </style>
 
 <script type="application/ld+json">
