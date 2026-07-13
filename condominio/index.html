@@ -557,20 +557,6 @@ body{padding-top:56px}
   </div>
 </div>
 
-<!-- IMÓVEIS DISPONÍVEIS NESTE CONDOMÍNIO -->
-<section class="imoveis-section" id="cond-imoveis-sec" style="display:none">
-  <div class="wrap">
-    <div style="text-align:center;margin-bottom:34px">
-      <div class="cond-eyebrow" style="justify-content:center;margin-bottom:10px">À venda neste condomínio</div>
-      <h2 style="font-family:'Fraunces',serif;font-size:clamp(26px,3.4vw,38px);font-weight:600;color:var(--ocean);line-height:1.15">
-        Imóveis <em style="font-style:italic;color:var(--om)">disponíveis</em>
-      </h2>
-      <p id="cond-imov-cnt" style="color:var(--tm);font-size:15px;margin-top:8px"></p>
-    </div>
-    <div class="imoveis-grid" id="cond-imoveis-grid"></div>
-  </div>
-</section>
-
 <section class="vpc" style="padding-top:52px;padding-bottom:52px">
   <div class="vpc-in">
     <div class="vpc-txt">
@@ -668,17 +654,33 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 // Busca os condomínios: 1º tenta o Supabase (indexável), com fallback ao localStorage.
 async function getData() {
-  // tenta Supabase
+  const HDR = { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } };
   try {
-    const r = await fetch(SUPABASE_URL + '/rest/v1/condominios?select=*', {
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+    // busca os condomínios E os imóveis em paralelo
+    const [rc, ri] = await Promise.all([
+      fetch(SUPABASE_URL + '/rest/v1/condominios?select=*', HDR),
+      fetch(SUPABASE_URL + '/rest/v1/imoveis?select=*', HDR)
+    ]);
+
+    let condos = rc.ok ? await rc.json() : [];
+    let imoveis = ri.ok ? await ri.json() : [];
+    if (!Array.isArray(condos)) condos = [];
+    if (!Array.isArray(imoveis)) imoveis = [];
+
+    // anexa os imóveis de cada condomínio (só os publicados)
+    const porCond = {};
+    imoveis.forEach(im => {
+      if (im.publicar === false) return;           // não publicado: ignora
+      const cid = im.cond_id;
+      if (!cid) return;                            // sem condomínio: ignora
+      (porCond[cid] = porCond[cid] || []).push(im);
     });
-    if (r.ok) {
-      const dados = await r.json();
-      if (Array.isArray(dados) && dados.length) return dados;
-    }
+    condos.forEach(c => { c.imoveis = porCond[c.id] || []; });
+
+    if (condos.length) return condos;
   } catch (e) { /* segue para o fallback */ }
-  // fallback: localStorage (caso offline ou Supabase indisponível)
+
+  // fallback: localStorage
   try { return JSON.parse(localStorage.getItem('cnp_condominios') || '[]'); } catch { return []; }
 }
 
@@ -834,8 +836,6 @@ async function init() {
   // Imoveis
   buildImoveis(cond.imoveis || []);
 
-  // carregar os imóveis deste condomínio
-  try{ carregarImoveisDoCondominio(cond); }catch(e){}
 }
 
 // ── GALLERY ──
@@ -892,7 +892,7 @@ document.getElementById('hero-gallery').addEventListener('touchend', e => {
 
 // ── IMÓVEIS ──
 function buildImoveis(imoveis) {
-  const disp = imoveis.filter(i => i.status === 'Disponível' || i.status === 'Negociando');
+  const disp = imoveis.filter(i => i.publicar !== false && (i.status === 'Disponível' || i.status === 'Negociando'));
   const count = disp.length;
 
   document.getElementById('imoveis-count-num').textContent = count;
@@ -912,7 +912,9 @@ function buildImoveis(imoveis) {
 
   document.getElementById('imoveis-grid').innerHTML = disp.map(im => {
     const statusCls = im.status === 'Disponível' ? 'disp' : 'neg';
-    const foto = (im.fotos && im.fotos[0]) ? `<img src="${im.fotos[0]}" alt="${im.titulo}">` : '🏠';
+    const _fts = im.fotos_no_site || im.fotos || [];
+    const _f0 = Array.isArray(_fts) ? _fts.find(f => typeof f === 'string' && f.indexOf('http') === 0) : null;
+    const foto = _f0 ? `<img src="${_f0}" alt="${im.titulo || 'Imóvel'} — ${cond.nome || ''}" loading="lazy">` : '🏠';
     const specs = [];
     if (im.area)    specs.push(`<span class="ic-spec"><span class="ic-spec-ico">📐</span>${m2(im.area)}</span>`);
     if (im.quartos) specs.push(`<span class="ic-spec"><span class="ic-spec-ico">🛏</span>${im.quartos} qtos</span>`);
@@ -920,7 +922,7 @@ function buildImoveis(imoveis) {
     if (im.vagas)   specs.push(`<span class="ic-spec"><span class="ic-spec-ico">🚗</span>${im.vagas} vagas</span>`);
     const difs = (im.diferenciais || []).slice(0, 3).map(d => `<span class="ic-dif">${d}</span>`).join('');
     return `
-      <div class="imovel-card" onclick="openImModal('${im.id}')">
+      <a class="imovel-card" href="/imovel?id=${encodeURIComponent(im.codigo || im.slug || im.id)}" style="text-decoration:none;color:inherit;display:block">
         <div class="ic-img">
           ${foto}
           <div class="ic-status ${statusCls}">${im.status}</div>
@@ -935,7 +937,7 @@ function buildImoveis(imoveis) {
           <div class="ic-preco">${brl(im.preco)}</div>
           <div class="ic-cta">Ver detalhes →</div>
         </div>
-      </div>`;
+      </a>`;
   }).join('');
 }
 
@@ -1043,7 +1045,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeImModal
 
 init();
 
-/* ═══ IMÓVEIS DISPONÍVEIS NESTE CONDOMÍNIO ═══ */
+
 function _brl(v){
   var n = parseFloat(v);
   if(isNaN(n) || n<=0) return 'Consulte';
