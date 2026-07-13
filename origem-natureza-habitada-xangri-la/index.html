@@ -370,7 +370,8 @@ footer{background:linear-gradient(160deg,#0c4a6e,#0e7490);padding:50px 44px 40px
     <p>Estrutura completa de bem-estar: <strong>piscina térmica, sauna, SPA e academia</strong>, além de clube social com rooftop lounge, espaço gourmet, parrilla e 2 quadras de beach tennis cobertas.</p>
     <div class="foto" data-fk="origem__5"><span class="ic">📷</span><span class="cap">Foto — wellness e clube</span></div>
 
-    <h2>Mapa de Implantação do Condomínio</h2>
+    <div id="bloco-mapa-implantacao" style="display:none">
+  <h2>Mapa de Implantação do Condomínio</h2>
     <p>Veja a planta com a disposição dos lotes e as áreas de lazer — em alta resolução.</p>
     <div class="pdf-map">
       <div class="pdf-frame">
@@ -391,6 +392,7 @@ footer{background:linear-gradient(160deg,#0c4a6e,#0e7490);padding:50px 44px 40px
         <a class="btn-wpp" href="https://wa.me/5551982868888?text=Ol%C3%A1%21%20Quero%20a%20planta%20de%20lotes%20do%20Origem%20Natureza%20Habitada." rel="nofollow" style="padding:13px 22px;font-size:14px">Pedir planta de lotes</a>
       </div>
     </div>
+</div>
 
     <h2>Principais Diferenciais</h2>
     <div class="tbl-wrap"><table><thead><tr><th>Diferencial</th><th>O que oferece</th></tr></thead><tbody><tr><td>Conceito</td><td class="yes">Boutique biofílico — único no litoral</td></tr><tr><td>Incorporadora</td><td class="yes">Construtora Raupp (25+ anos)</td></tr><tr><td>Oásis</td><td class="yes">1.700m² com piscina natural</td></tr><tr><td>Casas</td><td class="yes">88 sobrados com rooftop privativo</td></tr><tr><td>Wellness</td><td class="yes">Piscina térmica, sauna, SPA, academia</td></tr><tr><td>Esportes</td><td class="yes">2 quadras de beach tennis cobertas</td></tr></tbody></table></div>
@@ -558,6 +560,40 @@ function enviarLeadWpp(ev, emp){
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', carregarCapa);
   else carregarCapa();
+})();
+</script>
+
+
+<script>
+/* Mostra o bloco do Mapa de Implantação SOMENTE se o PDF existir */
+(function(){
+  async function verificarMapa(){
+    var bloco = document.getElementById('bloco-mapa-implantacao');
+    if(!bloco) return;
+    var frame = document.getElementById('pdf-mapa-frame');
+    var btn   = document.getElementById('pdf-mapa-mobile');
+    var url   = (frame && frame.getAttribute('src')) || (btn && btn.getAttribute('href')) || '';
+    url = url.split('#')[0];
+    if(!url){ bloco.style.display = 'none'; return; }
+
+    try{
+      // HEAD é leve: só verifica se o arquivo existe
+      var r = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+      if(r && r.ok){
+        var tipo = r.headers.get('content-type') || '';
+        // confirma que é mesmo um PDF (e não a página 404 do site)
+        if(tipo.indexOf('pdf') > -1 || tipo === ''){
+          bloco.style.display = '';
+          return;
+        }
+      }
+      bloco.style.display = 'none';
+    }catch(e){
+      bloco.style.display = 'none';
+    }
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', verificarMapa);
+  else verificarMapa();
 })();
 </script>
 

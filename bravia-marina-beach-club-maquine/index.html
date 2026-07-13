@@ -361,7 +361,8 @@ footer{background:linear-gradient(160deg,#0c4a6e,#0e7490);padding:50px 44px 40px
     <p>O <strong>clube em ilha natural</strong> e a infraestrutura de lazer completam a proposta resort: piscinas, espaços gourmet, áreas esportivas e de convivência, tudo integrado à paisagem natural do rio e da mata.</p>
     <div class="foto" data-fk="bravia__6"><span class="ic">📷</span><span class="cap">Foto — clube</span></div>
 
-    <h2>Mapa de Implantação do Condomínio</h2>
+    <div id="bloco-mapa-implantacao" style="display:none">
+  <h2>Mapa de Implantação do Condomínio</h2>
     <p>Veja a planta com a disposição dos lotes e as áreas de lazer — em alta resolução.</p>
     <div class="pdf-map">
       <div class="pdf-frame">
@@ -382,6 +383,7 @@ footer{background:linear-gradient(160deg,#0c4a6e,#0e7490);padding:50px 44px 40px
         <a class="btn-wpp" href="https://wa.me/5551982868888?text=Ol%C3%A1%21%20Quero%20a%20planta%20de%20lotes%20do%20Br%C3%A1via%20Marina%20%26%20Beach%20Club." rel="nofollow" style="padding:13px 22px;font-size:14px">Pedir planta de lotes</a>
       </div>
     </div>
+</div>
 
     <h2>Principais Diferenciais</h2>
     <div class="tbl-wrap"><table><thead><tr><th>Diferencial</th><th>O que oferece</th></tr></thead><tbody><tr><td>Localização</td><td class="yes">Às margens do Rio Tramandaí, em Maquiné</td></tr><tr><td>Náutica</td><td class="yes">Marina privativa e 240 lotes com acesso ao rio</td></tr><tr><td>Praia artificial</td><td class="yes">10.000m² com tecnologia Crystal Clear</td></tr><tr><td>Beach Club</td><td class="yes">Exclusivo em Xangri-lá</td></tr><tr><td>Escala</td><td class="yes">451 lotes exclusivos</td></tr><tr><td>Conceito</td><td class="yes">Condomínio náutico + resort</td></tr></tbody></table></div>
@@ -561,6 +563,40 @@ function enviarLeadWpp(ev, emp){
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', carregarCapa);
   else carregarCapa();
+})();
+</script>
+
+
+<script>
+/* Mostra o bloco do Mapa de Implantação SOMENTE se o PDF existir */
+(function(){
+  async function verificarMapa(){
+    var bloco = document.getElementById('bloco-mapa-implantacao');
+    if(!bloco) return;
+    var frame = document.getElementById('pdf-mapa-frame');
+    var btn   = document.getElementById('pdf-mapa-mobile');
+    var url   = (frame && frame.getAttribute('src')) || (btn && btn.getAttribute('href')) || '';
+    url = url.split('#')[0];
+    if(!url){ bloco.style.display = 'none'; return; }
+
+    try{
+      // HEAD é leve: só verifica se o arquivo existe
+      var r = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+      if(r && r.ok){
+        var tipo = r.headers.get('content-type') || '';
+        // confirma que é mesmo um PDF (e não a página 404 do site)
+        if(tipo.indexOf('pdf') > -1 || tipo === ''){
+          bloco.style.display = '';
+          return;
+        }
+      }
+      bloco.style.display = 'none';
+    }catch(e){
+      bloco.style.display = 'none';
+    }
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', verificarMapa);
+  else verificarMapa();
 })();
 </script>
 

@@ -3907,7 +3907,7 @@ function buildImovCard(i){
     areaVal?`📐 ${areaVal}m²`:null,
     i.vagas?`🚗 ${i.vagas} ${i.vagas==1?'vaga':'vagas'}`:null
   ].filter(Boolean).map(s=>`<span class="icspec">${s}</span>`).join('');
-  return`<div class="icard vis" onclick="window.location.href='/imovel?id='+encodeURIComponent(i.codigo||i.slug||i.id)">
+  return`<a class="icard vis" href="/imovel?id=${encodeURIComponent(i.codigo||i.slug||i.id)}" style="text-decoration:none;color:inherit;display:block">
     <div class="icimg">${foto?`<img src="${foto}" alt="${i.titulo}" loading="lazy">`:'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
     <div class="icbody">
       <div class="ictipo">${i.tipo||'Imóvel'}</div>
@@ -3916,7 +3916,7 @@ function buildImovCard(i){
       <div class="icspecs">${specs}</div>
     </div>
     <div class="icfoot"><div class="icpreco">${brl(i.preco)}</div><span style="font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ocean)">Ver →</span></div>
-  </div>`;
+  </a>`;
 }
 
 // ── HOME DESTAQUES ──
@@ -3959,7 +3959,10 @@ function initTodosCarrosseis(){
 async function carregarFotosCarrossel(){
   try{
     const fotos=await sbSite.get('os_carrossel_home','?select=slot,foto_url');
-    if(!Array.isArray(fotos)) return;
+    // diagnóstico: veja no Console (F12) o que o banco devolveu
+    try{ console.log('[fotos carrossel] recebido do banco:', fotos); }catch(_){}
+    if(!Array.isArray(fotos)){ console.warn('[fotos carrossel] resposta NÃO é lista:', fotos); return; }
+    if(!fotos.length){ console.warn('[fotos carrossel] lista VAZIA — a tabela os_carrossel_home não tem fotos?'); }
     const mapa={};
     fotos.forEach(f=>{ if(f.slot && f.foto_url) mapa[f.slot]=f.foto_url; });
     document.querySelectorAll('.carr-slide[data-slot], .carr-single[data-slot]').forEach(sl=>{

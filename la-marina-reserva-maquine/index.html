@@ -370,7 +370,8 @@ footer{background:linear-gradient(160deg,#0c4a6e,#0e7490);padding:50px 44px 40px
     <p>A infraestrutura de lazer inclui <strong>quadras cobertas</strong> para esporte o ano todo, espaços de convivência e áreas integradas à natureza da lagoa, completando a proposta de alto padrão.</p>
     <div class="foto" data-fk="lamarina__5"><span class="ic">📷</span><span class="cap">Foto — quadras cobertas</span></div>
 
-    <h2>Mapa de Implantação do Condomínio</h2>
+    <div id="bloco-mapa-implantacao" style="display:none">
+  <h2>Mapa de Implantação do Condomínio</h2>
     <p>Veja a planta com a disposição dos lotes e as áreas de lazer — em alta resolução.</p>
     <div class="pdf-map">
       <div class="pdf-frame">
@@ -391,6 +392,7 @@ footer{background:linear-gradient(160deg,#0c4a6e,#0e7490);padding:50px 44px 40px
         <a class="btn-wpp" href="https://wa.me/5551982868888?text=Ol%C3%A1%21%20Quero%20a%20planta%20de%20lotes%20do%20La%20Marina%20Reserva." rel="nofollow" style="padding:13px 22px;font-size:14px">Pedir planta de lotes</a>
       </div>
     </div>
+</div>
 
     <h2>Principais Diferenciais</h2>
     <div class="tbl-wrap"><table><thead><tr><th>Diferencial</th><th>O que oferece</th></tr></thead><tbody><tr><td>Localização</td><td class="yes">Margens da Lagoa das Malvas, Maquiné</td></tr><tr><td>Náutica</td><td class="yes">Marina privativa e píer exclusivo</td></tr><tr><td>Garagens náuticas</td><td class="yes">36 unidades</td></tr><tr><td>Piscina</td><td class="yes">Borda infinita com vista para a lagoa</td></tr><tr><td>Esportes</td><td class="yes">Quadras cobertas</td></tr><tr><td>Escala</td><td class="yes">219 lotes exclusivos</td></tr></tbody></table></div>
@@ -558,6 +560,40 @@ function enviarLeadWpp(ev, emp){
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', carregarCapa);
   else carregarCapa();
+})();
+</script>
+
+
+<script>
+/* Mostra o bloco do Mapa de Implantação SOMENTE se o PDF existir */
+(function(){
+  async function verificarMapa(){
+    var bloco = document.getElementById('bloco-mapa-implantacao');
+    if(!bloco) return;
+    var frame = document.getElementById('pdf-mapa-frame');
+    var btn   = document.getElementById('pdf-mapa-mobile');
+    var url   = (frame && frame.getAttribute('src')) || (btn && btn.getAttribute('href')) || '';
+    url = url.split('#')[0];
+    if(!url){ bloco.style.display = 'none'; return; }
+
+    try{
+      // HEAD é leve: só verifica se o arquivo existe
+      var r = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+      if(r && r.ok){
+        var tipo = r.headers.get('content-type') || '';
+        // confirma que é mesmo um PDF (e não a página 404 do site)
+        if(tipo.indexOf('pdf') > -1 || tipo === ''){
+          bloco.style.display = '';
+          return;
+        }
+      }
+      bloco.style.display = 'none';
+    }catch(e){
+      bloco.style.display = 'none';
+    }
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', verificarMapa);
+  else verificarMapa();
 })();
 </script>
 
