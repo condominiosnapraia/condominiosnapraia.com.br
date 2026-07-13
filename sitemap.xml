@@ -2,358 +2,506 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://condominiosnapraia.com.br/</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/contemplado-imoveis</loc>
+    <loc>https://condominiosnapraia.com.br/aura-garden-place-xangri-la</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la</loc>
-    <lastmod>2026-06-07</lastmod>
+    <loc>https://condominiosnapraia.com.br/blog</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/bravia-marina-beach-club-maquine</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://condominiosnapraia.com.br/capao-da-canoa</loc>
-    <lastmod>2026-06-07</lastmod>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-araca</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-arco-iris</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-arroio-teixeira</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-capao-novo</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-centro</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-curumim</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-guarani</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-navegantes</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-praia-do-barco</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/capao-da-canoa-zona-nova</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/cascata-da-forqueta</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/cascata-do-garapia</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/comprar-na-planta-ou-pronto</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/condominio-alegro-curumim</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/condominio-fechado-ou-casa-avulsa</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/condominio-nautico-ou-frente-mar</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/condominios</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/contato</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/contemplado-imoveis</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/osorio</loc>
-    <lastmod>2026-06-07</lastmod>
+    <loc>https://condominiosnapraia.com.br/cyano-private-resort-osorio</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/enseada-lagoa-dos-quadros-capao-da-canoa</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/exclusividade-imobiliaria</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/financiamento-imobiliario</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/financiamento-ou-consorcio</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/imoveis</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/la-marina-reserva-maquine</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/lagoa-dos-barros</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/lagoa-dos-quadros</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/lancamentos</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/largo-do-baronda</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://condominiosnapraia.com.br/maquine</loc>
-    <lastmod>2026-06-07</lastmod>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/marina-de-xangri-la</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/marina-park</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/mirador-playa-arenas-curumim</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/mirantes-de-osorio</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/monaco-grand-marina-maquine</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://condominiosnapraia.com.br/morro-da-borussia</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://condominiosnapraia.com.br/o-que-fazer-em-capao-da-canoa</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/lagoa-dos-quadros</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/marina-park</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/praca-do-mini-golf</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/praia-de-capao-da-canoa</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/o-que-fazer-em-xangri-la</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/plataforma-de-atlantida</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/praia-de-atlantida</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/marina-de-xangri-la</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/paradouros-a-beira-mar</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/o-que-fazer-em-osorio</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/lagoa-dos-barros</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/parque-eolico-de-osorio</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/mirantes-de-osorio</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://condominiosnapraia.com.br/o-que-fazer-em-maquine</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/cascata-do-garapia</loc>
+    <loc>https://condominiosnapraia.com.br/o-que-fazer-em-osorio</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/cascata-da-forqueta</loc>
+    <loc>https://condominiosnapraia.com.br/o-que-fazer-em-xangri-la</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/trilha-do-garapia-ecoturismo</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-centro</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://condominiosnapraia.com.br/origem-natureza-habitada-xangri-la</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-zona-nova</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://condominiosnapraia.com.br/osorio</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/paradouros-a-beira-mar</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-navegantes</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://condominiosnapraia.com.br/parque-eolico-de-osorio</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-guarani</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://condominiosnapraia.com.br/plataforma-de-atlantida</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-arco-iris</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la-atlantida</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la-centro</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la-rainha-do-mar</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la-remanso</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la-marina</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la-noiva-do-mar</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la-maristela</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la-arpoador</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/xangri-la-coqueiros</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-araca</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-praia-do-barco</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-curumim</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-arroio-teixeira</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/capao-da-canoa-capao-novo</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://condominiosnapraia.com.br/praca-do-farol</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/praca-flavio-boianovski</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/praca-luiz-bassani</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://condominiosnapraia.com.br/politica-privacidade</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://condominiosnapraia.com.br/praca-avezon</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/praca-israelita</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/praca-tiaraju</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/largo-do-baronda</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/praca-dos-camelos</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/praca-do-skate</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://condominiosnapraia.com.br/praca-da-zona-nova</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://condominiosnapraia.com.br/condominio-alegro-curumim</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/lancamentos</loc>
-    <lastmod>2026-06-12</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praca-do-farol</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praca-do-mini-golf</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praca-do-skate</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praca-dos-camelos</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praca-flavio-boianovski</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praca-israelita</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praca-luiz-bassani</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praca-tiaraju</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praia-de-atlantida</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/praia-de-capao-da-canoa</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/refinanciamento-imobiliario</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/seguro-fianca</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/sobre</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/termos</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/trilha-do-garapia-ecoturismo</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://condominiosnapraia.com.br/vientos-resort-xangri-la</loc>
-    <lastmod>2026-06-12</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/monaco-grand-marina-maquine</loc>
-    <lastmod>2026-06-12</lastmod>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/cyano-private-resort-osorio</loc>
-    <lastmod>2026-06-12</lastmod>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://condominiosnapraia.com.br/enseada-lagoa-dos-quadros-capao-da-canoa</loc>
-    <lastmod>2026-06-12</lastmod>
-    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://condominiosnapraia.com.br/vivendas-da-marina-capao-da-canoa</loc>
-    <lastmod>2026-06-12</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/mirador-playa-arenas-curumim</loc>
-    <lastmod>2026-06-13</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://condominiosnapraia.com.br/viver-na-lagoa</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/bravia-marina-beach-club-maquine</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://condominiosnapraia.com.br/viver-no-mar</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/aura-garden-place-xangri-la</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://condominiosnapraia.com.br/xangri-la</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/la-marina-reserva-maquine</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://condominiosnapraia.com.br/xangri-la-arpoador</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/origem-natureza-habitada-xangri-la</loc>
-    <lastmod>2026-06-14</lastmod>
+    <loc>https://condominiosnapraia.com.br/xangri-la-atlantida</loc>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
-  <url><loc>https://condominiosnapraia.com.br/contato</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/politica-privacidade</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/sobre</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/termos</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/refinanciamento-imobiliario</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/exclusividade-imobiliaria</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/financiamento-imobiliario</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/seguro-fianca</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/xangri-la-ou-capao-da-canoa</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/condominio-nautico-ou-frente-mar</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/comprar-na-planta-ou-pronto</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/financiamento-ou-consorcio</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/condominio-fechado-ou-casa-avulsa</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/viver-na-lagoa</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/viver-no-mar</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/imoveis</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/condominios</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://condominiosnapraia.com.br/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/xangri-la-centro</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/xangri-la-coqueiros</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/xangri-la-marina</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/xangri-la-maristela</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/xangri-la-noiva-do-mar</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/xangri-la-ou-capao-da-canoa</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/xangri-la-rainha-do-mar</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://condominiosnapraia.com.br/xangri-la-remanso</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

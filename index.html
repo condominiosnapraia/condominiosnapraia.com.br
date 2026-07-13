@@ -1455,24 +1455,7 @@ body{padding-top:56px}
 }
 </style>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "RealEstateAgent",
-  "name": "Condomínios na Praia",
-  "description": "Condomínios fechados de alto padrão no Litoral Norte do RS. Especialistas em imóveis em Xangri-lá, Capão da Canoa e Osório.",
-  "url": "https://condominiosnapraia.com.br",
-  "telephone": "+55-51-99944-2252",
-  "address": {
-    "@type": "PostalAddress",
-    "addressRegion": "RS",
-    "addressCountry": "BR",
-    "addressLocality": "Litoral Norte Gaúcho"
-  },
-  "areaServed": ["Xangri-lá", "Capão da Canoa", "Osório", "Atlântida", "Litoral Norte RS"],
-  "sameAs": ["https://wa.me/5551999442252"]
-}
-</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "RealEstateAgent", "@id": "https://condominiosnapraia.com.br/#organizacao", "name": "Condomínios na Praia", "alternateName": "Felipe Ranzolin — Corretor de Imóveis", "description": "Especialista em condomínios fechados e imóveis de alto padrão no Litoral Norte Gaúcho. Casas e terrenos em Xangri-lá, Capão da Canoa, Osório e Maquiné.", "url": "https://condominiosnapraia.com.br", "logo": "https://condominiosnapraia.com.br/img/og-home.jpg", "image": "https://condominiosnapraia.com.br/img/og-home.jpg", "telephone": "+5551999442252", "email": "napraiacondominios@gmail.com", "priceRange": "$$$", "address": {"@type": "PostalAddress", "streetAddress": "Av. Central 248, Loja 07, Atlântida", "addressLocality": "Xangri-lá", "addressRegion": "RS", "postalCode": "95588-000", "addressCountry": "BR"}, "geo": {"@type": "GeoCoordinates", "latitude": -29.8106, "longitude": -50.0442}, "areaServed": [{"@type": "City", "name": "Xangri-lá"}, {"@type": "City", "name": "Capão da Canoa"}, {"@type": "City", "name": "Osório"}, {"@type": "City", "name": "Maquiné"}], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "09:00", "closes": "18:00"}], "founder": {"@type": "Person", "name": "Felipe Ranzolin Fachinello", "jobTitle": "Corretor de Imóveis", "identifier": "CRECI-RS 72.386"}, "knowsAbout": ["Condomínios fechados", "Imóveis de alto padrão", "Terrenos em condomínio", "Casas frente-mar", "Investimento imobiliário no litoral"], "sameAs": [], "contactPoint": {"@type": "ContactPoint", "telephone": "+5551999442252", "contactType": "sales", "availableLanguage": "Portuguese"}}</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -1799,7 +1782,7 @@ body{padding-top:56px}
       <p class="cidades-sub">Empreendimentos selecionados na maior cidade do litoral</p>
       <div class="cdest-grid" id="cdest-capao"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
       <div style="text-align:center;margin-top:26px">
-        <a class="cdest-btn" href="#" onclick="showAllCondCity('Capão da Canoa');return false">Ver todos os condomínios de Capão da Canoa →</a>
+        <a class="cdest-btn" href="/condominios?cidade=Cap%C3%A3o%20da%20Canoa">Ver todos os condomínios de Capão da Canoa →</a>
       </div>
     </div>
   </section>
@@ -1811,7 +1794,7 @@ body{padding-top:56px}
       <p class="cidades-sub">Os empreendimentos mais procurados da capital dos condomínios</p>
       <div class="cdest-grid" id="cdest-xangri"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
       <div style="text-align:center;margin-top:26px">
-        <a class="cdest-btn" href="#" onclick="showAllCondCity('Xangri-lá');return false">Ver todos os condomínios de Xangri-lá →</a>
+        <a class="cdest-btn" href="/condominios?cidade=Xangri-l%C3%A1">Ver todos os condomínios de Xangri-lá →</a>
       </div>
     </div>
   </section>
@@ -2601,6 +2584,9 @@ async function fetchSiteData(){
       window._carrosselFotos = Array.isArray(carrosselFotos) ? carrosselFotos : [];
       window._capasDecisao   = Array.isArray(capasDecisao)   ? capasDecisao   : [];
       window._dadosExtrasCarregados = true;   // marca que já buscou (mesmo se vier vazio)
+      // mapa nome→slug dos condomínios (para a busca rápida abrir a página certa)
+      window._condSlugMap = {};
+      (condominios||[]).forEach(function(c){ if(c && c.nome) window._condSlugMap[c.nome] = c.slug || c.id; });
       // aplica as fotos nos cards agora que temos o mapa
       if(typeof ativarFotosCards === 'function') setTimeout(ativarFotosCards, 0);
     }catch(e){}
@@ -2934,19 +2920,19 @@ function sfcBuscar(){
     window.location = mapa[sel] || '/lancamentos';
     return;
   }
-  var listing=document.getElementById('all-listing');
-  if(listing) listing.style.display='block';
+  // agora existem páginas dedicadas: leva o visitante direto para elas, com os filtros na URL
   if(_sfcTipo==='imoveis'){
-    var iS=document.getElementById('i-s'); if(iS) iS.value=q;
-    var iT=document.getElementById('i-tipo'); if(iT) iT.value=sel; // tipo selecionado no dropdown
-    showTab('imoveis');
-    if(typeof rImov==='function') rImov();
+    // o dropdown seleciona o TIPO (Casa/Terreno) — a página filtra por ele
+    window.location = '/imoveis' + (sel ? ('?tipo=' + encodeURIComponent(sel)) : '');
+    return;
   } else {
-    // se escolheu um condomínio no dropdown, busca por ele; senão usa o texto digitado
-    var termo = sel || q;
-    var cS=document.getElementById('c-s'); if(cS) cS.value=termo;
-    showTab('condominios');
-    if(typeof rCond==='function') rCond();
+    // condomínios: se escolheu um no dropdown, abre a página dele direto
+    if(sel && window._condSlugMap && window._condSlugMap[sel]){
+      window.location = '/condominio?id=' + encodeURIComponent(window._condSlugMap[sel]);
+      return;
+    }
+    window.location = '/condominios';
+    return;
   }
   setTimeout(function(){
     var alvo=document.getElementById('all-listing')||document.getElementById('sec-condominios');
@@ -4725,7 +4711,8 @@ async function renderContempladasCards(targetId){
       var slug = el.getAttribute('data-foto-card');
       if(!slug) return;
       // 1ª opção: foto enviada pelo CRM (URL do Supabase). 2ª: pasta /img.
-      var urlCRM = _fotosSiteMap && _fotosSiteMap[slug];
+      var _mapa = _fotosSiteMap || window._fotosSiteMap;
+      var urlCRM = _mapa && _mapa[slug];
       if(urlCRM){
         carregarComRetry(el, urlCRM, 1);
       } else {
@@ -4733,10 +4720,11 @@ async function renderContempladasCards(targetId){
       }
     });
     // cards de Lançamentos na home: usam a foto-hero ({slug}__1) enviada pelo CRM
-    if(_fotosSiteMap){
+    var _mapaLch = _fotosSiteMap || window._fotosSiteMap;
+    if(_mapaLch){
       document.querySelectorAll('[data-lch]').forEach(function(el){
         var slug = el.getAttribute('data-lch');
-        var foto = _fotosSiteMap[slug + '__1'];
+        var foto = _mapaLch[slug + '__1'];
         if(foto){
           el.style.backgroundImage = "url('" + foto + "')";
           el.style.color = 'transparent';

@@ -47,7 +47,29 @@ export async function onRequest(context) {
     if (data) {
       try { lastmod = '\n    <lastmod>' + new Date(data).toISOString().slice(0, 10) + '</lastmod>'; } catch (e) {}
     }
-    return '  <url>\n    <loc>' + esc(loc) + '</loc>' + lastmod + '\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>';
+    // fotos do imóvel (para o Google Imagens)
+    let imgs = '';
+    try {
+      const fotos = im.fotos_no_site || im.fotos || [];
+      const lista = Array.isArray(fotos) ? fotos : [fotos];
+      const titulo = (im.titulo || 'Imóvel') + (im.cidade ? (' em ' + im.cidade) : '');
+      lista.slice(0, 6).forEach(f => {
+        let url = null;
+        if (typeof f === 'string' && /^https?:\/\//i.test(f)) url = f;
+        else if (f && typeof f === 'object' && f.url) url = f.url;
+        if (url) {
+          imgs += '\n    <image:image>' +
+                  '\n      <image:loc>' + esc(url) + '</image:loc>' +
+                  '\n      <image:title>' + esc(titulo) + '</image:title>' +
+                  '\n    </image:image>';
+        }
+      });
+    } catch (e) {}
+
+    return '  <url>\n    <loc>' + esc(loc) + '</loc>' + lastmod +
+           '\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>' +
+           imgs +
+           '\n  </url>';
   }).join('\n');
 
   // modo diagnóstico: adicione ?debug=1 na URL para ver o que está acontecendo
@@ -70,7 +92,7 @@ export async function onRequest(context) {
   }catch(e){}
 
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
     urls + '\n' +
     '</urlset>';
 
