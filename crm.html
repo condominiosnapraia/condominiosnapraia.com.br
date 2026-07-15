@@ -868,6 +868,7 @@ if(_savedToken && _savedUser){
   <button class="ni" onclick="go('proprietarios',this)" data-p="proprietarios"><span class="ic">👤</span>Proprietários<span class="nb a" id="nb-p">0</span></button>
   <button class="ni" onclick="go('leads',this)" data-p="leads"><span class="ic">📨</span>Leads do Site<span class="nb g" id="nb-ld">0</span></button>
   <button class="ni" onclick="go('leadsfotos',this)" data-p="leadsfotos"><span class="ic">🔓</span>Leads Fotos<span class="nb g" id="nb-lf">0</span></button>
+  <button class="ni" onclick="go('leadscampanha',this)" data-p="leadscampanha"><span class="ic">🎯</span>Leads Campanha<span class="nb g" id="nb-lc">0</span></button>
   <div class="nsec">Comercial</div>
   <button class="ni" onclick="go('negociacoes',this)" data-p="negociacoes"><span class="ic">🤝</span>Negociações<span class="nb g" id="nb-n">0</span></button>
   <button class="ni" onclick="go('agenda',this)" data-p="agenda"><span class="ic">📅</span>Agenda<span class="nb g" id="nb-ag">0</span></button>
@@ -1303,6 +1304,69 @@ if(_savedToken && _savedUser){
   <!-- LISTA -->
   <div id="lf-lista"></div>
 </div>
+<div class="panel" id="panel-leadscampanha">
+  <div class="ph">
+    <div>
+      <h1>Leads de Campanha</h1>
+      <p class="psub">Contatos vindos do Google Ads, Facebook e Instagram</p>
+    </div>
+    <button class="btn" onclick="carregarLeadsCampanha()">🔄 Atualizar</button>
+  </div>
+
+  <!-- RESUMO POR CANAL -->
+  <div id="lc-resumo" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px"></div>
+
+  <!-- FILTROS -->
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end">
+      <div>
+        <label class="lb">Buscar</label>
+        <input class="in" id="lc-busca" placeholder="nome, email ou telefone" oninput="rLeadsCampanha()">
+      </div>
+      <div>
+        <label class="lb">Canal</label>
+        <select class="in" id="lc-canal" onchange="rLeadsCampanha()">
+          <option value="">Todos</option>
+          <option value="google">Google</option>
+          <option value="facebook">Facebook</option>
+          <option value="instagram">Instagram</option>
+          <option value="direto">Direto</option>
+        </select>
+      </div>
+      <div>
+        <label class="lb">Campanha</label>
+        <select class="in" id="lc-campanha" onchange="rLeadsCampanha()">
+          <option value="">Todas</option>
+        </select>
+      </div>
+      <div>
+        <label class="lb">Status</label>
+        <select class="in" id="lc-status" onchange="rLeadsCampanha()">
+          <option value="">Todos</option>
+          <option value="novo">Novo</option>
+          <option value="contatado">Contatado</option>
+          <option value="qualificado">Qualificado</option>
+          <option value="cliente">Virou cliente</option>
+          <option value="perdido">Perdido</option>
+        </select>
+      </div>
+      <div>
+        <label class="lb">Prazo de compra</label>
+        <select class="in" id="lc-prazo" onchange="rLeadsCampanha()">
+          <option value="">Qualquer</option>
+          <option>Imediatamente</option>
+          <option>Nos próximos 3 meses</option>
+          <option>Nos próximos 6 meses</option>
+          <option>Estou pesquisando</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:13px;color:#64748b" id="lc-contador">—</div>
+  </div>
+
+  <div id="lc-lista"></div>
+</div>
+
 <div class="panel" id="panel-admins">
   <div class="ph">
     <div><div class="pht">🏦 Administradoras</div><div class="phs" id="adm-sub">Gerencie logos e cores das administradoras</div></div>
@@ -2738,7 +2802,7 @@ function go(id,btn){
   if(btn)btn.classList.add('on');
   const h={dashboard:buildDash,condominios:rCond,imoveis:()=>{pCS();rImV()},
     proprietarios:rProp,negociacoes:()=>{pIS();rKb()},
-    agenda:()=>{pIS();rCal()},relatorios:buildRel,editor:edLoad,destaques:buildDestaques,fotos:buildFotos,blog:buildBlog,lancamentos:buildLancamentos,contempladas:buildContempladas,admins:buildAdmins,usuarios:buildUsuarios,atividades:buildAtividades,capas:carregarCapas,carrossel:carregarCarrossel,leads:carregarLeads,leadsfotos:carregarLeadsFotos};
+    agenda:()=>{pIS();rCal()},relatorios:buildRel,editor:edLoad,destaques:buildDestaques,fotos:buildFotos,blog:buildBlog,lancamentos:buildLancamentos,contempladas:buildContempladas,admins:buildAdmins,usuarios:buildUsuarios,atividades:buildAtividades,capas:carregarCapas,carrossel:carregarCarrossel,leads:carregarLeads,leadsfotos:carregarLeadsFotos,leadscampanha:carregarLeadsCampanha};
   if(h[id])h[id]();
   upB();
 }
@@ -7488,6 +7552,139 @@ async function lfToggleContato(id, novo){
     if(typeof toast==='function') toast(novo?'Marcado como contatado':'Marcado como novo','success');
     const l=_leadsFotos.find(x=>x.id===id); if(l) l.contatado=novo;
     rLeadsFotos();
+  }catch(e){ if(typeof toast==='function') toast('Erro ao atualizar','error'); }
+}
+
+
+/* ═══ LEADS DE CAMPANHA (Google/Facebook/Instagram) ═══ */
+let _leadsCamp = [];
+
+async function carregarLeadsCampanha(){
+  const lista=document.getElementById('lc-lista');
+  if(lista) lista.innerHTML='<div class="empty">Carregando...</div>';
+  try{
+    _leadsCamp = await sb.get('leads_campanha','?order=criado_em.desc&limit=1000');
+  }catch(e){ _leadsCamp=[]; }
+  if(!Array.isArray(_leadsCamp)) _leadsCamp=[];
+
+  const nb=document.getElementById('nb-lc');
+  if(nb) nb.textContent=_leadsCamp.filter(l=>!l.contatado).length;
+
+  // preencher o filtro de campanhas
+  const sel=document.getElementById('lc-campanha');
+  if(sel){
+    const camps=[...new Set(_leadsCamp.map(l=>l.utm_campaign).filter(Boolean))].sort();
+    sel.innerHTML='<option value="">Todas</option>'+camps.map(c=>'<option>'+c+'</option>').join('');
+  }
+  rLeadsCampanha();
+}
+
+function _icone(canal){
+  const m={google:'🔍', facebook:'📘', instagram:'📸', 'google-organico':'🔍', direto:'🌐'};
+  return m[canal]||'🌐';
+}
+function _corCanal(canal){
+  const m={google:'#4285f4', facebook:'#1877f2', instagram:'#e4405f', direto:'#64748b'};
+  return m[canal]||'#64748b';
+}
+
+function rLeadsCampanha(){
+  const lista=document.getElementById('lc-lista');
+  if(!lista) return;
+  const busca=(document.getElementById('lc-busca')?.value||'').toLowerCase().trim();
+  const fCanal=document.getElementById('lc-canal')?.value||'';
+  const fCamp=document.getElementById('lc-campanha')?.value||'';
+  const fStatus=document.getElementById('lc-status')?.value||'';
+  const fPrazo=document.getElementById('lc-prazo')?.value||'';
+
+  const filtrados=_leadsCamp.filter(l=>{
+    if(busca){
+      const alvo=((l.nome||'')+' '+(l.email||'')+' '+(l.telefone||'')).toLowerCase();
+      if(alvo.indexOf(busca)<0) return false;
+    }
+    if(fCanal  && (l.origem||'') !== fCanal) return false;
+    if(fCamp   && (l.utm_campaign||'') !== fCamp) return false;
+    if(fStatus && (l.status||'novo') !== fStatus) return false;
+    if(fPrazo  && (l.prazo||'') !== fPrazo) return false;
+    return true;
+  });
+
+  // ── resumo por canal ──
+  const resumo=document.getElementById('lc-resumo');
+  if(resumo){
+    const porCanal={};
+    _leadsCamp.forEach(l=>{
+      const c=l.origem||'direto';
+      porCanal[c]=(porCanal[c]||0)+1;
+    });
+    const total=_leadsCamp.length;
+    const novos=_leadsCamp.filter(l=>!l.contatado).length;
+    let html='<div class="card" style="padding:16px"><div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em">Total de leads</div><div style="font-size:26px;font-weight:700;color:#0e8a99">'+total+'</div></div>';
+    html+='<div class="card" style="padding:16px"><div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em">Aguardando contato</div><div style="font-size:26px;font-weight:700;color:#e0b34d">'+novos+'</div></div>';
+    Object.entries(porCanal).sort((a,b)=>b[1]-a[1]).slice(0,3).forEach(([c,n])=>{
+      html+='<div class="card" style="padding:16px"><div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em">'+_icone(c)+' '+c+'</div><div style="font-size:26px;font-weight:700;color:'+_corCanal(c)+'">'+n+'</div></div>';
+    });
+    resumo.innerHTML=html;
+  }
+
+  const cont=document.getElementById('lc-contador');
+  if(cont) cont.textContent=filtrados.length+' de '+_leadsCamp.length+' leads';
+
+  if(!filtrados.length){
+    lista.innerHTML='<div class="empty" style="padding:40px;text-align:center;color:#64748b">Nenhum lead encontrado.</div>';
+    return;
+  }
+
+  lista.innerHTML=filtrados.map(l=>{
+    const dt = l.criado_em ? new Date(l.criado_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
+    const wpp=(l.telefone||'').replace(/\D/g,'');
+    const canal=l.origem||'direto';
+    const st=l.status||'novo';
+    const corSt={novo:'#fef3c7|#92400e', contatado:'#dbeafe|#1e40af', qualificado:'#dcfce7|#166534', cliente:'#d1fae5|#065f46', perdido:'#fee2e2|#991b1b'}[st]||'#f1f5f9|#475569';
+    const [bg,fg]=corSt.split('|');
+
+    let msg='Olá '+(l.nome||'')+'! Aqui é o Felipe, do Condomínios na Praia. ';
+    msg+='Recebi seu cadastro';
+    if(l.tipo_imovel && l.cidade) msg+=' procurando '+l.tipo_imovel+' em '+l.cidade;
+    msg+='. Separei algumas opções que podem te interessar. Posso te mostrar?';
+
+    const perfil=[];
+    if(l.tipo_imovel) perfil.push('🏠 '+l.tipo_imovel);
+    if(l.cidade)      perfil.push('📍 '+l.cidade);
+    if(l.faixa_preco) perfil.push('💰 '+l.faixa_preco);
+    if(l.prazo)       perfil.push('⏱️ '+l.prazo);
+
+    return '<div class="card" style="margin-bottom:14px">'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap">'+
+        '<div style="flex:1;min-width:220px">'+
+          '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'+
+            '<span style="font-size:17px;font-weight:700;color:#0f172a">'+(l.nome||'—')+'</span>'+
+            '<span style="font-size:11px;background:'+bg+';color:'+fg+';padding:3px 9px;border-radius:100px;font-weight:600">'+st+'</span>'+
+            '<span style="font-size:11px;background:#f1f5f9;color:'+_corCanal(canal)+';padding:3px 9px;border-radius:100px;font-weight:600">'+_icone(canal)+' '+canal+'</span>'+
+          '</div>'+
+          '<div style="font-size:13.5px;color:#64748b;margin-top:4px">'+(l.email||'')+' · '+(l.telefone||'')+'</div>'+
+          '<div style="font-size:12px;color:#94a3b8;margin-top:2px">'+dt+
+            (l.utm_campaign ? (' · campanha: <strong>'+l.utm_campaign+'</strong>') : '')+'</div>'+
+        '</div>'+
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+          (wpp?'<a class="btn" style="text-decoration:none" href="https://wa.me/55'+wpp+'?text='+encodeURIComponent(msg)+'" target="_blank">💬 WhatsApp</a>':'')+
+          '<select class="in" style="width:auto;padding:8px 12px" onchange="lcStatus(\''+l.id+'\', this.value)">'+
+            ['novo','contatado','qualificado','cliente','perdido'].map(s=>'<option value="'+s+'"'+(s===st?' selected':'')+'>'+s+'</option>').join('')+
+          '</select>'+
+        '</div>'+
+      '</div>'+
+      (perfil.length ? ('<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;padding:11px 14px;background:#f8fafc;border-radius:9px;font-size:13.5px;color:#334155">'+perfil.join('<span style="color:#cbd5e1">|</span>')+'</div>') : '')+
+    '</div>';
+  }).join('');
+}
+
+async function lcStatus(id, novo){
+  try{
+    await sb.patch('leads_campanha', id, { status: novo, contatado: (novo !== 'novo') });
+    const l=_leadsCamp.find(x=>x.id===id);
+    if(l){ l.status=novo; l.contatado=(novo!=='novo'); }
+    if(typeof toast==='function') toast('Status atualizado','success');
+    rLeadsCampanha();
   }catch(e){ if(typeof toast==='function') toast('Erro ao atualizar','error'); }
 }
 
