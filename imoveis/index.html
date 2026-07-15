@@ -310,15 +310,10 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 .vpc-sub{font-size:12px;opacity:.7;margin-top:10px}
 @media(max-width:760px){.vpc-in{flex-direction:column;text-align:center;gap:22px;padding:34px 24px}.vpc-txt p{margin:0 auto}.vpc-btn{width:100%;box-sizing:border-box;justify-content:center}}
 
-.il-hero{position:relative;min-height:340px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;overflow:hidden;isolation:isolate}
-.il-hero-slides{position:absolute;inset:0;z-index:-2}
-.il-hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;background-image:linear-gradient(150deg,#0c4a6e,#0891b2);opacity:0;transition:opacity 1.4s ease-in-out;animation:ilZoom 14s ease-in-out infinite alternate;will-change:background-size}
-.il-hero-slide.on{opacity:1}
-@keyframes ilZoom{from{background-size:106% auto}to{background-size:118% auto}}
-.il-hero-grad{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(13,59,84,.55) 0%,rgba(13,59,84,.42) 45%,rgba(13,59,84,.78) 100%)}
-.il-hero-in{position:relative;z-index:1;padding:60px 24px}
-.il-hero h1{font-family:'Fraunces',serif;font-size:clamp(32px,5.2vw,54px);font-weight:600;margin:0;text-shadow:0 4px 24px rgba(0,0,0,.45);letter-spacing:-.01em}
-@media(max-width:640px){.il-hero{min-height:260px}.il-hero-in{padding:44px 20px}}
+.il-hero{background:#fff;text-align:center;border-bottom:1px solid rgba(12,74,110,.08)}
+.il-hero h1 em{font-style:italic;color:#b8935a}
+.il-hero h1::after{content:"";display:block;width:56px;height:3px;background:linear-gradient(90deg,#e0b34d,#b8935a);margin:16px auto 0;border-radius:2px}
+@media(max-width:640px){.il-hero-in{padding:40px 20px 22px}}
 
 /* cabeçalho fixo (desktop) */
 .desk-header{position:fixed;top:0;left:0;right:0;z-index:930;padding:0;margin:0;background:rgba(255,255,255,.82);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border-bottom:1px solid rgba(31,181,196,.14);box-shadow:0 2px 20px rgba(13,59,84,.06)}
@@ -528,13 +523,8 @@ details[open] .dec-faq-q:after{content:"−"}
 </nav>
 
 <section class="il-hero">
-  <div class="il-hero-slides">
-    <div class="il-hero-slide on" data-foto-card="imoveis-capa-1"></div>
-    <div class="il-hero-slide"    data-foto-card="imoveis-capa-2"></div>
-  </div>
-  <div class="il-hero-grad"></div>
   <div class="il-hero-in">
-    <h1>Imóveis à Venda</h1>
+    <h1>Veja todos os imóveis <em>disponíveis</em></h1>
   </div>
 </section>
 
