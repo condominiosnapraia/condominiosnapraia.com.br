@@ -310,10 +310,6 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 .vpc-sub{font-size:12px;opacity:.7;margin-top:10px}
 @media(max-width:760px){.vpc-in{flex-direction:column;text-align:center;gap:22px;padding:34px 24px}.vpc-txt p{margin:0 auto}.vpc-btn{width:100%;box-sizing:border-box;justify-content:center}}
 
-.cl-hero{background:#fff;text-align:center;border-bottom:1px solid rgba(12,74,110,.08)}
-.cl-hero h1 em{font-style:italic;color:#b8935a}
-.cl-hero h1::after{content:"";display:block;width:56px;height:3px;background:linear-gradient(90deg,#e0b34d,#b8935a);margin:16px auto 0;border-radius:2px}
-@media(max-width:640px){.cl-hero-in{padding:40px 20px 22px}}
 
 /* cabeçalho fixo (desktop) */
 .desk-header{position:fixed;top:0;left:0;right:0;z-index:930;padding:0;margin:0;background:rgba(255,255,255,.82);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border-bottom:1px solid rgba(31,181,196,.14);box-shadow:0 2px 20px rgba(13,59,84,.06)}
@@ -462,9 +458,7 @@ details[open] .dec-faq-q:after{content:"−"}
   .ftr-wave{height:36px}
   .ftr-wave svg{height:36px}
 }
-/* capas: o zoom não pode estourar a largura */
-.il-hero,.cl-hero{overflow:hidden}
-.il-hero-slides,</style>
+</style>
 
 <body>
 <header class="desk-header" id="desk-header">
@@ -522,11 +516,6 @@ details[open] .dec-faq-q:after{content:"−"}
   </div>
 </nav>
 
-<section class="cl-hero">
-  <div class="cl-hero-in">
-    <h1>Veja todos os condomínios <em>disponíveis</em></h1>
-  </div>
-</section>
 
 <div class="cl-wrap">
   <div class="cl-filters">
@@ -663,22 +652,6 @@ carregar();
 </script>
 
 <script>
-/* carrossel da capa (2 fotos alternando) */
-(function(){
-  function iniciarCapa(){
-    var slides=document.querySelectorAll('.cl-hero-slide');
-    if(slides.length<2) return;
-    var i=0;
-    setInterval(function(){
-      slides[i].classList.remove('on');
-      i=(i+1)%slides.length;
-      slides[i].classList.add('on');
-    }, 5500);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', iniciarCapa);
-  else iniciarCapa();
-})();
-
 /* carregar as fotos da capa do CRM */
 (function(){
   function aplicar(el,url){
