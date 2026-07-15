@@ -4772,7 +4772,7 @@ async function carregarLeads(){
     const opts=['novo','contatado','negociando','fechado','perdido'].map(function(s){return '<option value="'+s+'"'+((l.status||'novo')===s?' selected':'')+'>'+s.charAt(0).toUpperCase()+s.slice(1)+'</option>';}).join('');
     return '<tr style="border-bottom:1px solid #e8eef1">'+
       '<td style="padding:11px 10px;white-space:nowrap;font-size:12px;color:#5b7585">'+fmtData(l.criado_em)+'</td>'+
-      '<td style="padding:11px 10px"><b style="color:#0d3b54">'+(l.nome||'—')+'</b><br><span style="font-size:12px;color:#5b7585">'+(l.telefone||'')+'</span></td>'+
+      '<td style="padding:11px 10px"><b style="color:#0d3b54">'+(l.nome||'—')+'</b><br><span style="font-size:12px;color:#5b7585">'+(l.telefone||'')+'</span>'+(l.email?('<br><span style="font-size:12px;color:#5b7585">'+l.email+'</span>'):'')+'</td>'+
       '<td style="padding:11px 10px;font-size:13px;color:#41535f">'+(l.imovel_titulo||'<i style=color:#9bb0bd>—</i>')+'</td>'+
       '<td style="padding:11px 10px;font-size:13px;color:#41535f;max-width:220px">'+(l.mensagem?l.mensagem:'<i style=color:#9bb0bd>sem mensagem</i>')+'</td>'+
       '<td style="padding:11px 10px"><select onchange="atualizarStatusLead(\''+l.id+'\',this.value)" style="border:1px solid #d6e4e8;border-radius:8px;padding:6px 8px;font-size:12px;color:'+cor+';font-weight:700">'+opts+'</select></td>'+
