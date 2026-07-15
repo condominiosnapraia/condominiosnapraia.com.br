@@ -654,7 +654,7 @@ details[open] .dec-faq-q:after{content:"−"}
 <div class="ip-lb" id="ip-lb" onclick="if(event.target.id==='ip-lb')ipLbClose()">
   <button class="ip-lb-x" onclick="ipLbClose()">&times;</button>
   <button class="ip-lb-nav prev" onclick="lbNav(-1)">&#8249;</button>
-  <img id="ip-lb-img" src="" alt="">
+  <img id="ip-lb-img" src="" alt="Foto ampliada do imóvel">
   <button class="ip-lb-nav next" onclick="lbNav(1)">&#8250;</button>
 </div>
 
@@ -1110,7 +1110,7 @@ async function carregarSimilares(im,cond){
   el.style.display='block';
 }
 
-function notFound(){return '<div class="ip-notfound"><h1>Imóvel não encontrado</h1><p>Este imóvel pode ter sido vendido ou removido.</p><br><a href="/#imoveis">Ver imóveis disponíveis →</a></div>';}
+function notFound(){return '<div class="ip-notfound"><h2>Imóvel não encontrado</h2><p>Este imóvel pode ter sido vendido ou removido.</p><br><a href="/#imoveis">Ver imóveis disponíveis →</a></div>';}
 // URL correta para compartilhar: /imovel/ID (essa passa pela Function que gera a prévia com foto)
 function urlCompartilhar(){
   var im = window._imAtual;

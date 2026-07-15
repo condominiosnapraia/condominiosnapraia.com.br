@@ -4059,6 +4059,15 @@ function applyWatermark(ctx, w, h){
   ctx.restore();
 }
 
+
+/* comprime em WebP quando o navegador suporta; senão cai para JPEG */
+function canvasParaDataURL(canvas, q){
+  try{
+    var w = canvas.toDataURL('image/webp', q);
+    if(w && w.indexOf('data:image/webp') === 0) return w;
+  }catch(e){}
+  return canvas.toDataURL('image/jpeg', q);
+}
 function compressImg(file, cb){
   const reader = new FileReader();
   reader.onload = e => {
@@ -4073,7 +4082,7 @@ function compressImg(file, cb){
       ctx.drawImage(img, 0, 0, w, h);
       // Aplica marca d'água
       applyWatermark(ctx, w, h);
-      cb(canvas.toDataURL('image/jpeg', IMG_QUALITY));
+      cb(canvasParaDataURL(canvas, IMG_QUALITY));
     };
     img.src = e.target.result;
   };
@@ -4099,7 +4108,7 @@ function compressImgLanc(file, cb){
         var ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, w, h);
         applyWatermark(ctx, w, h);
-        return canvas.toDataURL('image/jpeg', q);
+        return canvasParaDataURL(canvas, q);
       }
       // passos progressivos: (largura, qualidade)
       var passos = [[960,0.62],[860,0.58],[760,0.52],[680,0.46],[600,0.42]];
@@ -6151,7 +6160,7 @@ function comprimirSemMarca(file, cb){
       const canvas = document.createElement('canvas');
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      cb(canvas.toDataURL('image/jpeg', 0.85));
+      cb(canvasParaDataURL(canvas, 0.85));
     };
     img.onerror = () => cb(e.target.result);
     img.src = e.target.result;

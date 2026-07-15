@@ -1,0 +1,22 @@
+# ── Segurança (todas as páginas) ──
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# ── Cache longo para arquivos estáticos ──
+/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/js/*
+  Cache-Control: public, max-age=86400
+
+/favicon.ico
+  Cache-Control: public, max-age=604800
+
+# ── Painel: nunca cachear nem indexar ──
+/crm.html
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
