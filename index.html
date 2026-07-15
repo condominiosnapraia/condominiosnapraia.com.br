@@ -1195,7 +1195,7 @@ footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60
 .desk-header{position:fixed;top:0;left:0;right:0;z-index:930;padding:0;margin:0;background:rgba(255,255,255,.82);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border-bottom:1px solid rgba(31,181,196,.14);box-shadow:0 2px 20px rgba(13,59,84,.06)}
 .desk-header-inner{max-width:1240px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;height:56px;box-sizing:border-box}
 .dh-logo{display:flex;align-items:center;flex-shrink:0}
-.dh-logo svg{width:140px;height:38px;display:block}
+.dh-logo img{height:44px;width:auto;display:block}
 .dh-nav{display:flex;align-items:center;gap:1px;flex-wrap:nowrap;justify-content:center;flex:1;min-width:0}
 .dh-nav a{color:#0d3b54;text-decoration:none;font-size:13px;font-weight:600;padding:7px 10px;border-radius:100px;transition:all .2s;white-space:nowrap}
 .dh-nav a:hover{background:rgba(31,181,196,.12);color:#0e8a99}
@@ -1474,18 +1474,7 @@ body{padding-top:56px}
 <body>
 <header class="desk-header" id="desk-header">
   <div class="desk-header-inner">
-    <a class="dh-logo" href="/" aria-label="Condomínios na Praia — início">
-      <svg viewBox="0 0 210 54" width="176" height="46" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(2,6)">
-          <path d="M22 4 L38 18 L34 18 L34 34 L10 34 L10 18 L6 18 Z" fill="none" stroke="#e0b34d" stroke-width="2.2" stroke-linejoin="round"/>
-          <path d="M16 34 L16 24 L22 24 L22 34" fill="none" stroke="#e0b34d" stroke-width="2" stroke-linejoin="round"/>
-          <path d="M3 40 q5 -4 10 0 t10 0 t10 0 t8 0" fill="none" stroke="#1fb5c4" stroke-width="2.4" stroke-linecap="round"/>
-        </g>
-        <text x="54" y="22" font-family="Fraunces, Georgia, serif" font-size="16" font-weight="600" fill="#0d3b54">Os melhores</text>
-        <text x="54" y="40" font-family="Fraunces, Georgia, serif" font-size="16" font-weight="600" font-style="italic" fill="#e0b34d">condomínios</text>
-        <text x="54" y="52" font-family="Outfit, Arial, sans-serif" font-size="8" font-weight="500" letter-spacing="2.5" fill="#5b7585">DO LITORAL</text>
-      </svg>
-    </a>
+    <a class="dh-logo" href="/" aria-label="Condomínios na Praia — início"><img src="/img/logo-header.webp" alt="Os melhores condomínios do litoral" width="129" height="46" style="height:46px;width:auto;display:block"></a>
     <nav class="dh-nav">
       <a href="/" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
       <a href="/imoveis">Imóveis</a>
