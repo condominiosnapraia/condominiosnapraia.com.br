@@ -64,27 +64,22 @@ fbq('track', 'PageView');
 body{font-family:'Outfit',sans-serif;color:var(--text);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
 
 /* ══ HERO ══ */
-.lp-hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;isolation:isolate;background:var(--ocean)}
+.lp-hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;isolation:isolate;background:var(--ocean)}
 .lp-hero-bg{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;background-image:linear-gradient(150deg,#0c4a6e 0%,#0e7490 55%,#0891b2 100%)}
 .lp-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,rgba(8,32,48,.92) 0%,rgba(8,32,48,.78) 45%,rgba(8,32,48,.45) 100%)}
 .lp-wrap{max-width:1180px;margin:0 auto;padding:0 24px;width:100%;position:relative;z-index:1}
-.lp-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:0 0 70px}
+.lp-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:54px 0 70px}
 
-/* logo central */
-.lp-logo{margin:0;padding:56px 0 40px;text-align:center}
-.lp-logo img{width:min(520px,100%);height:auto;display:inline-block;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.45)}
-.lp-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;border:1px solid rgba(224,179,77,.4);padding:8px 18px;border-radius:100px;margin-bottom:22px}
+/* capa — foto de largura total no topo */
+.lp-capa{position:relative;width:100%;line-height:0}
+.lp-capa img{width:100%;height:clamp(340px,52vh,600px);object-fit:cover;object-position:center 42%;display:block}
+.lp-capa::after{content:"";position:absolute;inset:auto 0 0 0;height:130px;background:linear-gradient(to bottom,rgba(8,32,48,0),rgba(8,32,48,.92));pointer-events:none}
 .lp-h1{font-family:'Fraunces',serif;font-size:clamp(32px,4.4vw,54px);font-weight:600;line-height:1.1;color:#fff;letter-spacing:-.015em;margin-bottom:20px;text-shadow:0 4px 30px rgba(0,0,0,.35)}
 .lp-h1 em{font-style:italic;color:var(--gold)}
 .lp-sub{font-size:17px;line-height:1.75;color:rgba(255,255,255,.92);max-width:520px;margin-bottom:32px}
 .lp-provas{display:flex;flex-direction:column;gap:12px;margin-bottom:34px}
 .lp-prova{display:flex;align-items:center;gap:12px;color:#fff;font-size:15px}
 .lp-prova .ck{width:24px;height:24px;flex-shrink:0;background:rgba(224,179,77,.2);border:1px solid rgba(224,179,77,.5);color:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-.lp-selo{display:flex;align-items:center;gap:14px;padding-top:26px;border-top:1px solid rgba(255,255,255,.14)}
-.lp-selo-av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-d));display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:600;color:var(--ocean);font-size:17px;flex-shrink:0}
-.lp-selo-txt{color:#fff}
-.lp-selo-nome{font-weight:600;font-size:15px}
-.lp-selo-creci{font-size:12.5px;color:rgba(255,255,255,.6)}
 
 /* lado direito — formulário */
 .lp-form-card{background:#fff;border-radius:22px;padding:38px 34px;box-shadow:0 30px 70px rgba(0,0,0,.28)}
@@ -117,11 +112,11 @@ body{font-family:'Outfit',sans-serif;color:var(--text);background:#fff;line-heig
 
 /* ══ MOBILE ══ */
 @media(max-width:960px){
-  .lp-grid{grid-template-columns:1fr;gap:38px;padding:0 0 50px}
+  .lp-grid{grid-template-columns:1fr;gap:38px;padding:34px 0 50px}
   .lp-hero{min-height:auto}
-  /* logo estendida como capa da página */
-  .lp-logo{width:100vw;margin:0 calc(50% - 50vw) 30px;padding:0;text-align:center}
-  .lp-logo img{width:100%;max-width:none;border-radius:0;box-shadow:none;aspect-ratio:3/2;object-fit:cover;display:block}
+  /* capa estendida no mobile */
+  .lp-capa img{height:auto;aspect-ratio:3/2;object-position:center}
+  .lp-capa::after{height:90px}
   .lp-provas{gap:10px}
   .lp-form-card{padding:30px 22px}
 }
@@ -136,16 +131,14 @@ body{font-family:'Outfit',sans-serif;color:var(--text);background:#fff;line-heig
 
 <section class="lp-hero">
   <div class="lp-hero-bg" data-foto-card="lp-comprar"></div>
+  <div class="lp-capa">
+    <img src="/img/logo-capa.jpg" alt="Os melhores condomínios do litoral — Condomínios na Praia" fetchpriority="high">
+  </div>
   <div class="lp-wrap">
-    <div class="lp-logo">
-      <img src="/img/logo-capa.jpg" alt="Os melhores condomínios do litoral — Condomínios na Praia" fetchpriority="high">
-    </div>
     <div class="lp-grid">
 
       <!-- ══ TEXTO ══ -->
       <div>
-        <div class="lp-eyebrow">⭐ Atendimento gratuito e sem compromisso</div>
-
         <h1 class="lp-h1">Encontre o imóvel certo no <em>Litoral Norte</em></h1>
 
         <p class="lp-sub">Conte o que você procura e receba uma seleção personalizada de casas e terrenos em condomínios de alto padrão — com quem conhece a região de verdade.</p>
@@ -155,14 +148,6 @@ body{font-family:'Outfit',sans-serif;color:var(--text);background:#fff;line-heig
           <div class="lp-prova"><span class="ck">✓</span> Opções que não estão nos portais</div>
           <div class="lp-prova"><span class="ck">✓</span> Assessoria completa: jurídico, financiamento e documentação</div>
           <div class="lp-prova"><span class="ck">✓</span> Resposta em até 1 hora útil</div>
-        </div>
-
-        <div class="lp-selo">
-          <div class="lp-selo-av">FR</div>
-          <div class="lp-selo-txt">
-            <div class="lp-selo-nome">Felipe Ranzolin Fachinello</div>
-            <div class="lp-selo-creci">Corretor de Imóveis · CRECI-RS 72.386</div>
-          </div>
         </div>
       </div>
 
