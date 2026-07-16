@@ -453,15 +453,14 @@ details[open] .dec-faq-q:after{content:"−"}
 @keyframes ipspin{to{transform:rotate(360deg)}}
 /* galeria */
 .ip-gal{position:relative;width:100%;height:clamp(280px,52vh,560px);border-radius:16px;overflow:hidden;background:#0c3a5c;margin-bottom:14px}
-.ip-gal-main{width:100%;height:100%;object-fit:contain;display:block;cursor:zoom-in}
-.ip-gal-side{display:none}
+.ip-track{display:flex;height:100%;gap:10px;transition:transform .55s cubic-bezier(.65,0,.35,1);will-change:transform}
+.ip-slide{flex:0 0 100%;height:100%;position:relative;cursor:zoom-in;background:#0c3a5c;overflow:hidden}
+.ip-slide img{width:100%;height:100%;object-fit:contain;display:block}
 @media(min-width:981px){
-  .ip-gal-main{width:49.4%;margin:0 auto;object-fit:cover}
-  .ip-gal-side{display:block;position:absolute;top:0;height:100%;width:calc(25.3% - 5px);object-fit:cover;cursor:pointer;filter:brightness(.9);transition:filter .25s}
-  .ip-gal-side:hover{filter:brightness(1)}
-  .ip-gal-side.prev{left:0}
-  .ip-gal-side.next{right:0}
+  .ip-slide{flex:0 0 49.4%;cursor:pointer}
+  .ip-slide img{object-fit:cover}
 }
+
 
 .ip-gal-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px;color:rgba(255,255,255,.4);background:linear-gradient(150deg,#0e6d8a,#0a3d4d)}
 .ip-gal-arrow{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
@@ -728,7 +727,10 @@ function m2(v){return v?(v+' m²'):'—';}
 function fotosValidas(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
 
 let GAL=[], gi=0;
-function galShow(n){if(!GAL.length)return;gi=(n+GAL.length)%GAL.length;document.getElementById('ip-gal-main').src=GAL[gi];var _sp=document.getElementById('ip-gal-sp');if(_sp)_sp.src=GAL[(gi-1+GAL.length)%GAL.length];var _sn=document.getElementById('ip-gal-sn');if(_sn)_sn.src=GAL[(gi+1)%GAL.length];document.getElementById('ip-gal-i').textContent=(gi+1)+'/'+GAL.length;document.querySelectorAll('.ip-thumb').forEach((t,k)=>t.classList.toggle('on',k===gi));}
+function ipDesliza(){var t=document.getElementById('ip-track');if(!t)return;var desk=window.matchMedia('(min-width:981px)').matches;t.style.transform=desk?'translateX(calc(25.3% - '+(gi*49.4)+'% - '+(gi*10)+'px))':'translateX(calc(-'+(gi*100)+'% - '+(gi*10)+'px))';}
+function ipSlideClick(i){if(i===gi){ipLbOpen();}else{galShow(i);}}
+window.addEventListener('resize',function(){if(typeof gi!=='undefined')ipDesliza();});
+function galShow(n){if(!GAL.length)return;gi=(n+GAL.length)%GAL.length;ipDesliza();document.getElementById('ip-gal-i').textContent=(gi+1)+'/'+GAL.length;document.querySelectorAll('.ip-thumb').forEach((t,k)=>t.classList.toggle('on',k===gi));}
 function galNav(d){galShow(gi+d);}
 function ipLbOpen(){if(!GAL.length)return;window._lbMode='main';document.getElementById('ip-lb-img').src=GAL[gi];document.getElementById('ip-lb').classList.add('on');}
 function ipLbClose(){document.getElementById('ip-lb').classList.remove('on');}
@@ -966,9 +968,7 @@ function render(im,cond){
   window._todasFotos = TODAS_FOTOS;
 
   const galHtml = GAL.length
-    ? (GAL.length>1?'<img class="ip-gal-side prev" id="ip-gal-sp" src="'+GAL[GAL.length-1]+'" alt="Foto anterior" onclick="galNav(-1)">':'')+
-      '<img id="ip-gal-main" class="ip-gal-main" src="'+GAL[0]+'" alt="'+((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:'')+(im.tipo?' — '+im.tipo:''))+'" onclick="ipLbOpen()">'+
-      (GAL.length>1?'<img class="ip-gal-side next" id="ip-gal-sn" src="'+GAL[1%GAL.length]+'" alt="Próxima foto" onclick="galNav(1)">':'')+
+    ? '<div class="ip-track" id="ip-track">'+GAL.map(function(f,i){return '<div class="ip-slide" onclick="ipSlideClick('+i+')"><img src="'+f+'" alt="'+((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1)+'"'+(i>1?' loading="lazy"':'')+'></div>';}).join('')+'</div>'+
       (GAL.length>1?'<button class="ip-gal-arrow prev" onclick="galNav(-1)">&#8249;</button><button class="ip-gal-arrow next" onclick="galNav(1)">&#8250;</button>':'')+
       '<div class="ip-gal-count" id="ip-gal-i">1/'+GAL.length+'</div>'
     : '<div class="ip-gal-ph">🏠</div>';
