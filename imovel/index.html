@@ -466,18 +466,6 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-gal-arrow{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
 .ip-gal-arrow.prev{left:14px}.ip-gal-arrow.next{right:14px}
 .ip-gal-count{position:absolute;bottom:14px;right:16px;background:rgba(8,32,48,.7);color:#fff;font-size:12px;padding:5px 12px;border-radius:100px;z-index:2}
-@media(max-width:980px){
-  .ip-gal{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;height:55vw;min-height:260px;margin-bottom:12px}
-  .ip-slide img{object-fit:cover}
-  .ip-thumbs{display:none}
-  .ip-dots{display:flex}
-}
-@media(max-width:600px){
-  .ip-gal{height:60vw;min-height:220px}
-}
-.ip-dots{display:none;position:absolute;bottom:16px;left:50%;transform:translateX(-50%);gap:8px;z-index:2;max-width:70%;flex-wrap:wrap;justify-content:center}
-.ip-dot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.45);cursor:pointer;padding:0;transition:all .25s}
-.ip-dot.on{background:#fff;transform:scale(1.3)}
 .ip-thumbs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:26px}
 .ip-thumb{flex:0 0 auto;width:88px;height:64px;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid transparent;opacity:.65;transition:all .2s}
 .ip-thumb.on{border-color:var(--om);opacity:1}
@@ -606,6 +594,20 @@ details[open] .dec-faq-q:after{content:"−"}
 /* capas: o zoom não pode estourar a largura */
 .il-hero,.cl-hero{overflow:hidden}
 .il-hero-slides,.cl-hero-slides{overflow:hidden}
+
+/* ── galeria: bolinhas e leiaut mobile (por último para vencer as regras base) ── */
+.ip-dots{display:none;position:absolute;bottom:16px;left:50%;transform:translateX(-50%);gap:8px;z-index:2;max-width:70%;flex-wrap:wrap;justify-content:center}
+.ip-dot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.45);cursor:pointer;padding:0;transition:all .25s}
+.ip-dot.on{background:#fff;transform:scale(1.3)}
+@media(max-width:980px){
+  .ip-gal{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;height:55vw;min-height:260px;margin-bottom:12px}
+  .ip-slide img{object-fit:cover}
+  .ip-thumbs{display:none}
+  .ip-dots{display:flex}
+}
+@media(max-width:600px){
+  .ip-gal{height:60vw;min-height:220px}
+}
 </style>
 
 <body>
