@@ -731,8 +731,8 @@ footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60
   .ftr-col-brand{text-align:center;padding-bottom:28px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.12)}
   .ftr-col-brand .ftr-logo-svg{margin:0 auto}
   .ftr-tag{margin:16px auto 20px;max-width:300px}
-  .ftr-wpp{display:flex;justify-content:center;width:100%;box-sizing:border-box;font-size:15px;padding:15px 26px;background:#25d366;border-color:#25d366;color:#fff;font-weight:700;box-shadow:0 8px 22px rgba(37,211,102,.32)}
-  .ftr-wpp:hover{background:#1eb857;border-color:#1eb857;color:#fff;transform:none}
+  .ftr-wpp{display:flex;justify-content:center;width:100%;box-sizing:border-box;font-size:15px;padding:15px 26px;background:#0f7c3f;border-color:#0f7c3f;color:#fff;font-weight:700;box-shadow:0 8px 22px rgba(15,124,63,.35)}
+  .ftr-wpp:hover{background:#0d6e38;border-color:#0d6e38;color:#fff;transform:none}
   /* Cada categoria = bloco full-width com respiro entre elas */
   .ftr-col:not(.ftr-col-brand){text-align:left;margin-bottom:26px}
   .ftr-col:not(.ftr-col-brand):last-child{margin-bottom:0}
@@ -4039,8 +4039,17 @@ async function fetchBlogPosts(){
   }catch(e){return [];}
 }
 
+async function fetchBlogPostsLeve(){
+  try{
+    const r=await fetch(SUPABASE_URL+'/rest/v1/blog_posts?publicado=eq.true&order=created_at.desc&select=id,slug,titulo,resumo,capa,categoria,data,created_at&limit=8',{headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'}});
+    if(!r.ok) return [];
+    const data = await r.json();
+    return Array.isArray(data) ? data : [];
+  }catch(e){return [];}
+}
+
 function buildHomeBlog(){
-  fetchBlogPosts().then(posts=>{
+  fetchBlogPostsLeve().then(posts=>{
     const grid=document.getElementById('home-blog-grid');
     if(!grid)return;
     const recent=(posts||[]).filter(p=>p.publicado!==false).slice(0,8);
