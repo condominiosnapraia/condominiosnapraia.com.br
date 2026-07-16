@@ -716,7 +716,7 @@ footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60
 .ftr-logo em{font-style:italic;color:var(--gold)}
 .ftr-sub{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:6px}
 .ftr-tag{font-size:13px;line-height:1.6;color:rgba(255,255,255,.6);margin:18px 0 22px}
-.ftr-wpp{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:11px 20px;border-radius:100px;transition:all .25s}
+.ftr-wpp{display:inline-flex;align-items:center;gap:8px;background:rgba(8,32,48,.45);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:11px 20px;border-radius:100px;transition:all .25s}
 .ftr-wpp:hover{background:var(--gold);border-color:var(--gold);color:var(--ocean);transform:translateY(-2px)}
 .ftr-tit{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
 .ftr-col a{display:block;color:rgba(255,255,255,.72);text-decoration:none;font-size:14px;padding:7px 0;transition:all .2s;cursor:pointer}
@@ -1508,7 +1508,7 @@ body{padding-top:56px}
 <!-- ══════════════════════
      VIEW: HOME / LISTING
 ══════════════════════ -->
-<div class="view on" id="view-home">
+<div class="view on" id="view-home" role="main">
 
   <!-- HERO -->
 
@@ -1549,7 +1549,7 @@ body{padding-top:56px}
             </div>
             <div class="sfc-field">
               <label id="sfc-label2">Tipo de imóvel</label>
-              <select id="sfc-list">
+              <select id="sfc-list" aria-label="Tipo de imóvel">
                 <option value="">Todos</option>
               </select>
             </div>
@@ -4682,7 +4682,7 @@ async function renderContempladasCards(targetId){
     var test = new Image();
     test.onload = function(){ aplicarFoto(el, url); };
     test.onerror = function(){
-      if(tentativa < 3){
+      if(tentativa < 2){
         // espera um pouco e tenta de novo (cache-buster para forçar nova requisição)
         setTimeout(function(){
           carregarComRetry(el, url + '?r=' + tentativa, tentativa + 1);
@@ -4704,9 +4704,9 @@ async function renderContempladasCards(targetId){
       var urlCRM = _mapa && _mapa[slug];
       if(urlCRM){
         carregarComRetry(el, urlCRM, 1);
-      } else {
-        carregarComRetry(el, '/img/card-' + slug + '.jpg', 1);
       }
+      // sem foto no CRM: mantém o placeholder (nada de buscar /img/card-*.jpg,
+      // esses arquivos não existem e geravam ~180 requisições 404 por visita)
     });
     // cards de Lançamentos na home: usam a foto-hero ({slug}__1) enviada pelo CRM
     var _mapaLch = _fotosSiteMap || window._fotosSiteMap;
@@ -4874,7 +4874,7 @@ async function renderContempladasCards(targetId){
       <div class="ftr-tit">Navegar</div>
       <div class="ftr-links-grid">
       <a href="/condominios">Condomínios</a>
-      <a onclick="showAllImov()">Imóveis</a>
+      <a href="/imoveis" onclick="showAllImov();return false">Imóveis</a>
       <a href="/lancamentos">Lançamentos</a>
       <a href="/contemplado-imoveis">Crédito Contemplado</a>
       <a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/refinanciamento-imobiliario">Refinanciamento</a><a href="/exclusividade-imobiliaria">Venda seu Imóvel</a><a href="/contato">Contato</a><a href="/sobre">Sobre</a><a href="/politica-privacidade">Política de Privacidade</a><a href="/termos">Termos de Uso</a>
@@ -4883,10 +4883,10 @@ async function renderContempladasCards(targetId){
     <div class="ftr-col">
       <div class="ftr-tit">Descobrir</div>
       <div class="ftr-links-grid">
-      <a onclick="document.getElementById('guias-cidades').scrollIntoView({behavior:'smooth'})">Cidades</a>
-      <a onclick="openTurismo()">Turismo no Litoral</a>
-      <a onclick="document.getElementById('onde-ir').scrollIntoView({behavior:'smooth'})">Onde Ir</a>
-      <a onclick="openBlog()">Blog &amp; Notícias</a>
+      <a href="#guias-cidades" onclick="document.getElementById('guias-cidades').scrollIntoView({behavior:'smooth'});return false">Cidades</a>
+      <a href="/o-que-fazer-em-capao-da-canoa" onclick="openTurismo();return false">Turismo no Litoral</a>
+      <a href="#onde-ir" onclick="document.getElementById('onde-ir').scrollIntoView({behavior:'smooth'});return false">Onde Ir</a>
+      <a href="/blog" onclick="openBlog();return false">Blog &amp; Notícias</a>
     </div>
     </div>
     <div class="ftr-col">
