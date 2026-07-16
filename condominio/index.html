@@ -50,6 +50,20 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 /* ── HERO GALERIA ── */
 .hero-gallery{margin-top:0;height:70vh;min-height:420px;position:relative;overflow:hidden;background:var(--ocean)}
 .gallery-main{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .4s}
+.gallery-side{display:none}
+@media(min-width:981px){
+  .hero-gallery{background:#e8edf0}
+  .gallery-main{width:49.4%;margin:0 auto;position:relative;z-index:1}
+  .gallery-side{position:absolute;top:0;height:100%;width:calc(25.3% - 5px);object-fit:cover;cursor:pointer;filter:brightness(.9);transition:filter .25s;z-index:0}
+  .gallery-side:hover{filter:brightness(1)}
+  .gallery-side.prev{left:0}
+  .gallery-side.next{right:0}
+  .gallery-count{top:auto;bottom:18px;left:50%;right:auto;transform:translateX(-50%);font-size:12.5px;padding:5px 14px}
+  .gallery-thumbs{display:none}
+  .gallery-nav{display:none}
+  .gallery-overlay{left:25.3%;right:25.3%;width:auto}
+}
+
 .gallery-main.loading{opacity:0}
 .gallery-no-photo{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:linear-gradient(135deg,#1a3a4a 0%,#2d5f7a 50%,#4a8fa8 100%)}
 .gallery-no-photo span{font-size:46px;opacity:.4}
@@ -379,7 +393,9 @@ body{padding-top:56px}
     <span>🏘</span>
     <p>Fotos em breve</p>
   </div>
+  <img class="gallery-side prev" id="gallery-side-prev" src="" alt="Foto anterior" onclick="galNav(-1)" style="display:none">
   <img class="gallery-main" id="gallery-main" src="" alt="Foto principal do condomínio" style="display:none">
+  <img class="gallery-side next" id="gallery-side-next" src="" alt="Próxima foto" onclick="galNav(1)" style="display:none">
   <div class="gallery-overlay" id="gallery-overlay" style="display:none"></div>
   <button class="gallery-prev" id="gallery-prev" onclick="galNav(-1)" style="display:none">‹</button>
   <button class="gallery-next" id="gallery-next" onclick="galNav(1)" style="display:none">›</button>
@@ -898,6 +914,13 @@ function galTo(idx) {
   main.alt = cond.nome + ' — foto ' + (galIdx + 1);
   document.getElementById('gallery-count').textContent = `${galIdx + 1} / ${fotos.length}`;
   document.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === galIdx));
+  const _sp = document.getElementById('gallery-side-prev');
+  const _sn = document.getElementById('gallery-side-next');
+  if (_sp && _sn && fotos.length > 1) {
+    _sp.src = fotos[(galIdx - 1 + fotos.length) % fotos.length];
+    _sn.src = fotos[(galIdx + 1) % fotos.length];
+    _sp.style.display = _sn.style.display = '';
+  }
   document.querySelectorAll('.gallery-thumb').forEach((t, i) => t.classList.toggle('active', i === galIdx));
 }
 function galNav(d) { galTo(galIdx + d); }
