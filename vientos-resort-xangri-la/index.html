@@ -348,6 +348,23 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 /* capas: o zoom não pode estourar a largura */
 .il-hero,.cl-hero{overflow:hidden}
 .il-hero-slides,.cl-hero-slides{overflow:hidden}
+
+/* ══ CAMADA PREMIUM ══ */
+.hero-in .eyebrow{display:inline-flex;align-items:center;gap:12px;letter-spacing:.22em;font-size:12px}
+.hero-in .eyebrow::before{content:"";width:44px;height:1px;background:linear-gradient(90deg,transparent,#e0b34d)}
+.hero-in h1{font-size:clamp(30px,4.4vw,54px);line-height:1.14;letter-spacing:-.015em;text-shadow:0 2px 30px rgba(0,0,0,.35)}
+.hbadge{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22)}
+.wrap h2{position:relative;padding-bottom:14px;letter-spacing:-.01em}
+.wrap h2::after{content:"";position:absolute;left:0;bottom:0;width:52px;height:3px;border-radius:2px;background:linear-gradient(90deg,#e0b34d,#b8935a)}
+.foto-hero-wrap .foto,.foto{border-radius:20px;box-shadow:0 26px 60px rgba(13,59,84,.16)}
+.lead-box{position:relative;overflow:hidden;border:1px solid rgba(224,179,77,.35);box-shadow:0 30px 80px rgba(8,32,48,.35)}
+.lead-box::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,#e0b34d,#b8935a,#e0b34d)}
+.faq-item{border:1px solid rgba(13,59,84,.08);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:box-shadow .25s}
+.faq-item:hover{box-shadow:0 10px 30px rgba(13,59,84,.08)}
+.prg-bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#e0b34d,#b8935a);z-index:1200;transition:width .1s linear}
+.rvl{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rvl.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rvl{opacity:1;transform:none;transition:none}.prg-bar{display:none}}
 </style>
 </head>
 <section class="hero">
@@ -567,6 +584,16 @@ function enviarLeadWpp(ev, emp){
   var nome=(f.nome.value||'').trim();
   var tel=(f.tel.value||'').trim();
   var interesse=f.interesse?f.interesse.value:'';
+  // salva no CRM (leads_campanha) antes de abrir o WhatsApp — o lead nunca se perde
+  try{
+    var SBu='https://cddgkhkzcnyzzcllgzoz.supabase.co';
+    var SBk='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+    var p=new URLSearchParams(location.search);
+    var corpo={nome:nome,telefone:tel,email:'',tipo_imovel:interesse||null,origem:'lancamento',pagina_origem:location.pathname};
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){var v=p.get(k);if(v)corpo[k]=v.slice(0,120);});
+    if(!corpo.utm_source){if(p.get('gclid'))corpo.utm_source='google';else if(p.get('fbclid'))corpo.utm_source='facebook';}
+    fetch(SBu+'/rest/v1/leads_campanha',{method:'POST',keepalive:true,headers:{apikey:SBk,Authorization:'Bearer '+SBk,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(corpo)});
+  }catch(e){}
   var msg='Olá! Meu nome é '+nome+' (WhatsApp: '+tel+'). Tenho interesse no '+emp;
   if(interesse) msg+=' — '+interesse;
   msg+='. Gostaria de receber valores e condições.';
@@ -665,4 +692,21 @@ function enviarLeadWpp(ev, emp){
 })();
 </script>
 
+<script>
+/* barra de progresso de leitura + revelação suave das seções */
+(function(){
+  var b=document.createElement('div');b.className='prg-bar';document.body.appendChild(b);
+  window.addEventListener('scroll',function(){
+    var h=document.documentElement;
+    var p=h.scrollTop/(h.scrollHeight-h.clientHeight);
+    b.style.width=(p*100)+'%';
+  },{passive:true});
+  var alvos=document.querySelectorAll('.wrap h2, .wrap section, .foto-hero-wrap, .lead-box, .cta-strip, .faq-item, .proof, .stat');
+  if(!('IntersectionObserver' in window)){return;}
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}});
+  },{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  alvos.forEach(function(el){el.classList.add('rvl');io.observe(el);});
+})();
+</script>
 </body></html>

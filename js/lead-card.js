@@ -40,8 +40,8 @@
   mount.innerHTML = ''+
   '<div class="ldc"><div class="ldc-card">'+
     '<div id="ldc-form">'+
-      '<p class="ldc-h">Quer ajuda para encontrar o ideal?</p>'+
-      '<p class="ldc-s">Deixe seu contato e retornamos com opções selecionadas para o seu perfil.</p>'+
+      '<p class="ldc-h">'+(mount.getAttribute('data-titulo')||'Quer ajuda para encontrar o ideal?')+'</p>'+
+      '<p class="ldc-s">'+(mount.getAttribute('data-sub')||'Deixe seu contato e retornamos com opções selecionadas para o seu perfil.')+'</p>'+
       '<div class="ldc-row">'+
         '<input id="ldc-nome" type="text" placeholder="Seu nome" autocomplete="name">'+
         '<input id="ldc-tel" type="tel" placeholder="WhatsApp com DDD" autocomplete="tel" inputmode="numeric">'+
@@ -83,6 +83,19 @@
     return h ? h.textContent.trim().slice(0,120) : null;
   }
 
+  function utms(){
+    var p = new URLSearchParams(location.search);
+    var o = {};
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){
+      var v = p.get(k); if(v) o[k] = v.slice(0,120);
+    });
+    if(!o.utm_source){
+      if(p.get('gclid')) o.utm_source = 'google';
+      else if(p.get('fbclid')) o.utm_source = 'facebook';
+    }
+    return o;
+  }
+
   async function enviar(){
     var nome  = document.getElementById('ldc-nome').value.trim();
     var tel   = document.getElementById('ldc-tel').value.trim();
@@ -99,17 +112,31 @@
 
     btn.disabled = true; btn.textContent = 'Enviando...';
     try{
-      var r = await fetch(SB_URL + '/rest/v1/leads_site', {
-        method: 'POST',
-        headers: { apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
-        body: JSON.stringify({
+      var tabela = mount.getAttribute('data-tabela') === 'leads_campanha' ? 'leads_campanha' : 'leads_site';
+      var corpo;
+      if(tabela === 'leads_campanha'){
+        corpo = Object.assign({
+          nome: nome,
+          telefone: tel,
+          email: email.toLowerCase(),
+          tipo_imovel: inter || null,
+          origem: mount.getAttribute('data-origem') || 'site',
+          pagina_origem: location.pathname
+        }, utms());
+      } else {
+        corpo = {
           nome: nome,
           telefone: tel,
           email: email.toLowerCase(),
           mensagem: inter ? ('Interesse: ' + inter) : null,
           origem: mount.getAttribute('data-origem') || 'site',
           imovel_titulo: contexto()
-        })
+        };
+      }
+      var r = await fetch(SB_URL + '/rest/v1/' + tabela, {
+        method: 'POST',
+        headers: { apikey: SB_KEY, Authorization: 'Bearer '+SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify(corpo)
       });
       if(!r.ok) throw new Error('HTTP ' + r.status);
       document.getElementById('ldc-form').style.display = 'none';
