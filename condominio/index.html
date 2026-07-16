@@ -54,7 +54,7 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 .gal-slide img{width:100%;height:100%;object-fit:cover;display:block}
 @media(min-width:981px){
   .hero-gallery{background:#e8edf0}
-  .gal-slide{flex:0 0 49.4%}
+  .gal-track.multi .gal-slide{flex:0 0 49.4%}
   .gallery-count{top:auto;bottom:18px;left:50%;right:auto;transform:translateX(-50%);font-size:12.5px;padding:5px 14px}
   .gallery-thumbs{display:none}
   .gallery-nav{display:none}
@@ -881,6 +881,7 @@ function buildGallery(fotos) {
 
   no.style.display = 'none';
   main.style.display = 'flex';
+  main.classList.toggle('multi', fotos.length >= 3);
   main.innerHTML = fotos.map((f, i) =>
     `<div class="gal-slide" onclick="galSlideClick(${i})"><img src="${f}" alt="${cond.nome} — foto ${i+1}"${i>1?' loading="lazy"':''}></div>`
   ).join('');
@@ -916,10 +917,19 @@ function galNav(d) { galTo(galIdx + d); }
 function galDesliza() {
   const t = document.getElementById('gal-track');
   if (!t) return;
+  const n = (cond.fotos || []).length;
   const desk = window.matchMedia('(min-width:981px)').matches;
-  t.style.transform = desk
-    ? 'translateX(calc(25.3% - ' + (galIdx * 49.4) + '% - ' + (galIdx * 10) + 'px))'
-    : 'translateX(calc(-' + (galIdx * 100) + '% - ' + (galIdx * 10) + 'px))';
+  if (!desk || n < 3) {
+    t.style.transform = 'translateX(calc(-' + (galIdx * 100) + '% - ' + (galIdx * 10) + 'px))';
+    return;
+  }
+  if (galIdx === 0) {
+    t.style.transform = 'translateX(0)';
+  } else if (galIdx === n - 1) {
+    t.style.transform = 'translateX(calc(100% - ' + (n * 49.4) + '% - ' + ((n - 1) * 10) + 'px))';
+  } else {
+    t.style.transform = 'translateX(calc(25.3% - ' + (galIdx * 49.4) + '% - ' + (galIdx * 10) + 'px))';
+  }
 }
 function galSlideClick(i) { if (i !== galIdx) galTo(i); }
 window.addEventListener('resize', galDesliza);

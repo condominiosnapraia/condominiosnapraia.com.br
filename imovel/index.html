@@ -457,7 +457,7 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-slide{flex:0 0 100%;height:100%;position:relative;cursor:zoom-in;background:#0c3a5c;overflow:hidden}
 .ip-slide img{width:100%;height:100%;object-fit:contain;display:block}
 @media(min-width:981px){
-  .ip-slide{flex:0 0 49.4%;cursor:pointer}
+  .ip-track.multi .ip-slide{flex:0 0 49.4%;cursor:pointer}
   .ip-slide img{object-fit:cover}
 }
 
@@ -466,6 +466,18 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-gal-arrow{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
 .ip-gal-arrow.prev{left:14px}.ip-gal-arrow.next{right:14px}
 .ip-gal-count{position:absolute;bottom:14px;right:16px;background:rgba(8,32,48,.7);color:#fff;font-size:12px;padding:5px 12px;border-radius:100px;z-index:2}
+@media(max-width:980px){
+  .ip-gal{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;height:55vw;min-height:260px;margin-bottom:12px}
+  .ip-slide img{object-fit:cover}
+  .ip-thumbs{display:none}
+  .ip-dots{display:flex}
+}
+@media(max-width:600px){
+  .ip-gal{height:60vw;min-height:220px}
+}
+.ip-dots{display:none;position:absolute;bottom:16px;left:50%;transform:translateX(-50%);gap:8px;z-index:2;max-width:70%;flex-wrap:wrap;justify-content:center}
+.ip-dot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.45);cursor:pointer;padding:0;transition:all .25s}
+.ip-dot.on{background:#fff;transform:scale(1.3)}
 .ip-thumbs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:26px}
 .ip-thumb{flex:0 0 auto;width:88px;height:64px;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid transparent;opacity:.65;transition:all .2s}
 .ip-thumb.on{border-color:var(--om);opacity:1}
@@ -727,10 +739,17 @@ function m2(v){return v?(v+' m²'):'—';}
 function fotosValidas(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
 
 let GAL=[], gi=0;
-function ipDesliza(){var t=document.getElementById('ip-track');if(!t)return;var desk=window.matchMedia('(min-width:981px)').matches;t.style.transform=desk?'translateX(calc(25.3% - '+(gi*49.4)+'% - '+(gi*10)+'px))':'translateX(calc(-'+(gi*100)+'% - '+(gi*10)+'px))';}
+function ipDesliza(){var t=document.getElementById('ip-track');if(!t)return;var n=GAL.length;var desk=window.matchMedia('(min-width:981px)').matches;
+if(!desk||n<3){t.style.transform='translateX(calc(-'+(gi*100)+'% - '+(gi*10)+'px))';return;}
+if(gi===0){t.style.transform='translateX(0)';}
+else if(gi===n-1){t.style.transform='translateX(calc(100% - '+(n*49.4)+'% - '+((n-1)*10)+'px))';}
+else{t.style.transform='translateX(calc(25.3% - '+(gi*49.4)+'% - '+(gi*10)+'px))';}}
 function ipSlideClick(i){if(i===gi){ipLbOpen();}else{galShow(i);}}
 window.addEventListener('resize',function(){if(typeof gi!=='undefined')ipDesliza();});
-function galShow(n){if(!GAL.length)return;gi=(n+GAL.length)%GAL.length;ipDesliza();document.getElementById('ip-gal-i').textContent=(gi+1)+'/'+GAL.length;document.querySelectorAll('.ip-thumb').forEach((t,k)=>t.classList.toggle('on',k===gi));}
+(function(){var g=null,x0=0;
+document.addEventListener('touchstart',function(e){g=e.target.closest('.ip-gal');if(g)x0=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){if(!g)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)galNav(dx>0?-1:1);g=null;},{passive:true});})();
+function galShow(n){if(!GAL.length)return;gi=(n+GAL.length)%GAL.length;ipDesliza();document.querySelectorAll('.ip-dot').forEach(function(d,i){d.classList.toggle('on',i===gi);});document.getElementById('ip-gal-i').textContent=(gi+1)+'/'+GAL.length;document.querySelectorAll('.ip-thumb').forEach((t,k)=>t.classList.toggle('on',k===gi));}
 function galNav(d){galShow(gi+d);}
 function ipLbOpen(){if(!GAL.length)return;window._lbMode='main';document.getElementById('ip-lb-img').src=GAL[gi];document.getElementById('ip-lb').classList.add('on');}
 function ipLbClose(){document.getElementById('ip-lb').classList.remove('on');}
@@ -968,9 +987,10 @@ function render(im,cond){
   window._todasFotos = TODAS_FOTOS;
 
   const galHtml = GAL.length
-    ? '<div class="ip-track" id="ip-track">'+GAL.map(function(f,i){return '<div class="ip-slide" onclick="ipSlideClick('+i+')"><img src="'+f+'" alt="'+((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1)+'"'+(i>1?' loading="lazy"':'')+'></div>';}).join('')+'</div>'+
+    ? '<div class="ip-track'+(GAL.length>=3?' multi':'')+'" id="ip-track">'+GAL.map(function(f,i){return '<div class="ip-slide" onclick="ipSlideClick('+i+')"><img src="'+f+'" alt="'+((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1)+'"'+(i>1?' loading="lazy"':'')+'></div>';}).join('')+'</div>'+
       (GAL.length>1?'<button class="ip-gal-arrow prev" onclick="galNav(-1)">&#8249;</button><button class="ip-gal-arrow next" onclick="galNav(1)">&#8250;</button>':'')+
-      '<div class="ip-gal-count" id="ip-gal-i">1/'+GAL.length+'</div>'
+      '<div class="ip-gal-count" id="ip-gal-i">1/'+GAL.length+'</div>'+
+      '<div class="ip-dots" id="ip-dots">'+GAL.map(function(_,i){return '<button class="ip-dot'+(i===0?' on':'')+'" onclick="galShow('+i+')" aria-label="Foto '+(i+1)+'"></button>';}).join('')+'</div>'
     : '<div class="ip-gal-ph">🏠</div>';
 
   // miniaturas + card de bloqueio se houver fotos escondidas
