@@ -1506,6 +1506,7 @@ if(_savedToken && _savedUser){
     <div class="phr">
       <button class="btn bd2b" onclick="limparDuplicadosLanc()" title="Remove lançamentos duplicados do banco, mantendo apenas um de cada">🧹 Limpar duplicados</button>
       <button class="btn bg" onclick="migrarFotosStorage()" title="Move as fotos antigas (base64) para o Supabase Storage, deixando o site muito mais rápido">⚡ Migrar fotos p/ Storage</button>
+      <button class="btn bg" onclick="otimizarFotosPesadas()" title="Recomprime em WebP as fotos publicadas que estão pesadas (capas, carrossel, cards), sem trocar nada de lugar">🪄 Otimizar fotos pesadas</button>
       <button class="btn bs" onclick="openNovoLanc()">+ Novo Lançamento</button>
     </div>
   </div>
@@ -4494,6 +4495,87 @@ function uploadGaleriaLanc(fk,inp){
 // Para cada foto que ainda está como base64 (data:image...), sobe ao bucket 'fotos'
 // e substitui pelo URL público. Deixa o site muito mais rápido e o banco leve.
 // Seguro para rodar mais de uma vez: ignora o que já é URL.
+
+// ── OTIMIZAÇÃO: recomprime em WebP as fotos publicadas que estão pesadas ──
+// Varre fotos_site, carrossel da home e capas de decisão. Baixa cada foto,
+// recomprime em WebP (máx. 1600px) e regrava, atualizando a referência.
+// Seguro rodar mais de uma vez: pula o que já está leve ou já é WebP.
+async function otimizarFotosPesadas(){
+  var LIMITE = 120 * 1024;          // só mexe em fotos acima de 120KB
+  if(!confirm('Isso vai recomprimir em WebP as fotos do site que estão pesadas (acima de 120KB), sem mudar nada de lugar.\n\nPode levar alguns minutos. Continuar?')) return;
+
+  function blobParaWebp(blob){
+    return new Promise(function(res, rej){
+      (window.createImageBitmap ? createImageBitmap(blob) : Promise.reject()).then(function(bmp){
+        var w = bmp.width, hh = bmp.height, MAX = 1600;
+        if(Math.max(w, hh) > MAX){ var s = MAX / Math.max(w, hh); w = Math.round(w*s); hh = Math.round(hh*s); }
+        var c = document.createElement('canvas'); c.width = w; c.height = hh;
+        c.getContext('2d').drawImage(bmp, 0, 0, w, hh);
+        res(canvasParaDataURL(c, 0.82));
+      }).catch(function(){
+        var u = URL.createObjectURL(blob), img = new Image();
+        img.onload = function(){
+          var w = img.width, hh = img.height, MAX = 1600;
+          if(Math.max(w, hh) > MAX){ var s = MAX / Math.max(w, hh); w = Math.round(w*s); hh = Math.round(hh*s); }
+          var c = document.createElement('canvas'); c.width = w; c.height = hh;
+          c.getContext('2d').drawImage(img, 0, 0, w, hh);
+          URL.revokeObjectURL(u);
+          res(canvasParaDataURL(c, 0.82));
+        };
+        img.onerror = function(){ rej(new Error('leitura da imagem')); };
+        img.src = u;
+      });
+    });
+  }
+
+  // coletar alvos {rotulo, url, aplicar(novaUrl)}
+  var alvos = [];
+  try{
+    var mapa = (await sb.getConfig('fotos_site')) || {};
+    Object.keys(mapa).forEach(function(k){
+      var u = mapa[k];
+      if(typeof u === 'string' && u.indexOf('http') === 0 && !/\.webp($|\?)/i.test(u)){
+        alvos.push({rotulo:'fotos_site/'+k, url:u, aplicar:async function(nova){ mapa[k]=nova; await sb.setConfig('fotos_site', mapa); }});
+      }
+    });
+    var carr = await sb.get('os_carrossel_home','?select=id,slot,foto_url');
+    (carr||[]).forEach(function(r){
+      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url)){
+        alvos.push({rotulo:'carrossel/'+r.slot, url:r.foto_url, aplicar:async function(nova){ await sb.patch('os_carrossel_home', r.id, {foto_url:nova}); }});
+      }
+    });
+    var capas = await sb.get('os_capas_decisao','?select=id,slug,foto_url');
+    (capas||[]).forEach(function(r){
+      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url)){
+        alvos.push({rotulo:'capa/'+r.slug, url:r.foto_url, aplicar:async function(nova){ await sb.patch('os_capas_decisao', r.id, {foto_url:nova}); }});
+      }
+    });
+  }catch(e){ toast('Erro ao listar fotos: '+(e.message||e),'error'); return; }
+
+  if(!alvos.length){ toast('Nenhuma foto candidata encontrada — tudo já otimizado!','success'); return; }
+
+  var ok = 0, pulou = 0, falhou = 0, economia = 0;
+  for(var i = 0; i < alvos.length; i++){
+    var a = alvos[i];
+    toast('Analisando '+(i+1)+' de '+alvos.length+'…','success');
+    try{
+      var resp = await fetch(a.url);
+      if(!resp.ok) throw new Error('download');
+      var blob = await resp.blob();
+      if(blob.size <= LIMITE){ pulou++; continue; }
+      var dataUrl = await blobParaWebp(blob);
+      var novoTam = Math.round(dataUrl.length * 0.75);
+      if(novoTam >= blob.size * 0.9){ pulou++; continue; }   // ganho pequeno: mantém a original
+      var path = 'otim/' + a.rotulo.replace(/[^a-z0-9-]+/gi,'-') + '-' + Date.now() + '.webp';
+      var nova = await sb.uploadFoto(path, dataUrl);
+      await a.aplicar(nova);
+      economia += (blob.size - novoTam);
+      ok++;
+    }catch(e){ falhou++; }
+  }
+  toast('Otimização concluída: '+ok+' foto(s) recomprimidas, '+pulou+' já estavam leves'+(falhou?(', '+falhou+' falha(s)'):'')+'. Economia: ~'+Math.round(economia/1024)+'KB.','success');
+}
+
 async function migrarFotosStorage(){
   if(!confirm('Isso vai mover todas as fotos antigas para o Storage do Supabase, deixando o site muito mais rápido.\n\nPode levar alguns minutos dependendo da quantidade de fotos. Deseja continuar?')) return;
   var mapa;
