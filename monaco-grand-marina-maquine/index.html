@@ -369,16 +369,38 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 .rvl{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
 .rvl.on{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.rvl{opacity:1;transform:none;transition:none}.prg-bar{display:none}}
+
+/* ══ PREMIUM v2 — base na pesquisa de referências de luxo ══ */
+/* fundo neutro quente (quiet luxury, regra 60-30-10) */
+body{background:#fbf8f1}
+h1,h2,h3{font-optical-sizing:auto}
+/* hero mais cinematográfico no desktop */
+.hero-in{padding-bottom:76px}
+.hero-sub{max-width:640px}
+/* MOBILE: capa = uma imagem única e forte, texto e CTA acima da dobra */
+@media(max-width:680px){
+  .foto-hero-wrap{display:none}
+  .hero{min-height:min(100svh,760px)}
+  .hero-in{padding:0 22px 88px}
+  .hero-in h1{font-size:clamp(26px,7.4vw,34px)}
+  .hero-badges{gap:6px}
+  .hbadge{font-size:11.5px;padding:6px 11px}
+  .hero-scroll{display:none}
+}
+
+/* capa enxuta: só título e botões; o parágrafo desce para depois da capa */
+.hero-in h1{margin-bottom:30px}
+.intro-strip{max-width:880px;margin:0 auto;padding:50px 24px 6px;text-align:center}
+.intro-strip p{font-size:clamp(17px,2vw,20px);line-height:1.85;color:#33566b;margin:0}
+.intro-strip p::before{content:"";display:block;width:52px;height:3px;border-radius:2px;background:linear-gradient(90deg,#e0b34d,#b8935a);margin:0 auto 26px}
+@media(max-width:680px){.intro-strip{padding:36px 22px 0}}
 </style>
 </head>
 <section class="hero">
   <div class="hero-bg" data-foto-card="lanc-monaco-grand-marina-maquine"></div>
   <div class="hero-in">
-    <div class="eyebrow">Maquiné · Litoral Norte Gaúcho</div>
     <h1>Mônaco Grand Marina: o condomínio náutico de <em>luxo</em> mais exclusivo do Sul</h1>
-    <div class="hero-badges"><span class="hbadge"><span class="dot"></span>Lançamento</span><span class="hbadge">🛥 Canais navegáveis</span><span class="hbadge">💧 113.750m² de lagos</span></div>
-    <p class="hero-sub">Viva em um condomínio náutico de luxo com canais navegáveis, marina privativa, píeres residenciais e 113.750m² de lagos. 367 lotes — fale agora e receba a tabela de valores.</p>
-    <div class="hero-cta">
+        <div class="hero-cta">
       <a class="btn-wpp" href="https://wa.me/5551982868888?text=Ol%C3%A1%21%20Quero%20informa%C3%A7%C3%B5es%20e%20valores%20do%20M%C3%B4naco%20Grand%20Marina." rel="nofollow"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Falar no WhatsApp</a>
       <a class="btn-lead" href="#receber">Receber valores ↓</a>
     </div>
@@ -386,6 +408,8 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 
   <div class="hero-scroll">Role para explorar ↓</div>
 </section>
+<section class="intro-strip"><p>Viva em um condomínio náutico de luxo com canais navegáveis, marina privativa, píeres residenciais e 113.750m² de lagos. 367 lotes — fale agora e receba a tabela de valores.</p></section>
+
 <div class="foto-hero-wrap"><div class="foto foto-hero" data-fk="monaco__1"><span class="ic">📷</span><span class="cap">Foto destaque — vista aérea do empreendimento</span></div></div>
 <div class="wrap">
 <nav class="crumb"><a href="/">Início</a> › <a href="/maquine">Maquiné</a> › <span>Mônaco Grand Marina</span></nav>
@@ -406,9 +430,9 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
           <option>Investir</option>
           <option>Apenas conhecer valores</option>
         </select>
-        <button type="submit"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Quero receber as informações</button>
+        <button type="submit"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Receber a tabela de valores</button>
       </form>
-      <p class="lead-mini">🔒 Seus dados são usados apenas para o atendimento. Sem spam.</p>
+      <p class="lead-mini">🔒 Seus dados são usados apenas para o atendimento. ⚡ Retorno em poucos minutos no WhatsApp.</p>
     </div>
 
     <h2>O Que é o Mônaco Grand Marina?</h2>
