@@ -14,7 +14,13 @@
   // rastrear cliques no WhatsApp como evento (para medir conversões)
   document.addEventListener('click', function(e){
     var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
-    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+    if(a){
+      try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){}
+      if((a.href||'').indexOf('5551999442252') > -1){
+        try{ gtag('event','conversion',{'send_to':'AW-16759565872/MiTlCKf559EcELDcyrc-'}); }catch(_){}
+        try{ if(typeof fbq==='function') fbq('track','Contact'); }catch(_){}
+      }
+    }
   }, true);
 </script>
 <!-- Fim Google Analytics -->
@@ -620,6 +626,8 @@ function enviarLeadWpp(ev, emp){
     if(!corpo.utm_source){if(p.get('gclid'))corpo.utm_source='google';else if(p.get('fbclid'))corpo.utm_source='facebook';}
     fetch(SBu+'/rest/v1/leads_campanha',{method:'POST',keepalive:true,headers:{apikey:SBk,Authorization:'Bearer '+SBk,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(corpo)});
   }catch(e){}
+  try{ if(typeof gtag==='function') gtag('event','conversion',{'send_to':'AW-16759565872/dnB1CNazzdEcELDcyrc-'}); }catch(e){}
+  try{ if(typeof fbq==='function') fbq('track','Lead'); }catch(e){}
   var msg='Olá! Meu nome é '+nome+' (WhatsApp: '+tel+'). Tenho interesse no '+emp;
   if(interesse) msg+=' — '+interesse;
   msg+='. Gostaria de receber valores e condições.';

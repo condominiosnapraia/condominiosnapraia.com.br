@@ -139,6 +139,8 @@
         body: JSON.stringify(corpo)
       });
       if(!r.ok) throw new Error('HTTP ' + r.status);
+      try{ if(typeof gtag==='function') gtag('event','conversion',{'send_to':'AW-16759565872/dnB1CNazzdEcELDcyrc-'}); }catch(e){}
+      try{ if(typeof fbq==='function') fbq('track','Lead'); }catch(e){}
       document.getElementById('ldc-form').style.display = 'none';
       document.getElementById('ldc-ok').classList.add('on');
     }catch(e){

@@ -42,7 +42,7 @@
    Quando for anunciar no Facebook/Instagram, coloque o ID do
    Pixel entre as aspas abaixo (ex: '123456789012345').
    Enquanto estiver vazio, o pixel fica desligado. */
-var META_PIXEL_ID = '';
+var META_PIXEL_ID = '1591098095733965';
 
 if(META_PIXEL_ID){
 !function(f,b,e,v,n,t,s)
@@ -243,14 +243,8 @@ body{font-family:'Outfit',sans-serif;color:var(--text);background:#fff;line-heig
 </section>
 
 <script>
-/* ═══ CONFIGURAR DEPOIS ═══
-   Rótulo de conversão do Google Ads.
-   No Google Ads: Metas → Conversões → criar ação → o código
-   aparece como AW-16759565872/AbCdEfGhIj — cole aqui SÓ a
-   parte depois da barra (ex: 'AbCdEfGhIj').
-   Enquanto estiver vazio, a conversão do Ads não é enviada
-   (o lead continua sendo salvo normalmente). */
-const GADS_CONVERSION_LABEL = '';
+/* Rótulo de conversão do Google Ads — ação "Formulário de contato" (configurado) */
+const GADS_CONVERSION_LABEL = 'dnB1CNazzdEcELDcyrc-';
 
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
@@ -441,5 +435,15 @@ async function lpEnviar(){
 })();
 </script>
 
+<script>
+/* Conversão: clique em WhatsApp (Google Ads + Meta) */
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href*="wa.me"]');
+  if(a && (a.href||'').indexOf('5551999442252') > -1){
+    try{ gtag('event','conversion',{'send_to':'AW-16759565872/MiTlCKf559EcELDcyrc-'}); }catch(_){}
+    try{ if(typeof fbq==='function') fbq('track','Contact'); }catch(_){}
+  }
+}, true);
+</script>
 </body>
 </html>

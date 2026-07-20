@@ -14,7 +14,13 @@
   // rastrear cliques no WhatsApp como evento (para medir conversões)
   document.addEventListener('click', function(e){
     var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
-    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+    if(a){
+      try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){}
+      if((a.href||'').indexOf('5551999442252') > -1){
+        try{ gtag('event','conversion',{'send_to':'AW-16759565872/MiTlCKf559EcELDcyrc-'}); }catch(_){}
+        try{ if(typeof fbq==='function') fbq('track','Contact'); }catch(_){}
+      }
+    }
   }, true);
 </script>
 <!-- Fim Google Analytics -->
@@ -388,6 +394,13 @@ h1,h2,h3{font-optical-sizing:auto}
 .intro-strip p{font-size:clamp(17px,2vw,20px);line-height:1.85;color:#33566b;margin:0}
 .intro-strip p::before{content:"";display:block;width:52px;height:3px;border-radius:2px;background:linear-gradient(90deg,#e0b34d,#b8935a);margin:0 auto 26px}
 @media(max-width:680px){.intro-strip{padding:36px 22px 0}}
+
+/* faixa de destaques (statgrid) — estava sem estilo neste template */
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:30px 0}
+.stat{background:linear-gradient(135deg,var(--sl),#fff);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;box-shadow:0 8px 24px rgba(13,59,84,.05)}
+.stat .n{font-family:'Fraunces',serif;font-size:24px;color:var(--om);line-height:1.1;font-weight:600}
+.stat .d{font-size:12.5px;color:var(--tm);margin-top:7px;line-height:1.4}
+@media(max-width:680px){.statgrid{grid-template-columns:1fr 1fr;gap:10px}.stat{padding:16px 10px}}
 </style>
 </head>
 <section class="hero">
@@ -609,6 +622,8 @@ function enviarLeadWpp(ev, emp){
     if(!corpo.utm_source){if(p.get('gclid'))corpo.utm_source='google';else if(p.get('fbclid'))corpo.utm_source='facebook';}
     fetch(SBu+'/rest/v1/leads_campanha',{method:'POST',keepalive:true,headers:{apikey:SBk,Authorization:'Bearer '+SBk,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(corpo)});
   }catch(e){}
+  try{ if(typeof gtag==='function') gtag('event','conversion',{'send_to':'AW-16759565872/dnB1CNazzdEcELDcyrc-'}); }catch(e){}
+  try{ if(typeof fbq==='function') fbq('track','Lead'); }catch(e){}
   var msg='Olá! Meu nome é '+nome+' (WhatsApp: '+tel+'). Tenho interesse no '+emp;
   if(interesse) msg+=' — '+interesse;
   msg+='. Gostaria de receber valores e condições.';

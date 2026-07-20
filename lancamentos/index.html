@@ -14,7 +14,13 @@
   // rastrear cliques no WhatsApp como evento (para medir conversões)
   document.addEventListener('click', function(e){
     var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
-    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+    if(a){
+      try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){}
+      if((a.href||'').indexOf('5551999442252') > -1){
+        try{ gtag('event','conversion',{'send_to':'AW-16759565872/MiTlCKf559EcELDcyrc-'}); }catch(_){}
+        try{ if(typeof fbq==='function') fbq('track','Contact'); }catch(_){}
+      }
+    }
   }, true);
 </script>
 <!-- Fim Google Analytics -->
@@ -355,36 +361,6 @@ const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 })();
 </script>
 
-<script>
-/* Rastreamento de conversão Google Ads — cliques em WhatsApp nesta página (/lancamentos/) */
-(function(){
-  function ehWhatsApp(url){
-    return /(?:wa\.me|api\.whatsapp\.com)/i.test(url||'');
-  }
-  document.addEventListener('click', function(e){
-    var a = e.target.closest('a');
-    if(!a) return;
-    var href = a.getAttribute('href') || '';
-    if(!ehWhatsApp(href)) return;
-    // se gtag não existe, deixa a navegação seguir normalmente
-    if(typeof gtag !== 'function') return;
-
-    // se o link abre em nova aba, a navegação não é bloqueada — dispara e segue
-    var novaAba = (a.target === '_blank');
-    if(novaAba){
-      gtag('event','conversion',{'send_to':'AW-16759565872/nz_aCMnSk8ocELDcyrc-'});
-      return; // não previne: a nova aba abre normalmente
-    }
-
-    // mesma aba: previne, dispara conversão e navega no callback (com timeout de segurança)
-    e.preventDefault();
-    var jaFoi = false;
-    var ir = function(){ if(jaFoi) return; jaFoi = true; window.location.href = href; };
-    gtag('event','conversion',{'send_to':'AW-16759565872/nz_aCMnSk8ocELDcyrc-','event_callback':ir});
-    setTimeout(ir, 1200); // fallback caso o callback não retorne
-  }, true);
-})();
-</script>
 <script>
 (function(){
   var fCity='', fTag='';
