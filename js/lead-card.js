@@ -149,7 +149,7 @@
   try{
     var KEY='cnp_pop_snooze';
     var ate=0; try{ ate=parseInt(localStorage.getItem(KEY)||'0',10); }catch(e){}
-    if(Date.now() < ate) return;
+    var silenciado = Date.now() < ate;
 
     var pcss=''+
     '.ldp-wrap{position:fixed;z-index:1400;right:18px;bottom:18px;width:340px;max-width:calc(100vw - 24px);opacity:0;transform:translateY(24px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}'+
@@ -173,6 +173,8 @@
     '.ldp-ok.on{display:block}'+
     '.ldp-ok-h{font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600;color:#0d3b54;margin:6px 0 4px}'+
     '.ldp-ok-t{font-size:12.5px;color:#5b7585;line-height:1.55}'+
+    '.ldp-wpp{display:block;margin-top:12px;background:#0f7c3f;color:#fff;text-decoration:none;border-radius:100px;padding:11px;font-size:13.5px;font-weight:700;text-align:center}'+
+    '.ldp-wpp:hover{background:#0d6e38}'+
     '@media(max-width:600px){.ldp-wrap{right:12px;left:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px));width:auto}}';
     var pst=document.createElement('style'); pst.textContent=pcss; document.head.appendChild(pst);
 
@@ -181,8 +183,8 @@
     '<div class="ldp"><div class="ldp-top"></div><div class="ldp-in">'+
       '<button class="ldp-x" id="ldp-x" aria-label="Fechar">&times;</button>'+
       '<div id="ldp-form">'+
-        '<p class="ldp-h">Receba as melhores oportunidades</p>'+
-        '<p class="ldp-s">Deixe seu contato e enviamos imóveis e lançamentos selecionados do Litoral Norte.</p>'+
+        '<p class="ldp-h">Fale com um especialista</p>'+
+        '<p class="ldp-s">Deixe seu contato e receba imóveis e lançamentos selecionados do Litoral Norte.</p>'+
         '<input id="ldp-nome" type="text" placeholder="Seu nome" autocomplete="name">'+
         '<input id="ldp-tel" type="tel" placeholder="WhatsApp com DDD" autocomplete="tel" inputmode="numeric">'+
         '<input id="ldp-email" type="email" placeholder="Seu e-mail" autocomplete="email">'+
@@ -190,22 +192,41 @@
         '<div class="ldp-msg" id="ldp-msg"></div>'+
         '<div class="ldp-priv">Sem spam. Seus dados ficam seguros.</div>'+
       '</div>'+
-      '<div class="ldp-ok" id="ldp-ok"><div style="font-size:30px">✓</div><div class="ldp-ok-h">Recebido!</div><div class="ldp-ok-t">Em breve entramos em contato com as melhores opções.</div></div>'+
+      '<div class="ldp-ok" id="ldp-ok"><div style="font-size:30px">✓</div><div class="ldp-ok-h">Recebido!</div><div class="ldp-ok-t">Em breve entramos em contato com as melhores opções.</div>'+
+      '<a class="ldp-wpp" href="https://wa.me/5551999442252?text=Ol%C3%A1!%20Acabei%20de%20me%20cadastrar%20no%20site%20e%20quero%20falar%20com%20um%20especialista." target="_blank" rel="nofollow">💬 Falar agora no WhatsApp</a></div>'+
     '</div></div>';
     document.body.appendChild(wrap);
 
-    var mostrou=false;
-    function mostrar(){ if(mostrou) return; mostrou=true; wrap.classList.add('on'); }
-    var timer=setTimeout(mostrar, 18000);
-    function aoRolar(){
-      var h=document.documentElement;
-      if(h.scrollTop/(h.scrollHeight-h.clientHeight) > 0.45){ mostrar(); window.removeEventListener('scroll',aoRolar); }
+    var mostrou=false, timer=null;
+    function mostrar(){ mostrou=true; wrap.classList.add('on'); }
+    window.abrirFormularioLead = mostrar;
+
+    if(!silenciado){
+      timer=setTimeout(mostrar, 18000);
+      var aoRolar=function(){
+        var h=document.documentElement;
+        if(h.scrollTop/(h.scrollHeight-h.clientHeight) > 0.45){ mostrar(); window.removeEventListener('scroll',aoRolar); }
+      };
+      window.addEventListener('scroll', aoRolar, {passive:true});
     }
-    window.addEventListener('scroll', aoRolar, {passive:true});
+
+    /* botão flutuante existente (Falar com especialista): abre o formulário
+       em vez de ir direto ao WhatsApp. Detecta qualquer link wa.me fixo na
+       tela, sem afetar os botões do cabeçalho, rodapé, barra mobile e cards. */
+    document.addEventListener('click', function(e){
+      var a = e.target.closest('a[href*="wa.me"]');
+      if(!a || a.closest('.ldp-wrap') || a.closest('.mob-footer-nav')) return;
+      var el = a, fixo = false, i = 0;
+      while(el && i < 4){
+        try{ if(getComputedStyle(el).position === 'fixed'){ fixo = true; break; } }catch(_){}
+        el = el.parentElement; i++;
+      }
+      if(fixo){ e.preventDefault(); mostrar(); }
+    }, true);
 
     function silenciar(dias){ try{ localStorage.setItem(KEY, String(Date.now()+dias*864e5)); }catch(e){} }
     document.getElementById('ldp-x').addEventListener('click', function(){
-      wrap.classList.remove('on'); clearTimeout(timer); silenciar(3);
+      wrap.classList.remove('on'); if(timer) clearTimeout(timer); silenciar(3);
     });
 
     document.getElementById('ldp-tel').addEventListener('input', function(e){
@@ -245,7 +266,6 @@
         silenciar(90);
         document.getElementById('ldp-form').style.display='none';
         document.getElementById('ldp-ok').classList.add('on');
-        setTimeout(function(){ wrap.classList.remove('on'); }, 4200);
       }catch(e){
         btn.disabled=false; btn.textContent='Quero receber';
         msg.textContent='Não foi possível enviar agora. Tente de novo.';
