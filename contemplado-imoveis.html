@@ -14,7 +14,13 @@
   // rastrear cliques no WhatsApp como evento (para medir conversões)
   document.addEventListener('click', function(e){
     var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
-    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+    if(a){
+      try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){}
+      if((a.href||'').indexOf('5551999442252') > -1){
+        try{ gtag('event','conversion',{'send_to':'AW-16759565872/MiTlCKf559EcELDcyrc-'}); }catch(_){}
+        try{ if(typeof fbq==='function') fbq('track','Contact'); }catch(_){}
+      }
+    }
   }, true);
 </script>
 <!-- Fim Google Analytics -->
