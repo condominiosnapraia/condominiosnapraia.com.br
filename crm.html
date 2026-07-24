@@ -6087,6 +6087,12 @@ async function gerarPaginasCondominios(){
     if(c.ano) dados.push(['Entrega',c.ano]);
     if(c.incorporadora) dados.push(['Incorporadora',c.incorporadora]);
     dados.push(['Imóveis disponíveis',dispo]);
+    // video do YouTube cadastrado no CRM (campo "Video YouTube")
+    const _vidRaw = c.video_youtube || (c.seo_data && c.seo_data.video) || (c.seoData && c.seoData.video) || '';
+    const _vidM = String(_vidRaw).match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/);
+    const videoHtml = _vidM
+      ? `<div class="cvid"><div class="cvid-t">Vídeo do Condomínio</div><div class="cvid-f"><iframe src="https://www.youtube.com/embed/${_vidM[1]}" title="Vídeo de ${esc(c.nome)}" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>`
+      : '';
     const schema={"@context":"https://schema.org","@type":"Residence","name":c.nome,"description":(c.descricao||'').slice(0,300),"address":{"@type":"PostalAddress","addressLocality":cidade,"addressRegion":"RS","addressCountry":"BR"},"url":url};
     const schemaBc={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":BASE+"/"},{"@type":"ListItem","position":2,"name":cidade,"item":BASE+"/"+citySlug(cidade)},{"@type":"ListItem","position":3,"name":c.nome,"item":url}]};
 
@@ -6134,6 +6140,10 @@ h1{font-family:'Fraunces',serif;font-size:clamp(26px,3.2vw,40px);color:var(--oce
 .amtit{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tm);margin:22px 0 12px}
 .amlist{display:flex;flex-wrap:wrap;gap:8px 22px}
 .am{font-size:14px}.am::before{content:'✓ ';color:var(--gold)}
+.cvid{margin:30px 0}
+.cvid-t{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tm);margin-bottom:12px}
+.cvid-f{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:var(--ocean)}
+.cvid-f iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .desc{font-size:15px;line-height:1.85;margin:22px 0;max-width:760px}
 .cta-box{background:linear-gradient(135deg,var(--ocean),var(--om));color:#fff;border-radius:14px;padding:34px;text-align:center;margin:40px 0}
 .cta-box h2{font-family:'Fraunces',serif;font-size:24px;font-weight:300;margin-bottom:8px}
@@ -6168,6 +6178,7 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
   <div class="badges">${[c.padrao?`<span class="badge on">${esc(c.padrao)}</span>`:'',c.tipo?`<span class="badge">${esc(c.tipo)}</span>`:'',c.ano?`<span class="badge">Entrega ${esc(c.ano)}</span>`:''].join('')}</div>
   <div class="dados">${dados.map(([l,v])=>`<div class="dado"><div class="l">${esc(l)}</div><div class="v">${esc(v)}</div></div>`).join('')}</div>
   ${amen.length?`<div class="amtit">Infraestrutura e Amenidades</div><div class="amlist">${amen.map(a=>`<span class="am">${esc(a)}</span>`).join('')}</div>`:''}
+  ${videoHtml}
   ${c.descricao?`<p class="desc">${esc(c.descricao)}</p>`:''}
   <p class="desc">Veja as opções de <strong>casas no ${esc(c.nome)}</strong>, <strong>terrenos no ${esc(c.nome)}</strong> e demais <strong>imóveis no ${esc(c.nome)}</strong> à venda em ${esc(cidade)} — ideais para quem deseja <strong>comprar</strong> ou <strong>investir no ${esc(c.nome)}</strong>.</p>
   <div class="cta-box">
@@ -6287,6 +6298,13 @@ async function gerarPaginasImoveis(){
     if(cond && cond.slug) bc.itemListElement.push({"@type":"ListItem","position":3,"name":condNome,"item":BASE+"/"+cond.slug});
     bc.itemListElement.push({"@type":"ListItem","position":bc.itemListElement.length+1,"name":titulo.split(' | ')[0],"item":url});
 
+    // video do YouTube cadastrado no CRM (aba SEO do imovel)
+    const _vRaw = (seoD && seoD.video) || im.video_youtube || im.videoYoutube || '';
+    const _vM = String(_vRaw).match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/);
+    const videoHtml = _vM
+      ? `<div class="ivid"><div class="ivid-t">Vídeo do Imóvel</div><div class="ivid-f"><iframe src="https://www.youtube.com/embed/${_vM[1]}" title="Vídeo do imóvel" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>`
+      : '';
+
     const wpp='https://wa.me/5551999442252?text='+encodeURIComponent('Ola! Tenho interesse no imovel '+(im.codigo?('cod '+im.codigo+' '):'')+(condNome?('no '+condNome):'')+' em '+cidade+'.');
 
     const html=`<!DOCTYPE html>
@@ -6338,6 +6356,10 @@ h1{font-family:'Fraunces',serif;font-size:clamp(24px,3vw,38px);color:var(--ocean
 .desc{font-size:15px;line-height:1.85;margin:20px 0;max-width:760px;white-space:pre-line}
 .cond-box{border:1px solid var(--border);border-radius:12px;padding:22px;margin:28px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .cond-box a{color:var(--om);font-weight:600;text-decoration:none}
+.ivid{margin:30px 0}
+.ivid-t{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tm);margin-bottom:12px}
+.ivid-f{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:var(--ocean)}
+.ivid-f iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .cta-box{background:linear-gradient(135deg,var(--ocean),var(--om));color:#fff;border-radius:14px;padding:34px;text-align:center;margin:38px 0}
 .cta-box h2{font-family:'Fraunces',serif;font-size:23px;font-weight:300;margin-bottom:8px}
 .cta-box p{opacity:.8;margin-bottom:18px;font-size:14px}
@@ -6371,6 +6393,7 @@ ${fotos.length?`<div class="galeria">${fotos.slice(0,3).map((f,ix)=>`<img src="$
   ${specs.length?`<div class="dados">${specs.map(([l,v])=>`<div class="dado"><div class="l">${esc(l)}</div><div class="v">${esc(v)}</div></div>`).join('')}</div>`:''}
   ${difs.length?`<div class="stit">Diferenciais</div><div class="dlist">${difs.map(d=>`<span class="d">${esc(d)}</span>`).join('')}</div>`:''}
   ${im.descricao?`<p class="desc">${esc(im.descricao)}</p>`:''}
+  ${videoHtml}
   ${condNome?`<div class="cond-box"><div><strong>${esc(condNome)}</strong><br><span style="font-size:14px;color:var(--tm)">Conheca a infraestrutura, o lazer e os demais imoveis deste condominio.</span></div>${cond&&cond.slug?`<a href="/${esc(cond.slug)}">Ver o condominio &rarr;</a>`:''}</div>`:''}
   <div class="cta-box">
     <h2>Interessado neste imovel?</h2>

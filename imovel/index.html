@@ -1038,8 +1038,9 @@ function render(im,cond){
   const exHtml=ex.length?'<div class="ip-extra">'+ex.map(x=>'<div>'+x+'</div>').join('')+'</div>':'';
 
   // vídeo
-  const raw=(im.seo_data&&im.seo_data.video)||(im.seoData&&im.seoData.video)||'';
-  const vm=String(raw).match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/);
+  // aceita tambem video_youtube (campo usado nos condominios) e os formatos /live/ e m.youtube
+  const raw=(im.seo_data&&im.seo_data.video)||(im.seoData&&im.seoData.video)||im.video_youtube||im.videoYoutube||'';
+  const vm=String(raw).match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/);
   const videoHtml=vm?'<div class="ip-video"><div class="ip-sec-h">Vídeo do imóvel</div><div class="ip-video-frame"><iframe src="https://www.youtube.com/embed/'+vm[1]+'" title="Vídeo" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>':'';
 
   const loc=[cond.nome,cond.cidade||im.cidade].filter(Boolean).join(' · ');

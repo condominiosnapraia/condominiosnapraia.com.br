@@ -100,6 +100,10 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 /* ── AMENIDADES ── */
 .amenidades-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
 .amenidades-list{display:flex;flex-wrap:wrap;gap:8px}
+.cond-video{margin-top:30px}
+.cond-video-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
+.cond-video-frame{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#0d3b54}
+.cond-video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .amenidade{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--sand-light);border-radius:2px;font-size:11px;letter-spacing:.08em;color:var(--text-muted)}
 .amenidade::before{content:'✓';color:var(--gold);font-size:10px;font-weight:600}
 
@@ -429,6 +433,11 @@ body{padding-top:56px}
       <div id="amenidades-wrap" style="display:none">
         <div class="amenidades-title">Infraestrutura e Amenidades</div>
         <div class="amenidades-list" id="amenidades-list"></div>
+      </div>
+
+      <div class="cond-video" id="cond-video-wrap" style="display:none">
+        <div class="cond-video-title">Vídeo do Condomínio</div>
+        <div class="cond-video-frame" id="cond-video-frame"></div>
       </div>
 
       <div style="position:relative;display:inline-block">
@@ -829,6 +838,18 @@ async function init() {
     document.getElementById('amenidades-wrap').style.display = '';
     document.getElementById('amenidades-list').innerHTML =
       cond.amenidades.map(a => `<div class="amenidade">${a}</div>`).join('');
+  }
+
+  // Vídeo do YouTube (CRM: campo "Vídeo YouTube" — salvo em video_youtube e seo_data.video).
+  // Aceita youtube.com/watch?v=, youtu.be/, /shorts/ e /embed/.
+  const vidRaw = cond.video_youtube || (cond.seo_data && cond.seo_data.video)
+              || (cond.seoData && cond.seoData.video) || '';
+  const vidM = String(vidRaw).match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/);
+  if (vidM) {
+    document.getElementById('cond-video-wrap').style.display = '';
+    document.getElementById('cond-video-frame').innerHTML =
+      '<iframe src="https://www.youtube.com/embed/' + vidM[1] + '" title="Vídeo de ' +
+      String(cond.nome || '').replace(/"/g,'&quot;') + '" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe>';
   }
 
   // Side stats
