@@ -1507,6 +1507,7 @@ if(_savedToken && _savedUser){
       <button class="btn bd2b" onclick="limparDuplicadosLanc()" title="Remove lançamentos duplicados do banco, mantendo apenas um de cada">🧹 Limpar duplicados</button>
       <button class="btn bg" onclick="migrarFotosStorage()" title="Move as fotos antigas (base64) para o Supabase Storage, deixando o site muito mais rápido">⚡ Migrar fotos p/ Storage</button>
       <button class="btn bg" onclick="otimizarFotosPesadas()" title="Recomprime em WebP as fotos publicadas que estão pesadas (capas, carrossel, cards), sem trocar nada de lugar">🪄 Otimizar fotos pesadas</button>
+      <button class="btn bs" onclick="diagnosticarOtimizacao()" title="Testa a gravação no banco com uma única foto e mostra o resultado">🔍 Diagnosticar</button>
       <button class="btn bs" onclick="openNovoLanc()">+ Novo Lançamento</button>
     </div>
   </div>
@@ -4636,6 +4637,74 @@ async function otimizarFotosPesadas(){
   }
 
   toast('Otimizacao concluida: '+ok+' foto(s) recomprimidas, '+pulou+' ja estavam leves'+(falhou?(', '+falhou+' falha(s)'):'')+(fontesComErro.length?(' (nao listadas: '+fontesComErro.join(', ')+')'):'')+'. Economia: ~'+Math.round(economia/1024)+'KB.'+(primeiroErro?(' | Primeiro erro: '+primeiroErro):''),'success');
+}
+
+// ── DIAGNOSTICO: otimiza UMA foto e confere no banco se a gravacao persistiu ──
+async function diagnosticarOtimizacao(){
+  var log = [];
+  function L(s){ log.push(s); }
+  try{
+    var mapa = (await sb.getConfig('fotos_site')) || {};
+    var chaves = Object.keys(mapa);
+    L('Total de entradas em fotos_site: ' + chaves.length);
+
+    var tipos = {};
+    chaves.forEach(function(k){
+      var v = mapa[k];
+      var t = (typeof v !== 'string') ? ('nao-texto:' + (Array.isArray(v) ? 'array' : typeof v))
+            : (v.indexOf('data:') === 0 ? 'base64'
+            : (/\.webp($|\?)/i.test(v) ? 'webp'
+            : (v.indexOf('http') === 0 ? 'http-nao-webp' : 'outro')));
+      tipos[t] = (tipos[t] || 0) + 1;
+    });
+    L('Tipos: ' + JSON.stringify(tipos));
+
+    var alvo = chaves.filter(function(k){
+      var v = mapa[k];
+      return typeof v === 'string' && v.indexOf('http') === 0 && !/\.webp($|\?)/i.test(v);
+    })[0];
+    if(!alvo){ L('Nenhuma foto candidata (nada a otimizar).'); mostrarDiag(log); return; }
+
+    L('Foto de teste: ' + alvo);
+    L('URL atual: ' + String(mapa[alvo]).slice(0, 90));
+
+    // grava um valor de teste NESSA chave e rele do banco
+    var valorTeste = 'https://TESTE-DIAGNOSTICO-' + Date.now();
+    var antes = mapa[alvo];
+    mapa[alvo] = valorTeste;
+    try{
+      await sb.setConfig('fotos_site', mapa);
+      L('setConfig executou sem erro.');
+    }catch(e){
+      L('ERRO no setConfig: ' + (e.message || e));
+      mostrarDiag(log); return;
+    }
+
+    var relido = (await sb.getConfig('fotos_site')) || {};
+    var persistiu = (relido[alvo] === valorTeste);
+    var nRelido = Object.keys(relido).length;
+    L('Releitura do banco: ' + (persistiu ? 'GRAVACAO PERSISTIU' : 'NAO PERSISTIU (banco ainda tem: ' + String(relido[alvo]).slice(0,60) + ')'));
+    L('Entradas apos releitura: ' + nRelido + (nRelido < chaves.length ? '  <<< PERDEU ' + (chaves.length - nRelido) + ' ENTRADA(S)! O banco nao esta salvando o mapa inteiro.' : ''));
+
+    // restaura o valor original
+    relido[alvo] = antes;
+    try{ await sb.setConfig('fotos_site', relido); L('Valor original restaurado.'); }
+    catch(e){ L('ATENCAO: falha ao restaurar: ' + (e.message || e)); }
+
+  }catch(e){ L('ERRO GERAL: ' + (e.message || e)); }
+  mostrarDiag(log);
+}
+
+function mostrarDiag(linhas){
+  var txt = linhas.join('\n');
+  console.log('=== DIAGNOSTICO OTIMIZACAO ===\n' + txt);
+  var w = window.open('', '_blank', 'width=760,height=520');
+  if(w){
+    w.document.write('<pre style="font:13px/1.6 monospace;padding:20px;white-space:pre-wrap">' +
+      txt.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</pre>');
+  } else {
+    alert(txt);
+  }
 }
 
 async function migrarFotosStorage(){

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script>(function(){var P='https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/',F=window.fetch;window.fetch=function(u,o){var s=typeof u==='string'?u:(u&&u.url)||'';var p=F.call(window,u,o);if(s.indexOf('.supabase.co/rest/v1/')===-1)return p;return p.then(function(r){var ct=r.headers.get('content-type')||'';if(ct.indexOf('json')===-1)return r;return r.text().then(function(t){return new Response(t.split(P).join(location.origin+'/cdn-fotos/'),{status:r.status,statusText:r.statusText,headers:r.headers})})})};})();</script>
 <!-- Google tag (gtag.js) -->
 <link rel="icon" type="image/svg+xml" href="/img/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
 <!-- Google Analytics (GA4) -->
@@ -14,7 +15,13 @@
   // rastrear cliques no WhatsApp como evento (para medir conversões)
   document.addEventListener('click', function(e){
     var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
-    if(a){ try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){} }
+    if(a){
+      try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){}
+      if((a.href||'').indexOf('5551999442252') > -1){
+        try{ gtag('event','conversion',{'send_to':'AW-16759565872/MiTlCKf559EcELDcyrc-'}); }catch(_){}
+        try{ if(typeof fbq==='function') fbq('track','Contact'); }catch(_){}
+      }
+    }
   }, true);
 </script>
 <!-- Fim Google Analytics -->
@@ -508,6 +515,9 @@ details[open] .dec-faq-q:after{content:"−"}
     <div class="dec-links"><a href="/xangri-la">Guia de Xangri-lá</a><a href="/capao-da-canoa">Guia de Capão da Canoa</a><a href="/lancamentos">Lançamentos</a><a href="/#condominios">Condomínios</a><a href="/">Página inicial</a></div>
   </section>
 </div>
+
+<div id="lead-card" data-origem="conteudo" data-contexto="h1"></div>
+<script src="/js/lead-card.js" defer></script>
 <footer>
   <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
   <div class="ftr-main">
