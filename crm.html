@@ -4541,6 +4541,16 @@ async function otimizarFotosPesadas(){
     });
   }
 
+  // Uma foto ja otimizada e reconhecida por DOIS sinais, nao pela extensao:
+  //  - o caminho contem "/otim/" (pasta onde a otimizacao grava), ou
+  //  - a URL termina em .webp
+  // Isso e necessario porque muitas fotos do Storage nao tem extensao nenhuma
+  // na URL (ex: .../fotos/site/card-osorio-1) — o filtro antigo, que so olhava
+  // ".webp", reprovava essas fotos para sempre e as reprocessava a cada rodada.
+  function jaOtimizada(u){
+    return typeof u === 'string' && (/\/otim\//.test(u) || /\.webp($|\?)/i.test(u));
+  }
+
   // Gravacao por chave (PATCH): atualiza a linha existente direto pelo slot/slug/chave.
   // Nao tem como criar linha duplicada — e se ja houver duplicatas antigas na tabela,
   // atualiza todas de uma vez. Exige que a atualizacao tenha atingido pelo menos 1 linha.
@@ -4565,7 +4575,7 @@ async function otimizarFotosPesadas(){
       // (Usar uma variavel 'var' do laco aqui faria TODAS as gravacoes cairem na
       //  ultima chave do mapa — bug que fazia a otimizacao nunca terminar.)
       var u = mapa[chave];
-      if(typeof u === 'string' && u.indexOf('http') === 0 && !/\.webp($|\?)/i.test(u) && !vistos[u]){
+      if(typeof u === 'string' && u.indexOf('http') === 0 && !jaOtimizada(u) && !vistos[u]){
         vistos[u] = 1;
         alvos.push({rotulo:'fotos_site/'+chave, url:u, aplicar:async function(nova, path){
           mapa[chave] = nova; mapaSujo = true; pathsDoMapa.push(path); gravadasNoMapa++;
@@ -4576,7 +4586,7 @@ async function otimizarFotosPesadas(){
   try{
     var carr = await sb.get('os_carrossel_home','?select=slot,foto_url');
     (carr||[]).forEach(function(r){
-      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url) && !vistos[r.foto_url]){
+      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !jaOtimizada(r.foto_url) && !vistos[r.foto_url]){
         vistos[r.foto_url] = 1;
         alvos.push({rotulo:'carrossel/'+r.slot, url:r.foto_url, aplicar:async function(nova){ await patchPor('os_carrossel_home','slot=eq.'+encodeURIComponent(r.slot), {foto_url:nova, updated_at:new Date().toISOString()}); }});
       }
@@ -4585,7 +4595,7 @@ async function otimizarFotosPesadas(){
   try{
     var capas = await sb.get('os_capas_decisao','?select=slug,foto_url');
     (capas||[]).forEach(function(r){
-      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url) && !vistos[r.foto_url]){
+      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !jaOtimizada(r.foto_url) && !vistos[r.foto_url]){
         vistos[r.foto_url] = 1;
         alvos.push({rotulo:'capa/'+r.slug, url:r.foto_url, aplicar:async function(nova){ await patchPor('os_capas_decisao','slug=eq.'+encodeURIComponent(r.slug), {foto_url:nova, updated_at:new Date().toISOString()}); }});
       }
