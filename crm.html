@@ -4501,8 +4501,8 @@ function uploadGaleriaLanc(fk,inp){
 // recomprime em WebP (máx. 1600px) e regrava, atualizando a referência.
 // Seguro rodar mais de uma vez: pula o que já está leve ou já é WebP.
 async function otimizarFotosPesadas(){
-  var LIMITE = 120 * 1024;          // só mexe em fotos acima de 120KB
-  if(!confirm('Isso vai recomprimir em WebP as fotos do site que estão pesadas (acima de 120KB), sem mudar nada de lugar.\n\nPode levar alguns minutos. Continuar?')) return;
+  var LIMITE = 120 * 1024;          // so mexe em fotos acima de 120KB
+  if(!confirm('Isso vai recomprimir em WebP as fotos do site que estao pesadas (acima de 120KB), sem mudar nada de lugar.\n\nPode levar alguns minutos. Continuar?')) return;
 
   function blobParaWebp(blob){
     return new Promise(function(res, rej){
@@ -4528,42 +4528,56 @@ async function otimizarFotosPesadas(){
     });
   }
 
-  // coletar alvos {rotulo, url, aplicar(novaUrl)}
-  // Cada fonte tem seu proprio try/catch: se uma tabela nao existir ou mudar,
-  // as outras continuam sendo otimizadas normalmente.
-  var alvos = [], fontesComErro = [];
+  // Gravacao por chave (PATCH): atualiza a linha existente direto pelo slot/slug/chave.
+  // Nao tem como criar linha duplicada — e se ja houver duplicatas antigas na tabela,
+  // atualiza todas de uma vez. Exige que a atualizacao tenha atingido pelo menos 1 linha.
+  async function patchPor(table, filtro, dados){
+    var r = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?' + filtro, {
+      method:'PATCH', headers: sb.headers, body: JSON.stringify(dados)
+    });
+    if(!r.ok) throw new Error('PATCH '+table+': '+(await r.text()).slice(0,160));
+    var linhas = await r.json();
+    if(!linhas || !linhas.length) throw new Error('PATCH '+table+' nao atingiu nenhuma linha ('+filtro+')');
+    return linhas;
+  }
+
+  // coletar alvos {rotulo, url, aplicar(novaUrl)} — cada fonte com try/catch proprio,
+  // e sem repetir a mesma URL duas vezes na mesma rodada
+  var alvos = [], fontesComErro = [], vistos = {};
+  var mapa = null, mapaSujo = false, pathsDoMapa = [];
   try{
-    var mapa = (await sb.getConfig('fotos_site')) || {};
+    mapa = (await sb.getConfig('fotos_site')) || {};
     Object.keys(mapa).forEach(function(k){
       var u = mapa[k];
-      if(typeof u === 'string' && u.indexOf('http') === 0 && !/\.webp($|\?)/i.test(u)){
-        alvos.push({rotulo:'fotos_site/'+k, url:u, aplicar:async function(nova){ mapa[k]=nova; await sb.setConfig('fotos_site', mapa); }});
+      if(typeof u === 'string' && u.indexOf('http') === 0 && !/\.webp($|\?)/i.test(u) && !vistos[u]){
+        vistos[u] = 1;
+        alvos.push({rotulo:'fotos_site/'+k, url:u, aplicar:async function(nova, path){ mapa[k]=nova; mapaSujo=true; pathsDoMapa.push(path); }});
       }
     });
   }catch(e){ fontesComErro.push('fotos do site'); }
   try{
-    // as tabelas do carrossel e das capas sao chaveadas por slot/slug (sem coluna id):
-    // por isso a leitura pede so essas colunas e a gravacao usa upsert, igual ao resto do CRM
     var carr = await sb.get('os_carrossel_home','?select=slot,foto_url');
     (carr||[]).forEach(function(r){
-      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url)){
-        alvos.push({rotulo:'carrossel/'+r.slot, url:r.foto_url, aplicar:async function(nova){ await sb.upsert('os_carrossel_home', {slot:r.slot, foto_url:nova, updated_at:new Date().toISOString()}); }});
+      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url) && !vistos[r.foto_url]){
+        vistos[r.foto_url] = 1;
+        alvos.push({rotulo:'carrossel/'+r.slot, url:r.foto_url, aplicar:async function(nova){ await patchPor('os_carrossel_home','slot=eq.'+encodeURIComponent(r.slot), {foto_url:nova, updated_at:new Date().toISOString()}); }});
       }
     });
   }catch(e){ fontesComErro.push('carrossel'); }
   try{
     var capas = await sb.get('os_capas_decisao','?select=slug,foto_url');
     (capas||[]).forEach(function(r){
-      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url)){
-        alvos.push({rotulo:'capa/'+r.slug, url:r.foto_url, aplicar:async function(nova){ await sb.upsert('os_capas_decisao', {slug:r.slug, foto_url:nova, updated_at:new Date().toISOString()}); }});
+      if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url) && !vistos[r.foto_url]){
+        vistos[r.foto_url] = 1;
+        alvos.push({rotulo:'capa/'+r.slug, url:r.foto_url, aplicar:async function(nova){ await patchPor('os_capas_decisao','slug=eq.'+encodeURIComponent(r.slug), {foto_url:nova, updated_at:new Date().toISOString()}); }});
       }
     });
   }catch(e){ fontesComErro.push('capas'); }
   if(fontesComErro.length && !alvos.length){ toast('Erro ao listar fotos ('+fontesComErro.join(', ')+').','error'); return; }
 
-  if(!alvos.length){ toast('Nenhuma foto candidata encontrada — tudo já otimizado!','success'); return; }
+  if(!alvos.length){ toast('Nenhuma foto candidata encontrada — tudo ja otimizado!','success'); return; }
 
-  var ok = 0, pulou = 0, falhou = 0, economia = 0;
+  var ok = 0, pulou = 0, falhou = 0, economia = 0, primeiroErro = null;
   for(var i = 0; i < alvos.length; i++){
     var a = alvos[i];
     toast('Analisando '+(i+1)+' de '+alvos.length+'…','success');
@@ -4574,15 +4588,42 @@ async function otimizarFotosPesadas(){
       if(blob.size <= LIMITE){ pulou++; continue; }
       var dataUrl = await blobParaWebp(blob);
       var novoTam = Math.round(dataUrl.length * 0.75);
-      if(novoTam >= blob.size * 0.9){ pulou++; continue; }   // ganho pequeno: mantém a original
+      if(novoTam >= blob.size * 0.9){ pulou++; continue; }   // ganho pequeno: mantem a original
       var path = 'otim/' + a.rotulo.replace(/[^a-z0-9-]+/gi,'-') + '-' + Date.now() + '.webp';
       var nova = await sb.uploadFoto(path, dataUrl);
-      await a.aplicar(nova);
+      try{
+        await a.aplicar(nova, path);
+      }catch(eGrava){
+        // gravacao falhou: apaga o arquivo recem-enviado para nao deixar orfao no Storage
+        try{ await sb.deleteFoto(path); }catch(e2){}
+        throw eGrava;
+      }
       economia += (blob.size - novoTam);
       ok++;
-    }catch(e){ falhou++; }
+    }catch(e){ falhou++; if(!primeiroErro) primeiroErro = (e && e.message ? e.message : String(e)).slice(0,160); }
   }
-  toast('Otimização concluída: '+ok+' foto(s) recomprimidas, '+pulou+' já estavam leves'+(falhou?(', '+falhou+' falha(s)'):'')+(fontesComErro.length?(' (não listadas: '+fontesComErro.join(', ')+')'):'')+'. Economia: ~'+Math.round(economia/1024)+'KB.','success');
+
+  // o mapa de fotos do site e gravado UMA vez so, no final (mais rapido e mais seguro)
+  if(mapaSujo){
+    var mapaGravado = false;
+    try{
+      await patchPor('configuracoes','chave=eq.fotos_site', {valor: mapa, updated_at:new Date().toISOString()});
+      mapaGravado = true;
+    }catch(e){
+      try{ await sb.setConfig('fotos_site', mapa); mapaGravado = true; }
+      catch(e2){ primeiroErro = primeiroErro || ('gravacao fotos_site: '+((e2 && e2.message ? e2.message : String(e2))).slice(0,160)); }
+    }
+    if(!mapaGravado){
+      // nao ficou gravado: as fotos novas do mapa viraram orfas — apaga todas
+      ok -= pathsDoMapa.length; if(ok < 0) ok = 0;
+      falhou += pathsDoMapa.length;
+      for(var pi = 0; pi < pathsDoMapa.length; pi++){
+        try{ await sb.deleteFoto(pathsDoMapa[pi]); }catch(e3){}
+      }
+    }
+  }
+
+  toast('Otimizacao concluida: '+ok+' foto(s) recomprimidas, '+pulou+' ja estavam leves'+(falhou?(', '+falhou+' falha(s)'):'')+(fontesComErro.length?(' (nao listadas: '+fontesComErro.join(', ')+')'):'')+'. Economia: ~'+Math.round(economia/1024)+'KB.'+(primeiroErro?(' | Primeiro erro: '+primeiroErro):''),'success');
 }
 
 async function migrarFotosStorage(){
@@ -5948,7 +5989,7 @@ async function gerarPaginasCondominios(){
     const html=`<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script>(function(){var P='https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/',F=window.fetch;window.fetch=function(u,o){var s=typeof u==='string'?u:(u&&u.url)||'';var p=F.call(window,u,o);if(s.indexOf('.supabase.co/rest/v1/')===-1)return p;return p.then(function(r){var ct=r.headers.get('content-type')||'';if(ct.indexOf('json')===-1)return r;return r.text().then(function(t){return new Response(t.split(P).join('/cdn-fotos/'),{status:r.status,statusText:r.statusText,headers:r.headers})})})};})();<\/script>
+<script>(function(){var P='https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/',F=window.fetch;window.fetch=function(u,o){var s=typeof u==='string'?u:(u&&u.url)||'';var p=F.call(window,u,o);if(s.indexOf('.supabase.co/rest/v1/')===-1)return p;return p.then(function(r){var ct=r.headers.get('content-type')||'';if(ct.indexOf('json')===-1)return r;return r.text().then(function(t){return new Response(t.split(P).join(location.origin+'/cdn-fotos/'),{status:r.status,statusText:r.statusText,headers:r.headers})})})};})();<\/script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0c4a6e">
