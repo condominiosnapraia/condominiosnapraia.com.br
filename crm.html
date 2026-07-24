@@ -4529,7 +4529,9 @@ async function otimizarFotosPesadas(){
   }
 
   // coletar alvos {rotulo, url, aplicar(novaUrl)}
-  var alvos = [];
+  // Cada fonte tem seu proprio try/catch: se uma tabela nao existir ou mudar,
+  // as outras continuam sendo otimizadas normalmente.
+  var alvos = [], fontesComErro = [];
   try{
     var mapa = (await sb.getConfig('fotos_site')) || {};
     Object.keys(mapa).forEach(function(k){
@@ -4538,19 +4540,26 @@ async function otimizarFotosPesadas(){
         alvos.push({rotulo:'fotos_site/'+k, url:u, aplicar:async function(nova){ mapa[k]=nova; await sb.setConfig('fotos_site', mapa); }});
       }
     });
-    var carr = await sb.get('os_carrossel_home','?select=id,slot,foto_url');
+  }catch(e){ fontesComErro.push('fotos do site'); }
+  try{
+    // as tabelas do carrossel e das capas sao chaveadas por slot/slug (sem coluna id):
+    // por isso a leitura pede so essas colunas e a gravacao usa upsert, igual ao resto do CRM
+    var carr = await sb.get('os_carrossel_home','?select=slot,foto_url');
     (carr||[]).forEach(function(r){
       if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url)){
-        alvos.push({rotulo:'carrossel/'+r.slot, url:r.foto_url, aplicar:async function(nova){ await sb.patch('os_carrossel_home', r.id, {foto_url:nova}); }});
+        alvos.push({rotulo:'carrossel/'+r.slot, url:r.foto_url, aplicar:async function(nova){ await sb.upsert('os_carrossel_home', {slot:r.slot, foto_url:nova, updated_at:new Date().toISOString()}); }});
       }
     });
-    var capas = await sb.get('os_capas_decisao','?select=id,slug,foto_url');
+  }catch(e){ fontesComErro.push('carrossel'); }
+  try{
+    var capas = await sb.get('os_capas_decisao','?select=slug,foto_url');
     (capas||[]).forEach(function(r){
       if(r.foto_url && r.foto_url.indexOf('http') === 0 && !/\.webp($|\?)/i.test(r.foto_url)){
-        alvos.push({rotulo:'capa/'+r.slug, url:r.foto_url, aplicar:async function(nova){ await sb.patch('os_capas_decisao', r.id, {foto_url:nova}); }});
+        alvos.push({rotulo:'capa/'+r.slug, url:r.foto_url, aplicar:async function(nova){ await sb.upsert('os_capas_decisao', {slug:r.slug, foto_url:nova, updated_at:new Date().toISOString()}); }});
       }
     });
-  }catch(e){ toast('Erro ao listar fotos: '+(e.message||e),'error'); return; }
+  }catch(e){ fontesComErro.push('capas'); }
+  if(fontesComErro.length && !alvos.length){ toast('Erro ao listar fotos ('+fontesComErro.join(', ')+').','error'); return; }
 
   if(!alvos.length){ toast('Nenhuma foto candidata encontrada — tudo já otimizado!','success'); return; }
 
@@ -4573,7 +4582,7 @@ async function otimizarFotosPesadas(){
       ok++;
     }catch(e){ falhou++; }
   }
-  toast('Otimização concluída: '+ok+' foto(s) recomprimidas, '+pulou+' já estavam leves'+(falhou?(', '+falhou+' falha(s)'):'')+'. Economia: ~'+Math.round(economia/1024)+'KB.','success');
+  toast('Otimização concluída: '+ok+' foto(s) recomprimidas, '+pulou+' já estavam leves'+(falhou?(', '+falhou+' falha(s)'):'')+(fontesComErro.length?(' (não listadas: '+fontesComErro.join(', ')+')'):'')+'. Economia: ~'+Math.round(economia/1024)+'KB.','success');
 }
 
 async function migrarFotosStorage(){
@@ -5939,6 +5948,7 @@ async function gerarPaginasCondominios(){
     const html=`<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script>(function(){var P='https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/',F=window.fetch;window.fetch=function(u,o){var s=typeof u==='string'?u:(u&&u.url)||'';var p=F.call(window,u,o);if(s.indexOf('.supabase.co/rest/v1/')===-1)return p;return p.then(function(r){var ct=r.headers.get('content-type')||'';if(ct.indexOf('json')===-1)return r;return r.text().then(function(t){return new Response(t.split(P).join('/cdn-fotos/'),{status:r.status,statusText:r.statusText,headers:r.headers})})})};})();<\/script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0c4a6e">

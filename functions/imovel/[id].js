@@ -96,7 +96,7 @@ export async function onRequest(context){
     ].filter(Boolean).join(' · ');
     descricao = (specs ? specs + '. ' : '') + String(imovel.descricao || 'Confira este imóvel no litoral gaúcho.').substring(0,140);
     const f = primeiraFoto(imovel);
-    if(f) foto = f;
+    if(f) foto = f.replace('https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/', 'https://condominiosnapraia.com.br/cdn-fotos/');
   }
 
   const html = `<!DOCTYPE html>

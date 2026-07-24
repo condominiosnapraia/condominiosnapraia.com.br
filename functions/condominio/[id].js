@@ -86,7 +86,7 @@ export async function onRequest(context) {
 
     // foto de capa do condomínio
     const f = extrairFoto(cond.fotos_no_site) || extrairFoto(cond.fotos);
-    if (f) foto = f;
+    if (f) foto = f.replace('https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/', 'https://condominiosnapraia.com.br/cdn-fotos/');
   }
 
   // modo diagnóstico: adicione ?debug=1
