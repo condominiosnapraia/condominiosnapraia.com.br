@@ -275,6 +275,12 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 @media(max-width:600px){}
 @media(max-width:560px){}
 @media(max-width:768px){.mob-footer-nav{display:block}body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
+/* ── botao flutuante de WhatsApp x barra inferior (mobile) ──
+   Sem isto o botao fica sobre a barra e cobre os itens do rodape. */
+@media(max-width:768px){
+  .float-wpp,.wfloat,.wpp-float{bottom:calc(78px + env(safe-area-inset-bottom,0px)) !important;z-index:880 !important}
+}
+
 @media(max-width:768px){.ftr-main{grid-template-columns:1fr 1fr;gap:32px 24px;padding:48px 24px 28px}.ftr-col-brand{grid-column:1/-1}.ftr-bottom{flex-direction:column;gap:6px;text-align:center}}
 @media(max-width:600px){
   .ftr-main{grid-template-columns:1fr;gap:0;padding:44px 26px 24px}
@@ -487,9 +493,9 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
 .ip-title{font-family:'Fraunces',serif;font-size:clamp(26px,3.6vw,40px);font-weight:600;color:var(--ocean);line-height:1.12;margin-bottom:10px}
 .ip-loc{font-size:15px;color:var(--tm);margin-bottom:20px}
-.ip-specs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.ip-specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:12px;margin-bottom:28px}
 @media(max-width:520px){
-  .ip-specs{grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:22px}
+  .ip-specs{grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:6px;margin-bottom:22px}
   .ip-spec{padding:9px 4px;border-radius:9px}
   .ip-spec-ico{font-size:16px;margin-bottom:2px}
   .ip-spec-v{font-size:15px}
@@ -1012,7 +1018,13 @@ function render(im,cond){
     thumbs = '<div class="ip-thumbs">'+tArr.join('')+'</div>';
   }
 
-  const specs=[{i:'📐',v:m2(im.area),l:'Área'},{i:'🛏️',v:im.quartos||'—',l:'Quartos'},{i:'🚿',v:im.suites||'—',l:'Suítes'},{i:'🚗',v:im.vagas||'—',l:'Vagas'}];
+  // so entram os campos preenchidos — card vazio com "—" fica feio e nao informa nada
+  const specs=[
+    {i:'📐',v:im.area?m2(im.area):null,l:'Área'},
+    {i:'🛏️',v:im.quartos||null,l:'Quartos'},
+    {i:'🚿',v:im.suites||null,l:'Suítes'},
+    {i:'🚗',v:im.vagas||null,l:'Vagas'}
+  ].filter(s=>s.v!==null&&s.v!==''&&s.v!==0);
   const specHtml=specs.map(s=>'<div class="ip-spec"><div class="ip-spec-ico">'+s.i+'</div><div class="ip-spec-v">'+s.v+'</div><div class="ip-spec-l">'+s.l+'</div></div>').join('');
 
   const difs=im.diferenciais||[];
@@ -1061,7 +1073,7 @@ function render(im,cond){
         '<div class="ip-eyebrow">'+(tipoLinha||'Imóvel')+'</div>'+
         '<h1 class="ip-title">'+(im.titulo||'Imóvel')+'</h1>'+
         (loc?'<div class="ip-loc">📍 '+loc+'</div>':'')+
-        '<div class="ip-specs">'+specHtml+'</div>'+
+        (specs.length?'<div class="ip-specs">'+specHtml+'</div>':'')+
         (im.descricao?('<div class="ip-sec-h">Sobre o imóvel</div><div class="ip-desc">'+im.descricao+'</div>'):'')+
         difHtml+exHtml+videoHtml+
       '</div>'+

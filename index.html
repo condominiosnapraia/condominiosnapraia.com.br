@@ -765,6 +765,12 @@ footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60
 .mob-footer-ico{font-size:20px;line-height:1}
 .mob-footer-btn.wpp-btn{color:#25d366}
 @media(max-width:768px){.mob-footer-nav{display:block}body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
+/* ── botao flutuante de WhatsApp x barra inferior (mobile) ──
+   Sem isto o botao fica sobre a barra e cobre os itens do rodape. */
+@media(max-width:768px){
+  .float-wpp,.wfloat,.wpp-float{bottom:calc(78px + env(safe-area-inset-bottom,0px)) !important;z-index:880 !important}
+}
+
 .desk-float-wpp{position:fixed;right:26px;bottom:26px;z-index:940;display:flex;align-items:center;gap:0;background:#25d366;color:#fff;text-decoration:none;height:60px;padding:0 15px;border-radius:100px;box-shadow:0 8px 26px rgba(37,211,102,.45);transition:all .35s cubic-bezier(.2,.8,.2,1);overflow:hidden;max-width:60px}
 .desk-float-wpp svg{flex-shrink:0}
 .desk-float-txt{font-weight:700;font-size:15px;white-space:nowrap;opacity:0;max-width:0;margin-left:0;transition:all .35s cubic-bezier(.2,.8,.2,1)}
@@ -3569,7 +3575,13 @@ function _openImovModalWith(imId,cnd){
   })();
   document.getElementById('im-preco').textContent=brl(im.preco);
   document.getElementById('im-tipo').textContent=[im.codigo?('Cód: '+im.codigo):null,im.tipo,im.status].filter(Boolean).join(' · ');
-  const sp=[{i:'📐',v:m2(im.area),l:'Área'},{i:'🛏',v:im.quartos||'—',l:'Quartos'},{i:'🚿',v:im.suites||'—',l:'Suítes'},{i:'🚗',v:im.vagas||'—',l:'Vagas'}];
+  // so campos preenchidos (evita cards com "—")
+  const sp=[
+    {i:'📐',v:im.area?m2(im.area):null,l:'Área'},
+    {i:'🛏',v:im.quartos||null,l:'Quartos'},
+    {i:'🚿',v:im.suites||null,l:'Suítes'},
+    {i:'🚗',v:im.vagas||null,l:'Vagas'}
+  ].filter(s=>s.v!==null&&s.v!==''&&s.v!==0);
   document.getElementById('im-specs').innerHTML=sp.map(s=>`<div class="imov-spec"><div class="imov-spec-ico">${s.i}</div><div class="imov-spec-v">${s.v}</div><div class="imov-spec-l">${s.l}</div></div>`).join('');
   document.getElementById('im-desc').textContent=im.descricao||'';
   const difs=im.diferenciais||[];

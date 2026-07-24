@@ -2999,7 +2999,7 @@ function eCond(id){
   document.getElementById('cm-maps').value=c.maps||'';
   document.getElementById('cm-site').value=c.siteOficial||'';
   document.getElementById('cm-pub').value=c.ativo!==false?'1':'0';
-  const seo=c.seoData||{};
+  const seo=c.seo_data||c.seoData||{};
   document.getElementById('cm-seo-titulo').value=seo.titulo||'';
   document.getElementById('cm-seo-desc').value=seo.desc||'';
   document.getElementById('cm-seo-kw').value=seo.keywords||'';
@@ -3520,7 +3520,7 @@ function eImov(id){
   sv('im-cep',x.cep);sv('im-cidade',x.cidadeEnd);sv('im-bairro-end',x.bairroEnd);sv('im-ref-local',x.refLocal);
   sv('im-qtos',x.quartos);sv('im-sui',x.suites);sv('im-ban',x.banheiros);
   sv('im-lavabos',x.lavabos);sv('im-salas',x.salas);sv('im-vag',x.vagas);sv('im-dep',x.depositos);
-  sv('im-area',x.area);sv('im-areap',x.areaPrivativa);sv('im-areac',x.areaConstruida);sv('im-terreno',x.terreno);
+  sv('im-area',x.area);sv('im-areap',x.area_privativa??x.areaPrivativa);sv('im-areac',x.area_construida??x.areaConstruida);sv('im-terreno',x.terreno);
   sv('im-and',x.andar);sv('im-fachada',x.fachada);sv('im-ano-const',x.anoConstrucao);sv('im-pavimentos',x.pavimentos);
   sc('im-decorado',x.decorado);sc('im-mobiliado',x.mobiliado);sc('im-semi',x.semiMobiliado);sc('im-semimob',x.semMobilia);
   if(g('im-sol'))g('im-sol').value=x.sol||'';
@@ -3540,7 +3540,8 @@ function eImov(id){
   if(g('im-st'))g('im-st').value=x.status||'Disponível';
   if(g('im-pub'))g('im-pub').value=x.publicar?'1':'0';
   if(g('im-destaque'))g('im-destaque').value=x.destaque?'1':'0';
-  const seo=x.seoData||{};
+  // o formulario grava em seo_data; aceitar os dois nomes evita perder o que ja foi salvo
+  const seo=x.seo_data||x.seoData||{};
   sv('im-seo-titulo',seo.titulo);sv('im-seo-desc',seo.desc);
   sv('im-seo-kw',seo.keywords);sv('im-seo-slogan',seo.slogan);
   sv('im-seo-tour',seo.tour);sv('im-seo-video',seo.video);
@@ -6143,6 +6144,13 @@ footer .fl{font-family:'Fraunces',serif;font-size:22px}
 footer .fl em{color:var(--gold);font-style:italic}
 footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-top:6px}
 @media(max-width:600px){header{padding:12px 16px}header .back{display:none}}
+.mob-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:content-box;background:rgba(255,255,255,.92);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border-top:1px solid rgba(13,59,84,.1);z-index:900;box-shadow:0 -2px 16px rgba(13,59,84,.08)}
+.mob-footer-items{display:flex;align-items:stretch;height:100%}
+.mob-footer-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:transparent;color:#aaa;font-family:'Outfit',sans-serif;font-size:9px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:6px 2px 4px;text-decoration:none}
+.mob-footer-btn.active{color:#0c4a6e}
+.mob-footer-ico{font-size:20px;line-height:1}
+.mob-footer-btn.wpp-btn{color:#25d366}
+@media(max-width:768px){.mob-footer-nav{display:block}body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
 </style>
 </head>
 <body>
@@ -6172,6 +6180,15 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
   <div class="fl">Os melhores Condomínios <em>no Litoral</em></div>
   <div class="fs">Litoral Norte Gaúcho</div>
 </footer>
+<nav class="mob-footer-nav">
+  <div class="mob-footer-items">
+    <a class="mob-footer-btn" href="/"><span class="mob-footer-ico">&#128269;</span><span class="mob-footer-lbl">Explorar</span></a>
+    <a class="mob-footer-btn" href="/lancamentos"><span class="mob-footer-ico">&#128640;</span><span class="mob-footer-lbl">Lançamentos</span></a>
+    <a class="mob-footer-btn wpp-btn" href="https://wa.me/5551999442252" rel="nofollow"><span class="mob-footer-ico">&#128241;</span><span class="mob-footer-lbl">WhatsApp</span></a>
+    <a class="mob-footer-btn" href="/imoveis"><span class="mob-footer-ico">&#127960;</span><span class="mob-footer-lbl">Imóveis</span></a>
+    <a class="mob-footer-btn active" href="/condominios"><span class="mob-footer-ico">&#127958;</span><span class="mob-footer-lbl">Condomínios</span></a>
+  </div>
+</nav>
 </body>
 </html>`;
     // grava na RAIZ (/slug) — mesma rota das paginas ja publicadas e dos links do site.
@@ -6229,13 +6246,18 @@ async function gerarPaginasImoveis(){
     const tipo = im.tipo || 'Imovel';
     const preco = moeda(im.preco);
 
-    const titulo = [tipo, condNome ? ('no '+condNome) : null, 'em '+cidade].filter(Boolean).join(' ') + ' | Condominios na Praia';
+    // campos de SEO preenchidos no CRM tem prioridade sobre o texto automatico
+    const seoD = im.seo_data || im.seoData || {};
+    const titulo = (seoD.titulo && String(seoD.titulo).trim())
+      ? String(seoD.titulo).trim()
+      : ([tipo, condNome ? ('no '+condNome) : null, 'em '+cidade].filter(Boolean).join(' ') + ' | Condominios na Praia');
     const partesDesc=[];
     if(im.quartos) partesDesc.push(im.quartos+' dormitorios');
     if(im.suites) partesDesc.push(im.suites+' suites');
     if(im.area) partesDesc.push(im.area+'m2');
     if(preco) partesDesc.push(preco);
-    const desc = esc((im.descricao ? String(im.descricao).replace(/\s+/g,' ') : [tipo, condNome?('no '+condNome):'', 'em '+cidade, partesDesc.join(', ')].filter(Boolean).join(' ')).slice(0,155));
+    const desc = esc(((seoD.desc && String(seoD.desc).trim()) ? String(seoD.desc).trim()
+      : (im.descricao ? String(im.descricao).replace(/\s+/g,' ') : [tipo, condNome?('no '+condNome):'', 'em '+cidade, partesDesc.join(', ')].filter(Boolean).join(' '))).slice(0,155));
 
     const fotos = (im.fotos_no_site && im.fotos_no_site.length ? im.fotos_no_site : (im.fotos||[]))
       .filter(f=>typeof f==='string' && f.indexOf('http')===0).slice(0,12);
@@ -6276,6 +6298,7 @@ async function gerarPaginasImoveis(){
 <meta name="theme-color" content="#0c4a6e">
 <title>${esc(titulo)}</title>
 <meta name="description" content="${desc}">
+${seoD.keywords?`<meta name="keywords" content="${esc(seoD.keywords)}">`:''}
 <link rel="canonical" href="${url}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(titulo)}">
@@ -6324,6 +6347,13 @@ footer .fl{font-family:'Fraunces',serif;font-size:22px}
 footer .fl em{color:var(--gold);font-style:italic}
 footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-top:6px}
 @media(max-width:700px){header{padding:12px 16px}.galeria{grid-template-columns:1fr;max-height:none}.galeria img:first-child{grid-row:auto}.galeria img:nth-child(n+3){display:none}}
+.mob-footer-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:content-box;background:rgba(255,255,255,.92);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border-top:1px solid rgba(13,59,84,.1);z-index:900;box-shadow:0 -2px 16px rgba(13,59,84,.08)}
+.mob-footer-items{display:flex;align-items:stretch;height:100%}
+.mob-footer-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:transparent;color:#aaa;font-family:'Outfit',sans-serif;font-size:9px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:6px 2px 4px;text-decoration:none}
+.mob-footer-btn.active{color:#0c4a6e}
+.mob-footer-ico{font-size:20px;line-height:1}
+.mob-footer-btn.wpp-btn{color:#25d366}
+@media(max-width:768px){.mob-footer-nav{display:block}body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
 </style>
 </head>
 <body>
@@ -6352,6 +6382,15 @@ ${fotos.length?`<div class="galeria">${fotos.slice(0,3).map((f,ix)=>`<img src="$
   <div class="fl">Os melhores Condominios <em>no Litoral</em></div>
   <div class="fs">Litoral Norte Gaucho</div>
 </footer>
+<nav class="mob-footer-nav">
+  <div class="mob-footer-items">
+    <a class="mob-footer-btn" href="/"><span class="mob-footer-ico">&#128269;</span><span class="mob-footer-lbl">Explorar</span></a>
+    <a class="mob-footer-btn" href="/lancamentos"><span class="mob-footer-ico">&#128640;</span><span class="mob-footer-lbl">Lancamentos</span></a>
+    <a class="mob-footer-btn wpp-btn" href="${wpp}" rel="nofollow"><span class="mob-footer-ico">&#128241;</span><span class="mob-footer-lbl">WhatsApp</span></a>
+    <a class="mob-footer-btn active" href="/imoveis"><span class="mob-footer-ico">&#127960;</span><span class="mob-footer-lbl">Imoveis</span></a>
+    <a class="mob-footer-btn" href="/condominios"><span class="mob-footer-ico">&#127958;</span><span class="mob-footer-lbl">Condominios</span></a>
+  </div>
+</nav>
 </body>
 </html>`;
     zip.file(`${slug}/index.html`, html);

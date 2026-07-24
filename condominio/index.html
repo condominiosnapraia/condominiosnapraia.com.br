@@ -264,6 +264,12 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 .mob-footer-ico{font-size:20px;line-height:1}
 .mob-footer-btn.wpp-btn{color:#25d366}
 @media(max-width:768px){.mob-footer-nav{display:block}body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
+/* ── botao flutuante de WhatsApp x barra inferior (mobile) ──
+   Sem isto o botao fica sobre a barra e cobre os itens do rodape. */
+@media(max-width:768px){
+  .float-wpp,.wfloat,.wpp-float{bottom:calc(78px + env(safe-area-inset-bottom,0px)) !important;z-index:880 !important}
+}
+
 
 /* ── FOOTER PADRÃO SOFISTICADO ── */
 .page-footer{position:relative;background:linear-gradient(160deg,#0c4a6e,#0e7490);color:#fff;padding:0;text-align:left}
