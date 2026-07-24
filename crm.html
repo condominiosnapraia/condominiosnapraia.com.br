@@ -4544,14 +4544,19 @@ async function otimizarFotosPesadas(){
   // coletar alvos {rotulo, url, aplicar(novaUrl)} — cada fonte com try/catch proprio,
   // e sem repetir a mesma URL duas vezes na mesma rodada
   var alvos = [], fontesComErro = [], vistos = {};
-  var mapa = null, mapaSujo = false, pathsDoMapa = [];
+  var mapa = null, mapaSujo = false, pathsDoMapa = [], gravadasNoMapa = 0;
   try{
     mapa = (await sb.getConfig('fotos_site')) || {};
-    Object.keys(mapa).forEach(function(k){
-      var u = mapa[k];
+    Object.keys(mapa).forEach(function(chave){
+      // 'chave' e parametro do forEach: cada iteracao tem a sua propria copia.
+      // (Usar uma variavel 'var' do laco aqui faria TODAS as gravacoes cairem na
+      //  ultima chave do mapa — bug que fazia a otimizacao nunca terminar.)
+      var u = mapa[chave];
       if(typeof u === 'string' && u.indexOf('http') === 0 && !/\.webp($|\?)/i.test(u) && !vistos[u]){
         vistos[u] = 1;
-        alvos.push({rotulo:'fotos_site/'+k, url:u, aplicar:async function(nova, path){ mapa[k]=nova; mapaSujo=true; pathsDoMapa.push(path); }});
+        alvos.push({rotulo:'fotos_site/'+chave, url:u, aplicar:async function(nova, path){
+          mapa[chave] = nova; mapaSujo = true; pathsDoMapa.push(path); gravadasNoMapa++;
+        }});
       }
     });
   }catch(e){ fontesComErro.push('fotos do site'); }
@@ -4600,6 +4605,13 @@ async function otimizarFotosPesadas(){
       }
       economia += (blob.size - novoTam);
       ok++;
+      // salva o mapa de tempos em tempos: se a aba fechar no meio, o que ja foi feito fica gravado
+      if(gravadasNoMapa >= 20){
+        try{
+          await patchPor('configuracoes','chave=eq.fotos_site', {valor: mapa, updated_at:new Date().toISOString()});
+          gravadasNoMapa = 0; pathsDoMapa = []; mapaSujo = false;
+        }catch(eParcial){ /* tenta de novo no fim */ }
+      }
     }catch(e){ falhou++; if(!primeiroErro) primeiroErro = (e && e.message ? e.message : String(e)).slice(0,160); }
   }
 
