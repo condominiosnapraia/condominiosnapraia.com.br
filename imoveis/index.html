@@ -647,11 +647,13 @@ function render(lista){
     // so entram os campos preenchidos; area privativa aparece quando existe
     const specs=[];
     const areaPriv=i.area_privativa||i.areaPrivativa;
+    const areaConstr=i.area_construida||i.areaConstruida;
     if(i.area)specs.push('📐 '+i.area+' m²');
+    if(areaConstr)specs.push('🏠 '+areaConstr+' m² constr.');
     if(areaPriv)specs.push('📏 '+areaPriv+' m² priv.');
-    if(i.quartos)specs.push('🛏️ '+i.quartos);
-    if(i.suites)specs.push('🚿 '+i.suites);
-    if(i.vagas)specs.push('🚗 '+i.vagas);
+    if(i.quartos)specs.push('🛏️ '+i.quartos+(i.quartos==1?' dorm.':' dorms.'));
+    if(i.suites)specs.push('🛁 '+i.suites+(i.suites==1?' suíte':' suítes'));
+    if(i.vagas)specs.push('🚗 '+i.vagas+(i.vagas==1?' vaga':' vagas'));
     return '<a class="il-card" href="/imovel?id='+encodeURIComponent(i.codigo||i.slug||i.id)+'">'+
       '<div class="il-card-img">'+img+
         (cidade?'<span class="il-badge">'+cidade+'</span>':'')+

@@ -3471,7 +3471,7 @@ function buildDetailImoveis(imoveis){
   document.getElementById('d-im-grid').innerHTML=disp.map(im=>{
     const foto=im.fotos&&im.fotos[0];
     const sc=im.status==='Disponível'?'st-disp':'st-neg';
-    const specs=[im.area?`📐 ${m2(im.area)}`:'',im.quartos?`🛏 ${im.quartos} qtos`:'',im.suites?`🚿 ${im.suites} suítes`:'',im.vagas?`🚗 ${im.vagas} vagas`:''].filter(Boolean).map(x=>`<span class="icspec">${x}</span>`).join('');
+    const specs=[im.area?`📐 ${m2(im.area)}`:'',im.quartos?`🛏 ${im.quartos} qtos`:'',im.suites?`🛁 ${im.suites} suítes`:'',im.vagas?`🚗 ${im.vagas} vagas`:''].filter(Boolean).map(x=>`<span class="icspec">${x}</span>`).join('');
     return`<div class="icard fade-in" onclick="window.location.href='/imovel?id='+encodeURIComponent(im.codigo||im.slug||im.id)">
       <div class="icimg">${foto?`<img src="${foto}" alt="${im.titulo}" loading="lazy">`:'🏠'}<div class="icst ${sc}">${im.status}</div></div>
       <div class="icbody">
@@ -3579,7 +3579,7 @@ function _openImovModalWith(imId,cnd){
   const sp=[
     {i:'📐',v:im.area?m2(im.area):null,l:'Área'},
     {i:'🛏',v:im.quartos||null,l:'Quartos'},
-    {i:'🚿',v:im.suites||null,l:'Suítes'},
+    {i:'🛁',v:im.suites||null,l:'Suítes'},
     {i:'🚗',v:im.vagas||null,l:'Vagas'}
   ].filter(s=>s.v!==null&&s.v!==''&&s.v!==0);
   document.getElementById('im-specs').innerHTML=sp.map(s=>`<div class="imov-spec"><div class="imov-spec-ico">${s.i}</div><div class="imov-spec-v">${s.v}</div><div class="imov-spec-l">${s.l}</div></div>`).join('');
