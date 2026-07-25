@@ -566,6 +566,11 @@ body{padding-top:56px}
 /* capas: o zoom não pode estourar a largura */
 .il-hero,.cl-hero{overflow:hidden}
 .il-hero-slides,.cl-hero-slides{overflow:hidden}
+
+/* ── botao flutuante de WhatsApp x barra inferior (mobile) ── */
+@media(max-width:768px){
+  .float-wpp,.wfloat,.wpp-float{bottom:calc(78px + env(safe-area-inset-bottom,0px)) !important;z-index:880 !important}
+}
 </style>
 <link rel="canonical" href="https://condominiosnapraia.com.br/contemplado-imoveis">
 <meta property="og:title" content="Cartas Contempladas para Imóveis | RZN Contempladas — Litoral Norte RS">
