@@ -6275,6 +6275,7 @@ async function gerarPaginasImoveis(){
 
     const specs=[];
     if(im.area) specs.push(['Area', im.area+' m2']);
+    if(im.area_privativa||im.areaPrivativa) specs.push(['Area privativa', (im.area_privativa||im.areaPrivativa)+' m2']);
     if(im.area_construida) specs.push(['Area construida', im.area_construida+' m2']);
     if(im.quartos) specs.push(['Dormitorios', im.quartos]);
     if(im.suites) specs.push(['Suites', im.suites]);

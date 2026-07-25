@@ -1019,8 +1019,10 @@ function render(im,cond){
   }
 
   // so entram os campos preenchidos — card vazio com "—" fica feio e nao informa nada
+  const _areaPriv = im.area_privativa||im.areaPrivativa;
   const specs=[
     {i:'📐',v:im.area?m2(im.area):null,l:'Área'},
+    {i:'📏',v:_areaPriv?m2(_areaPriv):null,l:'Privativa'},
     {i:'🛏️',v:im.quartos||null,l:'Quartos'},
     {i:'🚿',v:im.suites||null,l:'Suítes'},
     {i:'🚗',v:im.vagas||null,l:'Vagas'}

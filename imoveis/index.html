@@ -644,9 +644,13 @@ function render(lista){
     const cidade=cond.cidade||i.cidade||'';
     const f=fotos(i.fotos_no_site||i.fotos);
     const img=f.length?'<img src="'+f[0]+'" alt="'+(i.titulo||'')+'" loading="lazy">':'🏠';
+    // so entram os campos preenchidos; area privativa aparece quando existe
     const specs=[];
+    const areaPriv=i.area_privativa||i.areaPrivativa;
     if(i.area)specs.push('📐 '+i.area+' m²');
+    if(areaPriv)specs.push('📏 '+areaPriv+' m² priv.');
     if(i.quartos)specs.push('🛏️ '+i.quartos);
+    if(i.suites)specs.push('🚿 '+i.suites);
     if(i.vagas)specs.push('🚗 '+i.vagas);
     return '<a class="il-card" href="/imovel?id='+encodeURIComponent(i.codigo||i.slug||i.id)+'">'+
       '<div class="il-card-img">'+img+
