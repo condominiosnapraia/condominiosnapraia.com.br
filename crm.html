@@ -6512,13 +6512,13 @@ ${fotos.length?`<div class="galeria-full">${fotos.slice(0,3).map((f,ix)=>`<img s
     <a class="mob-footer-btn" href="/condominios"><span class="mob-footer-ico">&#127958;</span><span class="mob-footer-lbl">Condominios</span></a>
   </div>
 </nav>
-<script>
+<${'s'}cript>
 var FOTOS=${JSON.stringify(fotos)},li=0;
 function LB(i){li=i;var lb=document.getElementById('lb');document.getElementById('lb-img').src=FOTOS[i];document.getElementById('lb-count').textContent=(i+1)+' / '+FOTOS.length;lb.classList.add('on');document.body.style.overflow='hidden';}
 function fecharLB(){document.getElementById('lb').classList.remove('on');document.body.style.overflow='';}
 function navLB(d){li=(li+d+FOTOS.length)%FOTOS.length;document.getElementById('lb-img').src=FOTOS[li];document.getElementById('lb-count').textContent=(li+1)+' / '+FOTOS.length;}
 document.addEventListener('keydown',function(e){if(!document.getElementById('lb').classList.contains('on'))return;if(e.key==='Escape')fecharLB();if(e.key==='ArrowLeft')navLB(-1);if(e.key==='ArrowRight')navLB(1);});
-</script>
+<${'/'}script>
 </body>
 </html>`;
     zip.file(`${slug}/index.html`, html);
