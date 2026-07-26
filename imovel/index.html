@@ -580,7 +580,7 @@ details[open] .dec-faq-q:after{content:"−"}
 @media(max-width:520px){.ip-sim-grid{grid-template-columns:1fr}}
 .ip-simcard{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 3px 12px rgba(13,59,84,.06);transition:transform .2s}
 .ip-simcard:hover{transform:translateY(-4px)}
-.ip-simcard-img{height:150px;background:var(--sl);display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden}
+.ip-simcard-img{height:200px;background:var(--sl);display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden}
 .ip-simcard-img img{width:100%;height:100%;object-fit:cover}
 .ip-simcard-b{padding:14px}
 .ip-simcard-t{font-family:'Fraunces',serif;font-size:15px;color:var(--ocean);font-weight:600;line-height:1.25;margin:4px 0}
@@ -855,7 +855,7 @@ function render(im,cond){
   // ═══ SEO DINÂMICO COMPLETO (cada imóvel com seu próprio título/descrição) ═══
   (function(){
     var tit = im.titulo || 'Imóvel';
-    var cid = im.cidade || (cond && cond.cidade) || '';
+    var cid = im.cidade || (cond && (cond.localizacao||cond.cidade)) || '';
     var cnome = (cond && cond.nome) || '';
     var tipo = im.tipo || 'Imóvel';
     var q = im.quartos ? (im.quartos + ' quartos') : '';
@@ -963,7 +963,7 @@ function render(im,cond){
     const el=document.getElementById('ld-imovel'); if(!el) return;
     const pageUrl='https://condominiosnapraia.com.br/imovel?id='+encodeURIComponent(im.id);
     const fotosSchema=fotosValidas(im.fotos_no_site||im.fotos).slice(0,8);
-    const cidade=cond.cidade||im.cidade||'Litoral Norte Gaúcho';
+    const cidade=cond.localizacao||cond.cidade||im.cidade||'Litoral Norte Gaúcho';
     const listing={
       "@context":"https://schema.org",
       "@type":"RealEstateListing",
@@ -1053,7 +1053,7 @@ function render(im,cond){
   const vm=String(raw).match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/);
   const videoHtml=vm?'<div class="ip-video"><div class="ip-sec-h">Vídeo do imóvel</div><div class="ip-video-frame"><iframe src="https://www.youtube.com/embed/'+vm[1]+'" title="Vídeo" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>':'';
 
-  const loc=[cond.nome,cond.cidade||im.cidade].filter(Boolean).join(' · ');
+  const loc=[cond.nome,cond.localizacao||cond.cidade||im.cidade].filter(Boolean).join(' · ');
   const tipoLinha=[im.codigo?('Cód: '+im.codigo):null,im.tipo,im.status].filter(Boolean).join(' · ');
 
   // ── Bloco de detalhes do CONDOMÍNIO ──
@@ -1149,11 +1149,34 @@ function render(im,cond){
 async function carregarSimilares(im,cond){
   const el=document.getElementById('ip-sim');if(!el)return;
   // buscar outros imóveis (mesmo tipo, disponíveis)
-  let outros=await sbGet('imoveis','?id=neq.'+encodeURIComponent(im.id)+'&limit=12&order=created_at.desc');
+  let outros=await sbGet('imoveis','?id=neq.'+encodeURIComponent(im.id)+'&limit=60&order=created_at.desc');
   if(!Array.isArray(outros)||!outros.length)return;
+  // só imóveis publicados e não vendidos
+  outros=outros.filter(function(x){return x.publicar!==false && x.status!=='Vendido';});
+  // Prioridade em 3 níveis: (1) mesmo condomínio + mesmo tipo; (2) mesmo tipo parecido (preço ±30%, suítes ±1); (3) resto
   const meuTipo=(im.tipo||'').toLowerCase();
-  outros.sort((a,b)=>{const am=(a.tipo||'').toLowerCase()===meuTipo?0:1;const bm=(b.tipo||'').toLowerCase()===meuTipo?0:1;return am-bm;});
-  const lista=outros.slice(0,3);
+  const meuCond=im.cond_id||im.condId;
+  const meuPreco=parseFloat(String(im.preco||'').replace(/[^0-9]/g,''))||0;
+  const minhasSuites=parseInt(im.suites||im.quartos||0)||0;
+  const jaTem={};const lista=[];
+  function add(arr){for(var i=0;i<arr.length && lista.length<3;i++){var x=arr[i];if(!jaTem[x.id]){jaTem[x.id]=1;lista.push(x);}}}
+  // Nível 1: mesmo condomínio + mesmo tipo
+  if(meuCond)add(outros.filter(function(x){return (x.cond_id||x.condId)===meuCond && (x.tipo||'').toLowerCase()===meuTipo;}));
+  // Nível 2: mesmo tipo parecido
+  if(lista.length<3){
+    const parecidos=outros.filter(function(x){return !jaTem[x.id] && (x.tipo||'').toLowerCase()===meuTipo;}).map(function(x){
+      var px=parseFloat(String(x.preco||'').replace(/[^0-9]/g,''))||0;
+      var sx=parseInt(x.suites||x.quartos||0)||0;
+      var precoOk=meuPreco>0&&px>0?Math.abs(px-meuPreco)/meuPreco<=0.30:false;
+      var suitesOk=minhasSuites>0&&sx>0?Math.abs(sx-minhasSuites)<=1:false;
+      return {x:x,score:(precoOk?2:0)+(suitesOk?1:0),dist:meuPreco>0&&px>0?Math.abs(px-meuPreco):Infinity};
+    }).filter(function(o){return o.score>0;}).sort(function(a,b){return b.score-a.score||a.dist-b.dist;}).map(function(o){return o.x;});
+    add(parecidos);
+  }
+  // Nível 3: completa com mesmo condomínio (qualquer tipo), depois mesmo tipo, depois qualquer
+  if(lista.length<3 && meuCond)add(outros.filter(function(x){return !jaTem[x.id] && (x.cond_id||x.condId)===meuCond;}));
+  if(lista.length<3)add(outros.filter(function(x){return !jaTem[x.id] && (x.tipo||'').toLowerCase()===meuTipo;}));
+  if(lista.length<3)add(outros);
   el.innerHTML='<div class="ip-sec-h">Imóveis semelhantes</div><div class="ip-sim-grid">'+lista.map(function(x){
     const f=fotosValidas(x.fotos_no_site||x.fotos);
     const img=f.length?'<img src="'+f[0]+'" alt="'+(x.titulo||'')+'" loading="lazy">':'🏠';

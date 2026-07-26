@@ -6253,13 +6253,55 @@ async function gerarPaginasImoveis(){
   // Índice para "imóveis similares": prioriza o mesmo condomínio, depois a mesma cidade.
   // Pré-calculado aqui porque a página é estática (não consulta o banco em runtime).
   function similaresDe(alvo){
-    const mesmoCondo = validos.filter(x=> x.id!==alvo.id && alvo.cond_id && x.cond_id===alvo.cond_id);
-    let lista = mesmoCondo.slice(0,3);
-    if(lista.length<3){
-      const cidadeAlvo = (alvo.cond_id && mapaCond[alvo.cond_id] && (mapaCond[alvo.cond_id].localizacao||mapaCond[alvo.cond_id].cidade)) || alvo.cidade;
-      const mesmaCidade = validos.filter(x=> x.id!==alvo.id && !lista.includes(x) && cidadeAlvo && (((x.cond_id&&mapaCond[x.cond_id]&&(mapaCond[x.cond_id].localizacao||mapaCond[x.cond_id].cidade))||x.cidade)===cidadeAlvo));
-      lista = lista.concat(mesmaCidade.slice(0, 3-lista.length));
+    // Prioridade em 3 níveis:
+    //  1) mesmo condomínio E mesmo tipo (ex: outras casas no mesmo condomínio)
+    //  2) mesmo tipo com características parecidas (preço ±30%, nº de suítes/dormitórios próximo)
+    //  3) qualquer outro do mesmo tipo, depois da mesma cidade
+    const tipoAlvo = (alvo.tipo||'').toLowerCase();
+    const precoAlvo = parseFloat(String(alvo.preco||'').replace(/[^0-9]/g,'')) || 0;
+    const suitesAlvo = parseInt(alvo.suites||alvo.quartos||0) || 0;
+    const cidadeAlvo = (alvo.cond_id && mapaCond[alvo.cond_id] && (mapaCond[alvo.cond_id].localizacao||mapaCond[alvo.cond_id].cidade)) || alvo.cidade;
+    const outros = validos.filter(x=> x.id!==alvo.id);
+    const jaTem = new Set();
+    const add = (arr, lista) => { for(const x of arr){ if(lista.length>=3) break; if(!jaTem.has(x.id)){ jaTem.add(x.id); lista.push(x); } } };
+
+    let lista = [];
+
+    // Nível 1: mesmo condomínio + mesmo tipo
+    if(alvo.cond_id){
+      add(outros.filter(x=> x.cond_id===alvo.cond_id && (x.tipo||'').toLowerCase()===tipoAlvo), lista);
     }
+
+    // Nível 2: mesmo tipo + parecido (preço ±30% e suítes/dormitórios próximos), ordenado por proximidade de preço
+    if(lista.length<3){
+      const parecidos = outros
+        .filter(x=> !jaTem.has(x.id) && (x.tipo||'').toLowerCase()===tipoAlvo)
+        .map(x=>{
+          const px = parseFloat(String(x.preco||'').replace(/[^0-9]/g,'')) || 0;
+          const sx = parseInt(x.suites||x.quartos||0) || 0;
+          const precoOk = precoAlvo>0 && px>0 ? Math.abs(px-precoAlvo)/precoAlvo <= 0.30 : false;
+          const suitesOk = suitesAlvo>0 && sx>0 ? Math.abs(sx-suitesAlvo) <= 1 : false;
+          const score = (precoOk?2:0) + (suitesOk?1:0);
+          const distPreco = precoAlvo>0 && px>0 ? Math.abs(px-precoAlvo) : Infinity;
+          return { x, score, distPreco };
+        })
+        .filter(o=> o.score>0)
+        .sort((a,b)=> b.score-a.score || a.distPreco-b.distPreco)
+        .map(o=> o.x);
+      add(parecidos, lista);
+    }
+
+    // Nível 3: completa — mesmo condomínio (qualquer tipo), depois mesmo tipo, depois mesma cidade
+    if(lista.length<3 && alvo.cond_id){
+      add(outros.filter(x=> !jaTem.has(x.id) && x.cond_id===alvo.cond_id), lista);
+    }
+    if(lista.length<3){
+      add(outros.filter(x=> !jaTem.has(x.id) && (x.tipo||'').toLowerCase()===tipoAlvo), lista);
+    }
+    if(lista.length<3 && cidadeAlvo){
+      add(outros.filter(x=> !jaTem.has(x.id) && (((x.cond_id&&mapaCond[x.cond_id]&&(mapaCond[x.cond_id].localizacao||mapaCond[x.cond_id].cidade))||x.cidade)===cidadeAlvo)), lista);
+    }
+
     return lista;
   }
 
@@ -6414,7 +6456,7 @@ h1{font-family:'Fraunces',serif;font-size:clamp(24px,3vw,38px);color:var(--ocean
 .sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
 .sim-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 3px 12px rgba(13,59,84,.06);transition:transform .2s,box-shadow .2s}
 .sim-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(13,59,84,.12)}
-.sim-img{height:150px;background:var(--sl);display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden}
+.sim-img{height:200px;background:var(--sl);display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden}
 .sim-img img{width:100%;height:100%;object-fit:cover}
 .sim-b{padding:14px}
 .sim-eyebrow{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--tm)}
