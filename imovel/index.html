@@ -626,7 +626,7 @@ details[open] .dec-faq-q:after{content:"−"}
 <body>
 <header class="desk-header" id="desk-header">
   <div class="desk-header-inner">
-    <a class="dh-logo" href="/" aria-label="Condomínios na Praia — início"><img src="/img/logo-header.webp" alt="Os melhores condomínios do litoral" width="129" height="46" style="height:46px;width:auto;display:block"></a>
+    <a class="dh-logo" href="/" aria-label="Condomínios na Praia — início"></a>
     <nav class="dh-nav">
       <a href="/" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
       <a href="/imoveis">Imóveis</a>
@@ -1002,7 +1002,13 @@ function render(im,cond){
   window._todasFotos = TODAS_FOTOS;
 
   const galHtml = GAL.length
-    ? '<div class="ip-track'+(GAL.length>=3?' multi':'')+'" id="ip-track">'+GAL.map(function(f,i){return '<div class="ip-slide" onclick="ipSlideClick('+i+')"><img src="'+f+'" alt="'+((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1)+'"'+(i>1?' loading="lazy"':'')+'></div>';}).join('')+'</div>'+
+    ? '<div class="ip-track'+(GAL.length>=3?' multi':'')+'" id="ip-track">'+GAL.map(function(f,i){
+        // na última foto livre, se houver fotos bloqueadas, mostra o convite de cadastro sobre a imagem
+        var overlay = (_bloqueadas>0 && i===GAL.length-1)
+          ? '<div class="ip-gal-locked" onclick="event.stopPropagation();lgOpen()"><span class="ico">🔒</span><span class="txt">+'+_bloqueadas+' fotos exclusivas<br>Faça seu cadastro para ver todas</span><button class="btn" onclick="event.stopPropagation();lgOpen()">Ver todas as fotos</button></div>'
+          : '';
+        return '<div class="ip-slide" onclick="ipSlideClick('+i+')"><img src="'+f+'" alt="'+((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1)+'"'+(i>1?' loading="lazy"':'')+'>'+overlay+'</div>';
+      }).join('')+'</div>'+
       (GAL.length>1?'<button class="ip-gal-arrow prev" onclick="galNav(-1)">&#8249;</button><button class="ip-gal-arrow next" onclick="galNav(1)">&#8250;</button>':'')+
       '<div class="ip-gal-count" id="ip-gal-i">1/'+GAL.length+'</div>'+
       '<div class="ip-dots" id="ip-dots">'+GAL.map(function(_,i){return '<button class="ip-dot'+(i===0?' on':'')+'" onclick="galShow('+i+')" aria-label="Foto '+(i+1)+'"></button>';}).join('')+'</div>'

@@ -2717,13 +2717,16 @@ const sb = {
     // Converte base64 para blob
     const res = await fetch(base64);
     const blob = await res.blob();
-    const h = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': blob.type };
+    // usa o token do usuário logado (o Storage também exige auth com RLS ativo)
+    const _tk = sessionStorage.getItem('cnp_crm_token') || SUPABASE_KEY;
+    const h = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + _tk, 'Content-Type': blob.type };
     const r = await fetch(`${SUPABASE_URL}/storage/v1/object/fotos/${path}`, { method:'POST', headers: h, body: blob });
     if(!r.ok){ const e=await r.text(); throw new Error(e); }
     return `${SUPABASE_URL}/storage/v1/object/public/fotos/${path}`;
   },
   async deleteFoto(path){
-    const h = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' };
+    const _tk = sessionStorage.getItem('cnp_crm_token') || SUPABASE_KEY;
+    const h = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + _tk, 'Content-Type': 'application/json' };
     await fetch(`${SUPABASE_URL}/storage/v1/object/fotos/${path}`, { method:'DELETE', headers: h });
   },
   async getConfig(chave){
