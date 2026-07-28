@@ -1065,8 +1065,12 @@ if(_savedToken && _savedUser){
         <div id="dest-xangri-list" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div>
       </div>
       <div>
-        <div class="ed-section">🏠 Imóveis em Destaque (máx 12)</div>
+        <div class="ed-section">🏠 Casas &amp; Sobrados em Destaque (máx 8)</div>
         <div id="dest-imov-list" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div>
+      </div>
+      <div>
+        <div class="ed-section">🌳 Terrenos em Destaque (máx 8)</div>
+        <div id="dest-terreno-list" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div>
       </div>
     </div>
   </div>
@@ -2451,7 +2455,7 @@ if(_savedToken && _savedUser){
         <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-fin" style="accent-color:var(--ac)"> Aceita Financiamento</label>
         <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-perm" style="accent-color:var(--ac)"> Permuta</label>
         <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-excl" style="accent-color:var(--ac)"> Exclusividade</label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-destaque-chk" style="accent-color:var(--ac)"> ⭐ Destaque no Site</label>
+        <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3)" title="O destaque é controlado no painel Destaques"><input type="checkbox" id="im-destaque-chk" style="display:none"> ⭐ Destaque: gerenciado no painel <b style="color:var(--ac)">Destaques</b></label>
         <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-placa" style="accent-color:var(--ac)"> Tem Placa</label>
         <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-promo" style="accent-color:var(--ac)"> Em Promoção</label>
       </div>
@@ -2495,7 +2499,7 @@ if(_savedToken && _savedUser){
       <div class="fgg">
         <div class="fg"><label class="fl">Publicar no Site</label>
           <select class="fse" id="im-pub"><option value="1">Sim</option><option value="0">Não</option></select></div>
-        <div class="fg"><label class="fl">Status Visibilidade</label>
+        <div class="fg" style="display:none">
           <select class="fse" id="im-destaque"><option value="0">Normal</option><option value="1">⭐ Destaque</option></select></div>
       </div>
     </div>
@@ -3671,7 +3675,7 @@ async function savImov(){
       id,titulo,cond_id:condId,ref:gv('im-ref'),codigo:codigoImovel,
       lote:gv('im-lote'),quadra:gv('im-quadra'),cep:gv('im-cep'),cidade_end:gv('im-cidade'),bairro_end:gv('im-bairro-end'),ref_local:gv('im-ref-local'),
       finalidade:gv('im-final'),tipo:gv('im-tipo'),status:gv('im-st'),
-      publicar:gv('im-pub')==='1',destaque:gv('im-destaque')==='1'||gc('im-destaque-chk'),
+      publicar:gv('im-pub')==='1',
       quartos:gv('im-qtos'),suites:gv('im-sui'),banheiros:gv('im-ban'),
       lavabos:gv('im-lavabos'),salas:gv('im-salas'),vagas:gv('im-vag'),depositos:gv('im-dep'),
       decorado:gc('im-decorado'),mobiliado:gc('im-mobiliado'),semi_mobiliado:gc('im-semi'),sem_mobilia:gc('im-semimob'),
@@ -5970,11 +5974,25 @@ async function contProcessXls(inp){
 }
 
 // ── DESTAQUES ──
-function buildDestaques(){
-  const selGeral  = JSON.parse(localStorage.getItem('cnp_featured_cond')||'[]');
-  const selCapao  = JSON.parse(localStorage.getItem('cnp_featured_capao')||'[]');
-  const selXangri = JSON.parse(localStorage.getItem('cnp_featured_xangri')||'[]');
-  const selImov   = JSON.parse(localStorage.getItem('cnp_featured_imov')||'[]');
+async function buildDestaques(){
+  // Carrega do BANCO (fonte da verdade que o site usa), com fallback ao localStorage.
+  // Antes lia só do localStorage, o que fazia os destaques "sumirem" ou "voltarem"
+  // quando o localStorage estava vazio ou desatualizado.
+  async function carrega(chaveBanco, chaveLocal){
+    try{
+      const doBanco = await sb.getConfig(chaveBanco);
+      if(Array.isArray(doBanco)){
+        localStorage.setItem(chaveLocal, JSON.stringify(doBanco));
+        return doBanco;
+      }
+    }catch(e){}
+    return JSON.parse(localStorage.getItem(chaveLocal)||'[]');
+  }
+  const selGeral  = await carrega('destaques_cond',   'cnp_featured_cond');
+  const selCapao  = await carrega('destaques_capao',  'cnp_featured_capao');
+  const selXangri = await carrega('destaques_xangri', 'cnp_featured_xangri');
+  const selImov   = await carrega('destaques_imov',   'cnp_featured_imov');
+  const selTerreno= await carrega('destaques_terreno','cnp_featured_terreno');
 
   function cardHtml(c, sel){
     return `<label style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--sf);border:1px solid var(--bd);border-radius:6px;cursor:pointer">
@@ -5999,20 +6017,31 @@ function buildDestaques(){
   fillList('dest-capao-list',  DB.co.filter(c=>isCidade(c,'Capão da Canoa')), selCapao);
   fillList('dest-xangri-list', DB.co.filter(c=>isCidade(c,'Xangri-lá')),     selXangri);
 
-  // Imóveis
+  // Imóveis separados por tipo: terrenos numa lista, o resto (casas/sobrados/apto) noutra
+  function ehTerreno(i){ return (i.tipo||'').toLowerCase().indexOf('terreno')>=0; }
+  function cardImov(i, sel){
+    const cond = DB.co.find(c=>c.id===i.cond_id||c.id===i.condId);
+    return `<label style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--sf);border:1px solid var(--bd);border-radius:6px;cursor:pointer">
+      <input type="checkbox" value="${i.id}" ${sel.includes(i.id)?'checked':''} onchange="destUpdate(event)">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--tx)">${i.titulo||'—'}</div>
+        <div style="font-size:11px;color:var(--t2)">${cond?cond.nome:''} · ${i.preco||''}</div>
+      </div>
+    </label>`;
+  }
+  const casas    = DB.im.filter(i=>!ehTerreno(i));
+  const terrenos = DB.im.filter(i=> ehTerreno(i));
   const imovList = document.getElementById('dest-imov-list');
   if(imovList){
-    imovList.innerHTML = DB.im.length === 0
-      ? '<div style="color:var(--t3);font-size:12px">Nenhum imóvel cadastrado</div>'
-      : DB.im.map(i=>{
-          const cond = DB.co.find(c=>c.id===i.cond_id||c.id===i.condId);
-          return`<label style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--sf);border:1px solid var(--bd);border-radius:6px;cursor:pointer">
-            <input type="checkbox" value="${i.id}" ${selImov.includes(i.id)?'checked':''} onchange="destUpdate(event)">
-            <div>
-              <div style="font-size:13px;font-weight:600;color:var(--tx)">${i.titulo||'—'}</div>
-              <div style="font-size:11px;color:var(--t2)">${cond?cond.nome:''} · ${i.preco||''}</div>
-            </div>
-          </label>`;}).join('');
+    imovList.innerHTML = casas.length===0
+      ? '<div style="color:var(--t3);font-size:12px">Nenhuma casa/sobrado cadastrado</div>'
+      : casas.map(i=>cardImov(i, selImov)).join('');
+  }
+  const terrList = document.getElementById('dest-terreno-list');
+  if(terrList){
+    terrList.innerHTML = terrenos.length===0
+      ? '<div style="color:var(--t3);font-size:12px">Nenhum terreno cadastrado</div>'
+      : terrenos.map(i=>cardImov(i, selTerreno)).join('');
   }
   destUpdate();
 }
@@ -6020,7 +6049,7 @@ function buildDestaques(){
 function destUpdate(ev){
   // Cada lista é totalmente independente. Se uma exceder o limite,
   // desmarca o último item marcado DAQUELA lista (não afeta as outras).
-  const limites = [['dest-geral-list',8,'Destaques Gerais'],['dest-capao-list',4,'Destaques Capão'],['dest-xangri-list',4,'Destaques Xangri-lá'],['dest-imov-list',12,'Imóveis']];
+  const limites = [['dest-geral-list',8,'Destaques Gerais'],['dest-capao-list',4,'Destaques Capão'],['dest-xangri-list',4,'Destaques Xangri-lá'],['dest-imov-list',8,'Casas & Sobrados'],['dest-terreno-list',8,'Terrenos']];
   // descobre em qual lista o clique aconteceu
   const alvo = ev && ev.target;
   for(const [id,max,nome] of limites){
@@ -6047,16 +6076,19 @@ async function destSave(){
   const selCapao  = get('dest-capao-list');
   const selXangri = get('dest-xangri-list');
   const selImov   = get('dest-imov-list');
+  const selTerreno= get('dest-terreno-list');
   localStorage.setItem('cnp_featured_cond',   JSON.stringify(selGeral));
   localStorage.setItem('cnp_featured_capao',  JSON.stringify(selCapao));
   localStorage.setItem('cnp_featured_xangri', JSON.stringify(selXangri));
   localStorage.setItem('cnp_featured_imov',   JSON.stringify(selImov));
+  localStorage.setItem('cnp_featured_terreno',JSON.stringify(selTerreno));
   try{
     await sb.setConfig('destaques_cond',   selGeral);
     await sb.setConfig('destaques_capao',  selCapao);
     await sb.setConfig('destaques_xangri', selXangri);
     await sb.setConfig('destaques_imov',   selImov);
-    toast(`✓ Destaques salvos! Geral ${selGeral.length}, Capão ${selCapao.length}, Xangri ${selXangri.length}, Imóveis ${selImov.length}`,'success');
+    await sb.setConfig('destaques_terreno',selTerreno);
+    toast(`✓ Destaques salvos! Casas ${selImov.length}, Terrenos ${selTerreno.length}, Condomínios ${selGeral.length}`,'success');
   }catch(e){ toast('Erro: '+e.message,'error'); }
 }
 

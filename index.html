@@ -1757,13 +1757,13 @@ body{padding-top:56px}
     </div>
   </section>
 
-  <!-- ══ DESTAQUES IMÓVEIS ══ -->
+  <!-- ══ DESTAQUES CASAS & SOBRADOS ══ -->
   <section class="dest-section dest-section-alt" id="sec-imoveis">
     <div class="dest-inner">
       <div class="dest-header">
         <div>
           <p class="eyebrow">Imóveis Selecionados</p>
-          <h2 class="sectit">Imóveis à <em>Venda</em></h2>
+          <h2 class="sectit">Casas & Sobrados à <em>Venda</em></h2>
         </div>
         <a class="dest-ver-btn" href="/imoveis">Ver todos os imóveis →</a>
       </div>
@@ -1771,6 +1771,26 @@ body{padding-top:56px}
       <div class="dest-ver-all">
         <a class="dest-btn-all dest-btn-alt" href="/imoveis">
           Ver todos os imóveis
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ DESTAQUES TERRENOS ══ -->
+  <section class="dest-section" id="sec-terrenos">
+    <div class="dest-inner">
+      <div class="dest-header">
+        <div>
+          <p class="eyebrow">Oportunidades</p>
+          <h2 class="sectit">Terrenos em <em>Destaque</em></h2>
+        </div>
+        <a class="dest-ver-btn" href="/imoveis">Ver todos os terrenos →</a>
+      </div>
+      <div class="igrid" id="home-terreno-grid" style="min-height:200px"></div>
+      <div class="dest-ver-all">
+        <a class="dest-btn-all" href="/imoveis">
+          Ver todos os terrenos
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -2559,7 +2579,7 @@ async function fetchSiteData(){
   if(_siteCache && (now - _siteCacheTs) < SITE_CACHE_TTL) return _siteCache;
   try{
     // OTIMIZADO: 3 requisições em vez de 8 (todas as configs vêm juntas)
-    const CHAVES = ['destaques_cond','destaques_imov','destaques_capao','destaques_xangri','site_config','turismo_config','fotos_site'];
+    const CHAVES = ['destaques_cond','destaques_imov','destaques_terreno','destaques_capao','destaques_xangri','site_config','turismo_config','fotos_site'];
     // TUDO em paralelo numa única leva (o navegador dispara todas juntas)
     const [condominios, imoveis, cfgsRaw, carrosselFotos, capasDecisao] = await Promise.all([
       sbSite.get('condominios', '?ativo=eq.true&order=nome.asc'),
@@ -2584,6 +2604,7 @@ async function fetchSiteData(){
     (Array.isArray(cfgsRaw) ? cfgsRaw : []).forEach(function(c){ _cfg[c.chave] = c.valor; });
     const destCond   = _cfg['destaques_cond']   || [];
     const destImov   = _cfg['destaques_imov']   || [];
+    const destTerreno= _cfg['destaques_terreno']|| [];
     const destCapao  = _cfg['destaques_capao']  || [];
     const destXangri = _cfg['destaques_xangri'] || [];
     const siteCfg    = _cfg['site_config']      || {};
@@ -2609,6 +2630,7 @@ async function fetchSiteData(){
       imoveis: todosImoveis,
       destCond: destCond || [],
       destImov: destImov || [],
+      destTerreno: destTerreno || [],
       destCapao: destCapao || [],
       destXangri: destXangri || [],
       siteCfg: siteCfg || {},
@@ -4018,14 +4040,29 @@ function buildHomeDestaques(){
       }));
     }
 
+    // separa por tipo: terrenos de um lado, casas/sobrados de outro
+    const ehTerreno = i => (i.tipo||'').toLowerCase().indexOf('terreno')>=0;
+    const casas    = allImov.filter(i=>!ehTerreno(i));
+    const terrenos = allImov.filter(i=> ehTerreno(i));
+    const destTerreno = _siteCache?.destTerreno||[];
+
     let showImov=destImov.length
-      ? allImov.filter(i=>destImov.includes(i.id)).slice(0,12)
-      : allImov.slice(0,12);
+      ? casas.filter(i=>destImov.includes(i.id)).slice(0,8)
+      : casas.slice(0,8);
+
+    let showTerreno=destTerreno.length
+      ? terrenos.filter(i=>destTerreno.includes(i.id)).slice(0,8)
+      : terrenos.slice(0,8);
 
     const ig=document.getElementById('home-imov-grid');
     if(ig) ig.innerHTML=showImov.length
       ? showImov.map(buildImovCard).join('')
-      : '<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🏠</div><p>Cadastre imóveis no CRM para exibi-los aqui</p></div>';
+      : '<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🏠</div><p>Cadastre casas no CRM para exibi-las aqui</p></div>';
+
+    const tg=document.getElementById('home-terreno-grid');
+    if(tg) tg.innerHTML=showTerreno.length
+      ? showTerreno.map(buildImovCard).join('')
+      : '<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🌳</div><p>Cadastre terrenos no CRM para exibi-los aqui</p></div>';
 
     // Trigger fade animations
     if(typeof obs === 'function') obs();
