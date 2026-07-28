@@ -336,6 +336,20 @@ body{padding-top:56px}
 @media(max-width:980px){body{padding-top:0}}
 .sr-h1{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .sr-h1{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ── HERO da página (banner com onda) ── */
+.pg-hero{position:relative;background:linear-gradient(135deg,#0d3b54 0%,#0e8a99 60%,#1fb5c4 100%);padding:56px 24px 70px;overflow:hidden;text-align:center}
+.pg-hero::before{content:"";position:absolute;top:-40%;right:-10%;width:420px;height:420px;background:radial-gradient(circle,rgba(224,179,77,.18),transparent 70%);border-radius:50%}
+.pg-hero-in{max-width:760px;margin:0 auto;position:relative;z-index:2}
+.pg-hero-eyebrow{display:inline-block;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600}
+.pg-hero-title{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(30px,5vw,52px);line-height:1.1;color:#fff;margin:0 0 14px}
+.pg-hero-title em{font-style:italic;color:var(--gold)}
+.pg-hero-sub{font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.88);line-height:1.55;max-width:540px;margin:0 auto}
+.pg-hero-wave{position:absolute;bottom:-1px;left:0;width:100%;height:70px;display:block}
+@media(max-width:600px){.pg-hero{padding:40px 20px 54px}.pg-hero-wave{height:44px}}
+/* ── botão de busca cor de praia (turquesa) ── */
+.cl-clear{background:linear-gradient(135deg,var(--ol),var(--om)) !important;border:none !important;color:#fff !important;font-weight:700 !important;font-size:13px !important;cursor:pointer;text-decoration:none !important;align-self:flex-end;padding:11px 22px !important;border-radius:100px !important;box-shadow:0 6px 18px rgba(31,181,196,.35);transition:transform .2s,box-shadow .2s}
+.cl-clear:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(31,181,196,.45)}
 </style>
 <style>
 .rf-hero{background:linear-gradient(150deg,#0c4a6e,#0891b2);color:#fff;padding:56px 22px 44px;text-align:center;border-radius:0 0 30px 30px;margin-bottom:36px}
@@ -442,7 +456,6 @@ details[open] .dec-faq-q:after{content:"−"}
 .cl-fg label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);font-weight:700;margin-bottom:5px}
 .cl-fg select{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:11px 12px;font-size:14px;font-family:inherit;color:#2b3d48;background:#fbfdfd}
 .cl-fg select:focus{outline:none;border-color:var(--om)}
-.cl-clear{background:none;border:none;color:var(--om);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;align-self:flex-end;padding:11px 0}
 .cl-count{font-size:14px;color:var(--tm);margin-bottom:16px}
 .cl-count b{color:var(--ocean)}
 .cl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -522,6 +535,18 @@ details[open] .dec-faq-q:after{content:"−"}
 
 
 <h1 class="sr-h1">Condomínios fechados no Litoral Norte Gaúcho — Xangri-lá, Capão da Canoa e Osório</h1>
+
+<section class="pg-hero">
+  <div class="pg-hero-in">
+    <span class="pg-hero-eyebrow">Litoral Norte Gaúcho</span>
+    <h2 class="pg-hero-title">Os melhores condomínios <em>do litoral</em></h2>
+    <p class="pg-hero-sub">Os condomínios fechados mais exclusivos e seguros da região, de Xangri-lá a Osório.</p>
+  </div>
+  <svg class="pg-hero-wave" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,64 C240,120 480,20 720,52 C960,84 1200,120 1440,60 L1440,120 L0,120 Z" fill="#fff"></path>
+  </svg>
+</section>
+
 <div class="cl-wrap">
   <div class="cl-filters">
     <div class="cl-fg"><label>Cidade</label><select id="f-cidade" onchange="aplicar()"><option value="">Todas</option></select></div>

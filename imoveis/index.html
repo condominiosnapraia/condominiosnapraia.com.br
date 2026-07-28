@@ -336,6 +336,20 @@ body{padding-top:56px}
 @media(max-width:980px){body{padding-top:0}}
 .sr-h1{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .sr-h1{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ── HERO da página (banner com onda) ── */
+.pg-hero{position:relative;background:linear-gradient(135deg,#0d3b54 0%,#0e8a99 60%,#1fb5c4 100%);padding:56px 24px 70px;overflow:hidden;text-align:center}
+.pg-hero::before{content:"";position:absolute;top:-40%;right:-10%;width:420px;height:420px;background:radial-gradient(circle,rgba(224,179,77,.18),transparent 70%);border-radius:50%}
+.pg-hero-in{max-width:760px;margin:0 auto;position:relative;z-index:2}
+.pg-hero-eyebrow{display:inline-block;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600}
+.pg-hero-title{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(30px,5vw,52px);line-height:1.1;color:#fff;margin:0 0 14px}
+.pg-hero-title em{font-style:italic;color:var(--gold)}
+.pg-hero-sub{font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.88);line-height:1.55;max-width:540px;margin:0 auto}
+.pg-hero-wave{position:absolute;bottom:-1px;left:0;width:100%;height:70px;display:block}
+@media(max-width:600px){.pg-hero{padding:40px 20px 54px}.pg-hero-wave{height:44px}}
+/* ── botão/ação de busca cor de praia (turquesa) ── */
+.il-clear{background:linear-gradient(135deg,var(--ol),var(--om)) !important;border:none !important;color:#fff !important;font-weight:700 !important;font-size:13px !important;cursor:pointer;text-decoration:none !important;align-self:flex-end;padding:11px 22px !important;border-radius:100px !important;box-shadow:0 6px 18px rgba(31,181,196,.35);transition:transform .2s,box-shadow .2s}
+.il-clear:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(31,181,196,.45)}
 </style>
 <style>
 .rf-hero{background:linear-gradient(150deg,#0c4a6e,#0891b2);color:#fff;padding:56px 22px 44px;text-align:center;border-radius:0 0 30px 30px;margin-bottom:36px}
@@ -464,7 +478,6 @@ details[open] .dec-faq-q:after{content:"−"}
 .il-loading{text-align:center;padding:70px;color:var(--tm)}
 .il-loading .sp{width:38px;height:38px;border:3px solid var(--sl);border-top-color:var(--om);border-radius:50%;animation:ilspin 1s linear infinite;margin:0 auto 14px}
 @keyframes ilspin{to{transform:rotate(360deg)}}
-.il-clear{background:none;border:none;color:var(--om);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;align-self:flex-end;padding:11px 0}
 
 /* correções mobile */
 .ftr-wave svg{width:100%;height:100%;display:block}
@@ -521,11 +534,23 @@ details[open] .dec-faq-q:after{content:"−"}
 
 
 <h1 class="sr-h1">Imóveis à venda no Litoral Norte Gaúcho — Xangri-lá, Capão da Canoa, Osório e Maquiné</h1>
+
+<section class="pg-hero">
+  <div class="pg-hero-in">
+    <span class="pg-hero-eyebrow">Litoral Norte Gaúcho</span>
+    <h2 class="pg-hero-title">Os melhores imóveis <em>do litoral</em></h2>
+    <p class="pg-hero-sub">Casas, apartamentos e terrenos nos condomínios mais exclusivos de Xangri-lá a Maquiné.</p>
+  </div>
+  <svg class="pg-hero-wave" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,64 C240,120 480,20 720,52 C960,84 1200,120 1440,60 L1440,120 L0,120 Z" fill="#fff"></path>
+  </svg>
+</section>
+
 <div class="il-wrap">
   <div class="il-filters">
     <div class="il-fg"><label>Cidade</label><select id="f-cidade" onchange="aplicar()"><option value="">Todas</option></select></div>
     <div class="il-fg"><label>Tipo</label><select id="f-tipo" onchange="aplicar()"><option value="">Todos</option></select></div>
-    <div class="il-fg"><label>Quartos (mín.)</label><select id="f-quartos" onchange="aplicar()"><option value="">Qualquer</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></div>
+    <div class="il-fg"><label>Dormitórios (mín.)</label><select id="f-quartos" onchange="aplicar()"><option value="">Qualquer</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option><option value="5">5+</option><option value="6">6+</option><option value="7">7+</option></select></div>
     <div class="il-fg"><label>Preço até</label><select id="f-preco" onchange="aplicar()"><option value="">Sem limite</option><option value="500000">R$ 500 mil</option><option value="1000000">R$ 1 milhão</option><option value="2000000">R$ 2 milhões</option><option value="3000000">R$ 3 milhões</option><option value="5000000">R$ 5 milhões</option></select></div>
     <button class="il-clear" onclick="limpar()">Limpar</button>
   </div>
@@ -607,9 +632,9 @@ async function carregar(){
     if(i.tipo)tipos.add(i.tipo);
   });
   const fc=document.getElementById('f-cidade'); [...cidades].sort().forEach(c=>fc.innerHTML+='<option value="'+c+'">'+c+'</option>');
-  // filtro de tipo FIXO: só trabalhamos com Casa e Terreno
+  // filtro de tipo FIXO: Casa, Apartamento e Terreno
   const ft=document.getElementById('f-tipo');
-  ['Casa','Terreno'].forEach(t=>ft.innerHTML+='<option value="'+t+'">'+t+'</option>');
+  ['Casa','Apartamento','Terreno'].forEach(t=>ft.innerHTML+='<option value="'+t+'">'+t+'</option>');
   // ler query params (?cidade=&tipo=)
   const q=new URLSearchParams(location.search);
   if(q.get('cidade'))fc.value=q.get('cidade');

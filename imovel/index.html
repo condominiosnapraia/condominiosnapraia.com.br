@@ -554,7 +554,33 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-fbtn:hover{background:var(--om)}
 .ip-fok{margin-top:10px;font-size:13px;color:#0a7d32;font-weight:600;text-align:center}
 /* similares */
-.ip-cond{margin-top:34px;padding:28px;background:linear-gradient(160deg,#f4fbfc,#eaf6f8);border:1px solid var(--border);border-radius:18px}
+.ip-cond{margin-top:34px;padding:0;background:linear-gradient(160deg,#f4fbfc,#eaf6f8);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.ip-cond-head{padding:34px 40px 24px;background:linear-gradient(135deg,rgba(13,59,84,.03),transparent)}
+.ip-cond-stats{display:flex;flex-wrap:wrap;gap:20px;margin-top:16px;align-items:center}
+.ip-cond-stat{font-size:14px;color:var(--tm)}
+.ip-cond-stat b{font-family:'Fraunces',serif;font-size:22px;color:var(--om);font-weight:600;margin-right:5px}
+.ip-cond-stat-badge{background:var(--ocean);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px}
+.ip-cond-desc,.ip-cond-amen,.ip-cond-gal-h{margin-left:40px;margin-right:40px}
+.ip-cond-cta{display:inline-flex;align-items:center;gap:10px;margin:24px 40px 36px;background:linear-gradient(135deg,var(--ol),var(--om));color:#fff;font-weight:700;font-size:14px;padding:14px 28px;border-radius:100px;text-decoration:none;box-shadow:0 8px 22px rgba(31,181,196,.32);transition:transform .2s,box-shadow .2s}
+.ip-cond-cta span{transition:transform .2s}
+.ip-cond-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(31,181,196,.42)}
+.ip-cond-cta:hover span{transform:translateX(4px)}
+@media(max-width:640px){
+  .ip-cond-head{padding:26px 20px 20px}
+  .ip-cond-desc,.ip-cond-amen,.ip-cond-gal-h{margin-left:20px;margin-right:20px}
+  .ip-cond-stat b{font-size:19px}
+  .ip-cond-cta{margin:20px 20px 28px}
+}
+/* no desktop, o bloco do condomínio escapa da largura estreita (880px) e expande nas laterais */
+@media(min-width:901px){
+  .ip-cond{
+    width:min(1180px,92vw);
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    box-sizing:border-box;
+  }
+}
 .ip-cond-badge{display:inline-block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--om);font-weight:700;background:#fff;border:1px solid var(--border);padding:5px 13px;border-radius:100px;margin-bottom:14px}
 .ip-cond-nome{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--ocean);line-height:1.15;margin-bottom:8px}
 .ip-cond-loc{font-size:14px;color:var(--tm);margin-bottom:16px}
@@ -562,12 +588,17 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-cond-amen{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
 .ip-cond-tag{background:#fff;border:1px solid var(--border);color:var(--ocean);font-size:13px;padding:7px 14px;border-radius:100px}
 .ip-cond-gal-h{font-family:'Fraunces',serif;font-size:17px;color:var(--ocean);font-weight:600;margin-bottom:12px}
-.ip-cond-carr{position:relative;margin-bottom:20px;max-width:100%}
+.ip-cond-carr{position:relative;margin:0 40px 8px;max-width:none}
 .ip-cond-track{display:flex;gap:12px;overflow-x:auto;scroll-behavior:smooth;scroll-snap-type:x mandatory;padding-bottom:6px;-ms-overflow-style:none;scrollbar-width:none;max-width:100%}
 .ip-cond-track::-webkit-scrollbar{display:none}
-.ip-cond-foto{flex:0 0 auto;width:360px;height:250px;background-size:cover;background-position:center;border-radius:12px;cursor:pointer;scroll-snap-align:start;transition:transform .2s;box-shadow:0 3px 14px rgba(13,59,84,.12)}
+.ip-cond-foto{flex:0 0 auto;width:520px;height:340px;background-size:cover;background-position:center;border-radius:14px;cursor:pointer;scroll-snap-align:start;transition:transform .2s;box-shadow:0 3px 14px rgba(13,59,84,.12)}
 .ip-cond-foto:hover{transform:translateY(-3px)}
-@media(max-width:640px){.ip-cond-foto{width:82vw;height:58vw}}
+@media(max-width:640px){
+  .ip-cond-foto{width:90vw;height:66vw}
+  /* o carrossel usa a largura toda da tela, ignorando o padding do container */
+  .ip-cond-carr{width:100vw;margin-left:calc(50% - 50vw);margin-right:0;max-width:none}
+  .ip-cond-track{padding-left:16px;padding-right:16px}
+}
 .ip-cond-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.95);border:1px solid var(--border);color:var(--ocean);font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(13,59,84,.28);z-index:20;transition:all .2s}
 .ip-cond-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.08)}
 .ip-cond-arrow:active{transform:translateY(-50%) scale(.96)}
@@ -1065,13 +1096,25 @@ function render(im,cond){
     const amenHtml=(Array.isArray(cAmen)&&cAmen.length)?('<div class="ip-cond-amen">'+cAmen.map(function(a){return '<span class="ip-cond-tag">'+a+'</span>';}).join('')+'</div>'):'';
     const fotosHtml=cFotos.length?('<div class="ip-cond-carr">'+(cFotos.length>1?'<button class="ip-cond-arrow prev" onclick="condCarr(-1)">&#8249;</button><button class="ip-cond-arrow next" onclick="condCarr(1)">&#8250;</button>':'')+'<div class="ip-cond-track" id="ip-cond-track">'+cFotos.map(function(f,i){return '<div class="ip-cond-foto" role="img" aria-label="'+((cond.nome||'Condomínio')+' — infraestrutura '+(i+1))+'" onclick="condLbOpen('+i+')" style="background-image:url('+f+')"></div>';}).join('')+'</div></div>'):'';
     window._condFotos=cFotos;
+    // linha de destaques (só o que existe): nº de amenidades, nº de fotos, padrão
+    const stats=[];
+    if(Array.isArray(cAmen)&&cAmen.length)stats.push('<span class="ip-cond-stat"><b>'+cAmen.length+'</b> amenidades</span>');
+    if(cFotos.length)stats.push('<span class="ip-cond-stat"><b>'+cFotos.length+'</b> fotos</span>');
+    if(cond.padrao)stats.push('<span class="ip-cond-stat ip-cond-stat-badge">'+cond.padrao+'</span>');
+    const statsHtml=stats.length?('<div class="ip-cond-stats">'+stats.join('')+'</div>'):'';
+    const condSlug=cond.slug||'';
+    const ctaHtml=condSlug?('<a class="ip-cond-cta" href="/'+condSlug+'">Conhecer o condomínio <span>&#8594;</span></a>'):'';
     condHtml='<div class="ip-cond">'+
-      '<div class="ip-cond-badge">🏛️ Condomínio</div>'+
-      '<h2 class="ip-cond-nome">'+cond.nome+'</h2>'+
-      (cLoc?'<div class="ip-cond-loc">📍 '+cLoc+'</div>':'')+
+      '<div class="ip-cond-head">'+
+        '<div class="ip-cond-badge">&#127963;&#65039; Condomínio</div>'+
+        '<h2 class="ip-cond-nome">'+cond.nome+'</h2>'+
+        (cLoc?'<div class="ip-cond-loc">&#128205; '+cLoc+'</div>':'')+
+        statsHtml+
+      '</div>'+
       (cond.descricao?'<div class="ip-cond-desc">'+cond.descricao+'</div>':'')+
       amenHtml+
       (fotosHtml?('<div class="ip-cond-gal-h">Infraestrutura'+(cFotos.length>1?' <span class="ip-cond-galcount">('+cFotos.length+' fotos)</span>':'')+'</div>'+fotosHtml):'')+
+      ctaHtml+
     '</div>';
   }
 
