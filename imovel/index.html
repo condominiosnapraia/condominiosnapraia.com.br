@@ -554,22 +554,24 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-fbtn:hover{background:var(--om)}
 .ip-fok{margin-top:10px;font-size:13px;color:#0a7d32;font-weight:600;text-align:center}
 /* similares */
-.ip-cond{margin-top:34px;padding:0;background:linear-gradient(160deg,#f4fbfc,#eaf6f8);border:1px solid var(--border);border-radius:20px;overflow:hidden}
-.ip-cond-head{padding:34px 40px 24px;background:linear-gradient(135deg,rgba(13,59,84,.03),transparent)}
+.ip-cond{margin-top:44px;padding:36px 0 0;background:none;border:none;border-top:2px solid var(--border);border-radius:0;overflow:visible}
+.ip-cond-head{padding:0 0 20px}
 .ip-cond-stats{display:flex;flex-wrap:wrap;gap:20px;margin-top:16px;align-items:center}
 .ip-cond-stat{font-size:14px;color:var(--tm)}
 .ip-cond-stat b{font-family:'Fraunces',serif;font-size:22px;color:var(--om);font-weight:600;margin-right:5px}
 .ip-cond-stat-badge{background:var(--ocean);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px}
-.ip-cond-desc,.ip-cond-amen,.ip-cond-gal-h{margin-left:40px;margin-right:40px}
-.ip-cond-cta{display:inline-flex;align-items:center;gap:10px;margin:24px 40px 36px;background:linear-gradient(135deg,var(--ol),var(--om));color:#fff;font-weight:700;font-size:14px;padding:14px 28px;border-radius:100px;text-decoration:none;box-shadow:0 8px 22px rgba(31,181,196,.32);transition:transform .2s,box-shadow .2s}
+.ip-cond-desc,.ip-cond-amen,.ip-cond-gal-h{margin-left:0;margin-right:0}
+.ip-cond-mapa{border-radius:14px;overflow:hidden;border:1px solid var(--border);margin-bottom:8px}
+.ip-cond-mapa iframe{display:block;width:100%;height:360px;border:0}
+.ip-cond-cta{display:inline-flex;align-items:center;gap:10px;margin:24px 0 8px;background:linear-gradient(135deg,var(--ol),var(--om));color:#fff;font-weight:700;font-size:14px;padding:14px 28px;border-radius:100px;text-decoration:none;box-shadow:0 8px 22px rgba(31,181,196,.32);transition:transform .2s,box-shadow .2s}
 .ip-cond-cta span{transition:transform .2s}
 .ip-cond-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(31,181,196,.42)}
 .ip-cond-cta:hover span{transform:translateX(4px)}
 @media(max-width:640px){
-  .ip-cond-head{padding:26px 20px 20px}
-  .ip-cond-desc,.ip-cond-amen,.ip-cond-gal-h{margin-left:20px;margin-right:20px}
+  .ip-cond-head{padding:0 0 16px}
+  .ip-cond-desc,.ip-cond-amen,.ip-cond-gal-h{margin-left:0;margin-right:0}
   .ip-cond-stat b{font-size:19px}
-  .ip-cond-cta{margin:20px 20px 28px}
+  .ip-cond-cta{margin:18px 0 8px}
 }
 /* no desktop, o bloco do condomínio escapa da largura estreita (880px) e expande nas laterais */
 @media(min-width:901px){
@@ -588,7 +590,7 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-cond-amen{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
 .ip-cond-tag{background:#fff;border:1px solid var(--border);color:var(--ocean);font-size:13px;padding:7px 14px;border-radius:100px}
 .ip-cond-gal-h{font-family:'Fraunces',serif;font-size:17px;color:var(--ocean);font-weight:600;margin-bottom:12px}
-.ip-cond-carr{position:relative;margin:0 40px 8px;max-width:none}
+.ip-cond-carr{position:relative;margin:0 0 8px;max-width:none}
 .ip-cond-track{display:flex;gap:12px;overflow-x:auto;scroll-behavior:smooth;scroll-snap-type:x mandatory;padding-bottom:6px;-ms-overflow-style:none;scrollbar-width:none;max-width:100%}
 .ip-cond-track::-webkit-scrollbar{display:none}
 .ip-cond-foto{flex:0 0 auto;width:520px;height:340px;background-size:cover;background-position:center;border-radius:14px;cursor:pointer;scroll-snap-align:start;transition:transform .2s;box-shadow:0 3px 14px rgba(13,59,84,.12)}
@@ -1104,6 +1106,9 @@ function render(im,cond){
     const statsHtml=stats.length?('<div class="ip-cond-stats">'+stats.join('')+'</div>'):'';
     const condSlug=cond.slug||'';
     const ctaHtml=condSlug?('<a class="ip-cond-cta" href="/'+condSlug+'">Conhecer o condomínio <span>&#8594;</span></a>'):'';
+    // mapa da localização (Google Maps embed pela query de endereço/nome + cidade)
+    const mapaQuery=[cond.nome, cond.endereco, cond.bairro, cond.cidade||cond.localizacao, 'RS'].filter(Boolean).join(', ');
+    const mapaHtml=mapaQuery?('<div class="ip-cond-gal-h">Localização</div><div class="ip-cond-mapa"><iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q='+encodeURIComponent(mapaQuery)+'&output=embed" title="Localização de '+((cond.nome||'condomínio').replace(/"/g,'&quot;'))+'"></iframe></div>'):'';
     condHtml='<div class="ip-cond">'+
       '<div class="ip-cond-head">'+
         '<div class="ip-cond-badge">&#127963;&#65039; Condomínio</div>'+
@@ -1114,6 +1119,7 @@ function render(im,cond){
       (cond.descricao?'<div class="ip-cond-desc">'+cond.descricao+'</div>':'')+
       amenHtml+
       (fotosHtml?('<div class="ip-cond-gal-h">Infraestrutura'+(cFotos.length>1?' <span class="ip-cond-galcount">('+cFotos.length+' fotos)</span>':'')+'</div>'+fotosHtml):'')+
+      mapaHtml+
       ctaHtml+
     '</div>';
   }
@@ -1202,11 +1208,11 @@ async function carregarSimilares(im,cond){
   const meuPreco=parseFloat(String(im.preco||'').replace(/[^0-9]/g,''))||0;
   const minhasSuites=parseInt(im.suites||im.quartos||0)||0;
   const jaTem={};const lista=[];
-  function add(arr){for(var i=0;i<arr.length && lista.length<3;i++){var x=arr[i];if(!jaTem[x.id]){jaTem[x.id]=1;lista.push(x);}}}
+  function add(arr){for(var i=0;i<arr.length && lista.length<9;i++){var x=arr[i];if(!jaTem[x.id]){jaTem[x.id]=1;lista.push(x);}}}
   // Nível 1: mesmo condomínio + mesmo tipo
   if(meuCond)add(outros.filter(function(x){return (x.cond_id||x.condId)===meuCond && (x.tipo||'').toLowerCase()===meuTipo;}));
   // Nível 2: mesmo tipo parecido
-  if(lista.length<3){
+  if(lista.length<9){
     const parecidos=outros.filter(function(x){return !jaTem[x.id] && (x.tipo||'').toLowerCase()===meuTipo;}).map(function(x){
       var px=parseFloat(String(x.preco||'').replace(/[^0-9]/g,''))||0;
       var sx=parseInt(x.suites||x.quartos||0)||0;
@@ -1217,9 +1223,9 @@ async function carregarSimilares(im,cond){
     add(parecidos);
   }
   // Nível 3: completa com mesmo condomínio (qualquer tipo), depois mesmo tipo, depois qualquer
-  if(lista.length<3 && meuCond)add(outros.filter(function(x){return !jaTem[x.id] && (x.cond_id||x.condId)===meuCond;}));
-  if(lista.length<3)add(outros.filter(function(x){return !jaTem[x.id] && (x.tipo||'').toLowerCase()===meuTipo;}));
-  if(lista.length<3)add(outros);
+  if(lista.length<9 && meuCond)add(outros.filter(function(x){return !jaTem[x.id] && (x.cond_id||x.condId)===meuCond;}));
+  if(lista.length<9)add(outros.filter(function(x){return !jaTem[x.id] && (x.tipo||'').toLowerCase()===meuTipo;}));
+  if(lista.length<9)add(outros);
   el.innerHTML='<div class="ip-sec-h">Imóveis semelhantes</div><div class="ip-sim-grid">'+lista.map(function(x){
     const f=fotosValidas(x.fotos_no_site||x.fotos);
     const img=f.length?'<img src="'+f[0]+'" alt="'+(x.titulo||'')+'" loading="lazy">':'🏠';

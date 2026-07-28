@@ -6344,7 +6344,7 @@ async function gerarPaginasImoveis(){
     const cidadeAlvo = (alvo.cond_id && mapaCond[alvo.cond_id] && (mapaCond[alvo.cond_id].localizacao||mapaCond[alvo.cond_id].cidade)) || alvo.cidade;
     const outros = validos.filter(x=> x.id!==alvo.id);
     const jaTem = new Set();
-    const add = (arr, lista) => { for(const x of arr){ if(lista.length>=3) break; if(!jaTem.has(x.id)){ jaTem.add(x.id); lista.push(x); } } };
+    const add = (arr, lista) => { for(const x of arr){ if(lista.length>=9) break; if(!jaTem.has(x.id)){ jaTem.add(x.id); lista.push(x); } } };
 
     let lista = [];
 
@@ -6354,7 +6354,7 @@ async function gerarPaginasImoveis(){
     }
 
     // Nível 2: mesmo tipo + parecido (preço ±30% e suítes/dormitórios próximos), ordenado por proximidade de preço
-    if(lista.length<3){
+    if(lista.length<9){
       const parecidos = outros
         .filter(x=> !jaTem.has(x.id) && (x.tipo||'').toLowerCase()===tipoAlvo)
         .map(x=>{
@@ -6373,13 +6373,13 @@ async function gerarPaginasImoveis(){
     }
 
     // Nível 3: completa — mesmo condomínio (qualquer tipo), depois mesmo tipo, depois mesma cidade
-    if(lista.length<3 && alvo.cond_id){
+    if(lista.length<9 && alvo.cond_id){
       add(outros.filter(x=> !jaTem.has(x.id) && x.cond_id===alvo.cond_id), lista);
     }
-    if(lista.length<3){
+    if(lista.length<9){
       add(outros.filter(x=> !jaTem.has(x.id) && (x.tipo||'').toLowerCase()===tipoAlvo), lista);
     }
-    if(lista.length<3 && cidadeAlvo){
+    if(lista.length<9 && cidadeAlvo){
       add(outros.filter(x=> !jaTem.has(x.id) && (((x.cond_id&&mapaCond[x.cond_id]&&(mapaCond[x.cond_id].localizacao||mapaCond[x.cond_id].cidade))||x.cidade)===cidadeAlvo)), lista);
     }
 
