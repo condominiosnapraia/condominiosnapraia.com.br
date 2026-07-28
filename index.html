@@ -1487,6 +1487,16 @@ body{padding-top:56px}
   .oi-grid,.oi-track{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding-bottom:8px}
   .oi-card{scroll-snap-align:start;min-width:0}
 }
+
+/* ── Navegação rápida (6 botões) ── */
+.navq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:960px;margin:36px auto 0}
+.navq-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:26px 24px;background:#fff;border:1px solid var(--border,rgba(31,181,196,.18));border-radius:16px;text-decoration:none;box-shadow:0 3px 14px rgba(13,59,84,.05);transition:transform .2s,box-shadow .2s,border-color .2s}
+.navq-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(13,59,84,.12);border-color:rgba(31,181,196,.5)}
+.navq-ico{font-size:30px;line-height:1;margin-bottom:6px}
+.navq-t{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:var(--ocean,#0d3b54)}
+.navq-s{font-size:13.5px;color:var(--tm,#5b7585);line-height:1.4}
+@media(max-width:820px){.navq-grid{grid-template-columns:1fr 1fr;gap:12px}}
+@media(max-width:520px){.navq-grid{grid-template-columns:1fr}.navq-card{flex-direction:row;align-items:center;gap:14px;padding:18px 20px}.navq-ico{margin-bottom:0}.navq-card .navq-t{font-size:17px}.navq-s{display:none}}
 </style>
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "RealEstateAgent", "@id": "https://condominiosnapraia.com.br/#organizacao", "name": "Condomínios na Praia", "alternateName": "Felipe Ranzolin — Corretor de Imóveis", "description": "Especialista em condomínios fechados e imóveis de alto padrão no Litoral Norte Gaúcho. Casas e terrenos em Xangri-lá, Capão da Canoa, Osório e Maquiné.", "url": "https://condominiosnapraia.com.br", "logo": "https://condominiosnapraia.com.br/img/og-home.jpg", "image": "https://condominiosnapraia.com.br/img/og-home.jpg", "telephone": "+5551999442252", "email": "napraiacondominios@gmail.com", "priceRange": "$$$", "address": {"@type": "PostalAddress", "streetAddress": "Av. Central 248, Loja 07, Atlântida", "addressLocality": "Xangri-lá", "addressRegion": "RS", "postalCode": "95588-000", "addressCountry": "BR"}, "geo": {"@type": "GeoCoordinates", "latitude": -29.8106, "longitude": -50.0442}, "areaServed": [{"@type": "City", "name": "Xangri-lá"}, {"@type": "City", "name": "Capão da Canoa"}, {"@type": "City", "name": "Osório"}, {"@type": "City", "name": "Maquiné"}], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "09:00", "closes": "18:00"}], "founder": {"@type": "Person", "name": "Felipe Ranzolin Fachinello", "jobTitle": "Corretor de Imóveis", "identifier": "CRECI-RS 72.386"}, "knowsAbout": ["Condomínios fechados", "Imóveis de alto padrão", "Terrenos em condomínio", "Casas frente-mar", "Investimento imobiliário no litoral"], "sameAs": [], "contactPoint": {"@type": "ContactPoint", "telephone": "+5551999442252", "contactType": "sales", "availableLanguage": "Portuguese"}}</script>
@@ -1557,42 +1567,50 @@ body{padding-top:56px}
         Litoral Norte Gaúcho
         <span class="hero-dot-gold"></span>
       </div>
-      <h1 class="hero-h1">Os Melhores <br class="h1-br">Condomínios <em>do Litoral</em></h1>
+      <h1 class="hero-h1">A maior plataforma especializada em <em>condomínios do litoral</em></h1>
       <p class="hero-desc">Condomínios de alto padrão e infraestrutura completa.</p>
     </div>
     
   </div>
 </section>
 
-  <!-- ══ BUSCA RÁPIDA ══ -->
+  <!-- ══ NAVEGAÇÃO RÁPIDA ══ -->
   <section class="qr-sec">
     <div class="qr-inner">
       <p class="eyebrow" style="justify-content:center">Navegação rápida</p>
-      <h2 class="sectit">O que você <em>procura?</em></h2>
-      <p class="cidades-sub">Acesse rapidamente o que precisa</p>
-      <div class="sfc-wrap sfc-wrap-inline" id="busca-rapida">
-        <div class="sfc sfc-areia">
-          <div class="sfc-tabs">
-            <button class="sfc-tab ativo" data-tipo="imoveis" onclick="sfcTab(this,'imoveis')">Imóveis</button>
-            <button class="sfc-tab" data-tipo="condominios" onclick="sfcTab(this,'condominios')">Condomínios</button>
-          </div>
-          <div class="sfc-row">
-            <div class="sfc-field sfc-field-text">
-              <label id="sfc-label">Tipo de imóvel</label>
-              <input type="text" id="sfc-q" placeholder="Casa, terreno, apartamento..." onkeydown="if(event.key==='Enter')sfcBuscar()">
-            </div>
-            <div class="sfc-field">
-              <label id="sfc-label2">Tipo de imóvel</label>
-              <select id="sfc-list" aria-label="Tipo de imóvel">
-                <option value="">Todos</option>
-              </select>
-            </div>
-            <button class="sfc-btn" onclick="sfcBuscar()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-              Buscar
-            </button>
-          </div>
-        </div>
+      <h2 class="sectit">O que você <em>busca?</em></h2>
+      <p class="cidades-sub">Escolha um caminho e vá direto ao ponto</p>
+      <div class="navq-grid">
+        <a class="navq-card" href="/imoveis">
+          <span class="navq-ico">🏠</span>
+          <span class="navq-t">Quero Comprar</span>
+          <span class="navq-s">Casas, sobrados e lotes à venda</span>
+        </a>
+        <a class="navq-card" href="/exclusividade-imobiliaria">
+          <span class="navq-ico">🔑</span>
+          <span class="navq-t">Quero Vender</span>
+          <span class="navq-s">Anuncie seu imóvel com a gente</span>
+        </a>
+        <a class="navq-card" href="/lancamentos">
+          <span class="navq-ico">✨</span>
+          <span class="navq-t">Lançamentos</span>
+          <span class="navq-s">Os novos empreendimentos do litoral</span>
+        </a>
+        <a class="navq-card" href="/condominios">
+          <span class="navq-ico">🏛️</span>
+          <span class="navq-t">Condomínios</span>
+          <span class="navq-s">Conheça os condomínios da região</span>
+        </a>
+        <a class="navq-card" href="/refinanciamento-imobiliario">
+          <span class="navq-ico">💰</span>
+          <span class="navq-t">Financiamento</span>
+          <span class="navq-s">Financiar ou refinanciar seu imóvel</span>
+        </a>
+        <a class="navq-card" href="/contemplado-imoveis">
+          <span class="navq-ico">📋</span>
+          <span class="navq-t">Crédito Contemplado</span>
+          <span class="navq-s">Cartas de crédito para comprar</span>
+        </a>
       </div>
     </div>
   </section>
@@ -1765,12 +1783,12 @@ body{padding-top:56px}
           <p class="eyebrow">Imóveis Selecionados</p>
           <h2 class="sectit">Casas & Sobrados à <em>Venda</em></h2>
         </div>
-        <a class="dest-ver-btn" href="/imoveis">Ver todos os imóveis →</a>
+        <a class="dest-ver-btn" href="/imoveis?tipo=Casa">Ver todas as casas →</a>
       </div>
       <div class="igrid" id="home-imov-grid" style="min-height:200px"></div>
       <div class="dest-ver-all">
-        <a class="dest-btn-all dest-btn-alt" href="/imoveis">
-          Ver todos os imóveis
+        <a class="dest-btn-all dest-btn-alt" href="/imoveis?tipo=Casa">
+          Ver todas casas e sobrados disponíveis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -1782,15 +1800,15 @@ body{padding-top:56px}
     <div class="dest-inner">
       <div class="dest-header">
         <div>
-          <p class="eyebrow">Oportunidades</p>
-          <h2 class="sectit">Terrenos em <em>Destaque</em></h2>
+          <p class="eyebrow">Imóveis Selecionados</p>
+          <h2 class="sectit">Lotes à <em>Venda</em></h2>
         </div>
-        <a class="dest-ver-btn" href="/imoveis">Ver todos os terrenos →</a>
+        <a class="dest-ver-btn" href="/imoveis?tipo=Terreno">Ver todos os lotes →</a>
       </div>
       <div class="igrid" id="home-terreno-grid" style="min-height:200px"></div>
       <div class="dest-ver-all">
-        <a class="dest-btn-all" href="/imoveis">
-          Ver todos os terrenos
+        <a class="dest-btn-all" href="/imoveis?tipo=Terreno">
+          Ver todos os lotes disponíveis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -4018,9 +4036,9 @@ function buildHomeDestaques(){
     }
 
     let showCond=destCond.length
-      ? condos.filter(c=>destCond.includes(c.id)&&c.ativo!==false).slice(0,8)
-      : condos.filter(c=>c.ativo!==false).slice(0,8);
-    if(!showCond.length) showCond=condos.slice(0,8);
+      ? condos.filter(c=>destCond.includes(c.id)&&c.ativo!==false).slice(0,10)
+      : condos.filter(c=>c.ativo!==false).slice(0,10);
+    if(!showCond.length) showCond=condos.slice(0,10);
 
     const cg=document.getElementById('home-cond-grid');
     if(cg) cg.innerHTML=showCond.map(buildCondCard).join('');
@@ -4047,12 +4065,12 @@ function buildHomeDestaques(){
     const destTerreno = _siteCache?.destTerreno||[];
 
     let showImov=destImov.length
-      ? casas.filter(i=>destImov.includes(i.id)).slice(0,8)
-      : casas.slice(0,8);
+      ? casas.filter(i=>destImov.includes(i.id)).slice(0,12)
+      : casas.slice(0,12);
 
     let showTerreno=destTerreno.length
-      ? terrenos.filter(i=>destTerreno.includes(i.id)).slice(0,8)
-      : terrenos.slice(0,8);
+      ? terrenos.filter(i=>destTerreno.includes(i.id)).slice(0,12)
+      : terrenos.slice(0,12);
 
     const ig=document.getElementById('home-imov-grid');
     if(ig) ig.innerHTML=showImov.length
