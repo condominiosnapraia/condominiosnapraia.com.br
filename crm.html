@@ -627,6 +627,28 @@ async function sbAuth(path, body){
   return r.json();
 }
 
+// ── Renovação automática do token (evita "JWT expired" que derrubava o CRM) ──
+let _renovTimer = null;
+async function renovarToken(){
+  const rt = sessionStorage.getItem('cnp_crm_refresh');
+  if(!rt) return false;
+  try{
+    const data = await sbAuth('/token?grant_type=refresh_token', {refresh_token: rt});
+    if(data && data.access_token){
+      sessionStorage.setItem('cnp_crm_token', data.access_token);
+      if(data.refresh_token) sessionStorage.setItem('cnp_crm_refresh', data.refresh_token);
+      agendarRenovacao();
+      return true;
+    }
+  }catch(e){ console.error('renovarToken:', e); }
+  return false;
+}
+function agendarRenovacao(){
+  // renova a cada 50 minutos (o token costuma durar 60)
+  if(_renovTimer) clearTimeout(_renovTimer);
+  _renovTimer = setTimeout(renovarToken, 50*60*1000);
+}
+
 async function doLogin(){
   const email=(document.getElementById('login-user').value||'').trim();
   const pass=document.getElementById('login-pass').value;
@@ -663,6 +685,8 @@ async function doLogin(){
       const prof2={id:data.user.id,nome:data.user.email,email:data.user.email,role:'admin',ativo:true};
       _authUser=data.user; _authProfile=prof2;
       sessionStorage.setItem('cnp_crm_token',data.access_token);
+      if(data.refresh_token) sessionStorage.setItem('cnp_crm_refresh',data.refresh_token);
+      agendarRenovacao();
       sessionStorage.setItem('cnp_crm_user',JSON.stringify(prof2));
       document.getElementById('login-screen').style.display='none';
       updateSidebarUser(prof2);
@@ -676,6 +700,8 @@ async function doLogin(){
     }
     _authUser=data.user; _authProfile=prof;
     sessionStorage.setItem('cnp_crm_token',data.access_token);
+    if(data.refresh_token) sessionStorage.setItem('cnp_crm_refresh',data.refresh_token);
+    agendarRenovacao();
     sessionStorage.setItem('cnp_crm_user',JSON.stringify(prof));
     document.getElementById('login-screen').style.display='none';
     logAtividade('logou',null,null,null);
@@ -745,6 +771,8 @@ async function doLogout(){
   if(!confirm('Sair do CRM?')) return;
   logAtividade('deslogou',null,null,null);
   sessionStorage.removeItem('cnp_crm_token');
+  sessionStorage.removeItem('cnp_crm_refresh');
+  if(_renovTimer) clearTimeout(_renovTimer);
   sessionStorage.removeItem('cnp_crm_user');
   _authUser=null;_authProfile=null;
   document.getElementById('login-screen').style.display='flex';
@@ -810,6 +838,9 @@ if(_savedToken && _savedUser){
     _authProfile = JSON.parse(_savedUser);
     document.getElementById('login-screen').style.display='none';
     setTimeout(()=>updateSidebarUser(_authProfile),100);
+    // renova o token logo ao abrir (se a aba ficou aberta muito tempo, ele pode ter expirado)
+    // e reagenda a renovação periódica
+    if(typeof renovarToken === 'function'){ renovarToken(); }
   }catch(e){}
 }
 </script>
@@ -2691,29 +2722,46 @@ const sb = {
     return { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (tk || SUPABASE_KEY), 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
   },
   
+  // Faz o fetch e, se o token tiver expirado (JWT expired / 401), renova e tenta 1 vez mais.
+  async _fetchRetry(url, opts){
+    const montaHeaders = () => {
+      const h = {...this.headers};
+      if(opts._prefer) h['Prefer'] = opts._prefer;
+      return h;
+    };
+    const limpo = {...opts}; delete limpo._prefer;
+    let r = await fetch(url, {...limpo, headers: montaHeaders()});
+    if(r.status===401 || r.status===403){
+      const txt = await r.clone().text().catch(()=> '');
+      if(/JWT expired|PGRST303|invalid.*token/i.test(txt)){
+        const ok = await renovarToken();
+        if(ok){ r = await fetch(url, {...limpo, headers: montaHeaders()}); }
+      }
+    }
+    return r;
+  },
   async get(table, params=''){
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${params}`, { headers: this.headers });
+    const r = await this._fetchRetry(`${SUPABASE_URL}/rest/v1/${table}${params}`, { method:'GET' });
     if(!r.ok) throw new Error(await r.text());
     return r.json();
   },
   async post(table, data){
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, { method:'POST', headers: this.headers, body: JSON.stringify(data) });
+    const r = await this._fetchRetry(`${SUPABASE_URL}/rest/v1/${table}`, { method:'POST', body: JSON.stringify(data) });
     if(!r.ok) throw new Error(await r.text());
     return r.json();
   },
   async patch(table, id, data){
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, { method:'PATCH', headers: this.headers, body: JSON.stringify(data) });
+    const r = await this._fetchRetry(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, { method:'PATCH', body: JSON.stringify(data) });
     if(!r.ok) throw new Error(await r.text());
     return r.json();
   },
   async delete(table, id){
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, { method:'DELETE', headers: this.headers });
+    const r = await this._fetchRetry(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, { method:'DELETE' });
     if(!r.ok) throw new Error(await r.text());
     return r.json();
   },
   async upsert(table, data){
-    const h = {...this.headers, 'Prefer': 'resolution=merge-duplicates,return=representation'};
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, { method:'POST', headers: h, body: JSON.stringify(data) });
+    const r = await this._fetchRetry(`${SUPABASE_URL}/rest/v1/${table}`, { method:'POST', body: JSON.stringify(data), _prefer:'resolution=merge-duplicates,return=representation' });
     if(!r.ok) throw new Error(await r.text());
     return r.json();
   },
