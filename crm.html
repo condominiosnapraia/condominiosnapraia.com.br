@@ -1083,7 +1083,7 @@ if(_savedToken && _savedUser){
   <div class="tw">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
       <div>
-        <div class="ed-section">🏘 Destaques Gerais — Condomínios em Destaque (máx 8)</div>
+        <div class="ed-section">🏘 Destaques Gerais — Condomínios em Destaque (máx 10)</div>
         <div style="font-size:11px;color:var(--t2);margin-top:6px">Aparecem na seção <b>"Condomínios em Destaque"</b> (topo da home). Marque até <b>8</b>.</div>
         <div id="dest-geral-list" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div>
 
@@ -1096,11 +1096,11 @@ if(_savedToken && _savedUser){
         <div id="dest-xangri-list" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div>
       </div>
       <div>
-        <div class="ed-section">🏠 Casas &amp; Sobrados em Destaque (máx 8)</div>
+        <div class="ed-section">🏠 Casas &amp; Sobrados em Destaque (máx 12)</div>
         <div id="dest-imov-list" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div>
       </div>
       <div>
-        <div class="ed-section">🌳 Terrenos em Destaque (máx 8)</div>
+        <div class="ed-section">🌳 Terrenos em Destaque (máx 12)</div>
         <div id="dest-terreno-list" style="display:flex;flex-direction:column;gap:8px;margin-top:12px"></div>
       </div>
     </div>
@@ -3467,7 +3467,7 @@ function pCS(){
   const f='<option value="">Todos condomínios</option>'+co.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
   document.getElementById('im-cond').innerHTML=o;
   document.getElementById('i-cf').innerHTML=f;
-  const ti=['Casa','Terreno','Apartamento','Cobertura','Chalé','Duplex'];
+  const ti=['Casa','Terreno','Apartamento'];
   document.getElementById('i-chips').innerHTML=`<div class="chip on" onclick="sTF(this,'')">Todos</div>`+ti.map(t=>`<div class="chip" onclick="sTF(this,'${t}')">${t}</div>`).join('');
 }
 let tF='';
@@ -6097,7 +6097,7 @@ async function buildDestaques(){
 function destUpdate(ev){
   // Cada lista é totalmente independente. Se uma exceder o limite,
   // desmarca o último item marcado DAQUELA lista (não afeta as outras).
-  const limites = [['dest-geral-list',8,'Destaques Gerais'],['dest-capao-list',4,'Destaques Capão'],['dest-xangri-list',4,'Destaques Xangri-lá'],['dest-imov-list',8,'Casas & Sobrados'],['dest-terreno-list',8,'Terrenos']];
+  const limites = [['dest-geral-list',10,'Destaques Gerais'],['dest-capao-list',4,'Destaques Capão'],['dest-xangri-list',4,'Destaques Xangri-lá'],['dest-imov-list',12,'Casas & Sobrados'],['dest-terreno-list',12,'Terrenos']];
   // descobre em qual lista o clique aconteceu
   const alvo = ev && ev.target;
   for(const [id,max,nome] of limites){
