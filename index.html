@@ -1186,7 +1186,7 @@ footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60
 
 @media(max-width:600px){.lch-sec::before,#sec-imoveis::before,#sec-condominios::before,#cond-capao::before,#cond-xangri::before,.cred-sol-sec::before,#credito-contemplado::before,#exclusividade-home::before,#guias-cidades::before,#guias-decisao::before,#onde-ir::before,#sec-blog-preview::before,#bairros::before,#bairros-xangri::before{height:30px!important}}
 /* Soluções de Crédito */
-.cred-sol-sec{padding:60px 22px;background:linear-gradient(165deg,#f7f1e8,#fff)}
+.cred-sol-sec{padding:60px 22px}
 .cred-sol-wrap{max-width:1100px;margin:0 auto}
 .cred-sol-head{text-align:center;margin-bottom:38px}
 .cred-sol-eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:700}
@@ -1543,8 +1543,9 @@ body{padding-top:56px}
 .lch-sec{background:#fff}
 
 /* ondas suaves nas transições entre seções */
-.sec-onda{position:relative}
-.sec-onda::before{content:'';position:absolute;top:-1px;left:0;right:0;height:44px;background:#fff;clip-path:ellipse(65% 100% at 50% 0%);z-index:1}
+.sec-onda{position:relative;overflow:visible}
+.sec-onda::before{content:'';position:absolute;top:-1px;left:0;right:0;height:44px;clip-path:ellipse(65% 100% at 50% 0%);z-index:1;pointer-events:none}
+.sec-onda>*{position:relative;z-index:2}
 .sec-onda-areia::before{background:#faf6ef}
 @media(max-width:600px){.sec-onda::before{height:28px}}
 
@@ -1573,6 +1574,9 @@ body{padding-top:56px}
 #exclusividade-home{background:#fff !important}
 #sec-blog-preview{background:#faf6ef !important}
 
+/* espaço para a onda no topo das seções */
+.sec-onda{padding-top:52px !important}
+@media(max-width:600px){.sec-onda{padding-top:34px !important}}
 /* cor de cada onda = cor da seção anterior (auditado) */
 #sec-imoveis.sec-onda::before{background:#fff !important}
 .lch-sec.sec-onda::before{background:#faf6ef !important}
@@ -1580,7 +1584,7 @@ body{padding-top:56px}
 #sec-encontre.sec-onda::before{background:#faf6ef !important}
 #sec-condominios.sec-onda::before{background:#fff !important}
 .viver-intro.sec-onda::before{background:#faf6ef !important}
-#cond-capao.sec-onda::before{background:#fff !important}
+#cond-capao.sec-onda::before{background:#ede2cf !important}
 #cond-xangri.sec-onda::before{background:#faf6ef !important}
 #cond-osorio.sec-onda::before{background:#fff !important}
 #cond-maquine.sec-onda::before{background:#faf6ef !important}
@@ -2301,7 +2305,6 @@ body{padding-top:56px}
   </section>
 
   <!-- ══ FAIXA PREMIUM DE CRÉDITO ══ -->
-n>
 
   <section class="cred-sol-sec sec-onda" id="cred-sol-sec-sec">
     <div class="cred-sol-wrap">
