@@ -141,7 +141,7 @@ nav a:hover,.nav-active{color:#fcd34d!important}
   .hero-inner{padding:0 20px}
   .hero-content{padding:12px 0 32px}
   .hero-eyebrow{display:none}
-  .hero-h1{font-size:clamp(26px,7vw,38px);line-height:1.15}
+  .hero-h1{font-size:clamp(22px,5.5vw,30px);line-height:1.2}
   .hero-h1 .h1-sp{display:none}
   .hero-desc{font-size:12px;margin-bottom:2px}
   .hero-actions{flex-direction:column;align-items:stretch;gap:14px}
@@ -1355,7 +1355,7 @@ body{padding-top:56px}
 
 
 
-@media(max-width:480px){}
+@media(max-width:480px){.hero-h1{font-size:24px;line-height:1.18;letter-spacing:-.01em}.hero-desc{font-size:12px}}
 
 
 /* FAQ do detalhe de condomínio (home) — igual lançamentos */
@@ -1492,11 +1492,10 @@ body{padding-top:56px}
 .navq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:960px;margin:36px auto 0}
 .navq-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:26px 24px;background:#fff;border:1px solid var(--border,rgba(31,181,196,.18));border-radius:16px;text-decoration:none;box-shadow:0 3px 14px rgba(13,59,84,.05);transition:transform .2s,box-shadow .2s,border-color .2s}
 .navq-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(13,59,84,.12);border-color:rgba(31,181,196,.5)}
-.navq-ico{font-size:30px;line-height:1;margin-bottom:6px}
 .navq-t{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:var(--ocean,#0d3b54)}
 .navq-s{font-size:13.5px;color:var(--tm,#5b7585);line-height:1.4}
 @media(max-width:820px){.navq-grid{grid-template-columns:1fr 1fr;gap:12px}}
-@media(max-width:520px){.navq-grid{grid-template-columns:1fr}.navq-card{flex-direction:row;align-items:center;gap:14px;padding:18px 20px}.navq-ico{margin-bottom:0}.navq-card .navq-t{font-size:17px}.navq-s{display:none}}
+@media(max-width:520px){.navq-grid{grid-template-columns:1fr}.navq-card{padding:20px 22px;gap:4px}.navq-card .navq-t{font-size:18px}}
 
 /* ── Busca rápida por cidade ── */
 .bcid-sec{padding:72px 24px;background:#fff}
@@ -1609,37 +1608,30 @@ body{padding-top:56px}
       <p class="cidades-sub">Escolha um caminho e vá direto ao ponto</p>
       <div class="navq-grid">
         <a class="navq-card" href="/imoveis">
-          <span class="navq-ico">🏠</span>
           <span class="navq-t">Quero Comprar</span>
           <span class="navq-s">Apartamentos, casas, lotes e sobrados</span>
         </a>
         <a class="navq-card" href="/exclusividade-imobiliaria">
-          <span class="navq-ico">🔑</span>
           <span class="navq-t">Quero Vender</span>
           <span class="navq-s">Anuncie seu imóvel com a gente</span>
         </a>
         <a class="navq-card" href="/lancamentos">
-          <span class="navq-ico">✨</span>
           <span class="navq-t">Lançamentos</span>
           <span class="navq-s">Os novos empreendimentos do litoral</span>
         </a>
         <a class="navq-card" href="/condominios">
-          <span class="navq-ico">🏛️</span>
           <span class="navq-t">Condomínios</span>
           <span class="navq-s">Conheça os condomínios da região</span>
         </a>
         <a class="navq-card" href="/financiamento-imobiliario">
-          <span class="navq-ico">🏦</span>
           <span class="navq-t">Financiamento</span>
           <span class="navq-s">Financie até 90% do seu novo imóvel</span>
         </a>
         <a class="navq-card" href="/contemplado-imoveis">
-          <span class="navq-ico">📋</span>
           <span class="navq-t">Crédito Contemplado</span>
           <span class="navq-s">A solução ideal para comprar seu imóvel</span>
         </a>
         <a class="navq-card" href="/refinanciamento-imobiliario">
-          <span class="navq-ico">💰</span>
           <span class="navq-t">Refinanciamento</span>
           <span class="navq-s">Capital de giro com seu imóvel</span>
         </a>
@@ -1647,55 +1639,32 @@ body{padding-top:56px}
     </div>
   </section>
 
-  <!-- ══ CABEÇALHO: Lagoa ou Mar? ══ -->
-  <section class="viver-intro">
-    <div class="viver-intro-inner">
-      <h2 class="viver-intro-title">Morar à beira da <em>lagoa</em> ou à beira do <em>mar</em>?</h2>
-      <p class="viver-intro-sub">Cada endereço tem sua própria alma. Conheça os dois lados do Litoral Norte e descubra qual combina com o seu jeito de viver.</p>
-    </div>
-  </section>
-
-  <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: LAGOA DOS QUADROS ══ -->
-  <section class="viv-sec viv-lagoa" id="viver-lagoa">
-    <div class="viv-photo" data-slot="lagoa-1">
-      <div class="viv-photo-ph"></div>
-      <div class="viv-photo-grad"></div>
-      <div class="viv-photo-head">
-        <div class="viv-eyebrow">Viver na Lagoa</div>
-        <h2 class="viv-title">Morar à beira da <em>Lagoa</em></h2>
-        <div class="viv-cap">📍 Lagoa dos Quadros</div>
+  <!-- ══ DESTAQUES CASAS & SOBRADOS ══ -->
+  <section class="dest-section dest-section-alt" id="sec-imoveis">
+    <div class="dest-inner">
+      <div class="dest-header">
+        <div>
+          <p class="eyebrow">Imóveis Selecionados</p>
+          <h2 class="sectit">Casas & Sobrados à <em>Venda</em></h2>
+        </div>
+        <a class="dest-ver-btn" href="/imoveis?tipo=Casa">Ver todas as casas →</a>
+      </div>
+      <div class="igrid" id="home-imov-grid" style="min-height:200px"></div>
+      <div class="dest-ver-all">
+        <a class="dest-btn-all dest-btn-alt" href="/imoveis?tipo=Casa">
+          Ver todas casas e sobrados disponíveis
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
       </div>
     </div>
-    <div class="viv-body">
-      <p class="viv-text"><span class="viv-lead">Há um endereço no litoral norte onde o dia começa sem pressa e termina em tons de âmbar.</span>Na Lagoa dos Quadros, a água mansa se estende até onde a vista alcança, emoldurada por natureza preservada e por um silêncio que virou luxo. Das marinas privativas partem as manhãs de jet ski, os passeios de lancha e as travessias de stand up paddle — um estilo de vida em que o lazer não é destino de férias, mas rotina.</p>
-      <a class="viv-cta" href="/viver-na-lagoa">Conheça a vida à beira da Lagoa <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    </div>
   </section>
-
-  <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: MAR ══ -->
-  <section class="viv-sec viv-mar" id="viver-mar">
-    <div class="viv-photo" data-slot="mar-1">
-      <div class="viv-photo-ph"></div>
-      <div class="viv-photo-grad"></div>
-      <div class="viv-photo-head">
-        <div class="viv-eyebrow">Viver na Praia</div>
-        <h2 class="viv-title">Morar à beira do <em>Mar</em></h2>
-        <div class="viv-cap">📍 Litoral Norte Gaúcho</div>
-      </div>
-    </div>
-    <div class="viv-body">
-      <p class="viv-text"><span class="viv-lead">Existe uma liberdade que só o oceano oferece.</span>Ela chega no primeiro clarão do nascer do sol sobre a água e acompanha quem faz da caminhada na areia o início de cada manhã. Viver perto do mar é ter o horizonte como paisagem fixa e a brisa salgada como parte do ar — um privilégio que, no litoral norte gaúcho, deixou de ser exceção para se tornar escolha de quem entende de qualidade de vida.</p>
-      <a class="viv-cta" href="/viver-no-mar">Conheça a vida à beira do Mar <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    </div>
-  </section>
-
 
   <!-- ══ LANÇAMENTOS (logo após o hero) ══ -->
   <section class="lch-sec">
     <div class="lch-inner">
       <div class="lch-head">
         <p class="eyebrow" style="justify-content:center">Lançamentos &amp; Oportunidades</p>
-        <h2 class="sectit">Os novos <em>Lançamentos</em> do Litoral</h2>
+        <h2 class="sectit">Lançamentos & <em>Oportunidades</em></h2>
       </div>
       <div class="lch-grid" id="lch-grid">
         <a class="lch-card" href="/origem-natureza-habitada-xangri-la">
@@ -1807,26 +1776,6 @@ body{padding-top:56px}
     </div>
   </section>
 
-  <!-- ══ DESTAQUES CASAS & SOBRADOS ══ -->
-  <section class="dest-section dest-section-alt" id="sec-imoveis">
-    <div class="dest-inner">
-      <div class="dest-header">
-        <div>
-          <p class="eyebrow">Imóveis Selecionados</p>
-          <h2 class="sectit">Casas & Sobrados à <em>Venda</em></h2>
-        </div>
-        <a class="dest-ver-btn" href="/imoveis?tipo=Casa">Ver todas as casas →</a>
-      </div>
-      <div class="igrid" id="home-imov-grid" style="min-height:200px"></div>
-      <div class="dest-ver-all">
-        <a class="dest-btn-all dest-btn-alt" href="/imoveis?tipo=Casa">
-          Ver todas casas e sobrados disponíveis
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <!-- ══ DESTAQUES TERRENOS ══ -->
   <section class="dest-section" id="sec-terrenos">
     <div class="dest-inner">
@@ -1850,14 +1799,29 @@ body{padding-top:56px}
   <!-- ══ BUSCA RÁPIDA: IMÓVEIS POR CIDADE ══ -->
   <section class="bcid-sec">
     <div class="bcid-inner">
-      <p class="eyebrow" style="justify-content:center">Busca rápida</p>
-      <h2 class="sectit">Imóveis por <em>cidade</em></h2>
+      <p class="eyebrow" style="justify-content:center">Encontre o seu</p>
+      <h2 class="sectit">O que você está <em>procurando?</em></h2>
       <p class="cidades-sub">Escolha a cidade e veja os imóveis disponíveis</p>
       <div class="bcid-grid">
         <a class="bcid-card" href="/imoveis?cidade=Cap%C3%A3o%20da%20Canoa"><span class="bcid-ico">🏖️</span><span class="bcid-nome">Capão da Canoa</span><span class="bcid-go">Ver imóveis →</span></a>
         <a class="bcid-card" href="/imoveis?cidade=Maquin%C3%A9"><span class="bcid-ico">🌿</span><span class="bcid-nome">Maquiné</span><span class="bcid-go">Ver imóveis →</span></a>
         <a class="bcid-card" href="/imoveis?cidade=Os%C3%B3rio"><span class="bcid-ico">🏞️</span><span class="bcid-nome">Osório</span><span class="bcid-go">Ver imóveis →</span></a>
         <a class="bcid-card" href="/imoveis?cidade=Xangri-l%C3%A1"><span class="bcid-ico">🌅</span><span class="bcid-nome">Xangri-lá</span><span class="bcid-go">Ver imóveis →</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BUSCA RÁPIDA: CONDOMÍNIOS POR CIDADE ══ -->
+  <section class="bcid-sec bcid-sec-alt">
+    <div class="bcid-inner">
+      <p class="eyebrow" style="justify-content:center">Busca rápida</p>
+      <h2 class="sectit">Condomínios por <em>cidade</em></h2>
+      <p class="cidades-sub">Explore os condomínios de cada cidade do litoral</p>
+      <div class="bcid-grid">
+        <a class="bcid-card" href="/condominios?cidade=Cap%C3%A3o%20da%20Canoa"><span class="bcid-ico">🏖️</span><span class="bcid-nome">Capão da Canoa</span><span class="bcid-go">Ver condomínios →</span></a>
+        <a class="bcid-card" href="/condominios?cidade=Maquin%C3%A9"><span class="bcid-ico">🌿</span><span class="bcid-nome">Maquiné</span><span class="bcid-go">Ver condomínios →</span></a>
+        <a class="bcid-card" href="/condominios?cidade=Os%C3%B3rio"><span class="bcid-ico">🏞️</span><span class="bcid-nome">Osório</span><span class="bcid-go">Ver condomínios →</span></a>
+        <a class="bcid-card" href="/condominios?cidade=Xangri-l%C3%A1"><span class="bcid-ico">🌅</span><span class="bcid-nome">Xangri-lá</span><span class="bcid-go">Ver condomínios →</span></a>
       </div>
     </div>
   </section>
@@ -1882,20 +1846,48 @@ body{padding-top:56px}
     </div>
   </section>
 
-  <!-- ══ BUSCA RÁPIDA: CONDOMÍNIOS POR CIDADE ══ -->
-  <section class="bcid-sec bcid-sec-alt">
-    <div class="bcid-inner">
-      <p class="eyebrow" style="justify-content:center">Busca rápida</p>
-      <h2 class="sectit">Condomínios por <em>cidade</em></h2>
-      <p class="cidades-sub">Explore os condomínios de cada cidade do litoral</p>
-      <div class="bcid-grid">
-        <a class="bcid-card" href="/condominios?cidade=Cap%C3%A3o%20da%20Canoa"><span class="bcid-ico">🏖️</span><span class="bcid-nome">Capão da Canoa</span><span class="bcid-go">Ver condomínios →</span></a>
-        <a class="bcid-card" href="/condominios?cidade=Maquin%C3%A9"><span class="bcid-ico">🌿</span><span class="bcid-nome">Maquiné</span><span class="bcid-go">Ver condomínios →</span></a>
-        <a class="bcid-card" href="/condominios?cidade=Os%C3%B3rio"><span class="bcid-ico">🏞️</span><span class="bcid-nome">Osório</span><span class="bcid-go">Ver condomínios →</span></a>
-        <a class="bcid-card" href="/condominios?cidade=Xangri-l%C3%A1"><span class="bcid-ico">🌅</span><span class="bcid-nome">Xangri-lá</span><span class="bcid-go">Ver condomínios →</span></a>
-      </div>
+  <!-- ══ CABEÇALHO: Lagoa ou Mar? ══ -->
+  <section class="viver-intro">
+    <div class="viver-intro-inner">
+      <h2 class="viver-intro-title">Morar à beira da <em>lagoa</em> ou à beira do <em>mar</em>?</h2>
+      <p class="viver-intro-sub">Cada endereço tem sua própria alma. Conheça os dois lados do Litoral Norte e descubra qual combina com o seu jeito de viver.</p>
     </div>
   </section>
+
+  <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: LAGOA DOS QUADROS ══ -->
+  <section class="viv-sec viv-lagoa" id="viver-lagoa">
+    <div class="viv-photo" data-slot="lagoa-1">
+      <div class="viv-photo-ph"></div>
+      <div class="viv-photo-grad"></div>
+      <div class="viv-photo-head">
+        <div class="viv-eyebrow">Viver na Lagoa</div>
+        <h2 class="viv-title">Morar à beira da <em>Lagoa</em></h2>
+        <div class="viv-cap">📍 Lagoa dos Quadros</div>
+      </div>
+    </div>
+    <div class="viv-body">
+      <p class="viv-text"><span class="viv-lead">Há um endereço no litoral norte onde o dia começa sem pressa e termina em tons de âmbar.</span>Na Lagoa dos Quadros, a água mansa se estende até onde a vista alcança, emoldurada por natureza preservada e por um silêncio que virou luxo. Das marinas privativas partem as manhãs de jet ski, os passeios de lancha e as travessias de stand up paddle — um estilo de vida em que o lazer não é destino de férias, mas rotina.</p>
+      <a class="viv-cta" href="/viver-na-lagoa">Conheça a vida à beira da Lagoa <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </section>
+
+  <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: MAR ══ -->
+  <section class="viv-sec viv-mar" id="viver-mar">
+    <div class="viv-photo" data-slot="mar-1">
+      <div class="viv-photo-ph"></div>
+      <div class="viv-photo-grad"></div>
+      <div class="viv-photo-head">
+        <div class="viv-eyebrow">Viver na Praia</div>
+        <h2 class="viv-title">Morar à beira do <em>Mar</em></h2>
+        <div class="viv-cap">📍 Litoral Norte Gaúcho</div>
+      </div>
+    </div>
+    <div class="viv-body">
+      <p class="viv-text"><span class="viv-lead">Existe uma liberdade que só o oceano oferece.</span>Ela chega no primeiro clarão do nascer do sol sobre a água e acompanha quem faz da caminhada na areia o início de cada manhã. Viver perto do mar é ter o horizonte como paisagem fixa e a brisa salgada como parte do ar — um privilégio que, no litoral norte gaúcho, deixou de ser exceção para se tornar escolha de quem entende de qualidade de vida.</p>
+      <a class="viv-cta" href="/viver-no-mar">Conheça a vida à beira do Mar <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </section>
+
 
   <!-- ══ CONDOMÍNIOS DESTAQUE POR CIDADE ══ -->
   <section class="cdest-sec" id="cond-capao">
@@ -1918,6 +1910,30 @@ body{padding-top:56px}
       <div class="cdest-grid" id="cdest-xangri"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
       <div style="text-align:center;margin-top:26px">
         <a class="cdest-btn" href="/condominios?cidade=Xangri-l%C3%A1">Ver todos os condomínios de Xangri-lá →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cdest-sec" id="cond-osorio">
+    <div class="cdest-inner">
+      <p class="eyebrow" style="justify-content:center">Em destaque</p>
+      <h2 class="sectit">Condomínios de <em>Osório</em></h2>
+      <p class="cidades-sub">Empreendimentos na porta de entrada do litoral</p>
+      <div class="cdest-grid" id="cdest-osorio"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
+      <div style="text-align:center;margin-top:26px">
+        <a class="cdest-btn" href="/condominios?cidade=Os%C3%B3rio">Ver todos os condomínios de Osório →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cdest-sec" id="cond-maquine">
+    <div class="cdest-inner">
+      <p class="eyebrow" style="justify-content:center">Em destaque</p>
+      <h2 class="sectit">Condomínios de <em>Maquiné</em></h2>
+      <p class="cidades-sub">Empreendimentos no vale verde do litoral</p>
+      <div class="cdest-grid" id="cdest-maquine"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
+      <div style="text-align:center;margin-top:26px">
+        <a class="cdest-btn" href="/condominios?cidade=Maquin%C3%A9">Ver todos os condomínios de Maquiné →</a>
       </div>
     </div>
   </section>
@@ -3081,7 +3097,7 @@ function renderDestaquesCidade(){
       const resto=doCity.filter(c=>!destIds.includes(c.id));
       return dest.concat(resto).slice(0,4);
     }
-    [['Capão da Canoa','cdest-capao',dCapao],['Xangri-lá','cdest-xangri',dXangri]].forEach(function(par){
+    [['Capão da Canoa','cdest-capao',dCapao],['Xangri-lá','cdest-xangri',dXangri],['Osório','cdest-osorio',[]],['Maquiné','cdest-maquine',[]]].forEach(function(par){
       const grid=document.getElementById(par[1]); if(!grid) return;
       const lista=pick(par[0], par[2]);
       if(!lista.length){
