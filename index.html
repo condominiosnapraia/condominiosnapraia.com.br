@@ -1497,6 +1497,32 @@ body{padding-top:56px}
 .navq-s{font-size:13.5px;color:var(--tm,#5b7585);line-height:1.4}
 @media(max-width:820px){.navq-grid{grid-template-columns:1fr 1fr;gap:12px}}
 @media(max-width:520px){.navq-grid{grid-template-columns:1fr}.navq-card{flex-direction:row;align-items:center;gap:14px;padding:18px 20px}.navq-ico{margin-bottom:0}.navq-card .navq-t{font-size:17px}.navq-s{display:none}}
+
+/* ── Busca rápida por cidade ── */
+.bcid-sec{padding:72px 24px;background:#fff}
+.bcid-sec-alt{background:#eef8f9}
+.bcid-inner{max-width:1000px;margin:0 auto;text-align:center}
+.bcid-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
+.bcid-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:32px 18px;background:#fff;border:1px solid var(--border,rgba(31,181,196,.18));border-radius:16px;text-decoration:none;box-shadow:0 3px 14px rgba(13,59,84,.05);transition:transform .2s,box-shadow .2s,border-color .2s}
+.bcid-sec-alt .bcid-card{background:#fff}
+.bcid-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(13,59,84,.13);border-color:rgba(31,181,196,.5)}
+.bcid-ico{font-size:34px;line-height:1}
+.bcid-nome{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:var(--ocean,#0d3b54)}
+.bcid-go{font-size:13px;color:var(--om,#0e8a99);font-weight:600}
+@media(max-width:820px){.bcid-grid{grid-template-columns:1fr 1fr;gap:12px}.bcid-sec{padding:52px 20px}}
+@media(max-width:420px){.bcid-grid{grid-template-columns:1fr 1fr}.bcid-card{padding:24px 12px}.bcid-ico{font-size:28px}.bcid-nome{font-size:16px}}
+
+/* ── Precisando de crédito (3 cards) ── */
+.pcred-sec{padding:72px 24px;background:#f7f1e8}
+.pcred-inner{max-width:1000px;margin:0 auto;text-align:center}
+.pcred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+.pcred-card{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:30px 26px;background:#fff;border:1px solid var(--border,rgba(31,181,196,.18));border-radius:18px;text-decoration:none;box-shadow:0 3px 14px rgba(13,59,84,.05);transition:transform .2s,box-shadow .2s,border-color .2s}
+.pcred-card:hover{transform:translateY(-5px);box-shadow:0 16px 34px rgba(13,59,84,.13);border-color:rgba(31,181,196,.5)}
+.pcred-ico{font-size:32px;line-height:1;margin-bottom:4px}
+.pcred-t{font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--ocean,#0d3b54);line-height:1.2}
+.pcred-s{font-size:14px;color:var(--tm,#5b7585);line-height:1.5;flex:1}
+.pcred-go{font-size:13.5px;color:var(--om,#0e8a99);font-weight:700;margin-top:8px}
+@media(max-width:820px){.pcred-grid{grid-template-columns:1fr;gap:14px}.pcred-sec{padding:52px 20px}}
 </style>
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "RealEstateAgent", "@id": "https://condominiosnapraia.com.br/#organizacao", "name": "Condomínios na Praia", "alternateName": "Felipe Ranzolin — Corretor de Imóveis", "description": "Especialista em condomínios fechados e imóveis de alto padrão no Litoral Norte Gaúcho. Casas e terrenos em Xangri-lá, Capão da Canoa, Osório e Maquiné.", "url": "https://condominiosnapraia.com.br", "logo": "https://condominiosnapraia.com.br/img/og-home.jpg", "image": "https://condominiosnapraia.com.br/img/og-home.jpg", "telephone": "+5551999442252", "email": "napraiacondominios@gmail.com", "priceRange": "$$$", "address": {"@type": "PostalAddress", "streetAddress": "Av. Central 248, Loja 07, Atlântida", "addressLocality": "Xangri-lá", "addressRegion": "RS", "postalCode": "95588-000", "addressCountry": "BR"}, "geo": {"@type": "GeoCoordinates", "latitude": -29.8106, "longitude": -50.0442}, "areaServed": [{"@type": "City", "name": "Xangri-lá"}, {"@type": "City", "name": "Capão da Canoa"}, {"@type": "City", "name": "Osório"}, {"@type": "City", "name": "Maquiné"}], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "09:00", "closes": "18:00"}], "founder": {"@type": "Person", "name": "Felipe Ranzolin Fachinello", "jobTitle": "Corretor de Imóveis", "identifier": "CRECI-RS 72.386"}, "knowsAbout": ["Condomínios fechados", "Imóveis de alto padrão", "Terrenos em condomínio", "Casas frente-mar", "Investimento imobiliário no litoral"], "sameAs": [], "contactPoint": {"@type": "ContactPoint", "telephone": "+5551999442252", "contactType": "sales", "availableLanguage": "Portuguese"}}</script>
@@ -1525,6 +1551,7 @@ body{padding-top:56px}
       <a href="/condominios">Condomínios</a>
       <a href="/lancamentos">Lançamentos</a>
       <a href="/refinanciamento-imobiliario">Crédito</a>
+      <a href="/turismo">Turismo</a>
       <a href="/sobre">Sobre</a>
       <a href="/contato">Contato</a>
     </nav>
@@ -1815,6 +1842,21 @@ body{padding-top:56px}
     </div>
   </section>
 
+  <!-- ══ BUSCA RÁPIDA: IMÓVEIS POR CIDADE ══ -->
+  <section class="bcid-sec">
+    <div class="bcid-inner">
+      <p class="eyebrow" style="justify-content:center">Busca rápida</p>
+      <h2 class="sectit">Imóveis por <em>cidade</em></h2>
+      <p class="cidades-sub">Escolha a cidade e veja os imóveis disponíveis</p>
+      <div class="bcid-grid">
+        <a class="bcid-card" href="/imoveis?cidade=Cap%C3%A3o%20da%20Canoa"><span class="bcid-ico">🏖️</span><span class="bcid-nome">Capão da Canoa</span><span class="bcid-go">Ver imóveis →</span></a>
+        <a class="bcid-card" href="/imoveis?cidade=Maquin%C3%A9"><span class="bcid-ico">🌿</span><span class="bcid-nome">Maquiné</span><span class="bcid-go">Ver imóveis →</span></a>
+        <a class="bcid-card" href="/imoveis?cidade=Os%C3%B3rio"><span class="bcid-ico">🏞️</span><span class="bcid-nome">Osório</span><span class="bcid-go">Ver imóveis →</span></a>
+        <a class="bcid-card" href="/imoveis?cidade=Xangri-l%C3%A1"><span class="bcid-ico">🌅</span><span class="bcid-nome">Xangri-lá</span><span class="bcid-go">Ver imóveis →</span></a>
+      </div>
+    </div>
+  </section>
+
   <!-- ══ DESTAQUES CONDOMÍNIOS ══ -->
   <section class="dest-section" id="sec-condominios">
     <div class="dest-inner">
@@ -1831,6 +1873,21 @@ body{padding-top:56px}
           Ver todos os condomínios
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BUSCA RÁPIDA: CONDOMÍNIOS POR CIDADE ══ -->
+  <section class="bcid-sec bcid-sec-alt">
+    <div class="bcid-inner">
+      <p class="eyebrow" style="justify-content:center">Busca rápida</p>
+      <h2 class="sectit">Condomínios por <em>cidade</em></h2>
+      <p class="cidades-sub">Explore os condomínios de cada cidade do litoral</p>
+      <div class="bcid-grid">
+        <a class="bcid-card" href="/condominios?cidade=Cap%C3%A3o%20da%20Canoa"><span class="bcid-ico">🏖️</span><span class="bcid-nome">Capão da Canoa</span><span class="bcid-go">Ver condomínios →</span></a>
+        <a class="bcid-card" href="/condominios?cidade=Maquin%C3%A9"><span class="bcid-ico">🌿</span><span class="bcid-nome">Maquiné</span><span class="bcid-go">Ver condomínios →</span></a>
+        <a class="bcid-card" href="/condominios?cidade=Os%C3%B3rio"><span class="bcid-ico">🏞️</span><span class="bcid-nome">Osório</span><span class="bcid-go">Ver condomínios →</span></a>
+        <a class="bcid-card" href="/condominios?cidade=Xangri-l%C3%A1"><span class="bcid-ico">🌅</span><span class="bcid-nome">Xangri-lá</span><span class="bcid-go">Ver condomínios →</span></a>
       </div>
     </div>
   </section>
@@ -2097,6 +2154,35 @@ body{padding-top:56px}
   </section>
 
   <!-- ══ FAIXA PREMIUM DE CRÉDITO ══ -->
+  <!-- ══ PRECISANDO DE CRÉDITO? ══ -->
+  <section class="pcred-sec">
+    <div class="pcred-inner">
+      <p class="eyebrow" style="justify-content:center">Soluções de crédito</p>
+      <h2 class="sectit">Precisando de <em>crédito?</em></h2>
+      <p class="cidades-sub">Escolha a solução ideal para realizar seu negócio</p>
+      <div class="pcred-grid">
+        <a class="pcred-card" href="/contemplado-imoveis">
+          <span class="pcred-ico">📋</span>
+          <span class="pcred-t">Crédito Contemplado</span>
+          <span class="pcred-s">Cartas prontas para comprar à vista, sem juros</span>
+          <span class="pcred-go">Ver cartas →</span>
+        </a>
+        <a class="pcred-card" href="/financiamento-imobiliario">
+          <span class="pcred-ico">🏦</span>
+          <span class="pcred-t">Financiamento Imobiliário</span>
+          <span class="pcred-s">Financie até 90% do seu imóvel no litoral</span>
+          <span class="pcred-go">Simular agora →</span>
+        </a>
+        <a class="pcred-card" href="/refinanciamento-imobiliario">
+          <span class="pcred-ico">💰</span>
+          <span class="pcred-t">Refinanciamento Imobiliário</span>
+          <span class="pcred-s">Use seu imóvel para obter crédito com juros baixos</span>
+          <span class="pcred-go">Saiba mais →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <section class="cred-sol-sec">
     <div class="cred-sol-wrap">
       <div class="cred-hero">
