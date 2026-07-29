@@ -1547,6 +1547,38 @@ body{padding-top:56px}
 .sec-onda::before{content:'';position:absolute;top:-1px;left:0;right:0;height:44px;background:#fff;clip-path:ellipse(65% 100% at 50% 0%);z-index:1}
 .sec-onda-areia::before{background:#faf6ef}
 @media(max-width:600px){.sec-onda::before{height:28px}}
+
+/* ═══ RITMO DE CORES DEFINITIVO (sobrepõe tudo) ═══ */
+.qr-sec{background:#fff !important}
+#sec-imoveis{background:#faf6ef !important}
+.lch-sec{background:#fff !important}
+#sec-terrenos{background:#faf6ef !important}
+#sec-encontre{background:#fff !important}
+#sec-condominios{background:#faf6ef !important}
+.viver-intro{background:#fff !important}
+#cond-capao{background:#fff !important}
+#cond-xangri{background:#fff !important}
+#cond-osorio{background:#fff !important}
+#cond-maquine{background:#fff !important}
+#qfilter{background:#faf6ef !important}
+#onde-ir{background:#faf6ef !important}
+.bcid-sec-alt{background:#fff !important}
+.pcred-sec{background:#faf6ef !important}
+#guias-cidades{background:#fff !important}
+#bairros{background:#faf6ef !important}
+#bairros-xangri{background:#fff !important}
+#guias-decisao{background:#faf6ef !important}
+.cred-sol-sec{background:#fff !important}
+#credito-contemplado{background:#faf6ef !important}
+#exclusividade-home{background:#fff !important}
+#sec-blog-preview{background:#faf6ef !important}
+
+/* cor de cada onda = cor da seção anterior */
+#sec-imoveis.sec-onda::before{background:#fff !important}
+#sec-terrenos.sec-onda::before{background:#fff !important}
+#sec-condominios.sec-onda::before{background:#fff !important}
+.bcid-sec-alt.sec-onda::before{background:#faf6ef !important}
+#sec-blog-preview.sec-onda::before{background:#fff !important}
 </style>
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "RealEstateAgent", "@id": "https://condominiosnapraia.com.br/#organizacao", "name": "Condomínios na Praia", "alternateName": "Felipe Ranzolin — Corretor de Imóveis", "description": "Especialista em condomínios fechados e imóveis de alto padrão no Litoral Norte Gaúcho. Casas e terrenos em Xangri-lá, Capão da Canoa, Osório e Maquiné.", "url": "https://condominiosnapraia.com.br", "logo": "https://condominiosnapraia.com.br/img/og-home.jpg", "image": "https://condominiosnapraia.com.br/img/og-home.jpg", "telephone": "+5551999442252", "email": "napraiacondominios@gmail.com", "priceRange": "$$$", "address": {"@type": "PostalAddress", "streetAddress": "Av. Central 248, Loja 07, Atlântida", "addressLocality": "Xangri-lá", "addressRegion": "RS", "postalCode": "95588-000", "addressCountry": "BR"}, "geo": {"@type": "GeoCoordinates", "latitude": -29.8106, "longitude": -50.0442}, "areaServed": [{"@type": "City", "name": "Xangri-lá"}, {"@type": "City", "name": "Capão da Canoa"}, {"@type": "City", "name": "Osório"}, {"@type": "City", "name": "Maquiné"}], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "09:00", "closes": "18:00"}], "founder": {"@type": "Person", "name": "Felipe Ranzolin Fachinello", "jobTitle": "Corretor de Imóveis", "identifier": "CRECI-RS 72.386"}, "knowsAbout": ["Condomínios fechados", "Imóveis de alto padrão", "Terrenos em condomínio", "Casas frente-mar", "Investimento imobiliário no litoral"], "sameAs": [], "contactPoint": {"@type": "ContactPoint", "telephone": "+5551999442252", "contactType": "sales", "availableLanguage": "Portuguese"}}</script>
@@ -1829,7 +1861,7 @@ body{padding-top:56px}
   </section>
 
   <!-- ══ BUSCA RÁPIDA: IMÓVEIS POR CIDADE ══ -->
-  <section class="bcid-sec">
+  <section class="bcid-sec" id="sec-encontre">
     <div class="bcid-inner">
       <p class="eyebrow" style="justify-content:center">Encontre o seu</p>
       <h2 class="sectit">O que você está <em>procurando?</em></h2>
