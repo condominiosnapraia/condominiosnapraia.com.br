@@ -506,6 +506,40 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 .char-count{font-size:10px;color:var(--t3);text-align:right;margin-top:3px}
 .char-count.warn{color:var(--or)}
 .char-count.over{color:var(--rd);font-weight:700}
+
+/* ── Cards horizontais estilo Broker (lista de imóveis) ── */
+#i-cgrid{display:flex;flex-direction:column;gap:10px}
+.brk{display:flex;align-items:stretch;gap:0;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:box-shadow .18s,border-color .18s,transform .18s}
+.brk:hover{box-shadow:0 6px 20px rgba(13,59,84,.1);border-color:var(--go);transform:translateY(-1px)}
+.brk-foto{width:150px;min-width:150px;background:var(--s2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.brk-foto img{width:100%;height:100%;object-fit:cover}
+.brk-foto span{font-size:38px}
+.brk-main{flex:1;min-width:0;padding:12px 16px;display:flex;flex-direction:column;gap:9px}
+.brk-tit{font-size:15px;font-weight:800;color:var(--tx);letter-spacing:.01em}
+.brk-tit span{font-weight:600;color:var(--t2)}
+.brk-row{display:flex;flex-wrap:wrap;gap:6px}
+.brk-cell{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--t2);background:var(--s2);padding:5px 10px;border-radius:var(--rs);font-weight:600}
+.brk-ic{font-size:12px;opacity:.85}
+.brk-preco{color:var(--go);font-weight:800}
+.brk-row2{display:flex;gap:24px;flex-wrap:wrap;padding-top:2px;border-top:1px dashed var(--bd);padding-top:9px}
+.brk-prop,.brk-local{min-width:0}
+.brk-prop-nome,.brk-local-nome{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:2px}
+.brk-prop-tel{font-size:12.5px;color:var(--go);font-weight:700;text-decoration:none}
+.brk-prop-tel.off{color:var(--t3);font-weight:500}
+.brk-local-end{font-size:12px;color:var(--t2)}
+.brk-side{width:150px;min-width:150px;border-left:1px solid var(--bd);padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.brk-ref-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--t3)}
+.brk-ref{font-size:19px;font-weight:800;color:var(--go);line-height:1}
+.brk-status{margin:2px 0}
+.brk-acoes{display:flex;gap:8px;margin-top:2px}
+.brk-ac{background:var(--s2);border:1px solid var(--bd);border-radius:6px;width:32px;height:32px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.brk-ac:hover{background:#e2e6ec}
+@media(max-width:720px){
+  .brk{flex-wrap:wrap}
+  .brk-foto{width:100%;min-width:100%;height:150px}
+  .brk-side{width:100%;min-width:100%;border-left:0;border-top:1px solid var(--bd);flex-direction:row;justify-content:space-between}
+  .brk-row2{flex-direction:column;gap:8px}
+}
 </style>
 </head>
 <body>
@@ -996,7 +1030,7 @@ if(_savedToken && _savedUser){
   <div class="ph">
     <div><div class="pht">Imóveis</div><div class="phs" id="i-sub"></div></div>
     <div class="phr">
-      <select class="fs" id="i-view" onchange="rImV()"><option value="table">Tabela</option><option value="cards">Cards</option></select>
+      <select class="fs" id="i-view" onchange="rImV()"><option value="cards">Lista detalhada</option><option value="table">Tabela compacta</option></select>
       <button class="btn bg" onclick="gerarCodigosEmMassa()" title="Gera código para imóveis que ainda não têm">🔢 Gerar Códigos</button>
       <button class="btn bp" onclick="oMo('imov-mo');rImF()">+ Novo Imóvel</button>
     </div>
@@ -3518,21 +3552,46 @@ function rImT(){
       </tr>`;}).join('');
 }
 function rImC(){
-  const data=iFiltered();const co=DB.co;
+  const data=iFiltered();const co=DB.co;const pr=DB.pr||[];
   const sc={Disponível:'tgn',Negociando:'tgo',Vendido:'tbl',Retirado:'trd'};
   document.getElementById('i-cgrid').innerHTML=data.length===0?`<div class="te" style="grid-column:1/-1"><div class="te-ic">🏠</div><h3>Nenhum imóvel</h3></div>`
-    :data.map(x=>{const c=co.find(y=>y.id===x.condId)||{nome:'—'};return`
-      <div class="kd" onclick="sIDrw('${x.id}')">
-        <div class="kdi">${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" alt="${x.titulo}">`:'🏠'}</div>
-        <div class="kdb">
-          <div class="kdn">${x.titulo||'—'}</div><div class="kds">${c.nome}</div>
-          <div style="display:flex;gap:5px;margin-bottom:7px"><span class="tag tbl">${x.tipo||'—'}</span><span class="tag ${sc[x.status]||'tbl'}">${x.status||'—'}</span></div>
-          <div class="kdp">${brl(x.preco)}</div>
-          <div style="font-size:11px;color:var(--t3);margin-top:3px">${m2(x.area)} ${x.quartos?'· '+x.quartos+'q ':''} ${x.suites?x.suites+'s':''}</div>
+    :data.map(x=>{
+      const c=co.find(y=>y.id===x.condId)||{nome:'—'};
+      const p=pr.find(y=>y.id===x.propId)||{nome:'—',telefone:''};
+      const tel=(p.telefone||p.whatsapp||'').toString();
+      const telLink=tel.replace(/\D/g,'');
+      const ql=[x.quadra?'Q '+x.quadra:'',x.lote?'L '+x.lote:''].filter(Boolean).join(' · ');
+      const local=[x.bairro,c.nome,x.cidade].filter(Boolean).join(', ');
+      return`
+      <div class="brk" onclick="sIDrw('${x.id}')">
+        <div class="brk-foto">${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" alt="${(x.titulo||'').replace(/"/g,'&quot;')}">`:'<span>🏠</span>'}</div>
+        <div class="brk-main">
+          <div class="brk-tit">${(x.tipo||'IMÓVEL').toUpperCase()} <span>» ${x.titulo||c.nome||'—'}</span></div>
+          <div class="brk-row">
+            <div class="brk-cell"><span class="brk-ic">🛏</span>${x.quartos?x.quartos+' dorm':'—'}${x.suites?' · '+x.suites+' suíte'+(x.suites>1?'s':''):''}</div>
+            <div class="brk-cell"><span class="brk-ic">🚗</span>${x.vagas?x.vagas+' vaga'+(x.vagas>1?'s':''):'—'}</div>
+            <div class="brk-cell brk-preco"><span class="brk-ic">💰</span>${brl(x.preco)}</div>
+            <div class="brk-cell"><span class="brk-ic">📐</span>${m2(x.area)}</div>
+          </div>
+          <div class="brk-row2">
+            <div class="brk-prop">
+              <div class="brk-prop-nome">👤 ${p.nome}</div>
+              ${tel?`<a class="brk-prop-tel" href="https://wa.me/55${telLink}" target="_blank" onclick="event.stopPropagation()">📞 ${tel}</a>`:'<span class="brk-prop-tel off">sem telefone</span>'}
+            </div>
+            <div class="brk-local">
+              <div class="brk-local-nome">📍 ${c.nome}</div>
+              <div class="brk-local-end">${local||'Localização não definida'}${ql?' — '+ql:''}</div>
+            </div>
+          </div>
         </div>
-        <div class="kdf">
-          <button class="btn bg bxs" onclick="event.stopPropagation();eImov('${x.id}')">✏ Editar</button>
-          <button class="btn bd2b bxs" onclick="event.stopPropagation();dImov('${x.id}')">🗑</button>
+        <div class="brk-side">
+          <div class="brk-ref-lbl">Referência</div>
+          <div class="brk-ref">${x.codigo||x.ref||'—'}</div>
+          <div class="brk-status"><span class="tag ${sc[x.status]||'tbl'}">${x.status||'—'}</span></div>
+          <div class="brk-acoes">
+            <button class="brk-ac" onclick="event.stopPropagation();eImov('${x.id}')" title="Editar">✏️</button>
+            <button class="brk-ac" onclick="event.stopPropagation();dImov('${x.id}')" title="Excluir">🗑️</button>
+          </div>
         </div>
       </div>`;}).join('');
 }
