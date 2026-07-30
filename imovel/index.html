@@ -1106,10 +1106,10 @@ function render(im,cond){
     if(cond.padrao)stats.push('<span class="ip-cond-stat ip-cond-stat-badge">'+cond.padrao+'</span>');
     const statsHtml=stats.length?('<div class="ip-cond-stats">'+stats.join('')+'</div>'):'';
     const condSlug=cond.slug||'';
-    const ctaHtml=condSlug?('<a class="ip-cond-cta" href="/'+condSlug+'">Conhecer o condomínio <span>&#8594;</span></a>'):'';
-    // mapa da localização (Google Maps embed pela query de endereço/nome + cidade)
+    const ctaHtml='';
+    // mapa da localização (Google Maps embed em modo satélite, pela query de endereço/nome + cidade)
     const mapaQuery=[cond.nome, cond.endereco, cond.bairro, cond.cidade||cond.localizacao, 'RS'].filter(Boolean).join(', ');
-    const mapaHtml=mapaQuery?('<div class="ip-cond-gal-h">Localização</div><div class="ip-cond-mapa"><iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q='+encodeURIComponent(mapaQuery)+'&output=embed" title="Localização de '+((cond.nome||'condomínio').replace(/"/g,'&quot;'))+'"></iframe></div>'):'';
+    const mapaHtml=mapaQuery?('<div class="ip-cond-gal-h">Localização</div><div class="ip-cond-mapa"><iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q='+encodeURIComponent(mapaQuery)+'&t=k&z=16&output=embed" title="Localização de '+((cond.nome||'condomínio').replace(/"/g,'&quot;'))+'"></iframe></div>'):'';
     condHtml='<div class="ip-cond">'+
       '<div class="ip-cond-head">'+
         '<div class="ip-cond-badge">&#127963;&#65039; Condomínio</div>'+
