@@ -2844,7 +2844,7 @@ const DB = {
   
   // Compatibilidade com código legado (síncrono → retorna cache ou [])
   get co(){ return this._cache.co?.data || []; },
-  get im(){ return this._cache.im?.data || []; },
+  get im(){ return (this._cache.im?.data || []).map(x=>x.condId!==undefined?x:Object.assign({},x,{condId:x.cond_id,propId:x.prop_id,areaConstruida:x.areaConstruida!==undefined?x.areaConstruida:x.area_construida,precoMinimo:x.precoMinimo!==undefined?x.precoMinimo:x.preco_minimo})); },
   get pr(){ return this._cache.pr?.data || []; },
   get ne(){ return this._cache.ne?.data || []; },
   get ev(){ return this._cache.ev?.data || []; },
@@ -3515,7 +3515,7 @@ function iFiltered(){
   const co=DB.co;const pr=DB.pr||[];
   return DB.im.filter(x=>{
     const c=co.find(y=>y.id===x.condId)||{nome:''};
-    const p=pr.find(y=>y.id===x.propId)||{nome:'',telefone:''};
+    const p=pr.find(y=>y.id===(x.propId||x.prop_id))||{nome:'',telefone:''};
     // busca ampla: título, condomínio, quadra, lote, proprietário (nome+telefone), código
     const alvo=[x.titulo,c.nome,x.quadra,x.lote,p.nome,p.telefone,p.whatsapp,x.codigo,x.ref,x.bairro,x.cidade].map(v=>String(v||'').toLowerCase()).join(' ');
     const ms=!s||alvo.includes(s);
@@ -3534,7 +3534,7 @@ function rImT(){
   document.getElementById('i-tbody').innerHTML=data.length===0?`<tr><td colspan="9"><div class="te"><div class="te-ic">🏠</div><h3>Nenhum imóvel</h3></div></td></tr>`
     :data.map(x=>{
       const c=co.find(y=>y.id===x.condId)||{nome:'—',cidade:'—'};
-      const p=pr.find(y=>y.id===x.propId)||{nome:'—'};
+      const p=pr.find(y=>y.id===(x.propId||x.prop_id))||{nome:'—'};
       const telProp=p.telefone||p.whatsapp||'';
       return`<tr onclick="sIDrw('${x.id}')">
         <td>${x.codigo?`<span style="display:inline-block;background:#0e8a99;color:#ffffff;font-weight:700;letter-spacing:.03em;padding:3px 10px;border-radius:20px;font-size:11px;white-space:nowrap">${x.codigo}</span>`:'<span class="cs">—</span>'}</td>
@@ -3560,7 +3560,7 @@ function rImC(){
   document.getElementById('i-cgrid').innerHTML=data.length===0?`<div class="te" style="grid-column:1/-1"><div class="te-ic">🏠</div><h3>Nenhum imóvel</h3></div>`
     :data.map(x=>{
       const c=co.find(y=>y.id===x.condId)||{nome:'—'};
-      const p=pr.find(y=>y.id===x.propId)||{nome:'—',telefone:''};
+      const p=pr.find(y=>y.id===(x.propId||x.prop_id))||{nome:'—',telefone:''};
       const tel=(p.telefone||p.whatsapp||'').toString();
       const telLink=tel.replace(/\D/g,'');
       const ql=[x.quadra?'Q '+x.quadra:'',x.lote?'L '+x.lote:''].filter(Boolean).join(' · ');
@@ -3827,7 +3827,7 @@ async function dImov(id){if(!confirm('Excluir imóvel?'))return;try{await sb.del
 function sIDrw(id){
   const x=DB.im.find(y=>y.id===id);if(!x)return;
   const c=DB.co.find(y=>y.id===x.condId)||{nome:'—'};
-  const p=DB.pr.find(y=>y.id===x.propId)||{nome:'—',telefone:'—'};
+  const p=DB.pr.find(y=>y.id===(x.propId||x.prop_id))||{nome:'—',telefone:'—'};
   const sc={Disponível:'tgn',Negociando:'tgo',Vendido:'tbl',Retirado:'trd'};
   document.getElementById('drw-title').textContent=x.titulo||'Imóvel';
   document.getElementById('drw-edit').onclick=()=>{cDrw();eImov(id)};
@@ -3888,7 +3888,7 @@ function rProp(){
   const im=DB.im;
   document.getElementById('p-tbody').innerHTML=data.length===0?`<tr><td colspan="7"><div class="te"><div class="te-ic">👤</div><h3>Nenhum proprietário</h3></div></td></tr>`
     :data.map(p=>{
-      const n=im.filter(x=>x.propId===p.id).length;
+      const n=im.filter(x=>(x.propId||x.prop_id)===p.id).length;
       const ini=p.nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
       const hist=p.historico||[];const ult=hist.length?hist[hist.length-1]:null;
       return`<tr onclick="sPDrw('${p.id}')">
@@ -3977,7 +3977,7 @@ async function savHist(){
 }
 function sPDrw(id){
   const p=DB.pr.find(x=>x.id===id);if(!p)return;
-  const ims=DB.im.filter(x=>x.propId===id);
+  const ims=DB.im.filter(x=>(x.propId||x.prop_id)===id);
   const ini=p.nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
   document.getElementById('drw-title').textContent=p.nome;
   document.getElementById('drw-edit').onclick=()=>{cDrw();eProp(id)};
@@ -4140,7 +4140,7 @@ function buildRel(){
   const funs=['lead','contato','visita','proposta','fechado'];
   const funL={lead:'Lead',contato:'Em Contato',visita:'Visita',proposta:'Proposta',fechado:'Fechado'};
   const fmx=Math.max(...funs.map(s=>ne.filter(n=>n.etapa===s).length),1);
-  const pm={};im.forEach(x=>{if(!pm[x.propId])pm[x.propId]={n:0,v:0};pm[x.propId].n++;pm[x.propId].v+=(+x.preco||0)});
+  const pm={};im.forEach(x=>{var _pid=x.propId||x.prop_id;if(!pm[_pid])pm[_pid]={n:0,v:0};pm[_pid].n++;pm[_pid].v+=(+x.preco||0)});
   const tprop=Object.entries(pm).sort((a,b)=>b[1].v-a[1].v).slice(0,5);
   const fx=[['Até 500k',0,500000],['500k–1M',500000,1000000],['1M–2M',1000000,2000000],['2M–5M',2000000,5000000],['>5M',5000000,Infinity]];
   document.getElementById('rel-body').innerHTML=`
