@@ -769,13 +769,23 @@ function enviarLeadWpp(ev, emp){
     var scale=1,tx=0,ty=0,startX=0,startY=0,panning=false,lastDist=0,startScale=1;
     function apply(){img.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')';}
     function reset(){scale=1;tx=0;ty=0;
-      // centralizar/ajustar à tela
+      // preencher a LARGURA da tela (mapa grande, sem cabê-lo inteiro minúsculo)
       var vw=window.innerWidth,vh=window.innerHeight;
-      var iw=img.naturalWidth,ih=img.naturalHeight;
-      var fit=Math.min(vw/iw,vh/ih);scale=fit;
-      tx=(vw-iw*scale)/2;ty=(vh-ih*scale)/2;apply();}
-    window.abrirMapaZoom=function(src){img.src=src;lb.classList.add('on');document.body.style.overflow='hidden';
-      if(img.complete)reset();else img.onload=reset;};
+      var iw=img.naturalWidth||vw,ih=img.naturalHeight||vh;
+      var fitW=vw/iw, fitH=vh/ih;
+      // usa a largura como base, mas nunca deixa a imagem menor que a tela
+      scale=Math.max(fitW, Math.min(fitH, fitW*1.6));
+      if(!isFinite(scale)||scale<=0)scale=1;
+      tx=(vw-iw*scale)/2;
+      ty=(vh-ih*scale)/2; if(ty>0)ty=0;
+      apply();}
+    window.abrirMapaZoom=function(src){
+      lb.classList.add('on');document.body.style.overflow='hidden';
+      // sempre recarrega e espera dimensões reais antes de dimensionar
+      img.onload=function(){reset();};
+      img.src=src;
+      if(img.complete&&img.naturalWidth)reset();
+    };
     window.fecharMapaZoom=function(){lb.classList.remove('on');document.body.style.overflow='';};
     // botões zoom
     window.mapzIn=function(){scale=Math.min(scale*1.4,8);apply();};

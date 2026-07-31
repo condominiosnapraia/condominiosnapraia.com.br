@@ -1038,12 +1038,12 @@ if(_savedToken && _savedUser){
   <div class="chips" id="i-chips"></div>
   <div class="tw" id="i-twrap">
     <div class="ttb">
-      <input class="sr" id="i-srch" placeholder="🔍 Buscar..." oninput="rImT()">
-      <select class="fs" id="i-cf" onchange="rImT()"><option value="">Todos condomínios</option></select>
-      <select class="fs" id="i-sf" onchange="rImT()">
+      <input class="sr" id="i-srch" placeholder="🔍 Buscar por condomínio, quadra, lote, proprietário..." oninput="rImV()">
+      <select class="fs" id="i-cf" onchange="rImV()"><option value="">Todos condomínios</option></select>
+      <select class="fs" id="i-sf" onchange="rImV()">
         <option value="">Todos status</option><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option>
       </select>
-      <select class="fs" id="i-pf" onchange="rImT()">
+      <select class="fs" id="i-pf" onchange="rImV()">
         <option value="">Todos preços</option>
         <option value="0-500000">Até R$500k</option><option value="500000-1000000">R$500k–1M</option>
         <option value="1000000-2000000">R$1M–2M</option><option value="2000000-5000000">R$2M–5M</option>
@@ -3505,17 +3505,20 @@ function pCS(){
   document.getElementById('i-chips').innerHTML=`<div class="chip on" onclick="sTF(this,'')">Todos</div>`+ti.map(t=>`<div class="chip" onclick="sTF(this,'${t}')">${t}</div>`).join('');
 }
 let tF='';
-function sTF(el,t){tF=t;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');rImT()}
+function sTF(el,t){tF=t;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');rImV()}
 function rImV(){const v=document.getElementById('i-view').value;document.getElementById('i-twrap').style.display=v==='table'?'':'none';document.getElementById('i-cwrap').style.display=v==='cards'?'':'none';v==='table'?rImT():rImC()}
 function iFiltered(){
-  const s=(document.getElementById('i-srch')||{value:''}).value.toLowerCase();
+  const s=(document.getElementById('i-srch')||{value:''}).value.toLowerCase().trim();
   const cf=(document.getElementById('i-cf')||{value:''}).value;
   const sf=(document.getElementById('i-sf')||{value:''}).value;
   const pf=(document.getElementById('i-pf')||{value:''}).value;
-  const co=DB.co;
+  const co=DB.co;const pr=DB.pr||[];
   return DB.im.filter(x=>{
     const c=co.find(y=>y.id===x.condId)||{nome:''};
-    const ms=!s||(x.titulo||'').toLowerCase().includes(s)||c.nome.toLowerCase().includes(s);
+    const p=pr.find(y=>y.id===x.propId)||{nome:'',telefone:''};
+    // busca ampla: título, condomínio, quadra, lote, proprietário (nome+telefone), código
+    const alvo=[x.titulo,c.nome,x.quadra,x.lote,p.nome,p.telefone,p.whatsapp,x.codigo,x.ref,x.bairro,x.cidade].map(v=>String(v||'').toLowerCase()).join(' ');
+    const ms=!s||alvo.includes(s);
     const mc=!cf||x.condId===cf;
     const mst=!sf||x.status===sf;
     const mt=!tF||x.tipo===tF;
