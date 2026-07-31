@@ -222,13 +222,13 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 .pdf-mobile{display:none}
 @media(max-width:760px){
   .pdf-frame{display:none}
-  .pdf-mobile{display:block;position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 6px 20px rgba(13,59,84,.08);background:linear-gradient(150deg,#0c4a6e,#0891b2);min-height:300px}
+  .pdf-mobile{display:block;position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 6px 20px rgba(13,59,84,.08);line-height:0}
   .pdf-mobile .pm-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 26px;min-height:300px;color:#fff}
   .pdf-mobile .pm-ico{font-size:42px;margin-bottom:14px}
   .pdf-mobile .pm-t{font-family:'Fraunces',serif;font-size:21px;margin-bottom:8px}
   .pdf-mobile .pm-d{font-size:14px;opacity:.88;margin-bottom:22px;line-height:1.5;max-width:300px}
   .pdf-mobile .pm-btn{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:#0d3b54;text-decoration:none;font-weight:700;padding:15px 28px;border-radius:100px;font-size:15px}
-  .pdf-mobile .pdf-wm span{font-size:14px;color:rgba(255,255,255,.18)}
+  .pdf-mobile .pdf-wm span{font-size:11px;color:rgba(255,255,255,.28)}
 }
 
 footer{background:linear-gradient(160deg,#0c4a6e,#0e7490);padding:50px 44px 40px;margin-bottom:0;color:#fff;margin-top:40px}
@@ -362,7 +362,7 @@ h1,h2,h3{font-optical-sizing:auto}
 @media(max-width:680px){.intro-strip{padding:36px 22px 0}}
 
 /* Visualizador de mapa com zoom (estilo Google Maps) */
-.mapz-img{display:block;width:100%;cursor:zoom-in;border-radius:14px}
+.mapz-img{display:block;width:100%;height:auto;cursor:zoom-in;border-radius:16px}
 .mapz-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(13,59,84,.82);color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:100px;z-index:3;pointer-events:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
 .mapz-lb{position:fixed;inset:0;background:rgba(6,22,34,.96);z-index:99999;display:none;touch-action:none}
 .mapz-lb.on{display:block}
