@@ -263,7 +263,7 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
 .pdf-mobile{display:none}
 @media(max-width:760px){
   .pdf-frame{display:none}
-  .pdf-mobile{display:block;position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 6px 20px rgba(13,59,84,.08);background:linear-gradient(150deg,#0c4a6e,#0891b2);min-height:300px}
+  .pdf-mobile{display:block;position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 6px 20px rgba(13,59,84,.08);line-height:0}
   .pdf-mobile .pm-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 26px;min-height:300px;color:#fff}
   .pdf-mobile .pm-ico{font-size:42px;margin-bottom:14px}
   .pdf-mobile .pm-t{font-family:'Fraunces',serif;font-size:21px;margin-bottom:8px}
@@ -408,7 +408,16 @@ h1,h2,h3{font-optical-sizing:auto}
 .stat .n{font-family:'Fraunces',serif;font-size:24px;color:var(--om);line-height:1.1;font-weight:600}
 .stat .d{font-size:12.5px;color:var(--tm);margin-top:7px;line-height:1.4}
 @media(max-width:680px){.statgrid{grid-template-columns:1fr 1fr;gap:10px}.stat{padding:16px 10px}}
-</style>
+.mapz-img{display:block;width:100%;height:auto;cursor:zoom-in;border-radius:16px}
+.mapz-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(13,59,84,.82);color:#fff;font-size:12px;font-weight:600;padding:7px 14px;border-radius:100px;z-index:3;pointer-events:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.mapz-lb{position:fixed;inset:0;background:rgba(6,22,34,.96);z-index:99999;display:none;touch-action:none}
+.mapz-lb.on{display:block}
+.mapz-lb-img{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-drag:none}
+.mapz-x{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:22px;cursor:pointer;z-index:100000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.mapz-ctrls{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:100000}
+.mapz-ctrl{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.mapz-tip{position:fixed;top:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.85);font-size:13px;z-index:100000;pointer-events:none}
+.mapz-img{display:block;width:100%;height:auto;cursor:zoom-in;border-radius:16px}</style>
 </head>
 <section class="hero">
   <div class="hero-bg" data-foto-card="lanc-enseada-lagoa-dos-quadros-capao-da-canoa"></div>
@@ -488,14 +497,9 @@ h1,h2,h3{font-optical-sizing:auto}
         <div class="pdf-guard" oncontextmenu="return false"></div>
       </div>
       <div class="pdf-mobile">
-        <div class="pdf-wm"><span style="top:-5%;left:-5%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:-5%;left:50%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:13%;left:-5%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:13%;left:50%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:31%;left:-5%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:31%;left:50%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:49%;left:-5%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:49%;left:50%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:67%;left:-5%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:67%;left:50%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:85%;left:-5%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span><span style="top:85%;left:50%">Enseada Lagoa dos Quadros · condominiosnapraia.com.br</span></div>
-        <div class="pm-inner">
-          <div class="pm-ico">🗺️</div>
-          <div class="pm-t">Mapa de Implantação</div>
-          <div class="pm-d">Veja a planta com a disposição dos lotes e as áreas de lazer em alta resolução.</div>
-          <a class="pm-btn" id="pdf-mapa-mobile" href="/enseada-mapa-implantacao.pdf" target="_blank" rel="noopener">📄 Ver mapa de implantação</a>
-        </div>
+        <img class="mapz-img" src="/img/mapas/enseada-mapa.jpg" alt="Mapa de implantação Enseada Lagoa dos Quadros" onclick="abrirMapaZoom('/img/mapas/enseada-mapa.jpg')" loading="lazy"><div class="mapz-hint">🔍 Toque para ampliar e dar zoom</div>
       </div>
+    
       <div class="pdf-actions">
         <a class="btn-wpp" href="https://wa.me/5551982868888?text=Ol%C3%A1%21%20Quero%20a%20planta%20de%20lotes%20do%20Enseada%20Lagoa%20dos%20Quadros." rel="nofollow" style="padding:13px 22px;font-size:14px">Pedir planta de lotes</a>
       </div>
@@ -744,6 +748,62 @@ function enviarLeadWpp(ev, emp){
     es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}});
   },{threshold:.12,rootMargin:'0px 0px -6% 0px'});
   alvos.forEach(function(el){el.classList.add('rvl');io.observe(el);});
+})();
+</script>
+<div class="mapz-lb" id="mapz-lb"><div class="mapz-tip">Arraste para mover · pince ou use +/− para zoom</div><img class="mapz-lb-img" id="mapz-lb-img" src="" alt="Mapa ampliado"><button class="mapz-x" onclick="fecharMapaZoom()" aria-label="Fechar">✕</button><div class="mapz-ctrls"><button class="mapz-ctrl" onclick="mapzOut()">−</button><button class="mapz-ctrl" onclick="mapzIn()">+</button></div></div>
+<script>
+(function(){
+  function initMapZoom(){
+    var lb=document.getElementById('mapz-lb');if(!lb)return;
+    var img=document.getElementById('mapz-lb-img');
+    var scale=1,tx=0,ty=0,startX=0,startY=0,panning=false,lastDist=0,startScale=1;
+    function apply(){img.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')';}
+    function reset(){scale=1;tx=0;ty=0;
+      // preencher a LARGURA da tela (mapa grande, sem cabê-lo inteiro minúsculo)
+      var vw=window.innerWidth,vh=window.innerHeight;
+      var iw=img.naturalWidth||vw,ih=img.naturalHeight||vh;
+      var fitW=vw/iw, fitH=vh/ih;
+      // usa a largura como base, mas nunca deixa a imagem menor que a tela
+      scale=Math.max(fitW, Math.min(fitH, fitW*1.6));
+      if(!isFinite(scale)||scale<=0)scale=1;
+      tx=(vw-iw*scale)/2;
+      ty=(vh-ih*scale)/2; if(ty>0)ty=0;
+      apply();}
+    window.abrirMapaZoom=function(src){
+      lb.classList.add('on');document.body.style.overflow='hidden';
+      // sempre recarrega e espera dimensões reais antes de dimensionar
+      img.onload=function(){reset();};
+      img.src=src;
+      if(img.complete&&img.naturalWidth)reset();
+    };
+    window.fecharMapaZoom=function(){lb.classList.remove('on');document.body.style.overflow='';};
+    // botões zoom
+    window.mapzIn=function(){scale=Math.min(scale*1.4,8);apply();};
+    window.mapzOut=function(){scale=Math.max(scale/1.4,0.2);apply();};
+    // arrastar (1 dedo / mouse)
+    function down(x,y){panning=true;startX=x-tx;startY=y-ty;}
+    function move(x,y){if(!panning)return;tx=x-startX;ty=y-startY;apply();}
+    function up(){panning=false;}
+    img.addEventListener('mousedown',function(e){down(e.clientX,e.clientY);e.preventDefault();});
+    window.addEventListener('mousemove',function(e){move(e.clientX,e.clientY);});
+    window.addEventListener('mouseup',up);
+    // toque: 1 dedo pan, 2 dedos pinch
+    img.addEventListener('touchstart',function(e){
+      if(e.touches.length===1){down(e.touches[0].clientX,e.touches[0].clientY);}
+      else if(e.touches.length===2){lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);startScale=scale;}
+    },{passive:false});
+    img.addEventListener('touchmove',function(e){
+      e.preventDefault();
+      if(e.touches.length===1){move(e.touches[0].clientX,e.touches[0].clientY);}
+      else if(e.touches.length===2){var d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);scale=Math.max(0.2,Math.min(8,startScale*(d/lastDist)));apply();}
+    },{passive:false});
+    img.addEventListener('touchend',up);
+    // scroll zoom no desktop
+    lb.addEventListener('wheel',function(e){e.preventDefault();var f=e.deltaY<0?1.15:0.87;scale=Math.max(0.2,Math.min(8,scale*f));apply();},{passive:false});
+    // dbl-click reset
+    img.addEventListener('dblclick',reset);
+  }
+  if(document.readyState!=='loading')initMapZoom();else document.addEventListener('DOMContentLoaded',initMapZoom);
 })();
 </script>
 </body></html>
