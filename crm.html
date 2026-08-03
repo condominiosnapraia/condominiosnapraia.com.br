@@ -2851,7 +2851,7 @@ const DB = {
   // Compatibilidade com código legado (síncrono → retorna cache ou [])
   get co(){ return this._cache.co?.data || []; },
   get im(){ return (this._cache.im?.data || []).map(x=>x.condId!==undefined?x:Object.assign({},x,{condId:x.cond_id,propId:x.prop_id,areaConstruida:x.areaConstruida!==undefined?x.areaConstruida:x.area_construida,precoMinimo:x.precoMinimo!==undefined?x.precoMinimo:x.preco_minimo})); },
-  get pr(){ return this._cache.pr?.data || []; },
+  get pr(){ return (this._cache.pr?.data || []).map(p=>p.telefone!==undefined&&p.whatsapp!==undefined?p:Object.assign({},p,{telefone:p.telefone!==undefined?p.telefone:p.tel,whatsapp:p.whatsapp!==undefined?p.whatsapp:p.wpp})); },
   get ne(){ return this._cache.ne?.data || []; },
   get ev(){ return this._cache.ev?.data || []; },
 };
