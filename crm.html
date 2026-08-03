@@ -538,6 +538,8 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 .brk-datas{font-size:11px;color:var(--t3);margin-top:7px;padding-top:7px;border-top:1px dashed var(--bd)}
 .brk-ac-atu{background:#e7f9ee !important;border-color:#25d366 !important;text-decoration:none}
 .brk-ac-atu:hover{background:#25d366 !important}
+.brk-ac-atu.off{background:var(--s2) !important;border-color:var(--bd) !important;opacity:.6}
+.brk-ac-atu.off:hover{background:#e2e6ec !important;opacity:1}
 @media(max-width:720px){
   .brk{flex-wrap:wrap}
   .brk-foto{width:100%;min-width:100%;height:150px}
@@ -3574,7 +3576,9 @@ function rImC(){
       const dtAtu=fmtD(x.updated_at||x.atualizado_em);
       // mensagem pronta pro proprietário atualizar o imóvel
       const msgAtu=encodeURIComponent('Olá'+(p.nome&&p.nome!=='—'?' '+p.nome.split(' ')[0]:'')+'! Gostaria de atualizar as informações sobre o imóvel '+(x.titulo||x.codigo||'')+(ql?' ('+ql+')':'')+'. No nosso sistema o valor está em '+brl(x.preco)+'. Ainda está disponível e com esse mesmo valor?');
-      const btnAtu=telLink?`<a class="brk-ac brk-ac-atu" href="https://wa.me/55${telLink}?text=${msgAtu}" target="_blank" onclick="event.stopPropagation()" title="Pedir atualização ao proprietário via WhatsApp">🔄</a>`:'';
+      const btnAtu=telLink
+        ?`<a class="brk-ac brk-ac-atu" href="https://wa.me/55${telLink}?text=${msgAtu}" target="_blank" onclick="event.stopPropagation()" title="Pedir atualização ao proprietário via WhatsApp">🔄</a>`
+        :`<button class="brk-ac brk-ac-atu off" onclick="event.stopPropagation();eImov('${x.id}')" title="Sem telefone do proprietário — clique para adicionar">🔄</button>`;
       return`
       <div class="brk" onclick="sIDrw('${x.id}')">
         <div class="brk-foto">${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" alt="${(x.titulo||'').replace(/"/g,'&quot;')}">`:'<span>🏠</span>'}</div>
