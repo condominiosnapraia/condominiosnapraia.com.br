@@ -534,6 +534,10 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 .brk-acoes{display:flex;gap:8px;margin-top:2px}
 .brk-ac{background:var(--s2);border:1px solid var(--bd);border-radius:6px;width:32px;height:32px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
 .brk-ac:hover{background:#e2e6ec}
+
+.brk-datas{font-size:11px;color:var(--t3);margin-top:7px;padding-top:7px;border-top:1px dashed var(--bd)}
+.brk-ac-atu{background:#e7f9ee !important;border-color:#25d366 !important;text-decoration:none}
+.brk-ac-atu:hover{background:#25d366 !important}
 @media(max-width:720px){
   .brk{flex-wrap:wrap}
   .brk-foto{width:100%;min-width:100%;height:150px}
@@ -1036,21 +1040,21 @@ if(_savedToken && _savedUser){
     </div>
   </div>
   <div class="chips" id="i-chips"></div>
+  <div class="ttb">
+    <input class="sr" id="i-srch" placeholder="🔍 Buscar por condomínio, quadra, lote, proprietário..." oninput="rImV()">
+    <select class="fs" id="i-cf" onchange="rImV()"><option value="">Todos condomínios</option></select>
+    <select class="fs" id="i-sf" onchange="rImV()">
+      <option value="">Todos status</option><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option>
+    </select>
+    <select class="fs" id="i-pf" onchange="rImV()">
+      <option value="">Todos preços</option>
+      <option value="0-500000">Até R$500k</option><option value="500000-1000000">R$500k–1M</option>
+      <option value="1000000-2000000">R$1M–2M</option><option value="2000000-5000000">R$2M–5M</option>
+      <option value="5000000-999999999">Acima R$5M</option>
+    </select>
+    <span style="margin-left:auto;font-size:11px;color:var(--t3)" id="i-cnt"></span>
+  </div>
   <div class="tw" id="i-twrap">
-    <div class="ttb">
-      <input class="sr" id="i-srch" placeholder="🔍 Buscar por condomínio, quadra, lote, proprietário..." oninput="rImV()">
-      <select class="fs" id="i-cf" onchange="rImV()"><option value="">Todos condomínios</option></select>
-      <select class="fs" id="i-sf" onchange="rImV()">
-        <option value="">Todos status</option><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option>
-      </select>
-      <select class="fs" id="i-pf" onchange="rImV()">
-        <option value="">Todos preços</option>
-        <option value="0-500000">Até R$500k</option><option value="500000-1000000">R$500k–1M</option>
-        <option value="1000000-2000000">R$1M–2M</option><option value="2000000-5000000">R$2M–5M</option>
-        <option value="5000000-999999999">Acima R$5M</option>
-      </select>
-      <span style="margin-left:auto;font-size:11px;color:var(--t3)" id="i-cnt"></span>
-    </div>
     <table><thead><tr><th>Código</th><th>Imóvel</th><th>Condomínio</th><th>Tipo</th><th>Preço</th><th>Proprietário</th><th>Status</th><th>Site</th><th>Ações</th></tr></thead>
     <tbody id="i-tbody"></tbody></table>
   </div>
@@ -3565,6 +3569,12 @@ function rImC(){
       const telLink=tel.replace(/\D/g,'');
       const ql=[x.quadra?'Q '+x.quadra:'',x.lote?'L '+x.lote:''].filter(Boolean).join(' · ');
       const local=[x.bairro,c.nome,x.cidade].filter(Boolean).join(', ');
+      const fmtD=d=>{if(!d)return '—';try{return new Date(d).toLocaleDateString('pt-BR');}catch(e){return '—';}};
+      const dtCad=fmtD(x.created_at||x.criado_em||x.data_cadastro);
+      const dtAtu=fmtD(x.updated_at||x.atualizado_em);
+      // mensagem pronta pro proprietário atualizar o imóvel
+      const msgAtu=encodeURIComponent('Olá'+(p.nome&&p.nome!=='—'?' '+p.nome.split(' ')[0]:'')+'! Gostaria de atualizar as informações sobre o imóvel '+(x.titulo||x.codigo||'')+(ql?' ('+ql+')':'')+'. No nosso sistema o valor está em '+brl(x.preco)+'. Ainda está disponível e com esse mesmo valor?');
+      const btnAtu=telLink?`<a class="brk-ac brk-ac-atu" href="https://wa.me/55${telLink}?text=${msgAtu}" target="_blank" onclick="event.stopPropagation()" title="Pedir atualização ao proprietário via WhatsApp">🔄</a>`:'';
       return`
       <div class="brk" onclick="sIDrw('${x.id}')">
         <div class="brk-foto">${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" alt="${(x.titulo||'').replace(/"/g,'&quot;')}">`:'<span>🏠</span>'}</div>
@@ -3586,12 +3596,14 @@ function rImC(){
               <div class="brk-local-end">${local||'Localização não definida'}${ql?' — '+ql:''}</div>
             </div>
           </div>
+          <div class="brk-datas">📅 Cadastro: ${dtCad} &nbsp;·&nbsp; ✏️ Atualizado: ${dtAtu}</div>
         </div>
         <div class="brk-side">
           <div class="brk-ref-lbl">Referência</div>
           <div class="brk-ref">${x.codigo||x.ref||'—'}</div>
           <div class="brk-status"><span class="tag ${sc[x.status]||'tbl'}">${x.status||'—'}</span></div>
           <div class="brk-acoes">
+            ${btnAtu}
             <button class="brk-ac" onclick="event.stopPropagation();eImov('${x.id}')" title="Editar">✏️</button>
             <button class="brk-ac" onclick="event.stopPropagation();dImov('${x.id}')" title="Excluir">🗑️</button>
           </div>
@@ -5140,7 +5152,8 @@ async function logAtividade(acao, entidade, entidade_id, entidade_nome, detalhes
 const CARR_DEFS={
   lagoa:[['lagoa-1','Pôr do sol na Lagoa'],['lagoa-2','Passeios de lancha'],['lagoa-3','Jet ski'],['lagoa-4','Stand up paddle'],['lagoa-5','Caiaque'],['lagoa-6','Pesca esportiva'],['lagoa-7','Marinas privativas'],['lagoa-8','Natureza preservada'],['lagoa-9','Condomínios na lagoa']],
   mar:[['mar-1','Praia'],['mar-2','Nascer do sol no mar'],['mar-3','Mar azul'],['mar-4','Caminhada na areia'],['mar-5','Surf'],['mar-6','Beach tennis'],['mar-7','Famílias na praia'],['mar-8','Condomínios perto do mar'],['mar-9','Vista aérea'],['mar-10','Calçadão']],
-  cidade:[['cidade-1','Capa — Morar no coração do litoral'],['cidade-2','Centro da cidade'],['cidade-3','Comércio e serviços'],['cidade-4','Condomínio na cidade'],['cidade-5','Ruas arborizadas'],['cidade-6','Praças e lazer'],['cidade-7','Escolas e conveniência'],['cidade-8','Vida urbana no litoral']]
+  cidade:[['cidade-1','Capa — Morar no coração do litoral'],['cidade-2','Centro da cidade'],['cidade-3','Comércio e serviços'],['cidade-4','Condomínio na cidade'],['cidade-5','Ruas arborizadas'],['cidade-6','Praças e lazer'],['cidade-7','Escolas e conveniência'],['cidade-8','Vida urbana no litoral']],
+  turismo:[['turismo-xangri','Xangri-lá (card da página Turismo)'],['turismo-capao','Capão da Canoa (card da página Turismo)'],['turismo-osorio','Osório (card da página Turismo)'],['turismo-maquine','Maquiné (card da página Turismo)']]
 };
 async function carregarLeads(){
   const body=document.getElementById('leads-body');
@@ -5219,7 +5232,7 @@ async function carregarCarrossel(){
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">${cards}</div>
     </div>`;
   }
-  body.innerHTML=grupo('🏞️ Lagoa dos Quadros', CARR_DEFS.lagoa)+grupo('🌊 Mar', CARR_DEFS.mar)+grupo('🏙️ Coração do Litoral (Cidade)', CARR_DEFS.cidade);
+  body.innerHTML=grupo('🏞️ Lagoa dos Quadros', CARR_DEFS.lagoa)+grupo('🌊 Mar', CARR_DEFS.mar)+grupo('🏙️ Coração do Litoral (Cidade)', CARR_DEFS.cidade)+grupo('🗺️ Cidades — Página Turismo', CARR_DEFS.turismo);
 }
 async function salvarFotoCarrossel(slot, input){
   const file=input.files&&input.files[0];
