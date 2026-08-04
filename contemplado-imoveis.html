@@ -754,6 +754,10 @@ const admIcoHtml = (id,sz) => {
   return `<div class="carta-adm-ico" style="width:${sz}px;height:${sz}px;background:${a.cor||'#0c4a6e'};border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center">${a.abrev||'?'}</div>`;
 };
 
+const PER = 24;
+let lista = [];
+let pg = 1;
+
 function filtrar(){
   const vmax=parseInt(document.getElementById('f-vmax').value)||0;
   const parc=parseInt(document.getElementById('f-parc').value)||0;
