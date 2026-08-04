@@ -546,6 +546,35 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
   .brk-side{width:100%;min-width:100%;border-left:0;border-top:1px solid var(--bd);flex-direction:row;justify-content:space-between}
   .brk-row2{flex-direction:column;gap:8px}
 }
+
+/* ── MÓDULO CLIENTES ── */
+.cl-dash{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin-bottom:14px}
+.cl-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:13px 15px;cursor:pointer;transition:.15s}
+.cl-card:hover{border-color:var(--ac);transform:translateY(-1px)}
+.cl-card.on{border-color:var(--ac);box-shadow:0 0 0 2px var(--acd)}
+.cl-card-n{font-size:24px;font-weight:800;color:var(--tx);line-height:1}
+.cl-card-l{font-size:11px;color:var(--t3);margin-top:5px;text-transform:uppercase;letter-spacing:.4px}
+.cl-match{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--gn);background:rgba(34,160,90,.1);padding:3px 8px;border-radius:20px;cursor:pointer;border:none}
+.cl-match:hover{background:rgba(34,160,90,.2)}
+.cl-match.zero{color:var(--t3);background:var(--s2);cursor:default}
+.cl-imp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.cl-imp-col{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px}
+.cl-drop{border:2px dashed var(--bd);border-radius:var(--r);padding:26px 16px;text-align:center;cursor:pointer;transition:.15s;color:var(--t2)}
+.cl-drop:hover,.cl-drop.drag{border-color:var(--ac);background:var(--acd)}
+.cl-drop-ic{font-size:34px;margin-bottom:8px}
+.cl-imp-preview{max-height:440px;overflow-y:auto;border:1px solid var(--bd);border-radius:8px;padding:8px}
+.cl-imp-item{border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:12.5px;background:var(--s2)}
+.cl-imp-item strong{color:var(--tx)}
+.cl-imp-item .cl-imp-meta{color:var(--t2);font-size:11.5px;margin-top:3px}
+.tl-cli{list-style:none;padding:0;margin:0}
+.match-im{display:flex;gap:11px;align-items:center;border:1px solid var(--bd);border-radius:8px;padding:9px 11px;margin-bottom:8px}
+.match-im-thumb{width:52px;height:52px;border-radius:7px;object-fit:cover;flex-shrink:0;background:var(--s2)}
+.match-im-info{flex:1;min-width:0}
+.match-im-t{font-weight:700;font-size:13px;color:var(--tx)}
+.match-im-s{font-size:11.5px;color:var(--t2);margin-top:2px}
+.match-im-p{font-weight:800;color:var(--gn);font-size:13px;white-space:nowrap}
+@media(max-width:900px){.cl-dash{grid-template-columns:repeat(3,1fr)}.cl-imp-wrap{grid-template-columns:1fr}}
+@media(max-width:560px){.cl-dash{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -939,6 +968,7 @@ if(_savedToken && _savedUser){
   <button class="ni" onclick="go('condominios',this)" data-p="condominios"><span class="ic">🏘</span>Condomínios<span class="nb a" id="nb-c">0</span></button>
   <button class="ni" onclick="go('imoveis',this)" data-p="imoveis"><span class="ic">🏠</span>Imóveis<span class="nb a" id="nb-i">0</span></button>
   <button class="ni" onclick="go('proprietarios',this)" data-p="proprietarios"><span class="ic">👤</span>Proprietários<span class="nb a" id="nb-p">0</span></button>
+  <button class="ni" onclick="go('clientes',this)" data-p="clientes"><span class="ic">🧑‍💼</span>Clientes<span class="nb g" id="nb-cl">0</span></button>
   <button class="ni" onclick="go('leads',this)" data-p="leads"><span class="ic">📨</span>Leads do Site<span class="nb g" id="nb-ld">0</span></button>
   <button class="ni" onclick="go('leadsfotos',this)" data-p="leadsfotos"><span class="ic">🔓</span>Leads Fotos<span class="nb g" id="nb-lf">0</span></button>
   <button class="ni" onclick="go('leadscampanha',this)" data-p="leadscampanha"><span class="ic">🎯</span>Leads Campanha<span class="nb g" id="nb-lc">0</span></button>
@@ -1079,6 +1109,67 @@ if(_savedToken && _savedUser){
     </div>
     <table><thead><tr><th>Proprietário</th><th>Tipo</th><th>CPF/CNPJ</th><th>Contato</th><th>Imóveis</th><th>Último Contato</th><th>Ações</th></tr></thead>
     <tbody id="p-tbody"></tbody></table>
+  </div>
+</div>
+
+<!-- CLIENTES -->
+<div class="panel" id="panel-clientes">
+  <div class="ph">
+    <div><div class="pht">Clientes</div><div class="phs" id="cl-sub">Carteira de clientes e interesses</div></div>
+    <div class="phr">
+      <button class="btn bg" onclick="go('clientes-import',document.querySelector('[data-p=clientes]'))">📥 Importação</button>
+      <button class="btn bp" onclick="clNovo()">+ Novo Cliente</button>
+    </div>
+  </div>
+  <!-- Dashboard de clientes -->
+  <div class="cl-dash" id="cl-dash"></div>
+  <div class="tw">
+    <div class="ttb">
+      <input class="sr" id="cl-srch" placeholder="🔍 Buscar por nome, telefone, e-mail..." oninput="rClientes()">
+      <select class="fs" id="cl-fst" onchange="rClientes()">
+        <option value="">Todos os status</option>
+        <option value="Novo">Novo</option>
+        <option value="Em Atendimento">Em Atendimento</option>
+        <option value="Visita">Visita marcada</option>
+        <option value="Proposta">Proposta</option>
+        <option value="Fechado">Fechado</option>
+        <option value="Perdido">Perdido</option>
+      </select>
+      <select class="fs" id="cl-fci" onchange="rClientes()"><option value="">Todas as cidades</option></select>
+      <select class="fs" id="cl-fco" onchange="rClientes()"><option value="">Todos os corretores</option></select>
+      <span style="margin-left:auto;font-size:11px;color:var(--t3)" id="cl-cnt"></span>
+    </div>
+    <table><thead><tr><th>Cliente</th><th>Contato</th><th>Interesse</th><th>Faixa de preço</th><th>Compatíveis</th><th>Status</th><th>Ações</th></tr></thead>
+    <tbody id="cl-tbody"></tbody></table>
+  </div>
+</div>
+
+<!-- CLIENTES › IMPORTAÇÃO -->
+<div class="panel" id="panel-clientes-import">
+  <div class="ph">
+    <div><div class="pht">Clientes › Importação</div><div class="phs">Cole texto ou envie planilha, CSV, TXT, PDF ou DOCX — a IA interpreta e preenche</div></div>
+    <div class="phr"><button class="btn bg" onclick="go('clientes',document.querySelector('[data-p=clientes]'))">← Voltar aos Clientes</button></div>
+  </div>
+  <div class="cl-imp-wrap">
+    <div class="cl-imp-col">
+      <div class="fsec">1. Cole o texto ou envie um arquivo</div>
+      <div class="cl-drop" id="cl-drop" onclick="document.getElementById('cl-file').click()">
+        <input type="file" id="cl-file" accept=".xlsx,.xls,.csv,.txt,.pdf,.docx" style="display:none" onchange="clImpFile(this.files[0])">
+        <div class="cl-drop-ic">📄</div>
+        <div><strong>Clique para enviar</strong> ou arraste um arquivo aqui</div>
+        <div style="font-size:11px;color:var(--t3);margin-top:4px">Excel, CSV, TXT, PDF ou DOCX</div>
+        <div id="cl-file-name" style="font-size:12px;color:var(--ac);margin-top:6px;font-weight:600"></div>
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--t3);margin:8px 0">— ou —</div>
+      <textarea class="fta" id="cl-imp-txt" rows="10" placeholder="Cole aqui os dados dos clientes. Ex:&#10;João Silva, (51) 99999-0000, joao@email.com, Xangri-lá, interesse casa 4 dorm até 2 milhões&#10;Maria Souza / 51 98888-1111 / apto Capão da Canoa 3 dormitórios 800mil"></textarea>
+      <button class="btn bp" style="width:100%;margin-top:10px" id="cl-imp-btn" onclick="clImpInterpretar()">🤖 Interpretar com IA</button>
+      <div id="cl-imp-status" style="font-size:12px;margin-top:8px;color:var(--t3)"></div>
+    </div>
+    <div class="cl-imp-col">
+      <div class="fsec">2. Revise os clientes detectados</div>
+      <div id="cl-imp-preview" class="cl-imp-preview"><div style="color:var(--t3);font-size:12px;padding:20px;text-align:center">Os clientes detectados aparecerão aqui para conferência antes de salvar.</div></div>
+      <button class="btn bp" style="width:100%;margin-top:10px;display:none" id="cl-imp-save" onclick="clImpSalvar()">💾 Salvar todos os clientes</button>
+    </div>
   </div>
 </div>
 
@@ -2740,6 +2831,76 @@ if(_savedToken && _savedUser){
   </div>
 </div></div>
 
+<!-- MODAL CLIENTE -->
+<div class="ov" id="cli-mo">
+<div class="mo">
+  <div class="mh"><div class="mt" id="clm-title">Novo Cliente</div><button class="mx" onclick="cMo('cli-mo')">✕</button></div>
+  <div class="mb">
+    <input type="hidden" id="clm-id">
+    <div class="fsec">Dados do Cliente</div>
+    <div class="fgg">
+      <div class="fg fgf"><label class="fl">Nome *</label><input class="fi" id="clm-nome" placeholder="Nome completo"></div>
+      <div class="fg"><label class="fl">Telefone</label><input class="fi" id="clm-tel" placeholder="(51) 99999-9999"></div>
+      <div class="fg"><label class="fl">WhatsApp</label><input class="fi" id="clm-wpp" placeholder="(51) 99999-9999"></div>
+      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="clm-email" type="email" placeholder="email@exemplo.com"></div>
+      <div class="fg"><label class="fl">Cidade</label><input class="fi" id="clm-cidade" placeholder="Xangri-lá"></div>
+      <div class="fg"><label class="fl">Bairro</label><input class="fi" id="clm-bairro" placeholder="Centro"></div>
+      <div class="fg"><label class="fl">Origem</label>
+        <select class="fse" id="clm-origem"><option value="">—</option><option>Site</option><option>Indicação</option><option>WhatsApp</option><option>Portal Imobiliário</option><option>Redes Sociais</option><option>Anúncio</option><option>Outro</option></select></div>
+      <div class="fg"><label class="fl">Corretor responsável</label><select class="fse" id="clm-corretor"><option value="">—</option></select></div>
+      <div class="fg"><label class="fl">Status</label>
+        <select class="fse" id="clm-status"><option>Novo</option><option>Em Atendimento</option><option>Visita</option><option>Proposta</option><option>Fechado</option><option>Perdido</option></select></div>
+    </div>
+    <div class="fsec">Interesse (usado no match automático)</div>
+    <div class="fgg">
+      <div class="fg"><label class="fl">Tipo de imóvel</label>
+        <select class="fse" id="clm-itipo"><option value="">Qualquer</option><option>Casa</option><option>Apartamento</option><option>Cobertura</option><option>Terreno</option><option>Sobrado</option><option>Sala Comercial</option><option>Loja</option></select></div>
+      <div class="fg"><label class="fl">Cidade de interesse</label><input class="fi" id="clm-icidade" placeholder="Xangri-lá"></div>
+      <div class="fg"><label class="fl">Bairro de interesse</label><input class="fi" id="clm-ibairro" placeholder="Opcional"></div>
+      <div class="fg"><label class="fl">Condomínio de interesse</label><select class="fse" id="clm-icond"><option value="">Qualquer</option></select></div>
+      <div class="fg"><label class="fl">Dormitórios (mín.)</label><input class="fi" id="clm-dorms" type="number" min="0" placeholder="Ex: 4"></div>
+      <div class="fg"><label class="fl">Preço mínimo (R$)</label><input class="fi" id="clm-pmin" type="number" placeholder="0"></div>
+      <div class="fg"><label class="fl">Preço máximo / até (R$)</label><input class="fi" id="clm-pmax" type="number" placeholder="Ex: 2000000"></div>
+    </div>
+    <div class="fsec">Observações</div>
+    <div class="fg"><textarea class="fta" id="clm-obs" rows="3" placeholder="Preferências, detalhes do atendimento..."></textarea></div>
+  </div>
+  <div class="mf">
+    <button class="btn bg" onclick="cMo('cli-mo')">Cancelar</button>
+    <button class="btn bp" onclick="savCliente()">💾 Salvar Cliente</button>
+  </div>
+</div></div>
+
+<!-- MODAL TIMELINE CLIENTE -->
+<div class="ov" id="clihist-mo">
+<div class="mo mo-sm">
+  <div class="mh"><div class="mt">Registrar na Timeline</div><button class="mx" onclick="cMo('clihist-mo')">✕</button></div>
+  <div class="mb">
+    <input type="hidden" id="chm-cid">
+    <div class="fgg">
+      <div class="fg"><label class="fl">Tipo</label>
+        <select class="fse" id="chm-tipo">
+          <option>📞 Contato realizado</option><option>💬 Mensagem</option><option>🏠 Visita</option>
+          <option>📤 Imóveis enviados</option><option>🤝 Proposta</option><option>📝 Observação</option>
+        </select></div>
+      <div class="fg"><label class="fl">Data</label><input class="fi" id="chm-data" type="date"></div>
+      <div class="fg fgf"><label class="fl">Anotação *</label><textarea class="fta" id="chm-nota" rows="4" placeholder="O que aconteceu..."></textarea></div>
+    </div>
+  </div>
+  <div class="mf">
+    <button class="btn bg" onclick="cMo('clihist-mo')">Cancelar</button>
+    <button class="btn bp" onclick="savCliHist()">💾 Registrar</button>
+  </div>
+</div></div>
+
+<!-- MODAL MATCH (imóveis compatíveis / clientes compatíveis) -->
+<div class="ov" id="match-mo">
+<div class="mo">
+  <div class="mh"><div class="mt" id="match-title">Imóveis compatíveis</div><button class="mx" onclick="cMo('match-mo')">✕</button></div>
+  <div class="mb" id="match-body"></div>
+  <div class="mf" id="match-foot"></div>
+</div></div>
+
 <script>
 // v3-supabase-20260526
 
@@ -2854,18 +3015,20 @@ const DB = {
   get pr(){ return (this._cache.pr?.data || []).map(p=>p.telefone!==undefined&&p.whatsapp!==undefined?p:Object.assign({},p,{telefone:p.telefone!==undefined?p.telefone:p.tel,whatsapp:p.whatsapp!==undefined?p.whatsapp:p.wpp})); },
   get ne(){ return this._cache.ne?.data || []; },
   get ev(){ return this._cache.ev?.data || []; },
+  get cl(){ return this._cache.cl?.data || []; },
 };
 
 // Carrega todos os dados na inicialização
 async function loadAllData(){
   showLoading(true);
   try {
-    const [co, im, pr, ne, ev] = await Promise.all([
+    const [co, im, pr, ne, ev, cl] = await Promise.all([
       sb.get('condominios', '?order=nome.asc'),
       sb.get('imoveis', '?order=created_at.asc'),
       sb.get('proprietarios', '?order=nome.asc'),
       sb.get('negociacoes', '?order=created_at.desc'),
       sb.get('eventos', '?order=data.asc'),
+      sb.get('clientes', '?order=created_at.desc').catch(()=>[]), // tabela nova — não quebra se ainda não existir
     ]);
     DB._cache = {
       co: { data: co, ts: Date.now() },
@@ -2873,6 +3036,7 @@ async function loadAllData(){
       pr: { data: pr, ts: Date.now() },
       ne: { data: ne, ts: Date.now() },
       ev: { data: ev, ts: Date.now() },
+      cl: { data: cl, ts: Date.now() },
     };
     upB(); buildDash();
     // Atualiza o painel atual se já estiver em condomínios
@@ -2916,7 +3080,7 @@ function go(id,btn){
   document.getElementById('panel-'+id).classList.add('on');
   if(btn)btn.classList.add('on');
   const h={dashboard:buildDash,condominios:rCond,imoveis:()=>{pCS();rImV()},
-    proprietarios:rProp,negociacoes:()=>{pIS();rKb()},
+    proprietarios:rProp,clientes:buildClientes,'clientes-import':clImpInit,negociacoes:()=>{pIS();rKb()},
     agenda:()=>{pIS();rCal()},relatorios:buildRel,editor:edLoad,destaques:buildDestaques,fotos:buildFotos,blog:buildBlog,lancamentos:buildLancamentos,contempladas:buildContempladas,admins:buildAdmins,usuarios:buildUsuarios,atividades:buildAtividades,capas:carregarCapas,carrossel:carregarCarrossel,leads:carregarLeads,leadsfotos:carregarLeadsFotos,leadscampanha:carregarLeadsCampanha};
   if(h[id])h[id]();
   upB();
@@ -2925,6 +3089,7 @@ function upB(){
   const c=DB.co.length,i=DB.im.length,p=DB.pr.length,n=DB.ne.length,ag=DB.ev.filter(e=>e.data>=tod()).length;
   ['tb-c','tb-i','tb-p','tb-n'].forEach((id,x)=>{document.getElementById(id).textContent=[c,i,p,n][x]});
   ['nb-c','nb-i','nb-p','nb-n','nb-ag'].forEach((id,x)=>{document.getElementById(id).textContent=[c,i,p,n,ag][x]});
+  const clBadge=document.getElementById('nb-cl'); if(clBadge) clBadge.textContent=DB.cl.length;
 }
 
 // ── DASHBOARD ──
@@ -3836,6 +4001,8 @@ async function savImov(){
     DB._cache.im = {data:fresh, ts:Date.now()};
     cMo('imov-mo');rImV();upB();
     toast(eid?'Imóvel atualizado!':'Imóvel cadastrado com '+iF.length+' foto(s)!','success');
+    // Match automático: avisa se há clientes com interesse compatível
+    if(typeof clAvisarMatchNovoImovel==='function'){ const _imNovo=DB.im.find(x=>x.id===o.id); clAvisarMatchNovoImovel(_imNovo); }
   }catch(e){toast('Erro ao salvar: '+e.message,'error');console.error(e);}
   finally{if(btn){btn.disabled=false;btn.textContent='💾 Salvar Imóvel';}}
 }
@@ -8525,6 +8692,539 @@ async function lcStatus(id, novo){
     if(typeof toast==='function') toast('Status atualizado','success');
     rLeadsCampanha();
   }catch(e){ if(typeof toast==='function') toast('Erro ao atualizar','error'); }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// ── MÓDULO CLIENTES ──
+// Integrado ao CRM existente: usa sb (Supabase), DB (cache), oMo/cMo,
+// toast, uid, fd, tod, esc — todos já definidos no CRM.
+// ═══════════════════════════════════════════════════════════════════
+
+// helper de escape local (o esc global existe só dentro dos geradores)
+function clEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function clNum(v){ if(v==null||v==='')return null; const n=Number(String(v).replace(/[^\d.-]/g,'')); return isNaN(n)?null:n; }
+function clBRL(v){ return v==null?'—':'R$ '+Number(v).toLocaleString('pt-BR'); }
+
+// cidade de um imóvel (vem do condomínio ou do endereço próprio)
+function imCidade(im){
+  const co=DB.co.find(c=>c.id===(im.cond_id||im.condId));
+  return (co&&co.cidade)||im.cidade_end||im.cidade||'';
+}
+function imDorms(im){ return +(im.quartos||im.dormitorios||0); }
+function imPreco(im){ return +(im.preco||0); }
+
+// ── MATCH ENGINE ──────────────────────────────────────────────────
+// Dado um cliente, retorna os imóveis compatíveis já cadastrados.
+function matchImoveis(cli){
+  const norm=s=>(s||'').toString().trim().toLowerCase();
+  return DB.im.filter(im=>{
+    // só imóveis publicáveis/disponíveis entram no match
+    if(im.status && ['Vendido','Inativo','Arquivado'].includes(im.status)) return false;
+    // tipo
+    if(cli.interesse_tipo && norm(im.tipo)!==norm(cli.interesse_tipo)) return false;
+    // cidade de interesse
+    if(cli.interesse_cidade && norm(imCidade(im))!==norm(cli.interesse_cidade)) return false;
+    // bairro (se informado, compara com bairro do imóvel)
+    if(cli.interesse_bairro){
+      const bair=norm(im.bairro_end||im.bairro||'');
+      if(bair && norm(cli.interesse_bairro)!==bair) return false;
+    }
+    // condomínio de interesse
+    if(cli.interesse_cond && (im.cond_id||im.condId)!==cli.interesse_cond) return false;
+    // dormitórios mínimos
+    if(cli.dorms_min && imDorms(im) < +cli.dorms_min) return false;
+    // faixa de preço
+    const preco=imPreco(im);
+    if(cli.preco_max && preco>0 && preco > +cli.preco_max) return false;
+    if(cli.preco_min && preco>0 && preco < +cli.preco_min) return false;
+    return true;
+  }).sort((a,b)=>imPreco(a)-imPreco(b));
+}
+
+// Dado um imóvel novo, retorna os clientes com interesse compatível.
+function matchClientes(im){
+  return DB.cl.filter(cli=>{
+    if(cli.status==='Fechado'||cli.status==='Perdido') return false;
+    const ims=matchImoveis(cli);
+    return ims.some(x=>x.id===im.id);
+  });
+}
+
+// ── DASHBOARD DE CLIENTES ─────────────────────────────────────────
+function buildClientes(){
+  clPopulaFiltros();
+  clBuildDash();
+  rClientes();
+}
+function clBuildDash(){
+  const cl=DB.cl;
+  const hoje=tod();
+  const semAtend=cl.filter(c=>!c.historico||c.historico.length===0).length;
+  const comVisita=cl.filter(c=>c.status==='Visita').length;
+  const propostas=cl.filter(c=>c.status==='Proposta').length;
+  const fechados=cl.filter(c=>c.status==='Fechado').length;
+  const novosHoje=cl.filter(c=>(c.created_at||'').slice(0,10)===hoje).length;
+  const cards=[
+    {n:cl.length,l:'Clientes',f:''},
+    {n:novosHoje,l:'Novos hoje',f:''},
+    {n:semAtend,l:'Sem atendimento',f:'Novo'},
+    {n:comVisita,l:'Visita marcada',f:'Visita'},
+    {n:propostas,l:'Propostas',f:'Proposta'},
+    {n:fechados,l:'Fechados',f:'Fechado'},
+  ];
+  document.getElementById('cl-dash').innerHTML=cards.map(c=>
+    `<div class="cl-card" onclick="clFiltroRapido('${c.f}')"><div class="cl-card-n">${c.n}</div><div class="cl-card-l">${c.l}</div></div>`
+  ).join('');
+}
+function clFiltroRapido(status){
+  document.getElementById('cl-fst').value=status||'';
+  rClientes();
+}
+function clPopulaFiltros(){
+  // cidades (das cidades de interesse dos clientes + cidades dos condomínios)
+  const cidades=[...new Set([...DB.cl.map(c=>c.interesse_cidade).filter(Boolean),...DB.co.map(c=>c.cidade).filter(Boolean)])].sort();
+  const selCi=document.getElementById('cl-fci');
+  if(selCi) selCi.innerHTML='<option value="">Todas as cidades</option>'+cidades.map(c=>`<option>${clEsc(c)}</option>`).join('');
+  // corretores (dos clientes)
+  const corr=[...new Set(DB.cl.map(c=>c.corretor).filter(Boolean))].sort();
+  const selCo=document.getElementById('cl-fco');
+  if(selCo) selCo.innerHTML='<option value="">Todos os corretores</option>'+corr.map(c=>`<option>${clEsc(c)}</option>`).join('');
+}
+
+// ── LISTA ─────────────────────────────────────────────────────────
+function rClientes(){
+  const s=(document.getElementById('cl-srch').value||'').toLowerCase();
+  const fst=document.getElementById('cl-fst').value;
+  const fci=document.getElementById('cl-fci').value;
+  const fco=document.getElementById('cl-fco').value;
+  const data=DB.cl.filter(c=>{
+    if(fst && c.status!==fst) return false;
+    if(fci && c.interesse_cidade!==fci) return false;
+    if(fco && c.corretor!==fco) return false;
+    if(s){
+      const hay=[c.nome,c.telefone,c.whatsapp,c.email,c.interesse_cidade,c.interesse_tipo].join(' ').toLowerCase();
+      if(!hay.includes(s)) return false;
+    }
+    return true;
+  });
+  document.getElementById('cl-sub').textContent=`${DB.cl.length} cliente${DB.cl.length!==1?'s':''} na carteira`;
+  document.getElementById('cl-cnt').textContent=data.length+' resultado'+(data.length!==1?'s':'');
+  const stColor={'Novo':'tbl','Em Atendimento':'tgo','Visita':'tpu','Proposta':'tgo','Fechado':'tgn','Perdido':'trd'};
+  document.getElementById('cl-tbody').innerHTML=data.length===0
+    ? `<tr><td colspan="7"><div class="te"><div class="te-ic">🧑‍💼</div><h3>Nenhum cliente</h3><p>Cadastre ou importe seus clientes.</p></div></td></tr>`
+    : data.map(c=>{
+      const ini=(c.nome||'?').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+      const nMatch=matchImoveis(c).length;
+      const faixa=(c.preco_min||c.preco_max)
+        ? (c.preco_min?clBRL(c.preco_min):'')+(c.preco_min&&c.preco_max?' – ':'')+(c.preco_max?('até '+clBRL(c.preco_max)):'')
+        : '—';
+      const interesse=[c.interesse_tipo,c.interesse_cidade].filter(Boolean).join(' · ')||'—';
+      return `<tr onclick="clDrawer('${c.id}')">
+        <td><div style="display:flex;align-items:center;gap:9px">
+          <div style="width:30px;height:30px;border-radius:50%;background:var(--acd);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${ini}</div>
+          <div><div class="cm">${clEsc(c.nome)}</div><div class="cs">${clEsc(c.interesse_cidade||c.cidade||'—')}</div></div>
+        </div></td>
+        <td><div style="font-size:12.5px">${clEsc(c.telefone||c.whatsapp||'—')}</div>${c.email?`<div style="font-size:11px;color:var(--t3)">${clEsc(c.email)}</div>`:''}</td>
+        <td><span style="font-size:12px;color:var(--t2)">${clEsc(interesse)}</span>${c.dorms_min?`<div style="font-size:11px;color:var(--t3)">🛏 ${c.dorms_min}+ dorm</div>`:''}</td>
+        <td><span style="font-size:12px;color:var(--t2)">${faixa}</span></td>
+        <td>${nMatch>0?`<button class="cl-match" onclick="event.stopPropagation();clVerMatch('${c.id}')">🎯 ${nMatch} imóve${nMatch!==1?'is':'l'}</button>`:'<span class="cl-match zero">0</span>'}</td>
+        <td><span class="tag ${stColor[c.status]||'tbl'}">${clEsc(c.status||'Novo')}</span></td>
+        <td onclick="event.stopPropagation()"><div class="acts">
+          <button class="btn bg bxs" onclick="clAddTimeline('${c.id}')">+ Timeline</button>
+          <button class="btn bg bxs" onclick="clEdit('${c.id}')">✏</button>
+          <button class="btn bd2b bxs" onclick="clDel('${c.id}')">🗑</button>
+        </div></td>
+      </tr>`;
+    }).join('');
+}
+
+// ── NOVO / EDITAR ─────────────────────────────────────────────────
+async function clPreencheSelects(){
+  // corretores (usuarios) no select do modal
+  const sel=document.getElementById('clm-corretor');
+  if(sel && sel.options.length<=1){
+    try{
+      const users=await sb.get('usuarios','?order=nome.asc');
+      sel.innerHTML='<option value="">—</option>'+users.map(u=>`<option value="${clEsc(u.nome)}">${clEsc(u.nome)}</option>`).join('');
+    }catch(e){/* usa livre se falhar */}
+  }
+  // condomínios de interesse
+  const selC=document.getElementById('clm-icond');
+  if(selC) selC.innerHTML='<option value="">Qualquer</option>'+DB.co.map(c=>`<option value="${c.id}">${clEsc(c.nome)} — ${clEsc(c.cidade||'')}</option>`).join('');
+}
+async function clNovo(){
+  document.getElementById('clm-id').value='';
+  document.getElementById('clm-title').textContent='Novo Cliente';
+  ['clm-nome','clm-tel','clm-wpp','clm-email','clm-cidade','clm-bairro','clm-icidade','clm-ibairro','clm-dorms','clm-pmin','clm-pmax','clm-obs'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  document.getElementById('clm-origem').value='';
+  document.getElementById('clm-corretor').value='';
+  document.getElementById('clm-status').value='Novo';
+  document.getElementById('clm-itipo').value='';
+  await clPreencheSelects();
+  document.getElementById('clm-icond').value='';
+  oMo('cli-mo');
+}
+async function clEdit(id){
+  const c=DB.cl.find(x=>x.id===id);if(!c)return;
+  await clPreencheSelects();
+  document.getElementById('clm-id').value=c.id;
+  document.getElementById('clm-title').textContent='Editar Cliente';
+  const sv=(id,v)=>{const e=document.getElementById(id);if(e)e.value=v==null?'':v;};
+  sv('clm-nome',c.nome);sv('clm-tel',c.telefone);sv('clm-wpp',c.whatsapp);sv('clm-email',c.email);
+  sv('clm-cidade',c.cidade);sv('clm-bairro',c.bairro);sv('clm-origem',c.origem);sv('clm-corretor',c.corretor);
+  sv('clm-status',c.status||'Novo');sv('clm-itipo',c.interesse_tipo);sv('clm-icidade',c.interesse_cidade);
+  sv('clm-ibairro',c.interesse_bairro);sv('clm-icond',c.interesse_cond);sv('clm-dorms',c.dorms_min);
+  sv('clm-pmin',c.preco_min);sv('clm-pmax',c.preco_max);sv('clm-obs',c.observacoes);
+  oMo('cli-mo');
+}
+async function savCliente(){
+  const gv=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+  const nome=gv('clm-nome');
+  if(!nome){toast('Informe o nome do cliente','error');return;}
+  const eid=document.getElementById('clm-id').value;
+  const o={
+    id: eid||uid(),
+    nome, telefone:gv('clm-tel')||null, whatsapp:gv('clm-wpp')||null, email:gv('clm-email')||null,
+    cidade:gv('clm-cidade')||null, bairro:gv('clm-bairro')||null, origem:gv('clm-origem')||null,
+    corretor:gv('clm-corretor')||null, observacoes:gv('clm-obs')||null,
+    interesse_tipo:gv('clm-itipo')||null, interesse_cidade:gv('clm-icidade')||null,
+    interesse_bairro:gv('clm-ibairro')||null, interesse_cond:gv('clm-icond')||null,
+    dorms_min:clNum(gv('clm-dorms')), preco_min:clNum(gv('clm-pmin')), preco_max:clNum(gv('clm-pmax')),
+    status:gv('clm-status')||'Novo',
+    historico: eid?((DB.cl.find(c=>c.id===eid)||{}).historico||[]):[],
+    imoveis_enviados: eid?((DB.cl.find(c=>c.id===eid)||{}).imoveis_enviados||[]):[],
+    updated_at:new Date().toISOString()
+  };
+  if(!eid) o.created_at=new Date().toISOString();
+  try{
+    await sb.upsert('clientes',o);
+    await clReload();
+    cMo('cli-mo'); buildClientes(); upB();
+    toast(eid?'Cliente atualizado!':'Cliente cadastrado!','success');
+  }catch(e){ toast('Erro ao salvar: '+e.message,'error'); }
+}
+async function clDel(id){
+  const c=DB.cl.find(x=>x.id===id);if(!c)return;
+  if(!confirm(`Excluir o cliente "${c.nome}"? Esta ação não pode ser desfeita.`))return;
+  try{ await sb.delete('clientes',id); await clReload(); buildClientes(); upB(); toast('Cliente excluído','success'); }
+  catch(e){ toast('Erro ao excluir: '+e.message,'error'); }
+}
+async function clReload(){
+  const fresh=await sb.get('clientes','?order=created_at.desc').catch(()=>DB.cl);
+  DB._cache.cl={data:fresh,ts:Date.now()};
+}
+
+// ── TIMELINE ──────────────────────────────────────────────────────
+function clAddTimeline(id){
+  document.getElementById('chm-cid').value=id;
+  document.getElementById('chm-data').value=tod();
+  document.getElementById('chm-nota').value='';
+  document.getElementById('chm-tipo').value='📞 Contato realizado';
+  oMo('clihist-mo');
+}
+async function savCliHist(){
+  const id=document.getElementById('chm-cid').value;
+  const c=DB.cl.find(x=>x.id===id);if(!c)return;
+  const nota=document.getElementById('chm-nota').value.trim();
+  if(!nota){toast('Escreva uma anotação','error');return;}
+  const data=document.getElementById('chm-data').value||tod();
+  if(!c.historico)c.historico=[];
+  c.historico.push({id:uid(),tipo:document.getElementById('chm-tipo').value,data,nota,criadoEm:Date.now()});
+  try{
+    await sb.patch('clientes',id,{historico:c.historico,updated_at:new Date().toISOString()});
+    cMo('clihist-mo');
+    // se o drawer estiver aberto, atualiza
+    if(document.getElementById('cli-drawer')?.classList.contains('op')) clDrawer(id);
+    rClientes();
+    toast('Registrado na timeline!','success');
+  }catch(e){toast('Erro: '+e.message,'error');}
+}
+
+// ── DRAWER (ficha do cliente + timeline + imóveis compatíveis) ─────
+function clDrawer(id){
+  const c=DB.cl.find(x=>x.id===id);if(!c)return;
+  const ims=matchImoveis(c);
+  const ini=(c.nome||'?').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  const linhas=[
+    ['📱 Telefone',c.telefone],['💬 WhatsApp',c.whatsapp],['📧 E-mail',c.email],
+    ['📍 Cidade',c.cidade],['🏘 Bairro',c.bairro],['🔗 Origem',c.origem],['👔 Corretor',c.corretor],
+  ].filter(l=>l[1]);
+  const faixa=(c.preco_min||c.preco_max)?((c.preco_min?clBRL(c.preco_min):'')+(c.preco_min&&c.preco_max?' – ':'')+(c.preco_max?('até '+clBRL(c.preco_max)):'')):'—';
+  const wpp=(c.whatsapp||c.telefone||'').replace(/\D/g,'');
+  let el=document.getElementById('cli-drawer');
+  if(!el){ el=document.createElement('div'); el.id='cli-drawer'; el.className='ov'; document.body.appendChild(el); }
+  el.innerHTML=`<div class="drw">
+    <div class="mh"><div style="display:flex;align-items:center;gap:10px">
+      <div style="width:38px;height:38px;border-radius:50%;background:var(--acd);color:var(--ac);display:flex;align-items:center;justify-content:center;font-weight:700">${ini}</div>
+      <div><div class="mt">${clEsc(c.nome)}</div><div style="font-size:11px;color:var(--t3)">${clEsc(c.status||'Novo')} · ${ims.length} imóvel(is) compatível(is)</div></div>
+    </div><button class="mx" onclick="cMo('cli-drawer')">✕</button></div>
+    <div class="mb">
+      <div class="acts" style="margin-bottom:12px">
+        ${wpp?`<a class="btn bg bxs" href="https://wa.me/55${wpp}" target="_blank">💬 WhatsApp</a>`:''}
+        ${c.email?`<a class="btn bg bxs" href="mailto:${clEsc(c.email)}">📧 E-mail</a>`:''}
+        <button class="btn bg bxs" onclick="clAddTimeline('${c.id}')">+ Timeline</button>
+        <button class="btn bg bxs" onclick="clEdit('${c.id}')">✏ Editar</button>
+      </div>
+      <div class="fsec">Contato</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12.5px;margin-bottom:12px">
+        ${linhas.map(l=>`<div><span style="color:var(--t3)">${l[0]}:</span> ${clEsc(l[1])}</div>`).join('')||'<div style="color:var(--t3)">Sem dados de contato</div>'}
+      </div>
+      <div class="fsec">Interesse</div>
+      <div style="font-size:12.5px;margin-bottom:4px">${clEsc([c.interesse_tipo,c.interesse_cidade,c.interesse_bairro].filter(Boolean).join(' · ')||'Não especificado')}</div>
+      <div style="font-size:12.5px;color:var(--t2);margin-bottom:12px">${c.dorms_min?('🛏 '+c.dorms_min+'+ dormitórios · '):''}Faixa: ${faixa}</div>
+      ${c.observacoes?`<div class="fsec">Observações</div><div style="font-size:12.5px;color:var(--t2);margin-bottom:12px">${clEsc(c.observacoes)}</div>`:''}
+      <div class="fsec" style="display:flex;justify-content:space-between;align-items:center">
+        <span>🎯 Imóveis compatíveis (${ims.length})</span>
+        ${ims.length?`<button class="btn bp bxs" onclick="clEnviarSelecao('${c.id}')">📤 Enviar</button>`:''}
+      </div>
+      <div id="cli-drw-matches">${ims.length?ims.slice(0,12).map(im=>clMatchRow(im,c.id)).join(''):'<div style="color:var(--t3);font-size:12px;padding:6px">Nenhum imóvel compatível no momento. O sistema avisará quando um imóvel do perfil for cadastrado.</div>'}</div>
+      <div class="fsec" style="margin-top:14px">📋 Timeline</div>
+      ${(c.historico||[]).length===0?'<div style="color:var(--t3);font-size:12px;padding:6px">Nenhum registro ainda</div>'
+        :'<ul class="tl-cli tl">'+[...(c.historico||[])].reverse().map(h=>`<li class="tli"><div class="tld">${fd(h.data)}</div><div class="tlt"><strong>${clEsc(h.tipo)}</strong><br>${clEsc(h.nota)}</div></li>`).join('')+'</ul>'}
+    </div>
+  </div>`;
+  oMo('cli-drawer');
+}
+function clMatchRow(im,cid){
+  const co=DB.co.find(c=>c.id===(im.cond_id||im.condId));
+  const foto=(im.fotos&&im.fotos[0])||(co&&co.fotos&&co.fotos[0])||'';
+  const titulo=im.titulo||im.codigo||(im.tipo||'Imóvel');
+  const sub=[im.tipo,imCidade(im),imDorms(im)?imDorms(im)+' dorm':''].filter(Boolean).join(' · ');
+  return `<div class="match-im">
+    ${foto?`<img class="match-im-thumb" src="${clEsc(foto)}" loading="lazy">`:'<div class="match-im-thumb"></div>'}
+    <div class="match-im-info"><div class="match-im-t">${clEsc(titulo)}</div><div class="match-im-s">${clEsc(sub)}${co?' · '+clEsc(co.nome):''}</div></div>
+    <div class="match-im-p">${clBRL(imPreco(im)||null)}</div>
+  </div>`;
+}
+// Ver match a partir da lista (abre modal)
+function clVerMatch(id){
+  const c=DB.cl.find(x=>x.id===id);if(!c)return;
+  const ims=matchImoveis(c);
+  document.getElementById('match-title').textContent=`🎯 ${ims.length} imóvel(is) compatível(is) — ${c.nome}`;
+  document.getElementById('match-body').innerHTML=ims.map(im=>clMatchRow(im,id)).join('')||'<div style="color:var(--t3)">Nenhum imóvel compatível.</div>';
+  document.getElementById('match-foot').innerHTML=`<button class="btn bg" onclick="cMo('match-mo')">Fechar</button>${ims.length?`<button class="btn bp" onclick="cMo('match-mo');clEnviarSelecao('${id}')">📤 Enviar ao cliente</button>`:''}`;
+  oMo('match-mo');
+}
+// Enviar imóveis compatíveis ao cliente via WhatsApp (monta a mensagem)
+function clEnviarSelecao(id){
+  const c=DB.cl.find(x=>x.id===id);if(!c)return;
+  const ims=matchImoveis(c);
+  if(!ims.length){toast('Nenhum imóvel compatível para enviar','info');return;}
+  const wpp=(c.whatsapp||c.telefone||'').replace(/\D/g,'');
+  const linhas=ims.slice(0,8).map(im=>{
+    const co=DB.co.find(x=>x.id===(im.cond_id||im.condId));
+    const link=im.slug?`https://condominiosnapraia.com.br/imovel/${im.slug}`:'';
+    return `• ${im.titulo||im.codigo||im.tipo} — ${imCidade(im)}${co?(' ('+co.nome+')'):''} — ${clBRL(imPreco(im))}${link?'\n  '+link:''}`;
+  }).join('\n');
+  const msg=`Olá ${c.nome.split(' ')[0]}! Separei ${ims.length} imóvel(is) que combinam com o que você procura:\n\n${linhas}\n\nPosso te dar mais detalhes?`;
+  // registra na timeline
+  if(!c.historico)c.historico=[];
+  c.historico.push({id:uid(),tipo:'📤 Imóveis enviados',data:tod(),nota:`${ims.length} imóvel(is) enviado(s) via WhatsApp`,criadoEm:Date.now()});
+  c.imoveis_enviados=[...new Set([...(c.imoveis_enviados||[]),...ims.map(x=>x.id)])];
+  sb.patch('clientes',id,{historico:c.historico,imoveis_enviados:c.imoveis_enviados,updated_at:new Date().toISOString()}).then(()=>rClientes()).catch(()=>{});
+  if(wpp){ window.open(`https://wa.me/55${wpp}?text=${encodeURIComponent(msg)}`,'_blank'); }
+  else { navigator.clipboard?.writeText(msg); toast('Cliente sem WhatsApp — mensagem copiada','info'); }
+}
+
+// ── MATCH AUTOMÁTICO AO CADASTRAR IMÓVEL ──────────────────────────
+// Chamado após salvar um imóvel: avisa quantos clientes têm interesse.
+function clAvisarMatchNovoImovel(im){
+  try{
+    if(!im) return;
+    const clientes=matchClientes(im);
+    if(clientes.length>0){
+      toast(`🎯 ${clientes.length} cliente(s) compatível(is) com este imóvel!`,'success');
+      // abre modal com a lista
+      setTimeout(()=>clMostrarClientesCompativeis(im.id),400);
+    }
+  }catch(e){/* silencioso */}
+}
+function clMostrarClientesCompativeis(imId){
+  const im=DB.im.find(x=>x.id===imId);if(!im)return;
+  const clientes=matchClientes(im);
+  document.getElementById('match-title').textContent=`🎯 ${clientes.length} cliente(s) compatível(is) — ${im.titulo||im.codigo||'novo imóvel'}`;
+  document.getElementById('match-body').innerHTML=clientes.length?clientes.map(c=>{
+    const wpp=(c.whatsapp||c.telefone||'').replace(/\D/g,'');
+    return `<div class="match-im">
+      <div class="match-im-info"><div class="match-im-t">${clEsc(c.nome)}</div><div class="match-im-s">${clEsc([c.interesse_tipo,c.interesse_cidade].filter(Boolean).join(' · '))} · ${c.status||'Novo'}</div></div>
+      ${wpp?`<a class="btn bp bxs" href="https://wa.me/55${wpp}?text=${encodeURIComponent('Olá '+c.nome.split(' ')[0]+'! Chegou um imóvel que combina com o que você procura.')}" target="_blank">💬</a>`:''}
+      <button class="btn bg bxs" onclick="cMo('match-mo');clDrawer('${c.id}')">Ver</button>
+    </div>`;
+  }).join(''):'<div style="color:var(--t3)">Nenhum cliente compatível.</div>';
+  document.getElementById('match-foot').innerHTML=`<button class="btn bg" onclick="cMo('match-mo')">Fechar</button>`;
+  oMo('match-mo');
+}
+
+// ── IMPORTAÇÃO INTELIGENTE ────────────────────────────────────────
+let _clImpParsed=[]; let _clImpRawText='';
+function clImpInit(){
+  _clImpParsed=[]; _clImpRawText='';
+  const t=document.getElementById('cl-imp-txt'); if(t)t.value='';
+  document.getElementById('cl-file-name').textContent='';
+  document.getElementById('cl-imp-status').textContent='';
+  document.getElementById('cl-imp-preview').innerHTML='<div style="color:var(--t3);font-size:12px;padding:20px;text-align:center">Os clientes detectados aparecerão aqui para conferência antes de salvar.</div>';
+  document.getElementById('cl-imp-save').style.display='none';
+  // drag&drop
+  const drop=document.getElementById('cl-drop');
+  if(drop && !drop._bound){
+    drop._bound=true;
+    ['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag');}));
+    ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag');}));
+    drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)clImpFile(f);});
+  }
+}
+async function clImpFile(file){
+  if(!file)return;
+  document.getElementById('cl-file-name').textContent='📎 '+file.name;
+  const ext=(file.name.split('.').pop()||'').toLowerCase();
+  const st=document.getElementById('cl-imp-status');
+  st.textContent='Lendo arquivo...';
+  try{
+    if(ext==='txt'||ext==='csv'){
+      _clImpRawText=await file.text();
+      document.getElementById('cl-imp-txt').value=_clImpRawText.slice(0,20000);
+      st.textContent='Arquivo carregado. Clique em "Interpretar com IA".';
+    } else if(ext==='xlsx'||ext==='xls'){
+      await clEnsureXLSX();
+      const buf=await file.arrayBuffer();
+      const wb=XLSX.read(buf,{type:'array'});
+      const rows=XLSX.utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]]);
+      _clImpRawText=rows;
+      document.getElementById('cl-imp-txt').value=rows.slice(0,20000);
+      st.textContent='Planilha convertida. Clique em "Interpretar com IA".';
+    } else if(ext==='pdf'){
+      st.textContent='PDF detectado — a IA lerá o conteúdo. Clique em "Interpretar com IA".';
+      _clImpFile=file; _clImpRawText='';
+      document.getElementById('cl-imp-txt').value='[PDF anexado: '+file.name+']';
+    } else if(ext==='docx'){
+      await clEnsureMammoth();
+      const buf=await file.arrayBuffer();
+      const res=await mammoth.extractRawText({arrayBuffer:buf});
+      _clImpRawText=res.value;
+      document.getElementById('cl-imp-txt').value=res.value.slice(0,20000);
+      st.textContent='DOCX convertido. Clique em "Interpretar com IA".';
+    } else {
+      st.textContent='Formato não suportado.';
+    }
+  }catch(e){ st.textContent='Erro ao ler arquivo: '+e.message; }
+}
+let _clImpFile=null;
+// carrega libs sob demanda (só quando precisa)
+function clEnsureXLSX(){ return _clLoadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',()=>window.XLSX); }
+function clEnsureMammoth(){ return _clLoadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js',()=>window.mammoth); }
+function _clLoadScript(src,check){
+  return new Promise((res,rej)=>{ if(check())return res(); const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s); });
+}
+
+async function clImpInterpretar(){
+  const txt=(document.getElementById('cl-imp-txt').value||'').trim();
+  if(!txt && !_clImpFile){toast('Cole um texto ou envie um arquivo','error');return;}
+  const btn=document.getElementById('cl-imp-btn'); btn.disabled=true; btn.textContent='🤖 Interpretando...';
+  const st=document.getElementById('cl-imp-status'); st.textContent='A IA está lendo os dados...';
+  try{
+    let parsed=await clImpViaIA(txt).catch(()=>null);
+    if(!parsed || !parsed.length){ st.textContent='IA indisponível — usando leitura automática por padrões...'; parsed=clImpFallback(txt); }
+    _clImpParsed=parsed;
+    clImpRender();
+    st.textContent=`${parsed.length} cliente(s) detectado(s). Revise e salve.`;
+  }catch(e){
+    // fallback local
+    _clImpParsed=clImpFallback(txt); clImpRender();
+    st.textContent=`${_clImpParsed.length} cliente(s) detectado(s) (leitura local).`;
+  }finally{ btn.disabled=false; btn.textContent='🤖 Interpretar com IA'; }
+}
+
+// Chama a API Anthropic (disponível no ambiente) para estruturar os dados.
+async function clImpViaIA(txt){
+  const cidades=[...new Set(DB.co.map(c=>c.cidade).filter(Boolean))].join(', ');
+  const sys=`Você extrai dados de clientes imobiliários de textos bagunçados e retorna APENAS um array JSON válido, sem markdown, sem explicação. Cada objeto: {"nome","telefone","whatsapp","email","cidade","bairro","origem","interesse_tipo","interesse_cidade","dorms_min","preco_min","preco_max","observacoes"}. Campos ausentes = null. interesse_tipo deve ser um de: Casa, Apartamento, Cobertura, Terreno, Sobrado, Sala Comercial, Loja. preco_min/preco_max/dorms_min numéricos (sem R$ nem pontos). "até X" = preco_max. Cidades comuns na região: ${cidades}.`;
+  const content=[{type:'text',text:'Extraia os clientes deste conteúdo:\n\n'+txt}];
+  // se houver PDF anexado, manda como documento
+  if(_clImpFile && _clImpFile.name.toLowerCase().endsWith('.pdf')){
+    const b64=await new Promise((r,j)=>{const fr=new FileReader();fr.onload=()=>r(fr.result.split(',')[1]);fr.onerror=j;fr.readAsDataURL(_clImpFile);});
+    content.unshift({type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}});
+  }
+  const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,system:sys,messages:[{role:'user',content}]})
+  });
+  if(!resp.ok) throw new Error('IA '+resp.status);
+  const data=await resp.json();
+  let out=(data.content||[]).map(b=>b.type==='text'?b.text:'').join('').trim();
+  out=out.replace(/```json|```/g,'').trim();
+  const arr=JSON.parse(out);
+  return Array.isArray(arr)?arr:[];
+}
+
+// Fallback local: lê linha a linha (CSV ou texto livre) sem IA.
+function clImpFallback(txt){
+  const linhas=txt.split(/\r?\n/).map(l=>l.trim()).filter(l=>l && !/^\[PDF anexado/.test(l));
+  const out=[];
+  const reTel=/(\(?\d{2}\)?\s?\d{4,5}[-\s]?\d{4})/;
+  const reMail=/[\w.+-]+@[\w-]+\.[\w.-]+/;
+  const reValor=/(?:até\s*)?r?\$?\s*([\d.]+)\s*(mil|milh(?:ão|ões|oes)|k|m)?/i;
+  const tipos=['casa','apartamento','apto','cobertura','terreno','sobrado','sala','loja'];
+  for(const l of linhas){
+    // pula cabeçalho de CSV
+    if(/nome.*(telefone|email|whatsapp)/i.test(l) && out.length===0 && !reTel.test(l)) continue;
+    const partes=l.split(/[,;|\t]/).map(p=>p.trim()).filter(Boolean);
+    const tel=(l.match(reTel)||[])[1]||null;
+    const mail=(l.match(reMail)||[])[0]||null;
+    let nome=partes[0]||null;
+    if(nome && (reTel.test(nome)||reMail.test(nome))) nome=null;
+    // tipo de interesse
+    let itipo=null; const low=l.toLowerCase();
+    for(const t of tipos){ if(low.includes(t)){ itipo=t==='apto'?'Apartamento':t.charAt(0).toUpperCase()+t.slice(1); break; } }
+    // dorms
+    const dm=(low.match(/(\d+)\s*(?:dorm|quarto|suíte|suite)/)||[])[1];
+    // valor
+    let pmax=null; const mv=low.match(/até\s*r?\$?\s*([\d.,]+)\s*(mil|milh|k|m)?/);
+    if(mv){ let v=parseFloat(mv[1].replace(/\./g,'').replace(',','.')); const u=(mv[2]||'').toLowerCase(); if(u.startsWith('milh')||u==='m')v*=1e6; else if(u==='mil'||u==='k')v*=1e3; pmax=Math.round(v); }
+    if(nome||tel||mail){
+      out.push({nome:nome||'(sem nome)',telefone:tel,whatsapp:tel,email:mail,cidade:null,bairro:null,origem:'Importação',
+        interesse_tipo:itipo,interesse_cidade:null,dorms_min:dm?+dm:null,preco_min:null,preco_max:pmax,observacoes:null});
+    }
+  }
+  return out;
+}
+
+function clImpRender(){
+  const box=document.getElementById('cl-imp-preview');
+  if(!_clImpParsed.length){ box.innerHTML='<div style="color:var(--t3);font-size:12px;padding:20px;text-align:center">Nenhum cliente detectado.</div>'; document.getElementById('cl-imp-save').style.display='none'; return; }
+  box.innerHTML=_clImpParsed.map((c,i)=>{
+    const meta=[c.telefone,c.email,c.interesse_tipo,c.interesse_cidade,c.dorms_min?c.dorms_min+' dorm':'',c.preco_max?('até '+clBRL(c.preco_max)):''].filter(Boolean).join(' · ');
+    return `<div class="cl-imp-item">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <div><strong>${clEsc(c.nome||'(sem nome)')}</strong><div class="cl-imp-meta">${clEsc(meta||'sem detalhes')}</div></div>
+        <button class="btn bd2b bxs" onclick="clImpRemove(${i})" title="Remover">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('cl-imp-save').style.display='block';
+  document.getElementById('cl-imp-save').textContent=`💾 Salvar ${_clImpParsed.length} cliente(s)`;
+}
+function clImpRemove(i){ _clImpParsed.splice(i,1); clImpRender(); }
+
+async function clImpSalvar(){
+  if(!_clImpParsed.length)return;
+  const btn=document.getElementById('cl-imp-save'); btn.disabled=true; btn.textContent='Salvando...';
+  const now=new Date().toISOString();
+  const registros=_clImpParsed.map(c=>({
+    id:uid(), nome:c.nome||'(sem nome)', telefone:c.telefone||null, whatsapp:c.whatsapp||c.telefone||null,
+    email:c.email||null, cidade:c.cidade||null, bairro:c.bairro||null, origem:c.origem||'Importação',
+    corretor:null, observacoes:c.observacoes||null, interesse_tipo:c.interesse_tipo||null,
+    interesse_cidade:c.interesse_cidade||c.cidade||null, interesse_bairro:null, interesse_cond:null,
+    dorms_min:clNum(c.dorms_min), preco_min:clNum(c.preco_min), preco_max:clNum(c.preco_max),
+    status:'Novo', historico:[], imoveis_enviados:[], created_at:now, updated_at:now
+  }));
+  try{
+    await sb.upsert('clientes',registros);
+    await clReload();
+    toast(`${registros.length} cliente(s) importado(s)!`,'success');
+    go('clientes',document.querySelector('[data-p=clientes]'));
+  }catch(e){ toast('Erro ao salvar: '+e.message,'error'); }
+  finally{ btn.disabled=false; clImpRender(); }
 }
 
 </script>
