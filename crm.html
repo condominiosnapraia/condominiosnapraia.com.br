@@ -1769,8 +1769,8 @@ if(_savedToken && _savedUser){
     <div class="ed-grid">
       <div class="ed-form-col">
         <div class="ed-section">Dados de Contato</div>
-        <div class="fg"><label class="fl">Número WhatsApp (só números com DDD)</label><input class="fi" id="ed-wpp" placeholder="5551999442252" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">Telefone de Exibição</label><input class="fi" id="ed-tel-show" placeholder="(51) 99944-2252" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl">Número WhatsApp (só números com DDD)</label><input class="fi" id="ed-wpp" placeholder="5551982868888" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl">Telefone de Exibição</label><input class="fi" id="ed-tel-show" placeholder="(51) 98286-8888" oninput="edPreview()"></div>
         <div class="fg"><label class="fl">E-mail</label><input class="fi" id="ed-email" placeholder="contato@condominiosnapraia.com.br" oninput="edPreview()"></div>
         <div class="ed-section">Endereço</div>
         <div class="fg"><label class="fl">Logradouro e Número</label><input class="fi" id="ed-end1" placeholder="Av. Central, 242 Loja 07" oninput="edPreview()"></div>
@@ -6010,7 +6010,7 @@ function renderContempladas(){
         <td style="font-size:11px">${brl(c.transferencia)}</td>
         <td><div style="display:flex;gap:4px">
           <button class="btn bg bxs" onclick="eCarta('${c.id}')" title="Editar">✏</button>
-          <a class="btn bg bxs" href="https://wa.me/5551999442252?text=${wppMsg}" target="_blank" title="WhatsApp">💬</a>
+          <a class="btn bg bxs" href="https://wa.me/5551982868888?text=${wppMsg}" target="_blank" title="WhatsApp">💬</a>
           <button class="btn bd2b bxs" onclick="dCarta('${c.id}')" title="Excluir">🗑</button>
         </div></td>
       </tr>`;
@@ -6361,7 +6361,7 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
 <header>
   <a href="/" class="logo">Condomínios na Praia<span>Litoral Norte Gaúcho</span></a>
   <a href="/" class="back">← Todos os Condomínios</a>
-  <a href="https://wa.me/5551999442252" class="cta" rel="nofollow">Falar com Consultor</a>
+  <a href="https://wa.me/5551982868888" class="cta" rel="nofollow">Falar com Consultor</a>
 </header>
 <div class="hero-wrap"><div class="hero">${(c.fotos&&c.fotos[0])?`<img src="${esc(c.fotos[0])}" alt="${esc(c.nome)} em ${esc(cidade)}">`:'Fotos em breve'}</div></div>
 <div class="wrap">
@@ -6378,7 +6378,7 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
   <div class="cta-box">
     <h2>Interessado no ${esc(c.nome)}?</h2>
     <p>Fale com um de nossos consultores e receba todas as informações.</p>
-    <a href="https://wa.me/5551999442252?text=${encodeURIComponent('Olá! Tenho interesse no '+c.nome+' em '+cidade+'.')}" rel="nofollow">Falar no WhatsApp</a>
+    <a href="https://wa.me/5551982868888?text=${encodeURIComponent('Olá! Tenho interesse no '+c.nome+' em '+cidade+'.')}" rel="nofollow">Falar no WhatsApp</a>
   </div>
 </div>
 <footer>
@@ -6389,7 +6389,7 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
   <div class="mob-footer-items">
     <a class="mob-footer-btn" href="/"><span class="mob-footer-ico">&#128269;</span><span class="mob-footer-lbl">Explorar</span></a>
     <a class="mob-footer-btn" href="/lancamentos"><span class="mob-footer-ico">&#128640;</span><span class="mob-footer-lbl">Lançamentos</span></a>
-    <a class="mob-footer-btn wpp-btn" href="https://wa.me/5551999442252" rel="nofollow"><span class="mob-footer-ico">&#128241;</span><span class="mob-footer-lbl">WhatsApp</span></a>
+    <a class="mob-footer-btn wpp-btn" href="https://wa.me/5551982868888" rel="nofollow"><span class="mob-footer-ico">&#128241;</span><span class="mob-footer-lbl">WhatsApp</span></a>
     <a class="mob-footer-btn" href="/imoveis"><span class="mob-footer-ico">&#127960;</span><span class="mob-footer-lbl">Imóveis</span></a>
     <a class="mob-footer-btn active" href="/condominios"><span class="mob-footer-ico">&#127958;</span><span class="mob-footer-lbl">Condomínios</span></a>
   </div>
@@ -6570,7 +6570,7 @@ async function gerarPaginasImoveis(){
       ? `<div class="ivid"><div class="ivid-t">Vídeo do Imóvel</div><div class="ivid-f"><iframe src="https://www.youtube.com/embed/${_vM[1]}" title="Vídeo do imóvel" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>`
       : '';
 
-    const wpp='https://wa.me/5551999442252?text='+encodeURIComponent('Ola! Tenho interesse no imovel '+(im.codigo?('cod '+im.codigo+' '):'')+(condNome?('no '+condNome):'')+' em '+cidade+'.');
+    const wpp='https://wa.me/5551982868888?text='+encodeURIComponent('Ola! Tenho interesse no imovel '+(im.codigo?('cod '+im.codigo+' '):'')+(condNome?('no '+condNome):'')+' em '+cidade+'.');
 
     const html=`<!DOCTYPE html>
 <html lang="pt-BR">
@@ -7603,7 +7603,7 @@ const ED_DEFAULTS = {
   desc:'Condomínios de alto padrão em Xangri-lá, Capão da Canoa e Osório.',
   btn1:'Ver Condomínios', btn2:'Falar via WhatsApp',
   cardTitle:'Busca Rápida', cardSub:'Encontre seu imóvel ideal', cardBtn:'Buscar',
-  wpp:'5551999442252', telShow:'(51) 99944-2252',
+  wpp:'5551982868888', telShow:'(51) 98286-8888',
   email:'contato@condominiosnapraia.com.br',
   end1:'Av. Central, 242 Loja 07', end2:'Atlântida — Xangri-lá / RS',
   hr1:'8h30–19h', hr2:'Dom 8h30–17h', navCta:'Consultor',
