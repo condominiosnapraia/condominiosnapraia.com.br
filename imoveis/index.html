@@ -466,8 +466,8 @@ details[open] .dec-faq-q:after{content:"−"}
 @media(max-width:560px){.il-grid{grid-template-columns:1fr}}
 .il-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(13,59,84,.06);transition:transform .22s,box-shadow .22s}
 .il-card:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(13,59,84,.14)}
-.il-card-img{aspect-ratio:4/3;background:#eef2f4;display:flex;align-items:center;justify-content:center;font-size:40px;color:rgba(12,74,110,.3);position:relative;overflow:hidden}
-.il-card-img img{width:100%;height:100%;object-fit:cover}
+.il-card-img{height:230px;background:linear-gradient(135deg,var(--ocean),var(--om));display:flex;align-items:center;justify-content:center;font-size:40px;color:rgba(255,255,255,.5);position:relative;overflow:hidden}
+.il-card-img img{width:100%;height:100%;object-fit:cover;object-position:center}
 .il-badge{position:absolute;top:12px;left:12px;background:rgba(12,74,110,.88);color:#fff;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:4px 11px;border-radius:100px}
 .il-badge.status{right:12px;left:auto;background:rgba(10,125,50,.9)}
 .il-card-b{padding:18px;flex:1;display:flex;flex-direction:column}
@@ -695,7 +695,7 @@ function render(lista){
     const cond=CONDS[i.cond_id]||{};
     const cidade=cond.cidade||i.cidade||'';
     const f=fotos(i.fotos_no_site||i.fotos);
-    const img=f.length?'<img src="'+thumb(f[0],400)+'" srcset="'+thumb(f[0],400)+' 1x, '+thumb(f[0],700)+' 2x" alt="'+(i.titulo||'')+'" loading="lazy" width="400" height="300">':'🏠';
+    const img=f.length?'<img src="'+thumb(f[0],400)+'" srcset="'+thumb(f[0],400)+' 1x, '+thumb(f[0],700)+' 2x" alt="'+(i.titulo||'')+'" loading="lazy" width="307" height="230">':'🏠';
     // so entram os campos preenchidos; area privativa aparece quando existe
     const specs=[];
     const areaPriv=i.area_privativa||i.areaPrivativa;
