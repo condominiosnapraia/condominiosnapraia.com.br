@@ -2538,7 +2538,7 @@ if(_savedToken && _savedUser){
         <div class="fg"><label class="fl">Finalidade *</label>
           <select class="fse" id="im-final"><option value="venda">Venda</option><option value="locacao">Locação</option><option value="temporada">Temporada</option></select></div>
         <div class="fg"><label class="fl">Categoria / Tipo *</label>
-          <select class="fse" id="im-tipo"><option>Casa</option><option>Terreno</option><option>Apartamento</option><option>Cobertura</option><option>Chalé</option><option>Duplex</option><option>Kitnet</option><option>Galpão</option><option>Outro</option></select></div>
+          <select class="fse" id="im-tipo"><option>Casa Térrea</option><option>Sobrado</option><option>Apartamento</option><option>Lote</option><option>Cobertura</option><option>Duplex</option><option>Kitnet</option><option>Galpão</option><option>Outro</option></select></div>
         <div class="fg"><label class="fl">Código do Imóvel</label><input class="fi" id="im-codigo" placeholder="Gerado automaticamente (ex: XAN-001)" readonly style="background:#eef9fa;font-weight:700;color:#0d3b54"></div>
         <div class="fg"><label class="fl">Referência Interna</label><input class="fi" id="im-ref" placeholder="Ex: COND-001, REF-2025"></div>
         <div class="fg"><label class="fl">Status *</label>
@@ -3788,7 +3788,7 @@ function rImF(){
   ['im-tit','im-ref','im-cep','im-cidade','im-bairro-end','im-ref-local','im-area','im-areap','im-areac','im-terreno','im-and','im-fachada','im-ano-const','im-pavimentos','im-iptu','im-ctx','im-preco','im-pmin','im-com','im-fin-parc','im-pgto','im-obs','im-corretor','im-construtora','im-incorporadora','im-chaves','im-mat','im-cod-inc','im-cart','im-dif','im-desc','im-seo-titulo','im-seo-desc','im-seo-kw','im-seo-slogan','im-seo-tour','im-seo-video','im-qtos','im-sui','im-ban','im-lavabos','im-salas','im-vag','im-dep','im-lote','im-quadra','im-codigo'].forEach(id=>{const e=document.getElementById(id);if(e){e.value='';e.style.borderColor='';}});
   ['im-prop'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.borderColor='';});
   // reset selects
-  document.getElementById('im-tipo').value='Casa';
+  document.getElementById('im-tipo').value='Casa Térrea';
   document.getElementById('im-final').value='venda';
   document.getElementById('im-st').value='Disponível';
   document.getElementById('im-sol').value='';
@@ -3840,7 +3840,7 @@ function eImov(id){
   if(g('im-hab'))g('im-hab').value=x.habitese||'Possui';
   sv('im-desc',x.descricao);sv('im-dif',(x.diferenciais||[]).join(', '));
   if(g('im-final'))g('im-final').value=x.finalidade||'venda';
-  if(g('im-tipo'))g('im-tipo').value=x.tipo||'Casa';
+  if(g('im-tipo')){var _t=x.tipo||'Casa Térrea';if(_t==='Casa')_t='Casa Térrea';if(_t==='Terreno')_t='Lote';g('im-tipo').value=_t;}
   if(g('im-st'))g('im-st').value=x.status||'Disponível';
   if(g('im-pub'))g('im-pub').value=x.publicar?'1':'0';
   if(g('im-destaque'))g('im-destaque').value=x.destaque?'1':'0';
