@@ -663,6 +663,29 @@ function aplicar(){
 }
 function limpar(){['f-cidade','f-tipo','f-quartos','f-preco'].forEach(id=>document.getElementById(id).value='');aplicar();}
 
+// Miniatura otimizada via transformação de imagem do Supabase (plano pago).
+// Aponta direto para o endpoint render/image (redimensiona + WebP automático).
+// Se a URL não bater o padrão esperado, devolve a original intacta.
+function thumb(u,w){
+  try{
+    w=w||400;
+    if(!u||typeof u!=='string'||u.startsWith('data:'))return u;
+    var SB='https://cddgkhkzcnyzzcllgzoz.supabase.co';
+    var q='width='+w+'&quality=70&resize=cover';
+    var path=null;
+    // URL reescrita pelo proxy do site: /cdn-fotos/<path>
+    var ix=u.indexOf('/cdn-fotos/');
+    if(ix!==-1) path=u.slice(ix+'/cdn-fotos/'.length);
+    // URL direta do storage: .../object/public/<path>
+    else{
+      var ip=u.indexOf('/storage/v1/object/public/');
+      if(ip!==-1) path=u.slice(ip+'/storage/v1/object/public/'.length);
+    }
+    if(!path)return u;
+    path=path.split('?')[0];
+    return SB+'/storage/v1/render/image/public/'+path+'?'+q;
+  }catch(e){return u;}
+}
 function render(lista){
   const grid=document.getElementById('il-grid');
   const cnt=document.getElementById('il-count');
@@ -672,7 +695,7 @@ function render(lista){
     const cond=CONDS[i.cond_id]||{};
     const cidade=cond.cidade||i.cidade||'';
     const f=fotos(i.fotos_no_site||i.fotos);
-    const img=f.length?'<img src="'+f[0]+'" alt="'+(i.titulo||'')+'" loading="lazy">':'🏠';
+    const img=f.length?'<img src="'+thumb(f[0],400)+'" srcset="'+thumb(f[0],400)+' 1x, '+thumb(f[0],700)+' 2x" alt="'+(i.titulo||'')+'" loading="lazy" width="307" height="230">':'🏠';
     // so entram os campos preenchidos; area privativa aparece quando existe
     const specs=[];
     const areaPriv=i.area_privativa||i.areaPrivativa;
