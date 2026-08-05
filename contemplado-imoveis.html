@@ -447,7 +447,7 @@ body { font-family: 'Outfit', sans-serif; background: var(--pagebg); color: var(
 
   /* MODAL — slide from bottom */
   .modal-ov { align-items: flex-end; padding: 0; }
-  .modal-box { border-radius: 16px 16px 0 0; max-height: 90vh; width: 100%; }
+  .modal-box { border-radius: 16px 16px 0 0; max-height: calc(88dvh - 64px); width: 100%; margin-bottom: calc(64px + env(safe-area-inset-bottom,0px)); }
   .mhdr { border-radius: 16px 16px 0 0; padding: 20px 18px 16px; text-align: center; }
   .madm-row { justify-content: center; }
   .mcred-lbl { font-size: 9px; }
@@ -456,7 +456,7 @@ body { font-family: 'Outfit', sans-serif; background: var(--pagebg); color: var(
   .mspecs { gap: 8px; }
   .mspec { padding: 10px; text-align: center; }
   .mspec-val { font-size: 14px; }
-  .mbody { padding: 16px 16px 24px; }
+  .mbody { padding: 16px 16px 22px; }
   .mwpp { font-size: 13px; padding: 14px; }
   .mtel { font-size: 12px; padding: 12px; }
 
