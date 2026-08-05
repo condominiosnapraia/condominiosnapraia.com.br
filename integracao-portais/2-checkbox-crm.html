@@ -1,0 +1,48 @@
+<!-- ==========================================================================
+     Trecho para o formulário de edição de imóvel do seu CRM.
+     Adiciona o checkbox "Integrar com portais" ligado ao campo integrar_portais.
+     Adapte os nomes de variáveis/funções ao seu CRM (marcados com >>).
+     ========================================================================== -->
+
+<!-- 1) O HTML do checkbox (coloque perto do campo "publicar no site") -->
+<label class="switch-portais">
+  <input type="checkbox" id="chk-integrar-portais">
+  <span>Integrar com portais (ZAP, VivaReal, OLX, ImovelWeb)</span>
+</label>
+
+<style>
+.switch-portais{display:flex;align-items:center;gap:10px;padding:12px 14px;
+  background:#f0f8fb;border:1px solid #cfe8ee;border-radius:10px;
+  font-size:14px;color:#0c4a6e;cursor:pointer;margin:10px 0}
+.switch-portais input{width:18px;height:18px;accent-color:#0e8a99;cursor:pointer}
+</style>
+
+<script>
+// 2) Ao ABRIR um imóvel para editar, marque o checkbox conforme o valor salvo:
+//    >> substitua `imovel` pela variável do imóvel carregado no seu CRM
+document.getElementById('chk-integrar-portais').checked = !!imovel.integrar_portais;
+
+// 3) Ao SALVAR o imóvel, inclua o valor do checkbox no update do Supabase:
+//    >> encaixe esta linha no objeto que seu CRM já envia no update
+const dadosParaSalvar = {
+  // ...outros campos do seu formulário...
+  integrar_portais: document.getElementById('chk-integrar-portais').checked,
+};
+
+// Exemplo de update no Supabase (adapte ao seu client/tabela):
+// await supabase.from('imoveis')
+//   .update(dadosParaSalvar)
+//   .eq('id', imovel.id);
+</script>
+
+<!-- ==========================================================================
+     DICA: se quiser um atalho para marcar vários de uma vez, pode rodar no
+     SQL Editor do Supabase, por exemplo, para integrar todos os disponíveis
+     de uma cidade:
+
+       UPDATE imoveis SET integrar_portais = true
+       WHERE status = 'Disponível' AND cidade = 'Capão da Canoa';
+
+     E para tirar todos de uma vez:
+       UPDATE imoveis SET integrar_portais = false;
+     ========================================================================== -->
