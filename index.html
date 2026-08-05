@@ -1249,9 +1249,16 @@ body{padding-top:56px}
 .exit-pop-ico{font-size:48px;margin-bottom:10px}
 .exit-pop-tit{font-family:'Fraunces',serif;font-size:24px;color:var(--ocean);font-weight:600;margin-bottom:12px;line-height:1.2}
 .exit-pop-txt{color:var(--tm);font-size:15.5px;line-height:1.6;margin-bottom:24px}
-.exit-pop-btn{display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#fff;text-decoration:none;font-weight:700;font-size:16px;padding:15px 30px;border-radius:100px;box-shadow:0 10px 28px rgba(37,211,102,.4);transition:transform .2s}
+.exit-pop-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--gold,#e0b34d);color:#0c3049;border:none;cursor:pointer;text-decoration:none;font-weight:700;font-size:16px;padding:15px 30px;border-radius:100px;box-shadow:0 10px 28px rgba(224,179,77,.4);transition:transform .2s;width:100%}
 .exit-pop-btn:hover{transform:translateY(-2px)}
-.exit-pop-no{display:block;margin:14px auto 0;background:none;border:none;color:#9ab;font-size:13px;cursor:pointer;text-decoration:underline}
+.exit-pop-btn:disabled{opacity:.7;cursor:default;transform:none}
+.exit-pop-form{display:flex;flex-direction:column;gap:11px;margin-bottom:14px;text-align:left}
+.exit-pop-form input{width:100%;padding:14px 16px;border:1.5px solid #d7e3e8;border-radius:12px;font-size:15px;font-family:inherit;color:var(--ocean,#0c4a6e);background:#fbfdfd;transition:border-color .15s}
+.exit-pop-form input:focus{outline:none;border-color:var(--om,#0e8a99)}
+.exit-pop-form input::placeholder{color:#9ab}
+.exit-pop-ok{color:#0e8a99;font-weight:600;font-size:15.5px;line-height:1.5;padding:18px 0;margin-bottom:8px}
+.exit-pop-wpp{display:block;margin-top:14px;color:#25a05a;font-size:13.5px;text-decoration:underline;cursor:pointer}
+.exit-pop-no{display:block;margin:10px auto 0;background:none;border:none;color:#9ab;font-size:13px;cursor:pointer;text-decoration:underline}
 /* Seção Exclusividade (captação) */
 .excl-sec{padding:0 22px;margin:56px auto;max-width:1100px}
 .excl-box{background:linear-gradient(135deg,#0c3049,#0e7490);border-radius:26px;padding:52px 44px;display:grid;grid-template-columns:1.3fr 1fr;gap:36px;align-items:center;position:relative;overflow:hidden}
@@ -5238,11 +5245,15 @@ async function renderContempladasCards(targetId){
     <button class="exit-pop-x" onclick="fecharExitPop()" aria-label="Fechar">✕</button>
     <div class="exit-pop-ico">🏖️</div>
     <h3 class="exit-pop-tit">Antes de você ir</h3>
-    <p class="exit-pop-txt">Converse com um de nossos consultores e receba uma <strong>seleção personalizada de imóveis e condomínios no Litoral Norte Gaúcho</strong>, de acordo com o seu perfil. Atendimento sem compromisso.</p>
-    <a class="exit-pop-btn" href="https://wa.me/5551982868888?text=Ol%C3%A1%21%20Gostaria%20de%20receber%20uma%20sele%C3%A7%C3%A3o%20de%20im%C3%B3veis%20no%20litoral%20de%20acordo%20com%20o%20meu%20perfil." target="_blank" rel="nofollow" onclick="fecharExitPop()">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347Z"/></svg>
-      Falar com um consultor
-    </a>
+    <p class="exit-pop-txt">Deixe seu contato e receba uma <strong>seleção personalizada de imóveis e condomínios no Litoral Norte Gaúcho</strong>, de acordo com o seu perfil. Sem compromisso.</p>
+    <form class="exit-pop-form" id="exit-pop-form" novalidate>
+      <input type="text" name="nome" placeholder="Seu nome" autocomplete="name" required>
+      <input type="tel" name="telefone" placeholder="WhatsApp / telefone" autocomplete="tel" required>
+      <input type="email" name="email" placeholder="E-mail" autocomplete="email">
+      <button type="submit" class="exit-pop-btn" id="exit-pop-submit">Quero receber</button>
+    </form>
+    <div class="exit-pop-ok" id="exit-pop-ok" hidden>✓ Contato enviado! Em breve entraremos em contato.</div>
+    <a class="exit-pop-wpp" href="https://wa.me/5551982868888?text=Ol%C3%A1%21%20Gostaria%20de%20receber%20uma%20sele%C3%A7%C3%A3o%20de%20im%C3%B3veis%20no%20litoral%20de%20acordo%20com%20o%20meu%20perfil." target="_blank" rel="nofollow" onclick="fecharExitPop()">ou fale direto no WhatsApp</a>
     <button class="exit-pop-no" onclick="fecharExitPop()">Agora não, obrigado</button>
   </div>
 </div>
@@ -5262,6 +5273,32 @@ async function renderContempladasCards(targetId){
     var el=document.getElementById('exit-pop');
     if(el) el.classList.remove('on');
   };
+  // envio do formulário -> CRM (Supabase, tabela leads_campanha)
+  var frm=document.getElementById('exit-pop-form');
+  if(frm){
+    frm.addEventListener('submit', async function(e){
+      e.preventDefault();
+      var btn=document.getElementById('exit-pop-submit');
+      var nome=frm.nome.value.trim(), tel=frm.telefone.value.trim(), email=frm.email.value.trim();
+      if(!nome||!tel){ frm.reportValidity&&frm.reportValidity(); return; }
+      btn.disabled=true; btn.textContent='Enviando...';
+      var SB='https://cddgkhkzcnyzzcllgzoz.supabase.co', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+      try{
+        var r=await fetch(SB+'/rest/v1/leads_campanha',{
+          method:'POST',
+          headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+          body:JSON.stringify({nome:nome,telefone:tel,email:email||null,origem:'exit-popup'})
+        });
+        if(!r.ok) throw new Error('http '+r.status);
+        frm.hidden=true;
+        var ok=document.getElementById('exit-pop-ok'); if(ok) ok.hidden=false;
+        setTimeout(window.fecharExitPop, 2600);
+      }catch(err){
+        btn.disabled=false; btn.textContent='Quero receber';
+        alert('Não foi possível enviar agora. Tente novamente ou fale no WhatsApp.');
+      }
+    });
+  }
   // desktop: detecta mouse saindo pelo topo
   document.addEventListener('mouseout', function(e){
     if(!e.relatedTarget && e.clientY<=0) abrir();
