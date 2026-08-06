@@ -588,10 +588,6 @@ details[open] .dec-faq-q:after{content:"−"}
 }
 .ip-cond-badge{display:inline-block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--om);font-weight:700;background:#fff;border:1px solid var(--border);padding:5px 13px;border-radius:100px;margin-bottom:14px}
 .ip-cond-nome{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--ocean);line-height:1.15;margin-bottom:8px}
-.ip-cond-nome-link{transition:color .15s;cursor:pointer}
-.ip-cond-nome-link:hover{color:var(--om);text-decoration:underline}
-.ip-cond-cta{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:12px 22px;background:linear-gradient(135deg,var(--ocean),var(--om));color:#fff;text-decoration:none;font-weight:700;font-size:14px;border-radius:10px;transition:transform .15s,box-shadow .15s;box-shadow:0 3px 12px rgba(14,138,153,.28)}
-.ip-cond-cta:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(14,138,153,.4)}
 .ip-cond-loc{font-size:14px;color:var(--tm);margin-bottom:16px}
 .ip-cond-desc{font-size:15px;line-height:1.8;color:#41535f;margin-bottom:18px;white-space:pre-line}
 .ip-cond-amen{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
@@ -1113,16 +1109,14 @@ function render(im,cond){
     if(cond.padrao)stats.push('<span class="ip-cond-stat ip-cond-stat-badge">'+cond.padrao+'</span>');
     const statsHtml=stats.length?('<div class="ip-cond-stats">'+stats.join('')+'</div>'):'';
     const condSlug=cond.slug||'';
-    const SLUGS_ESTATICOS_C=['aura-garden-place-xangri-la','cyano-private-resort-osorio','monaco-grand-marina-maquine','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','marina-de-xangri-la','marina-park','xangri-la-marina'];
-    const condUrl = condSlug ? (SLUGS_ESTATICOS_C.indexOf(condSlug)!==-1 ? '/'+condSlug : '/condominio?id='+encodeURIComponent(condSlug)) : '';
-    const ctaHtml = condUrl ? '<a class="ip-cond-cta" href="'+condUrl+'">🏘️ Ver o condomínio completo &rarr;</a>' : '';
+    const ctaHtml='';
     // mapa da localização (Google Maps embed em modo satélite, pela query de endereço/nome + cidade)
     const mapaQuery=[cond.nome, cond.endereco, cond.bairro, cond.cidade||cond.localizacao, 'RS'].filter(Boolean).join(', ');
     const mapaHtml=mapaQuery?('<div class="ip-cond-gal-h">Localização</div><div class="ip-cond-mapa"><iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q='+encodeURIComponent(mapaQuery)+'&t=k&z=16&output=embed" title="Localização de '+((cond.nome||'condomínio').replace(/"/g,'&quot;'))+'"></iframe></div>'):'';
     condHtml='<div class="ip-cond">'+
       '<div class="ip-cond-head">'+
         '<div class="ip-cond-badge">&#127963;&#65039; Condomínio</div>'+
-        (condUrl?('<a href="'+condUrl+'" style="text-decoration:none"><h2 class="ip-cond-nome ip-cond-nome-link">'+cond.nome+'</h2></a>'):('<h2 class="ip-cond-nome">'+cond.nome+'</h2>'))+
+        '<h2 class="ip-cond-nome">'+cond.nome+'</h2>'+
         (cLoc?'<div class="ip-cond-loc">&#128205; '+cLoc+'</div>':'')+
         statsHtml+
       '</div>'+
