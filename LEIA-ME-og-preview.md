@@ -58,9 +58,13 @@ cuidando de tudo).
 
 - Se o seu site NÃO estiver no Cloudflare Pages (mas sim em Workers puros ou
   outro host), me avise — a mesma lógica funciona, só muda o formato do arquivo.
-- Este fix é só para `/imovel`. Se quiser o mesmo para condomínios individuais
-  ou para o link de uma carta de crédito específica, dá para replicar a função
-  para essas rotas — é só pedir.
-- As páginas estáticas (home, imóveis, condomínios) já têm og:image, mas todas
-  usam a mesma imagem `/img/og-home.jpg`. Confirme que esse arquivo existe e é
-  uma boa imagem de capa; se não existir, a prévia dessas páginas fica sem foto.
+- **Imóveis e condomínios**: este pacote inclui `functions/imovel.js` e
+  `functions/condominio.js`. Coloque os DOIS na pasta `functions/`. Cada um
+  intercepta sua rota (`/imovel` e `/condominio`) e injeta a prévia correta.
+- **Crédito (cartas contempladas)**: as cartas abrem em modal na mesma página
+  (`/contemplado-imoveis`), sem URL própria — então não precisa de função. Essa
+  página já tem og:image/título/descrição corretos; agora que o arquivo
+  `og-home.jpg` existe, a prévia dela funciona.
+- As páginas estáticas (home, imóveis, condomínios) usam `og-home.jpg`, e o
+  condomínio individual usa `og-default.jpg` como fallback. Ambos os arquivos
+  foram criados neste pacote (na pasta `img/`).

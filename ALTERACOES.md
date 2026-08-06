@@ -75,3 +75,32 @@ Resumo do que foi feito nesta rodada de ajustes e o que ainda ficou pendente.
   das imagens de 7 dias para ~1 ano.
 - **Marca d'água nas fotos**: a marca "Os melhores Condomínios do Litoral"
   gravada nas fotos vem do CRM, não do site.
+
+## Adicionado nas rodadas seguintes
+
+- **Card de imóveis (página imoveis)**: refeito com `aspect-ratio: 4/3` (mesma
+  proporção das fotos) — mostra a fachada quase inteira sem faixas cinza;
+  título em 2 linhas, specs em linha única com "•", mobile mais imersivo (16:10).
+- **CRM (crm.html)**: lista de tipos agora tem Casa Térrea, Sobrado, Apartamento,
+  Lote (+ Cobertura, Duplex, Kitnet, Galpão, Outro). Ao editar imóvel antigo,
+  "Casa"→"Casa Térrea" e "Terreno"→"Lote" já vêm selecionados.
+- **Prévia de compartilhamento (WhatsApp/Facebook)**: criadas as funções
+  Cloudflare `functions/imovel.js` e `functions/condominio.js` que injetam
+  og:image/título/descrição por imóvel/condomínio. Criados os arquivos
+  `img/og-home.jpg` e `img/og-default.jpg` (não existiam — por isso nenhuma
+  prévia mostrava foto).
+- **Home — bordas dos cards**: casas/sobrados/lotes e lançamentos ganharam
+  borda fina escura suave.
+- **Home — ondas**: todas as ondas de transição (.sec-onda) trocadas do arco
+  simples para o formato ondulado do hero, preservando as cores por seção.
+  Onda do hero também trocada para o formato ondulado.
+- **Integração portais**: mapa de tipos inclui Casa Térrea e Sobrado.
+
+## Destinos (importante ao publicar)
+
+- **Git / Cloudflare Pages**: todo o site (este pacote), incluindo a pasta
+  `functions/` (prévias) e `img/og-*.jpg`. No Cloudflare, cadastrar a variável
+  `SUPABASE_ANON_KEY`.
+- **Supabase**: o SQL e a Edge Function `feed-portais` (pasta
+  `integracao-portais/`). Ver LEIA-ME dessa pasta.
+- **CRM**: reeditar imóveis antigos de tipo (opcional; site já cobre os dois).
