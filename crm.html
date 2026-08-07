@@ -3039,9 +3039,18 @@ async function loadAllData(){
       cl: { data: cl, ts: Date.now() },
     };
     upB(); buildDash();
-    // Atualiza o painel atual se já estiver em condomínios
+    // Atualiza o painel que estiver ativo assim que os dados chegam
+    // (antes só atualizava condomínios, por isso proprietários exigia F5)
     const activePanel = document.querySelector('.panel.on');
-    if(activePanel?.id === 'panel-condominios') rCond();
+    if(activePanel){
+      const pid = activePanel.id.replace('panel-','');
+      const rerender = {
+        dashboard: buildDash, condominios: rCond, imoveis: ()=>{pCS();rImV()},
+        proprietarios: rProp, negociacoes: ()=>{pIS();rKb()}, agenda: ()=>{pIS();rCal()},
+        relatorios: buildRel, destaques: buildDestaques
+      };
+      if(rerender[pid]) try{ rerender[pid](); }catch(_){}
+    }
     toast('✓ ' + co.length + ' condomínios, ' + im.length + ' imóveis carregados', 'success');
   } catch(e) {
     toast('⚠ Erro ao conectar com Supabase: ' + e.message, 'error');
