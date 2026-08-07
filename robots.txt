@@ -4,6 +4,8 @@ Allow: /
 # Áreas internas / administrativas — não indexar
 Disallow: /crm.html
 Disallow: /crm
-Disallow: /*?id=$
+Disallow: /functions/
+Disallow: /js/
+Disallow: /integracao-portais/
 
 Sitemap: https://condominiosnapraia.com.br/sitemap.xml
