@@ -1,10 +1,9 @@
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: https://condominiosnapraia.com.br/sitemap.xml
-Sitemap: https://condominiosnapraia.com.br/sitemap-imoveis.xml
-Sitemap: https://condominiosnapraia.com.br/sitemap-condominios.xml
-
-# Painel administrativo (não indexar)
+# Áreas internas / administrativas — não indexar
 Disallow: /crm.html
+Disallow: /crm
+Disallow: /*?id=$
+
+Sitemap: https://condominiosnapraia.com.br/sitemap.xml
