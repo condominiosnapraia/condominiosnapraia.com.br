@@ -1,22 +1,31 @@
-# ── Segurança (todas as páginas) ──
-/*
-  Strict-Transport-Security: max-age=31536000; includeSubDomains
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+# ============================================================================
+# Cache de longa duração para imagens e assets estáticos (Cloudflare Pages).
+# Coloque este arquivo na RAIZ do site (mesmo nível do index.html).
+# O Cloudflare Pages lê o arquivo "_headers" automaticamente.
+#
+# max-age=31536000 = 1 ano. "immutable" diz ao navegador para nem checar de novo.
+# Isso faz as imagens carregarem instantaneamente na 2ª visita.
+# ============================================================================
 
-# ── Cache longo para arquivos estáticos ──
+# Imagens
 /img/*
   Cache-Control: public, max-age=31536000, immutable
 
-/js/*
-  Cache-Control: public, max-age=86400
+# Fotos servidas pelo proxy do CRM
+/cdn-fotos/*
+  Cache-Control: public, max-age=31536000, immutable
 
-/favicon.ico
-  Cache-Control: public, max-age=604800
+# Fontes
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
 
-# ── Painel: nunca cachear nem indexar ──
-/crm.html
-  Cache-Control: no-store
-  X-Robots-Tag: noindex, nofollow
+# CSS e JS (se houver arquivos separados)
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+# As páginas HTML NÃO devem ter cache longo (senão o site "trava" numa
+# versão antiga). Elas revalidam sempre, mas continuam rápidas.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
