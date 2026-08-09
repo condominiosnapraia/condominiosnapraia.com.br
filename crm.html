@@ -3045,9 +3045,14 @@ async function loadAllData(){
     if(activePanel){
       const pid = activePanel.id.replace('panel-','');
       const rerender = {
-        dashboard: buildDash, condominios: rCond, imoveis: ()=>{pCS();rImV()},
-        proprietarios: rProp, negociacoes: ()=>{pIS();rKb()}, agenda: ()=>{pIS();rCal()},
-        relatorios: buildRel, destaques: buildDestaques
+        dashboard: (typeof buildDash!=='undefined'?buildDash:null),
+        condominios: (typeof rCond!=='undefined'?rCond:null),
+        imoveis: (typeof rImV!=='undefined'?()=>{typeof pCS!=='undefined'&&pCS();rImV()}:null),
+        proprietarios: (typeof rProp!=='undefined'?rProp:null),
+        negociacoes: (typeof rKb!=='undefined'?()=>{typeof pIS!=='undefined'&&pIS();rKb()}:null),
+        agenda: (typeof rCal!=='undefined'?()=>{typeof pIS!=='undefined'&&pIS();rCal()}:null),
+        relatorios: (typeof buildRel!=='undefined'?buildRel:null),
+        destaques: (typeof buildDestaques!=='undefined'?buildDestaques:null)
       };
       if(rerender[pid]) try{ rerender[pid](); }catch(_){}
     }

@@ -1,1 +1,5 @@
+# Redirects 301 — URLs antigas para novas (preserva SEO)
 
+# #11 — remoção de hífen solto no final das URLs de condomínio
+/condominio-maquine-la-marina-      /condominio-maquine-la-marina      301
+/condominio-xangri-la-villas-resort-  /condominio-xangri-la-villas-resort  301

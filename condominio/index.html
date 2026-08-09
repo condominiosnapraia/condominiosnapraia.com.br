@@ -87,7 +87,13 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 .cond-title{font-family:'Fraunces',serif;font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--ocean);line-height:1.05;margin-bottom:16px}
 .cond-title em{font-style:italic;color:var(--gold)}
 .cond-location{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);letter-spacing:.08em;margin-bottom:20px}
-.cond-desc{font-size:6px;line-height:1.7;color:var(--text-muted);font-weight:300;margin-top:28px;margin-bottom:24px}
+.cond-desc{font-size:15px;line-height:1.7;color:var(--text-muted);font-weight:300;margin-top:28px;margin-bottom:24px}
+.cond-rich{margin-top:8px}
+.cond-rich h2{font-size:20px;color:var(--ocean,#0c4a6e);font-weight:600;margin:32px 0 12px}
+.cond-rich p{font-size:15px;line-height:1.75;color:var(--text-muted,#455);margin-bottom:14px}
+.cond-rich .dif-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.cond-rich .dif-list span{background:rgba(14,138,153,.09);color:#0c4a6e;font-size:13px;padding:6px 13px;border-radius:100px}
+@media(max-width:600px){.cond-rich h2{font-size:18px;margin:26px 0 10px}}
 .cond-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
 .badge{padding:4px 14px;border:1px solid var(--border);border-radius:2px;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted)}
 .badge.highlight{background:var(--ocean);color:var(--white);border-color:var(--ocean)}
@@ -462,6 +468,9 @@ body{padding-top:56px}
       </div>
 
       <p class="cond-desc" id="cond-desc" style="margin-top:20px">Carregando informações...</p>
+
+      <!-- Conteúdo rico gerado pelo CRM (história, infra, localização, mercado, diferenciais) -->
+      <div id="cond-conteudo-rico" class="cond-rich"></div>
     </div>
   </div>
 
@@ -497,14 +506,14 @@ body{padding-top:56px}
           <div class="contact-detail-ico">📱</div>
           <div>
             <div style="font-weight:500;font-size:13px;color:var(--ocean)">WhatsApp</div>
-            <div style="font-size:12px;color:var(--text-muted)">(51) 99999-9999</div>
+            <div style="font-size:12px;color:var(--text-muted)">(51) 98286-8888</div>
           </div>
         </div>
         <div class="contact-detail">
           <div class="contact-detail-ico">📧</div>
           <div>
             <div style="font-weight:500;font-size:13px;color:var(--ocean)">E-mail</div>
-            <div style="font-size:12px;color:var(--text-muted)">contato@condominiosnapraia.com.br</div>
+            <div style="font-size:12px;color:var(--text-muted)">napraiacondominios@gmail.com</div>
           </div>
         </div>
         <div class="contact-detail">
@@ -824,6 +833,39 @@ async function init() {
   document.getElementById('cond-location-text').textContent =
     [cond.bairro, cond.localizacao || cond.cidade].filter(Boolean).join(', ');
   document.getElementById('cond-desc').textContent = cond.descricao || '';
+
+  // Conteúdo rico gerado pelo CRM — exibe história, infraestrutura, localização,
+  // mercado e diferenciais quando existirem no banco.
+  (function(){
+    var alvo = document.getElementById('cond-conteudo-rico');
+    if(!alvo) return;
+    function paragrafos(txt){
+      return String(txt).split(/\n{2,}|\r\n\r\n/).map(function(p){return p.trim();}).filter(Boolean)
+        .map(function(p){return '<p>'+p.replace(/</g,'&lt;')+'</p>';}).join('');
+    }
+    var blocos = [
+      { t:'Sobre o Condomínio', v: cond.historia_condominio },
+      { t:'Infraestrutura',      v: cond.infraestrutura_detalhada },
+      { t:'Localização',         v: cond.localizacao_detalhada },
+      { t:'Mercado e Valorização', v: cond.mercado_imobiliario }
+    ];
+    var html = '';
+    blocos.forEach(function(b){
+      if(b.v && String(b.v).trim()){
+        html += '<h2>'+b.t+'</h2>' + paragrafos(b.v);
+      }
+    });
+    // diferenciais pode ser texto ou array
+    var dif = cond.diferenciais;
+    if(dif){
+      var lista = Array.isArray(dif) ? dif : String(dif).split(/[;\n]|,(?=\s*[A-ZÀ-Ú])/).map(function(s){return s.trim();}).filter(Boolean);
+      if(lista.length){
+        html += '<h2>Diferenciais</h2><div class="dif-list">'+
+          lista.map(function(d){return '<span>'+d.replace(/</g,'&lt;')+'</span>';}).join('')+'</div>';
+      }
+    }
+    alvo.innerHTML = html;
+  })();
 
   // Badges
   const badges = [];

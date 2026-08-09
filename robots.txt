@@ -7,5 +7,9 @@ Disallow: /crm
 Disallow: /functions/
 Disallow: /js/
 Disallow: /integracao-portais/
+Disallow: /diagnostico.html
+Disallow: /exportar-dados.html
+Disallow: /restaurar.html
+Disallow: /teste-fotos.html
 
 Sitemap: https://condominiosnapraia.com.br/sitemap.xml
