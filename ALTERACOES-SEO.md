@@ -57,3 +57,8 @@ Consolidado de todas as correções aplicadas (base: auditoria SEO + bugs encont
   em ambiente de teste com redirects 301.
 - #2 Canonical dos condomínios, #4 SSR do blog, #9 otimização de imagens na
   origem, #13 TTFB/cache de borda: dependem de configuração de servidor/backend.
+
+## Correção final (ondas/cores)
+- Seção "Onde ir" (Turismo): corrigido conflito de duas regras de background
+  com !important que causava cor imprevisível. Agora tem uma única cor (creme)
+  e onda de transição branca, casando com a seção Venda Premium anterior.
