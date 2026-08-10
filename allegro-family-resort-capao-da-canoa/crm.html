@@ -2938,7 +2938,7 @@ function rCond(){
         <div class="cond-crm-loc">📍 ${c.cidade||'—'} ${c.bairro?'· '+c.bairro:''}</div>
         <div class="cond-crm-tags">
           <span class="cond-crm-tag ${c.ativo!==false?'tgn':'trd'}">${c.ativo!==false?'✓ Publicado':'Oculto'}</span>
-          <span class="cond-crm-tag tgo">${nIm} imóvel${nIm!==1?'is':''}</span>
+          <span class="cond-crm-tag tgo">${nIm} ${nIm!==1?'imóveis':'imóvel'}</span>
           <span class="cond-crm-tag tbl">${nFotos} foto${nFotos!==1?'s':''}</span>
           ${c.padrao?`<span class="cond-crm-tag" style="background:var(--acd);color:var(--ac)">${c.padrao}</span>`:''}
         </div>
@@ -3773,7 +3773,7 @@ function rProp(){
         <td><span class="tag ${p.tipo==='PJ'?'tpu':'tbl'}">${p.tipo||'PF'}</span></td>
         <td><span style="font-size:12px;color:var(--t2)">${p.doc||'—'}</span></td>
         <td><div style="font-size:12.5px">${p.telefone||'—'}</div>${p.whatsapp?`<div style="font-size:11px;color:var(--gn)">💬 ${p.whatsapp}</div>`:''}</td>
-        <td><span class="tag tgo">${n} imóvel${n!==1?'is':''}</span></td>
+        <td><span class="tag tgo">${n} ${n!==1?'imóveis':'imóvel'}</span></td>
         <td><span style="font-size:11px;color:var(--t3)">${ult?fd(ult.data)+'<br>'+ult.tipo:'—'}</span></td>
         <td onclick="event.stopPropagation()"><div class="acts">
           <button class="btn bg bxs" onclick="oHistMo('${p.id}')">+ Contato</button>
@@ -4019,10 +4019,10 @@ function buildRel(){
   const fx=[['Até 500k',0,500000],['500k–1M',500000,1000000],['1M–2M',1000000,2000000],['2M–5M',2000000,5000000],['>5M',5000000,Infinity]];
   document.getElementById('rel-body').innerHTML=`
     <div class="rc"><div class="rct">📍 Disponíveis por Cidade</div>
-      ${Object.entries(cid).sort((a,b)=>b[1].v-a[1].v).map(([c,d])=>`<div class="rrow"><div style="flex:1"><span style="color:var(--t2)">${c}</span><div style="font-size:11px;color:var(--t3)">R$${abb(d.v)} · ${d.n} imóvel${d.n!==1?'is':''}</div><div class="rb2"><div class="rb2f" style="width:${d.v/mxv*100}%"></div></div></div></div>`).join('')}
+      ${Object.entries(cid).sort((a,b)=>b[1].v-a[1].v).map(([c,d])=>`<div class="rrow"><div style="flex:1"><span style="color:var(--t2)">${c}</span><div style="font-size:11px;color:var(--t3)">R$${abb(d.v)} · ${d.n} ${d.n!==1?'imóveis':'imóvel'}</div><div class="rb2"><div class="rb2f" style="width:${d.v/mxv*100}%"></div></div></div></div>`).join('')}
     </div>
     <div class="rc"><div class="rct">🏠 Por Tipo (disponíveis)</div>
-      ${Object.entries(tip).sort((a,b)=>b[1].v-a[1].v).map(([t,d])=>`<div class="rrow"><span style="color:var(--t2)">${t||'—'}</span><div style="text-align:right"><div style="color:var(--go)">${brl(d.v)}</div><div style="font-size:11px;color:var(--t3)">${d.n} imóvel${d.n!==1?'is':''}</div></div></div>`).join('')}
+      ${Object.entries(tip).sort((a,b)=>b[1].v-a[1].v).map(([t,d])=>`<div class="rrow"><span style="color:var(--t2)">${t||'—'}</span><div style="text-align:right"><div style="color:var(--go)">${brl(d.v)}</div><div style="font-size:11px;color:var(--t3)">${d.n} ${d.n!==1?'imóveis':'imóvel'}</div></div></div>`).join('')}
     </div>
     <div class="rc"><div class="rct">🎯 Funil de Negociações</div>
       ${funs.map(s=>{const n=ne.filter(x=>x.etapa===s).length;return`<div class="rrow"><span style="color:var(--t2)">${funL[s]}</span><div style="flex:1;margin:0 11px"><div class="rb2"><div class="rb2f" style="width:${n/fmx*100}%;background:${s==='fechado'?'var(--gn)':'var(--ac)'}"></div></div></div><span class="tag tbl">${n}</span></div>`}).join('')}
@@ -4031,7 +4031,7 @@ function buildRel(){
       ${fx.map(([l,mn,mx])=>{const n=di.filter(x=>(+x.preco||0)>=mn&&(+x.preco||0)<mx).length;return`<div class="rrow"><span style="color:var(--t2)">${l}</span><span class="tag ${n>0?'tgo':'tbl'}">${n}</span></div>`}).join('')}
     </div>
     <div class="rc"><div class="rct">👤 Top Proprietários por VGV</div>
-      ${tprop.map(([pid,d])=>{const p=pr.find(x=>x.id===pid)||{nome:'—'};return`<div class="rrow"><div><div style="color:var(--t2)">${p.nome}</div><div style="font-size:11px;color:var(--t3)">${d.n} imóvel${d.n!==1?'is':''}</div></div><span style="color:var(--go)">${brl(d.v)}</span></div>`}).join('')||'<div style="color:var(--t3);font-size:12px">Sem dados</div>'}
+      ${tprop.map(([pid,d])=>{const p=pr.find(x=>x.id===pid)||{nome:'—'};return`<div class="rrow"><div><div style="color:var(--t2)">${p.nome}</div><div style="font-size:11px;color:var(--t3)">${d.n} ${d.n!==1?'imóveis':'imóvel'}</div></div><span style="color:var(--go)">${brl(d.v)}</span></div>`}).join('')||'<div style="color:var(--t3);font-size:12px">Sem dados</div>'}
     </div>
     <div class="rc"><div class="rct">📊 Status do Portfólio</div>
       ${['Disponível','Negociando','Vendido','Retirado'].map(s=>{const n=im.filter(x=>x.status===s).length;const pct=im.length?Math.round(n/im.length*100):0;const sc={Disponível:'tgn',Negociando:'tgo',Vendido:'tbl',Retirado:'trd'};return`<div class="rrow"><span style="color:var(--t2)">${s}</span><div style="text-align:right"><span class="tag ${sc[s]}">${n}</span><div style="font-size:11px;color:var(--t3)">${pct}%</div></div></div>`}).join('')}

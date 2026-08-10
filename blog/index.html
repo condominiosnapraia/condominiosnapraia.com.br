@@ -620,7 +620,7 @@ function render(p){
   const conteudo=p.conteudo||p.corpo||p.content||'';
   const capa=p.capa||p.imagem||'';
   const cat=p.categoria||'';
-  const autor=p.autor||'Felipe Ranzolin';
+  const autor=p.autor||'Condomínios na Praia';
   const dataRaw=p.data||p.created_at||p.criado_em;
   const dataFmt=dataRaw?new Date(dataRaw).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}):'';
   const minLeitura=Math.max(1,Math.round(conteudo.length/1000));

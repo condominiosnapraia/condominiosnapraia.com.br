@@ -62,3 +62,11 @@ Consolidado de todas as correções aplicadas (base: auditoria SEO + bugs encont
 - Seção "Onde ir" (Turismo): corrigido conflito de duas regras de background
   com !important que causava cor imprevisível. Agora tem uma única cor (creme)
   e onda de transição branca, casando com a seção Venda Premium anterior.
+
+## Nome do corretor e CRECI
+- Removidos os nomes pessoais (Felipe Ranzolin / Juliano Machado) das páginas,
+  substituídos por "Entre em contato" / "nossa equipe de corretores" conforme o
+  contexto. Schemas de autor/fundador passam a usar "Condomínios na Praia".
+- CRECI-RS 72.386 mantido em todas as páginas (exigência legal).
+- Removido CRECI 54.308 conflitante que aparecia em alguns títulos.
+- Corrigido plural "imóvelis" → "imóveis" (11 ocorrências no site e CRM).
