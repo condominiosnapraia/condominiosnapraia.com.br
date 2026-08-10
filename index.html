@@ -722,6 +722,8 @@ footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60
 .ftr-main{max-width:1140px;margin:0 auto;padding:56px 44px 36px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
 .ftr-col-brand{max-width:340px}
 .ftr-logo{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:#fff;line-height:1.1}
+.ftr-logo-img{width:230px;max-width:100%;height:auto;display:block}
+@media(max-width:600px){.ftr-logo-img{width:200px;margin:0 auto}}
 .ftr-logo em{font-style:italic;color:var(--gold)}
 .ftr-sub{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:6px}
 .ftr-tag{font-size:13px;line-height:1.6;color:rgba(255,255,255,.6);margin:18px 0 22px}
@@ -1584,6 +1586,8 @@ body{padding-top:56px}
 
 
 /* ===== RITMO DE ONDAS UNIFICADO (creme/branco alternado) ===== */
+
+/* ===== RITMO DE ONDAS UNIFICADO (creme/branco alternado) ===== */
 #sec-imoveis{background:#faf6ef !important}
 #sec-imoveis.sec-onda::before{background:#fff !important}
 #qfilter2{background:#fff !important}
@@ -1592,36 +1596,28 @@ body{padding-top:56px}
 #lch-sec-sec.sec-onda::before{background:#fff !important}
 #sec-terrenos{background:#fff !important}
 #sec-terrenos.sec-onda::before{background:#faf6ef !important}
-#sec-encontre{background:#faf6ef !important}
-#sec-encontre.sec-onda::before{background:#fff !important}
-#sec-condominios{background:#fff !important}
-#sec-condominios.sec-onda::before{background:#faf6ef !important}
-#viver-intro-sec{background:#faf6ef !important}
-#viver-intro-sec.sec-onda::before{background:#fff !important}
-#cond-capao{background:#fff !important}
-#cond-capao.sec-onda::before{background:#faf6ef !important}
-#cond-xangri{background:#faf6ef !important}
-#cond-xangri.sec-onda::before{background:#fff !important}
-#cond-osorio{background:#fff !important}
-#cond-osorio.sec-onda::before{background:#faf6ef !important}
-#cond-maquine{background:#faf6ef !important}
-#cond-maquine.sec-onda::before{background:#fff !important}
-#qfilter{background:#fff !important}
-#qfilter.sec-onda::before{background:#faf6ef !important}
-#onde-ir{background:#faf6ef !important}
-#onde-ir.sec-onda::before{background:#fff !important}
-#bcid-sec-sec{background:#fff !important}
-#bcid-sec-sec.sec-onda::before{background:#faf6ef !important}
-#pcred-sec-sec{background:#faf6ef !important}
-#pcred-sec-sec.sec-onda::before{background:#fff !important}
-#guias-cidades{background:#fff !important}
-#guias-cidades.sec-onda::before{background:#faf6ef !important}
-#guias-decisao{background:#faf6ef !important}
-#guias-decisao.sec-onda::before{background:#fff !important}
-#cred-sol-sec-sec{background:#fff !important}
-#cred-sol-sec-sec.sec-onda::before{background:#faf6ef !important}
-#credito-contemplado{background:#faf6ef !important}
-#credito-contemplado.sec-onda::before{background:#fff !important}
+#sec-condominios{background:#faf6ef !important}
+#sec-condominios.sec-onda::before{background:#fff !important}
+#viver-intro-sec{background:#fff !important}
+#viver-intro-sec.sec-onda::before{background:#faf6ef !important}
+#cond-capao{background:#faf6ef !important}
+#cond-capao.sec-onda::before{background:#fff !important}
+#cond-xangri{background:#fff !important}
+#cond-xangri.sec-onda::before{background:#faf6ef !important}
+#cond-osorio{background:#faf6ef !important}
+#cond-osorio.sec-onda::before{background:#fff !important}
+#cond-maquine{background:#fff !important}
+#cond-maquine.sec-onda::before{background:#faf6ef !important}
+#qfilter{background:#faf6ef !important}
+#qfilter.sec-onda::before{background:#fff !important}
+#pcred-sec-sec{background:#fff !important}
+#pcred-sec-sec.sec-onda::before{background:#faf6ef !important}
+#guias-cidades{background:#faf6ef !important}
+#guias-cidades.sec-onda::before{background:#fff !important}
+#guias-decisao{background:#fff !important}
+#guias-decisao.sec-onda::before{background:#faf6ef !important}
+#cred-sol-sec-sec{background:#faf6ef !important}
+#cred-sol-sec-sec.sec-onda::before{background:#fff !important}
 #exclusividade-home{background:#fff !important}
 #exclusividade-home.sec-onda::before{background:#faf6ef !important}
 #sec-blog-preview{background:#faf6ef !important}
@@ -1936,21 +1932,6 @@ body{padding-top:56px}
     </div>
   </section>
 
-  <!-- ══ BUSCA RÁPIDA: IMÓVEIS POR CIDADE ══ -->
-  <section class="bcid-sec sec-onda" id="sec-encontre">
-    <div class="bcid-inner">
-      <p class="eyebrow" style="justify-content:center">Encontre o seu</p>
-      <h2 class="sectit">O que você está <em>procurando?</em></h2>
-      <p class="cidades-sub">Escolha a cidade e veja os imóveis disponíveis</p>
-      <div class="bcid-grid">
-        <a class="bcid-card" href="/imoveis?cidade=Cap%C3%A3o%20da%20Canoa"><span class="bcid-nome">Capão da Canoa</span><span class="bcid-go">Ver imóveis →</span></a>
-        <a class="bcid-card" href="/imoveis?cidade=Maquin%C3%A9"><span class="bcid-nome">Maquiné</span><span class="bcid-go">Ver imóveis →</span></a>
-        <a class="bcid-card" href="/imoveis?cidade=Os%C3%B3rio"><span class="bcid-nome">Osório</span><span class="bcid-go">Ver imóveis →</span></a>
-        <a class="bcid-card" href="/imoveis?cidade=Xangri-l%C3%A1"><span class="bcid-nome">Xangri-lá</span><span class="bcid-go">Ver imóveis →</span></a>
-      </div>
-    </div>
-  </section>
-
   <!-- ══ DESTAQUES CONDOMÍNIOS ══ -->
   <section class="dest-section sec-onda" id="sec-condominios">
     <div class="dest-inner">
@@ -2133,50 +2114,6 @@ body{padding-top:56px}
   </div>
 </section>
 
-
-  <section class="ondeir-sec sec-onda" id="onde-ir">
-    <div class="ondeir-inner">
-      <p class="eyebrow" style="justify-content:center">Turismo no Litoral</p>
-      <h2 class="sectit">Onde <em>ir</em></h2>
-      <p class="cidades-sub">As atrações imperdíveis de cada cidade do Litoral Norte</p>
-      <div class="ondeir-grid is-carrossel">
-        <a class="oi-card" href="/lagoa-dos-quadros"><div class="oi-card-foto" data-foto-card="lagoa-dos-quadros"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Lagoa dos Quadros</span><span class="oi-desc">Esportes náuticos e pôr do sol</span></a>
-        <a class="oi-card" href="/marina-park"><div class="oi-card-foto" data-foto-card="marina-park"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Marina Park</span><span class="oi-desc">O maior parque aquático dos gaúchos</span></a>
-        <a class="oi-card" href="/plataforma-de-atlantida"><div class="oi-card-foto" data-foto-card="plataforma-de-atlantida"></div><span class="oi-cidade">Xangri-lá</span><span class="oi-nome">Plataforma de Atlântida</span><span class="oi-desc">280m de trapiche sobre o mar</span></a>
-        <a class="oi-card" href="/praia-de-atlantida"><div class="oi-card-foto" data-foto-card="praia-de-atlantida"></div><span class="oi-cidade">Xangri-lá</span><span class="oi-nome">Praia de Atlântida</span><span class="oi-desc">A praia mais nobre do litoral</span></a>
-        <a class="oi-card" href="/morro-da-borussia"><div class="oi-card-foto" data-foto-card="morro-da-borussia"></div><span class="oi-cidade">Osório</span><span class="oi-nome">Morro da Borússia</span><span class="oi-desc">Mirante, voo livre e cascatas</span></a>
-        <a class="oi-card" href="/parque-eolico-de-osorio"><div class="oi-card-foto" data-foto-card="parque-eolico-de-osorio"></div><span class="oi-cidade">Osório</span><span class="oi-nome">Parque Eólico</span><span class="oi-desc">Os gigantes da energia limpa</span></a>
-        <a class="oi-card" href="/cascata-do-garapia"><div class="oi-card-foto" data-foto-card="cascata-do-garapia"></div><span class="oi-cidade">Maquiné</span><span class="oi-nome">Cascata do Garapiá</span><span class="oi-desc">Cachoeira e poço para banho</span></a>
-        <a class="oi-card" href="/cascata-da-forqueta"><div class="oi-card-foto" data-foto-card="cascata-da-forqueta"></div><span class="oi-cidade">Maquiné</span><span class="oi-nome">Cascata da Forqueta</span><span class="oi-desc">70m de natureza selvagem</span></a>
-        <a class="oi-card" href="/praca-do-farol"><div class="oi-card-foto" data-foto-card="praca-do-farol__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Praça do Farol</span><span class="oi-desc">O histórico farol de 1930 na Beira-Mar</span></a>
-        <a class="oi-card" href="/praca-flavio-boianovski"><div class="oi-card-foto" data-foto-card="praca-flavio-boianovski__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Praça Flávio Boianovski</span><span class="oi-desc">Ampla área verde e quadras</span></a>
-        <a class="oi-card" href="/praca-luiz-bassani"><div class="oi-card-foto" data-foto-card="praca-luiz-bassani__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Praça Luiz Bassani</span><span class="oi-desc">Vista para o oceano e playground</span></a>
-        <a class="oi-card" href="/praca-avezon"><div class="oi-card-foto" data-foto-card="praca-avezon__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Praça Avezon</span><span class="oi-desc">Ponto de encontro na orla</span></a>
-        <a class="oi-card" href="/praca-israelita"><div class="oi-card-foto" data-foto-card="praca-israelita__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Praça Israelita</span><span class="oi-desc">Caminhadas e convivência no centro</span></a>
-        <a class="oi-card" href="/praca-tiaraju"><div class="oi-card-foto" data-foto-card="praca-tiaraju__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Praça Tiaraju</span><span class="oi-desc">Lazer e recreação infantil</span></a>
-        <a class="oi-card" href="/largo-do-baronda"><div class="oi-card-foto" data-foto-card="largo-do-baronda__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Largo do Baronda</span><span class="oi-desc">Espaço urbano e eventos culturais</span></a>
-        <a class="oi-card" href="/praca-dos-camelos"><div class="oi-card-foto" data-foto-card="praca-dos-camelos__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Praça dos Camelôs</span><span class="oi-desc">Tradicional ponto no comércio central</span></a>
-        <a class="oi-card" href="/praca-do-skate"><div class="oi-card-foto" data-foto-card="praca-do-skate__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Praça do Skate</span><span class="oi-desc">Skate e esportes radicais</span></a>
-        <a class="oi-card" href="/praca-da-zona-nova"><div class="oi-card-foto" data-foto-card="praca-da-zona-nova__1"></div><span class="oi-cidade">Capão da Canoa</span><span class="oi-nome">Praça da Zona Nova</span><span class="oi-desc">Lazer infantil na região norte</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ BUSCA RÁPIDA: CONDOMÍNIOS POR CIDADE ══ -->
-  <section class="bcid-sec bcid-sec-alt sec-onda" id="bcid-sec-sec">
-    <div class="bcid-inner">
-      <p class="eyebrow" style="justify-content:center">Busca rápida</p>
-      <h2 class="sectit">Condomínios por <em>cidade</em></h2>
-      <p class="cidades-sub">Explore os condomínios de cada cidade do litoral</p>
-      <div class="bcid-grid">
-        <a class="bcid-card" href="/condominios?cidade=Cap%C3%A3o%20da%20Canoa"><span class="bcid-nome">Capão da Canoa</span><span class="bcid-go">Ver condomínios →</span></a>
-        <a class="bcid-card" href="/condominios?cidade=Maquin%C3%A9"><span class="bcid-nome">Maquiné</span><span class="bcid-go">Ver condomínios →</span></a>
-        <a class="bcid-card" href="/condominios?cidade=Os%C3%B3rio"><span class="bcid-nome">Osório</span><span class="bcid-go">Ver condomínios →</span></a>
-        <a class="bcid-card" href="/condominios?cidade=Xangri-l%C3%A1"><span class="bcid-nome">Xangri-lá</span><span class="bcid-go">Ver condomínios →</span></a>
-      </div>
-    </div>
-  </section>
-
 <!-- ══ PRECISANDO DE CRÉDITO? ══ -->
   <section class="pcred-sec sec-onda" id="pcred-sec-sec">
     <div class="pcred-inner">
@@ -2212,7 +2149,7 @@ body{padding-top:56px}
   <!-- ══ BAIRROS DE CAPÃO DA CANOA ══ -->
   <section class="guias-sec sec-onda" id="guias-cidades">
     <div class="guias-inner">
-      <p class="eyebrow" style="justify-content:center">Guias Completos</p>
+      <p class="eyebrow" style="justify-content:center">Turismo</p>
       <h2 class="sectit">Conheça as <em>Cidades</em></h2>
       <p class="cidades-sub">Tudo sobre morar e investir em cada cidade do Litoral Norte</p>
       <div class="guias-grid">
@@ -2335,17 +2272,6 @@ body{padding-top:56px}
           <a class="cred-hero-pill" href="/contemplado-imoveis">Crédito Contemplado</a>
           <a class="cred-hero-pill" href="/seguro-fianca">Seguro Fiança</a>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="ct-section sec-onda" id="credito-contemplado">
-    <div class="ct-inner">
-      <div class="ct-invite">
-        <div class="ct-badge">💳 Crédito Contemplado</div>
-        <h2 class="ct-invite-title">Cartas contempladas a partir de <em>R$ 450 mil</em></h2>
-        <p class="ct-invite-sub">Compre seu imóvel à vista, sem juros — cartas prontas para uso imediato.</p>
-        <a class="ct-invite-btn" href="/contemplado-imoveis">Ver cartas disponíveis <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
     </div>
   </section>
@@ -5176,7 +5102,7 @@ async function renderContempladasCards(targetId){
   <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
   <div class="ftr-main">
     <div class="ftr-col ftr-col-brand">
-      <div class="ftr-logo"><img src="/img/logo-meu-litoral.png" alt="Meu Litoral - O Portal do Litoral Gaúcho" style="width:180px;height:auto;display:block" width="180" height="169"></div>
+      <div class="ftr-logo"><img src="/img/logo-rodape.png" alt="Meu Litoral - O Portal do Litoral Gaúcho" class="ftr-logo-img"></div>
       <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
       <a class="ftr-wpp" href="https://wa.me/5551982868888"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
     </div>
@@ -5195,7 +5121,7 @@ async function renderContempladasCards(targetId){
       <div class="ftr-links-grid">
       <a href="#guias-cidades" onclick="document.getElementById('guias-cidades').scrollIntoView({behavior:'smooth'});return false">Cidades</a>
       <a href="/o-que-fazer-em-capao-da-canoa" onclick="openTurismo();return false">Turismo no Litoral</a>
-      <a href="#onde-ir" onclick="document.getElementById('onde-ir').scrollIntoView({behavior:'smooth'});return false">Onde Ir</a>
+      <a href="/turismo" onclick="openTurismo();return false">Onde Ir</a>
       <a href="/blog" onclick="openBlog();return false">Blog &amp; Notícias</a>
     </div>
     </div>
