@@ -4,7 +4,7 @@
 <script>(function(){var P='https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/',F=window.fetch;window.fetch=function(u,o){var s=typeof u==='string'?u:(u&&u.url)||'';var p=F.call(window,u,o);if(s.indexOf('.supabase.co/rest/v1/')===-1)return p;return p.then(function(r){var ct=r.headers.get('content-type')||'';if(ct.indexOf('json')===-1)return r;return r.text().then(function(t){return new Response(t.split(P).join(location.origin+'/cdn-fotos/'),{status:r.status,statusText:r.statusText,headers:r.headers})})})};})();</script>
 <!-- Google tag (gtag.js) — carrega uma vez, configura Ads + Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK"></script>
-<link rel="icon" type="image/svg+xml" href="/img/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -1555,8 +1555,6 @@ body{padding-top:56px}
 .navq-card:hover .navq-arrow{background:linear-gradient(135deg,var(--ol,#1fb5c4),var(--om,#0e8a99));color:#fff;transform:translateX(3px)}
 
 
-#sec-terrenos{background:#fff !important}
-#sec-condominios{background:#faf6ef !important}
 .lch-sec{background:#fff}
 
 /* ondas suaves nas transições entre seções */
@@ -1568,57 +1566,22 @@ body{padding-top:56px}
 
 /* ═══ RITMO DE CORES DEFINITIVO (sobrepõe tudo) ═══ */
 .qr-sec{background:#fff !important}
-#sec-imoveis{background:#faf6ef !important}
 .lch-sec{background:#faf6ef !important}
-#sec-terrenos{background:#fff !important}
-#sec-encontre{background:#faf6ef !important}
-#sec-condominios{background:#faf6ef !important}
 .viver-intro{background:#fff !important}
-#cond-capao{background:#faf6ef !important}
-#cond-xangri{background:#fff !important}
-#cond-osorio{background:#faf6ef !important}
-#cond-maquine{background:#fff !important}
-#qfilter{background:#faf6ef !important}
-#onde-ir{background:#faf6ef !important}
 .bcid-sec-alt{background:#fff !important}
 .pcred-sec{background:#faf6ef !important}
-#guias-cidades{background:#fff !important}
-#bairros{background:#faf6ef !important}
-#bairros-xangri{background:#fff !important}
-#guias-decisao{background:#faf6ef !important}
 .cred-sol-sec{background:#fff !important}
-#credito-contemplado{background:#faf6ef !important}
-#exclusividade-home{background:#fff !important}
-#sec-blog-preview{background:#faf6ef !important}
 
 /* espaço para a onda no topo das seções */
 .sec-onda{padding-top:96px !important}
 @media(max-width:600px){.sec-onda{padding-top:68px !important}}
 /* cor de cada onda = cor da seção anterior (auditado) */
-#sec-imoveis.sec-onda::before{background:#fff !important}
-#qfilter2{background:#fff !important}
-#qfilter2.sec-onda::before{background:#faf6ef !important}
 .lch-sec.sec-onda::before{background:#fff !important}
-#sec-terrenos.sec-onda::before{background:#faf6ef !important}
-#sec-encontre.sec-onda::before{background:#fff !important}
-#sec-condominios.sec-onda::before{background:#fff !important}
 .viver-intro.sec-onda::before{background:#faf6ef !important}
-#cond-capao.sec-onda::before{background:#ede2cf !important}
-#cond-xangri.sec-onda::before{background:#faf6ef !important}
-#cond-osorio.sec-onda::before{background:#fff !important}
-#cond-maquine.sec-onda::before{background:#faf6ef !important}
-#qfilter.sec-onda::before{background:#fff !important}
-#onde-ir.sec-onda::before{background:#fff !important}
 .bcid-sec-alt.sec-onda::before{background:#faf6ef !important}
 .pcred-sec.sec-onda::before{background:#fff !important}
-#guias-cidades.sec-onda::before{background:#faf6ef !important}
-#bairros.sec-onda::before{background:#fff !important}
-#bairros-xangri.sec-onda::before{background:#faf6ef !important}
-#guias-decisao.sec-onda::before{background:#fff !important}
 .cred-sol-sec.sec-onda::before{background:#faf6ef !important}
-#credito-contemplado.sec-onda::before{background:#fff !important}
-#exclusividade-home.sec-onda::before{background:#faf6ef !important}
-#sec-blog-preview.sec-onda::before{background:#fff !important}
+
 
 /* ===== RITMO DE ONDAS UNIFICADO (creme/branco alternado) ===== */
 #sec-imoveis{background:#faf6ef !important}
@@ -1653,10 +1616,6 @@ body{padding-top:56px}
 #pcred-sec-sec.sec-onda::before{background:#fff !important}
 #guias-cidades{background:#fff !important}
 #guias-cidades.sec-onda::before{background:#faf6ef !important}
-#bairros{background:#faf6ef !important}
-#bairros.sec-onda::before{background:#fff !important}
-#bairros-xangri{background:#fff !important}
-#bairros-xangri.sec-onda::before{background:#faf6ef !important}
 #guias-decisao{background:#faf6ef !important}
 #guias-decisao.sec-onda::before{background:#fff !important}
 #cred-sol-sec-sec{background:#fff !important}
@@ -2297,46 +2256,6 @@ body{padding-top:56px}
             <span class="guia-card-link">Ver guia completo →</span>
           </div>
         </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="bairros-sec sec-onda" id="bairros">
-    <div class="bairros-inner">
-      <p class="eyebrow" style="justify-content:center">Onde morar</p>
-      <h2 class="sectit">Bairros de <em>Capão da Canoa</em></h2>
-      <p class="cidades-sub">Conheça os bairros e encontre o ideal para morar ou investir</p>
-      <div class="bairros-grid is-carrossel">
-        <a class="bairro-card" href="/capao-da-canoa-centro"><div class="bairro-foto" data-foto-card="capao-da-canoa-centro"></div><div class="bairro-body"><span class="bairro-nome">Centro</span><span class="bairro-desc">Comércio, gastronomia e praia — perto de tudo</span></div></a>
-        <a class="bairro-card" href="/capao-da-canoa-zona-nova"><div class="bairro-foto" data-foto-card="capao-da-canoa-zona-nova"></div><div class="bairro-body"><span class="bairro-nome">Zona Nova</span><span class="bairro-desc">Tranquilo e familiar, perto do Centro</span></div></a>
-        <a class="bairro-card" href="/capao-da-canoa-navegantes"><div class="bairro-foto" data-foto-card="capao-da-canoa-navegantes"></div><div class="bairro-body"><span class="bairro-nome">Navegantes</span><span class="bairro-desc">O bairro mais valorizado e nobre</span></div></a>
-        <a class="bairro-card" href="/capao-da-canoa-guarani"><div class="bairro-foto" data-foto-card="capao-da-canoa-guarani"></div><div class="bairro-body"><span class="bairro-nome">Guarani</span><span class="bairro-desc">Em destaque para morar e investir</span></div></a>
-        <a class="bairro-card" href="/capao-da-canoa-arco-iris"><div class="bairro-foto" data-foto-card="capao-da-canoa-arco-iris"></div><div class="bairro-body"><span class="bairro-nome">Arco-Íris</span><span class="bairro-desc">Residencial, tranquilo e seguro</span></div></a>
-        <a class="bairro-card" href="/capao-da-canoa-araca"><div class="bairro-foto" data-foto-card="capao-da-canoa-araca"></div><div class="bairro-body"><span class="bairro-nome">Araçá</span><span class="bairro-desc">Sossegado e residencial à beira-mar</span></div></a>
-        <a class="bairro-card" href="/capao-da-canoa-praia-do-barco"><div class="bairro-foto" data-foto-card="capao-da-canoa-praia-do-barco"></div><div class="bairro-body"><span class="bairro-nome">Praia do Barco</span><span class="bairro-desc">Tranquilidade e natureza perto da praia</span></div></a>
-        <a class="bairro-card" href="/capao-da-canoa-curumim"><div class="bairro-foto" data-foto-card="capao-da-canoa-curumim"></div><div class="bairro-body"><span class="bairro-nome">Curumim</span><span class="bairro-desc">Distrito litorâneo calmo e familiar</span></div></a>
-        <a class="bairro-card" href="/capao-da-canoa-arroio-teixeira"><div class="bairro-foto" data-foto-card="capao-da-canoa-arroio-teixeira"></div><div class="bairro-body"><span class="bairro-nome">Arroio Teixeira</span><span class="bairro-desc">Praia tranquila e veraneio tradicional</span></div></a>
-        <a class="bairro-card" href="/capao-da-canoa-capao-novo"><div class="bairro-foto" data-foto-card="capao-da-canoa-capao-novo"></div><div class="bairro-body"><span class="bairro-nome">Capão Novo</span><span class="bairro-desc">Distrito sossegado à beira-mar</span></div></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ BAIRROS DE XANGRI-LÁ ══ -->
-  <section class="bairros-sec sec-onda" id="bairros-xangri">
-    <div class="bairros-inner">
-      <p class="eyebrow" style="justify-content:center">Onde morar</p>
-      <h2 class="sectit">Bairros de <em>Xangri-lá</em></h2>
-      <p class="cidades-sub">Os balneários da capital dos condomínios — escolha o seu</p>
-      <div class="bairros-grid is-carrossel">
-        <a class="bairro-card" href="/xangri-la-atlantida"><div class="bairro-foto" data-foto-card="xangri-la-atlantida"></div><div class="bairro-body"><span class="bairro-nome">Atlântida</span><span class="bairro-desc">O endereço mais nobre do litoral</span></div></a>
-        <a class="bairro-card" href="/xangri-la-centro"><div class="bairro-foto" data-foto-card="xangri-la-centro"></div><div class="bairro-body"><span class="bairro-nome">Centro</span><span class="bairro-desc">Praticidade e comércio perto da praia</span></div></a>
-        <a class="bairro-card" href="/xangri-la-rainha-do-mar"><div class="bairro-foto" data-foto-card="xangri-la-rainha-do-mar"></div><div class="bairro-body"><span class="bairro-nome">Rainha do Mar</span><span class="bairro-desc">Tradicional, familiar e tranquilo</span></div></a>
-        <a class="bairro-card" href="/xangri-la-remanso"><div class="bairro-foto" data-foto-card="xangri-la-remanso"></div><div class="bairro-body"><span class="bairro-nome">Remanso</span><span class="bairro-desc">Veraneio tradicional e bem localizado</span></div></a>
-        <a class="bairro-card" href="/xangri-la-marina"><div class="bairro-foto" data-foto-card="xangri-la-marina"></div><div class="bairro-body"><span class="bairro-nome">Marina</span><span class="bairro-desc">Náutica e condomínios à beira-lago</span></div></a>
-        <a class="bairro-card" href="/xangri-la-noiva-do-mar"><div class="bairro-foto" data-foto-card="xangri-la-noiva-do-mar"></div><div class="bairro-body"><span class="bairro-nome">Noiva do Mar</span><span class="bairro-desc">Calmo e familiar, longe da muvuca</span></div></a>
-        <a class="bairro-card" href="/xangri-la-maristela"><div class="bairro-foto" data-foto-card="xangri-la-maristela"></div><div class="bairro-body"><span class="bairro-nome">Maristela</span><span class="bairro-desc">Veraneio tradicional e tranquilo</span></div></a>
-        <a class="bairro-card" href="/xangri-la-arpoador"><div class="bairro-foto" data-foto-card="xangri-la-arpoador"></div><div class="bairro-body"><span class="bairro-nome">Arpoador</span><span class="bairro-desc">Natureza e praia sossegada</span></div></a>
-        <a class="bairro-card" href="/xangri-la-coqueiros"><div class="bairro-foto" data-foto-card="xangri-la-coqueiros"></div><div class="bairro-body"><span class="bairro-nome">Praia dos Coqueiros</span><span class="bairro-desc">Sossego sereno à beira-mar</span></div></a>
       </div>
     </div>
   </section>
@@ -5257,7 +5176,7 @@ async function renderContempladasCards(targetId){
   <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
   <div class="ftr-main">
     <div class="ftr-col ftr-col-brand">
-      <div class="ftr-logo"><svg class="ftr-logo-svg" viewBox="0 0 280 76" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Os melhores condomínios do litoral" style="width:230px;height:auto;display:block"><defs><linearGradient id="lgwave" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1fb5c4"/><stop offset="1" stop-color="#0e8a99"/></linearGradient></defs><g transform="translate(2,8)"><path d="M30 6 L52 24 L46 24 L46 44 L14 44 L14 24 L8 24 Z" fill="none" stroke="#e0b34d" stroke-width="2.4" stroke-linejoin="round"/><path d="M22 44 L22 32 L30 32 L30 44" fill="none" stroke="#e0b34d" stroke-width="2.2" stroke-linejoin="round"/><path d="M4 52 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="url(#lgwave)" stroke-width="3" stroke-linecap="round"/><path d="M4 60 q7 -6 14 0 t14 0 t14 0 t14 0" fill="none" stroke="#1fb5c4" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/></g><text x="70" y="30" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" fill="#ffffff">Os melhores</text><text x="70" y="52" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" font-style="italic" fill="#e0b34d">condomínios</text><text x="70" y="70" font-family="Outfit, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="3" fill="#cdeef2">DO LITORAL</text></svg></div>
+      <div class="ftr-logo"><img src="/img/logo-meu-litoral.png" alt="Meu Litoral - O Portal do Litoral Gaúcho" style="width:180px;height:auto;display:block" width="180" height="169"></div>
       <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
       <a class="ftr-wpp" href="https://wa.me/5551982868888"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
     </div>
