@@ -3,3 +3,6 @@
 # #11 — remoção de hífen solto no final das URLs de condomínio
 /condominio-maquine-la-marina-      /condominio-maquine-la-marina      301
 /condominio-xangri-la-villas-resort-  /condominio-xangri-la-villas-resort  301
+
+# Atlântida — bairro de Xangri-lá (evita 404 de links antigos)
+/atlantida  /xangri-la-atlantida  301
