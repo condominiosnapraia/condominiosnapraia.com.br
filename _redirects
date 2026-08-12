@@ -6,3 +6,6 @@
 
 # Atlântida — bairro de Xangri-lá (evita 404 de links antigos)
 /atlantida  /xangri-la-atlantida  301
+
+# URL lixeira e duplicatas (diagnóstico Manus 12/08)
+/condominios-index  /condominios  301
