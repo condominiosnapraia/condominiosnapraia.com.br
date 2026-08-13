@@ -41,9 +41,12 @@
 <meta property="og:title" content="Portal Meu Litoral | Condomínios em Xangri-lá e Capão da Canoa">
 <meta property="og:description" content="Condomínios fechados de alto padrão em Xangri-lá, Capão da Canoa, Osório e Maquiné. Crédito contemplado disponível.">
 <meta property="og:image" content="https://condominiosnapraia.com.br/img/og-home.jpg">
+<meta property="og:image:secure_url" content="https://condominiosnapraia.com.br/img/og-home.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:site_name" content="Condomínios na Praia">
+<meta property="og:image:alt" content="Portal Meu Litoral - Condomínios no Litoral Norte Gaúcho">
+<meta property="og:site_name" content="Portal Meu Litoral">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Os Melhores Condomínios do Litoral | Litoral Norte RS">
@@ -1761,6 +1764,26 @@ body{padding-top:56px}
       <div class="dest-ver-all">
         <a class="dest-btn-all dest-btn-alt" href="/imoveis?tipo=Casa">
           Ver todas casas e sobrados disponíveis
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ DESTAQUES CASAS FORA DE CONDOMÍNIO ══ -->
+  <section class="dest-section sec-onda" id="sec-fora-cond">
+    <div class="dest-inner">
+      <div class="dest-header">
+        <div>
+          <p class="eyebrow">Imóveis de rua</p>
+          <h2 class="sectit">Casas Fora de <em>Condomínio</em></h2>
+        </div>
+        <a class="dest-ver-btn" href="/imoveis?fora=1">Ver todas →</a>
+      </div>
+      <div class="igrid" id="home-fora-grid" style="min-height:200px"></div>
+      <div class="dest-ver-all">
+        <a class="dest-btn-all dest-btn-alt" href="/imoveis?fora=1">
+          Ver todas as casas fora de condomínio
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -4002,7 +4025,7 @@ window.iniciarCarrosseisCards=iniciarCarrosseisCards;
 function buildImovCard(i){
   const foto=i.fotos&&i.fotos.find(f=>f&&(f.startsWith('data:')||f.startsWith('http')));
   const brl=v=>{try{return Number(String(v||0).replace(/\D/g,'')).toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:0});}catch{return'Consulte';}};
-  const condo=i._c?`${i._c.nome} · ${i._c.localizacao||i._c.cidade||''}`:(i.condominioNome||'');
+  const condo=i._c?`${i._c.nome} · ${i._c.localizacao||i._c.cidade||''}`:(i.condominioNome|| [i.bairro_end||i.bairroEnd, i.cidade_end||i.cidadeEnd].filter(Boolean).join(' · ') || '');
   const sc=i.status==='Disponível'?'stv':i.status==='Reservado'?'str':'stv';
   const areaVal = i.area||i.areaPrivativa||i.area_privativa||i.areaConstruida||i.area_construida||i.terreno;
   const specs=[
@@ -4174,6 +4197,14 @@ function buildHomeDestaques(){
     if(tg) tg.innerHTML=showTerreno.length
       ? showTerreno.map(buildImovCard).join('')
       : '<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🌳</div><p>Cadastre terrenos no CRM para exibi-los aqui</p></div>';
+
+    // ── CASAS FORA DE CONDOMÍNIO (12 cards) ──
+    const ehFora = i => (i.fora_condominio===true || i.foraCondominio===true);
+    const foraLista = allImov.filter(i=>ehFora(i) && !ehTerreno(i)).slice(0,12);
+    const fg=document.getElementById('home-fora-grid');
+    if(fg) fg.innerHTML=foraLista.length
+      ? foraLista.map(buildImovCard).join('')
+      : '<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🏠</div><p>Cadastre casas fora de condomínio no CRM para exibi-las aqui</p></div>';
 
     // Trigger fade animations
     if(typeof obs === 'function') obs();

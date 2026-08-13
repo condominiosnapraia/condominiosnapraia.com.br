@@ -2545,13 +2545,18 @@ if(_savedToken && _savedUser){
           <select class="fse" id="im-st"><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option></select></div>
       </div>
       <div class="fsec">Endereço</div>
+      <div style="grid-column:1/-1;margin:2px 0 10px">
+        <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--t2);background:#eef9fa;border:1px solid var(--bd,#d5e6ea);border-radius:8px;padding:9px 14px">
+          <input type="checkbox" id="im-fora-cond" onchange="toggleForaCond()" style="accent-color:var(--ac);width:16px;height:16px"> 🏠 Imóvel fora de condomínio (casa/sobrado de rua, bairro)
+        </label>
+      </div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Condomínio *</label><select class="fse" id="im-cond"><option value="">Selecione...</option></select></div>
-        <div class="fg"><label class="fl">Quadra *</label><input class="fi" id="im-quadra" placeholder="Ex: Quadra B"></div>
-        <div class="fg"><label class="fl">Lote *</label><input class="fi" id="im-lote" placeholder="Ex: Lote 42-A"></div>
+        <div class="fg" id="wrap-im-cond"><label class="fl">Condomínio *</label><select class="fse" id="im-cond"><option value="">Selecione...</option></select></div>
+        <div class="fg" id="wrap-im-quadra"><label class="fl">Quadra *</label><input class="fi" id="im-quadra" placeholder="Ex: Quadra B"></div>
+        <div class="fg" id="wrap-im-lote"><label class="fl">Lote *</label><input class="fi" id="im-lote" placeholder="Ex: Lote 42-A"></div>
         <div class="fg"><label class="fl">CEP</label><input class="fi" id="im-cep" placeholder="95000-000"></div>
-        <div class="fg"><label class="fl">Cidade</label><input class="fi" id="im-cidade" placeholder="Xangri-lá"></div>
-        <div class="fg"><label class="fl">Bairro</label><input class="fi" id="im-bairro-end" placeholder="Bairro"></div>
+        <div class="fg"><label class="fl" id="lbl-im-cidade">Cidade</label><input class="fi" id="im-cidade" placeholder="Xangri-lá"></div>
+        <div class="fg"><label class="fl" id="lbl-im-bairro">Bairro</label><input class="fi" id="im-bairro-end" placeholder="Bairro"></div>
         <div class="fg"><label class="fl">Ponto de Referência</label><input class="fi" id="im-ref-local" placeholder="Ex: Próximo à praia central"></div>
       </div>
     </div>
@@ -3805,6 +3810,7 @@ function rImF(){
   document.getElementById('im-tipo').value='Casa Térrea';
   document.getElementById('im-final').value='venda';
   document.getElementById('im-st').value='Disponível';
+  if(document.getElementById('im-fora-cond')){document.getElementById('im-fora-cond').checked=false;toggleForaCond();}
   document.getElementById('im-sol').value='';
   document.getElementById('im-vista').value='';
   document.getElementById('im-doc').value='Regular';
@@ -3865,6 +3871,7 @@ function eImov(id){
   sv('im-seo-tour',seo.tour);sv('im-seo-video',seo.video);
   if(g('im-cond'))g('im-cond').value=x.cond_id||x.condId||'';
   if(g('im-prop'))g('im-prop').value=x.prop_id||x.propId||'';
+  if(g('im-fora-cond')){g('im-fora-cond').checked=!!(x.fora_condominio||x.foraCondominio);toggleForaCond();}
   // 2. Abre modal imediatamente
   oMo('imov-mo');
   // 3. Carrega fotos em background
@@ -3900,13 +3907,14 @@ function prefixoCidade(cidade){
   const letras=(cidade||'IMV').replace(/[^a-zA-ZÀ-ú]/g,'').toUpperCase();
   return (letras.substring(0,3)||'IMV');
 }
-function gerarCodigoImovel(condId){
-  // descobrir a cidade do condomínio
+function gerarCodigoImovel(condId, cidadeFallback){
+  // descobrir a cidade do condomínio (ou usar a cidade do endereço se for fora de condomínio)
   let cidade='';
   try{
     const cond=(DB.co||[]).find(c=>c.id===condId);
     if(cond) cidade=cond.cidade||cond.localizacao||'';
   }catch(_){}
+  if(!cidade && cidadeFallback) cidade=cidadeFallback;
   const pref=prefixoCidade(cidade);
   // contar imóveis existentes com o mesmo prefixo para achar o próximo número
   let maior=0;
@@ -3957,20 +3965,53 @@ async function gerarCodigosEmMassa(){
   else toast(`${ok} gerado(s), ${erros} com erro. Verifique se a coluna "codigo" existe no banco.`,'error');
 }
 
+function toggleForaCond(){
+  const fora = (document.getElementById('im-fora-cond')||{}).checked;
+  const cond=document.getElementById('wrap-im-cond');
+  const quad=document.getElementById('wrap-im-quadra');
+  const lote=document.getElementById('wrap-im-lote');
+  const lblCid=document.getElementById('lbl-im-cidade');
+  const lblBai=document.getElementById('lbl-im-bairro');
+  if(fora){
+    if(cond)cond.style.display='none';
+    if(quad)quad.style.display='none';
+    if(lote)lote.style.display='none';
+    // limpa valores dos campos escondidos p/ nao arrastar dado antigo
+    ['im-cond','im-quadra','im-lote'].forEach(id=>{const e=document.getElementById(id);if(e){e.value='';e.style.borderColor='';}});
+    if(lblCid)lblCid.textContent='Cidade *';
+    if(lblBai)lblBai.textContent='Bairro *';
+  }else{
+    if(cond)cond.style.display='';
+    if(quad)quad.style.display='';
+    if(lote)lote.style.display='';
+    if(lblCid)lblCid.textContent='Cidade';
+    if(lblBai)lblBai.textContent='Bairro';
+  }
+}
+
 async function savImov(){
   const gv=n=>{const e=document.getElementById(n);return e?e.value:'';};
   const gc=n=>{const e=document.getElementById(n);return e?e.checked:false;};
+  const foraCond=gc('im-fora-cond');
   const titulo=gv('im-tit').trim(),condId=gv('im-cond');
   const quadra=gv('im-quadra').trim(), lote=gv('im-lote').trim(), propId=gv('im-prop'), preco=gv('im-preco').trim();
-  if(!titulo||!condId){toast('Preencha Título e Condomínio (aba Dados Principais)','error');return}
-  if(!quadra){toast('Informe a Quadra (campo obrigatório)','error');const e=document.getElementById('im-quadra');if(e){e.focus();e.style.borderColor='var(--rd)';}return}
-  if(!lote){toast('Informe o Lote (campo obrigatório)','error');const e=document.getElementById('im-lote');if(e){e.focus();e.style.borderColor='var(--rd)';}return}
+  const bairroEnd=gv('im-bairro-end').trim(), cidadeEnd=gv('im-cidade').trim();
+  if(!titulo){toast('Preencha o Título (aba Dados Principais)','error');return}
+  if(foraCond){
+    // imóvel de rua/bairro: exige Bairro + Cidade, não exige condomínio/quadra/lote
+    if(!bairroEnd){toast('Informe o Bairro (obrigatório para imóvel fora de condomínio)','error');const e=document.getElementById('im-bairro-end');if(e){e.focus();e.style.borderColor='var(--rd)';}return}
+    if(!cidadeEnd){toast('Informe a Cidade (obrigatório para imóvel fora de condomínio)','error');const e=document.getElementById('im-cidade');if(e){e.focus();e.style.borderColor='var(--rd)';}return}
+  }else{
+    if(!condId){toast('Preencha o Condomínio (ou marque "fora de condomínio")','error');const e=document.getElementById('im-cond');if(e){e.focus();e.style.borderColor='var(--rd)';}return}
+    if(!quadra){toast('Informe a Quadra (campo obrigatório)','error');const e=document.getElementById('im-quadra');if(e){e.focus();e.style.borderColor='var(--rd)';}return}
+    if(!lote){toast('Informe o Lote (campo obrigatório)','error');const e=document.getElementById('im-lote');if(e){e.focus();e.style.borderColor='var(--rd)';}return}
+  }
   if(!propId){toast('Selecione o Proprietário (campo obrigatório)','error');const e=document.getElementById('im-prop');if(e){e.focus();e.style.borderColor='var(--rd)';}return}
   if(!preco){toast('Informe o Valor no Sistema (campo obrigatório)','error');const e=document.getElementById('im-preco');if(e){e.focus();e.style.borderColor='var(--rd)';}return}
   const eid=gv('im-id'),id=eid||uid();
   // ── VERIFICAÇÃO DE DUPLICIDADE (mesmo condomínio + quadra + lote não pode repetir) ──
   const _norm=s=>String(s||'').trim().toLowerCase().replace(/\s+/g,' ');
-  const _dup=(DB.im||[]).find(x=>x.id!==id && x.cond_id===condId && _norm(x.quadra)===_norm(quadra) && _norm(x.lote)===_norm(lote));
+  const _dup=foraCond?null:(DB.im||[]).find(x=>x.id!==id && x.cond_id===condId && _norm(x.quadra)===_norm(quadra) && _norm(x.lote)===_norm(lote));
   if(_dup){
     const _cnome=((DB.co||[]).find(c=>c.id===condId)||{}).nome||'este condomínio';
     toast('Já existe um imóvel cadastrado em '+_cnome+' com '+quadra+' · '+lote+' (código '+(_dup.codigo||_dup.ref||'—')+'). Não é possível duplicar quadra e lote.','error');
@@ -3980,13 +4021,13 @@ async function savImov(){
   // ── CÓDIGO DO IMÓVEL (automático com prefixo da cidade) ──
   let codigoImovel = gv('im-codigo').trim();
   if(!codigoImovel){
-    codigoImovel = gerarCodigoImovel(condId);
+    codigoImovel = gerarCodigoImovel(condId, foraCond?cidadeEnd:'');
   }
   const btn=document.querySelector('#imov-mo .btn.bp');if(btn){btn.disabled=true;btn.textContent='Salvando...';}
   try{
     const _condSeo=(DB.co||[]).find(c=>c.id===condId)||{}; const fotosUrls = await uploadFotos(iF, iFS, 'imov', id, ['imovel',_condSeo.cidade,_condSeo.nome,titulo].filter(Boolean).join(' '));
     const o={
-      id,titulo,cond_id:condId,ref:gv('im-ref'),codigo:codigoImovel,
+      id,titulo,cond_id:condId,fora_condominio:foraCond,ref:gv('im-ref'),codigo:codigoImovel,
       lote:gv('im-lote'),quadra:gv('im-quadra'),cep:gv('im-cep'),cidade_end:gv('im-cidade'),bairro_end:gv('im-bairro-end'),ref_local:gv('im-ref-local'),
       finalidade:gv('im-final'),tipo:gv('im-tipo'),status:gv('im-st'),
       publicar:gv('im-pub')==='1',
