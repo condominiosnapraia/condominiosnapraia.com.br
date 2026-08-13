@@ -3385,7 +3385,7 @@ function buildDetail(c){
       var sc2=document.createElement('script');sc2.type='application/ld+json';sc2.id='d-bc-schema';
       sc2.textContent=JSON.stringify(bc);document.head.appendChild(sc2);
 
-      var org={"@context":"https://schema.org","@type":"Organization","name":"Condomínios na Praia","url":location.origin+"/","areaServed":"Litoral Norte do Rio Grande do Sul"};
+      var org={"@context":"https://schema.org","@type":"RealEstateAgent","name":"Portal Meu Litoral","alternateName":"Condomínios na Praia","url":location.origin+"/","logo":location.origin+"/img/logo-header.png","image":location.origin+"/img/og-home.jpg","telephone":"+55-51-98286-8888","email":"napraiacondominios@gmail.com","areaServed":["Xangri-lá","Capão da Canoa","Osório","Maquiné","Atlântida","Litoral Norte Gaúcho"],"address":{"@type":"PostalAddress","addressRegion":"RS","addressCountry":"BR","addressLocality":"Litoral Norte Gaúcho"},"knowsAbout":["condomínios fechados","imóveis de alto padrão","casas na praia","terrenos em condomínio","crédito contemplado"],"sameAs":[/* AJUSTAR: cole aqui os links das redes ao criar, ex: "https://www.instagram.com/portalmeulitoral" */]};
       var sc3=document.createElement('script');sc3.type='application/ld+json';sc3.id='d-org-schema';
       sc3.textContent=JSON.stringify(org);document.head.appendChild(sc3);
     }catch(e){}
