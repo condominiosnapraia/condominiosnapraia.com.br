@@ -1068,6 +1068,7 @@ if(_savedToken && _savedUser){
     <div class="phr">
       <select class="fs" id="i-view" onchange="rImV()"><option value="cards">Lista detalhada</option><option value="table">Tabela compacta</option></select>
       <button class="btn bg" onclick="gerarCodigosEmMassa()" title="Gera código para imóveis que ainda não têm">🔢 Gerar Códigos</button>
+      <button class="btn bg" onclick="abrirCadastroIA()">✨ Cadastrar com IA</button>
       <button class="btn bp" onclick="oMo('imov-mo');rImF()">+ Novo Imóvel</button>
     </div>
   </div>
@@ -1093,6 +1094,31 @@ if(_savedToken && _savedUser){
   <div id="i-cwrap" style="display:none"><div class="cg" id="i-cgrid" style="margin-top:4px"></div></div>
 </div>
 
+<!-- CADASTRO ASSISTIDO POR IA -->
+<div class="panel" id="panel-cadastro-ia">
+  <div class="ph">
+    <div><div class="pht">✨ Cadastro assistido por IA</div><div class="phs">Cole os dados do imóvel, gere uma prévia e salve somente como rascunho</div></div>
+    <div class="phr"><button class="btn bg" onclick="go('imoveis',document.querySelector('[data-p=imoveis]'))">← Voltar aos Imóveis</button></div>
+  </div>
+  <div class="card" style="max-width:1100px">
+    <div class="fsec">1. Informações fornecidas pelo corretor</div>
+    <textarea class="fta" id="ia-imovel-texto" rows="9" placeholder="Ex.: Casa à venda no Condomínio X, em Xangri-lá. 4 dormitórios, 3 suítes, 280 m², piscina, R$ 2.400.000, quadra 12 lote 08..."></textarea>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px">
+      <label class="btn bg" style="cursor:pointer">📷 Adicionar fotos<input id="ia-imovel-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple style="display:none" onchange="iaSelecionarFotos(this.files)"></label>
+      <span id="ia-fotos-status" style="font-size:12px;color:var(--t3)">Nenhuma foto selecionada</span>
+      <button class="btn bp" id="ia-gerar-btn" onclick="iaGerarPreview()">Gerar prévia</button>
+    </div>
+    <div id="ia-gerar-status" style="font-size:12px;margin-top:12px;color:var(--t3)"></div>
+  </div>
+  <div class="card" id="ia-preview-card" style="display:none;max-width:1100px;margin-top:16px">
+    <div class="fsec">2. Revise antes de criar o rascunho</div>
+    <div id="ia-preview-body"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap">
+      <button class="btn bg" onclick="iaLimparPreview()">Descartar</button>
+      <button class="btn bp" onclick="iaAplicarRascunho()">✓ Aprovar e abrir cadastro como rascunho</button>
+    </div>
+  </div>
+</div>
 <!-- PROPRIETÁRIOS -->
 <div class="panel" id="panel-proprietarios">
   <div class="ph">
@@ -3100,7 +3126,7 @@ function go(id,btn){
   if(btn)btn.classList.add('on');
   const h={dashboard:buildDash,condominios:rCond,imoveis:()=>{pCS();rImV()},
     proprietarios:rProp,clientes:buildClientes,'clientes-import':clImpInit,negociacoes:()=>{pIS();rKb()},
-    agenda:()=>{pIS();rCal()},relatorios:buildRel,editor:edLoad,destaques:buildDestaques,fotos:buildFotos,blog:buildBlog,lancamentos:buildLancamentos,contempladas:buildContempladas,admins:buildAdmins,usuarios:buildUsuarios,atividades:buildAtividades,capas:carregarCapas,carrossel:carregarCarrossel,leads:carregarLeads,leadsfotos:carregarLeadsFotos,leadscampanha:carregarLeadsCampanha};
+    agenda:()=>{pIS();rCal()},relatorios:buildRel,editor:edLoad,destaques:buildDestaques,fotos:buildFotos,blog:buildBlog,lancamentos:buildLancamentos,contempladas:buildContempladas,admins:buildAdmins,usuarios:buildUsuarios,atividades:buildAtividades,'cadastro-ia':iaPanelInit,capas:carregarCapas,carrossel:carregarCarrossel,leads:carregarLeads,leadsfotos:carregarLeadsFotos,leadscampanha:carregarLeadsCampanha};
   if(h[id])h[id]();
   upB();
 }
@@ -3600,8 +3626,16 @@ async function savCond(){
   const eid=document.getElementById('cm-id').value,id=eid||(sl(nome)+'-'+uid().slice(0,4));
   const btn=document.querySelector('#cond-mo .btn.bp');if(btn){btn.disabled=true;btn.textContent='Salvando...';}
   try{
-    // Upload de fotos novas para Supabase Storage
-    const fotosUrls = await uploadFotos(cF, cFS, 'cond', id, ['condominio',cidade,nome].join(' '));
+    // Preserva fotos existentes quando elas ainda não terminaram de carregar no formulário.
+    // Em edições, PATCH evita regravar campos/arrays ausentes no payload.
+    const atual = DB.co.find(x=>x.id===id) || {};
+    const fotosCarregadas = Array.isArray(cF) && cF.length > 0;
+    const fotosUrls = fotosCarregadas
+      ? await uploadFotos(cF, cFS, 'cond', id, ['condominio',cidade,nome].join(' '))
+      : {all:Array.isArray(atual.fotos)?atual.fotos:[], site:Array.isArray(atual.fotos_no_site)?atual.fotos_no_site:[]};
+    const fotosParaSite = fotosCarregadas
+      ? (Array.isArray(cFS)?cFS:[])
+      : (Array.isArray(atual.fotos_para_site)?atual.fotos_para_site:(Array.isArray(atual.fotosParaSite)?atual.fotosParaSite:[]));
     const o={
       id, nome, cidade,
       bairro:document.getElementById('cm-bairro').value,
@@ -3619,7 +3653,7 @@ async function savCond(){
       site_oficial:document.getElementById('cm-site').value,
       fotos: fotosUrls.all,
       fotos_no_site: fotosUrls.site,
-      fotos_para_site: cFS,
+      fotos_para_site: fotosParaSite,
       ativo:document.getElementById('cm-pub').value==='1',
       seo_data:{titulo:document.getElementById('cm-seo-titulo').value,desc:document.getElementById('cm-seo-desc').value,keywords:document.getElementById('cm-seo-kw').value,slogan:document.getElementById('cm-seo-slogan').value,tour:document.getElementById('cm-seo-tour').value,video:document.getElementById('cm-seo-video').value},
       // ── CMS: novos campos SEO/conteúdo/mídia/local ──
@@ -3649,7 +3683,8 @@ async function savCond(){
       updated_at:new Date().toISOString()
     };
     cmClearDraft();
-    await sb.upsert('condominios', o);
+    if(eid) await sb.patch('condominios', id, o);
+    else await sb.upsert('condominios', o);
     DB.invalidate('co');
     const fresh = await sb.get('condominios','?order=nome.asc');
     DB._cache.co = {data:fresh, ts:Date.now()};
@@ -9282,8 +9317,61 @@ async function clImpSalvar(){
   finally{ btn.disabled=false; clImpRender(); }
 }
 
+// ── CADASTRO ASSISTIDO POR IA ──
+let iaPreview = null;
+let iaFotosBase64 = [];
+function abrirCadastroIA(){ go('cadastro-ia',document.querySelector('[data-p=imoveis]')); }
+function iaPanelInit(){
+  const s=document.getElementById('ia-gerar-status'); if(s) s.textContent='A prévia será criada sem publicar o imóvel.';
+}
+function iaSelecionarFotos(files){
+  const lista=[...(files||[])].slice(0,20);
+  const status=document.getElementById('ia-fotos-status');
+  if(!lista.length){ iaFotosBase64=[]; if(status)status.textContent='Nenhuma foto selecionada'; return; }
+  Promise.all(lista.map(file=>new Promise((resolve,reject)=>{
+    if(!/^image\/(jpeg|png|webp)$/i.test(file.type)||file.size>8*1024*1024){ reject(new Error('Formato ou tamanho inválido')); return; }
+    const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file);
+  }))).then(values=>{
+    iaFotosBase64=values;
+    if(status)status.textContent=`${values.length} foto(s) pronta(s) para o rascunho`;
+  }).catch(()=>{iaFotosBase64=[];if(status)status.textContent='Uma foto possui formato ou tamanho inválido.';});
+}
+function iaPreviewHtml(p){
+  const falt=(p.faltantes||[]).map(x=>`<span class="tag tor">${esc(x)}</span>`).join(' ');
+  const dif=(p.diferenciais||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  const faq=(p.faq||[]).map(x=>`<div style="padding:8px 0;border-bottom:1px solid var(--bd)"><strong>${esc(x.q)}</strong><div style="color:var(--t2);margin-top:3px">${esc(x.a)}</div></div>`).join('');
+  return `<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:18px">
+    <div><div class="fsec">Dados principais</div><h3 style="font-size:20px;margin-bottom:8px">${esc(p.titulo||'Sem título')}</h3><div style="color:var(--t2);line-height:1.55;white-space:pre-wrap">${esc(p.descricao||'')}</div><div class="fsec">Diferenciais</div><ul style="padding-left:20px;color:var(--t2)">${dif||'<li>Não informado</li>'}</ul></div>
+    <div><div class="fsec">SEO</div><div class="drow"><span class="drl">SEO title</span><span class="drv">${esc(p.seo_title||'')}</span></div><div class="drow"><span class="drl">Meta description</span><span class="drv">${esc(p.seo_description||'')}</span></div><div class="drow"><span class="drl">Palavras-chave</span><span class="drv">${esc(p.seo_keywords||'')}</span></div><div class="fsec">Campos identificados</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--t2)">${[['Tipo',p.tipo],['Cidade',p.cidade_end],['Preço',p.preco],['Área',p.area],['Quartos',p.quartos],['Suítes',p.suites],['Banheiros',p.banheiros],['Vagas',p.vagas],['Quadra',p.quadra],['Lote',p.lote]].map(([k,v])=>`<div><strong>${k}:</strong> ${esc(v==null?'—':v)}</div>`).join('')}</div></div>
+  </div>${falt?`<div class="fsec">Revisar antes de aprovar</div><div>${falt}</div>`:''}${faq?`<div class="fsec">FAQ gerado</div>${faq}`:''}`;
+}
+async function iaGerarPreview(){
+  const btn=document.getElementById('ia-gerar-btn'), status=document.getElementById('ia-gerar-status');
+  const source=(document.getElementById('ia-imovel-texto')?.value||'').trim();
+  if(source.length<20){if(status)status.textContent='Informe pelo menos 20 caracteres sobre o imóvel.';return;}
+  if(btn){btn.disabled=true;btn.textContent='Gerando…';} if(status)status.textContent='A IA está organizando os dados. Aguarde…';
+  try{
+    const token=sessionStorage.getItem('cnp_crm_token');
+    const r=await fetch('/ia-imovel',{method:'POST',headers:{'content-type':'application/json',...(token?{authorization:'Bearer '+token}:{})},body:JSON.stringify({text:source,context:{condominios:(DB.co||[]).map(c=>({id:c.id,nome:c.nome,cidade:c.cidade})).slice(0,500)}})});
+    const data=await r.json(); if(!r.ok)throw new Error(data.error||'Não foi possível gerar a prévia.');
+    iaPreview=data.preview; document.getElementById('ia-preview-card').style.display='block'; document.getElementById('ia-preview-body').innerHTML=iaPreviewHtml(iaPreview); if(status)status.textContent='Prévia pronta. Revise os dados antes de aprovar.';
+  }catch(e){if(status)status.textContent=e.message||'Erro ao gerar prévia.';}
+  finally{if(btn){btn.disabled=false;btn.textContent='Gerar prévia';}}
+}
+function iaLimparPreview(){iaPreview=null;const c=document.getElementById('ia-preview-card');if(c)c.style.display='none';}
+function iaSet(id,value){const e=document.getElementById(id);if(!e||value==null)return;e.value=String(value);e.dispatchEvent(new Event('input',{bubbles:true}));}
+function iaAplicarRascunho(){
+  if(!iaPreview){toast('Gere uma prévia primeiro.','error');return;}
+  oMo('imov-mo'); rImF();
+  setTimeout(()=>{
+    const p=iaPreview;
+    iaSet('im-title',p.titulo); iaSet('im-tit',p.titulo); iaSet('im-final',p.finalidade||'venda'); iaSet('im-tipo',p.tipo); iaSet('im-st','Disponível'); iaSet('im-preco',p.preco); iaSet('im-area',p.area); iaSet('im-areac',p.area_construida); iaSet('im-qtos',p.quartos); iaSet('im-sui',p.suites); iaSet('im-ban',p.banheiros); iaSet('im-vag',p.vagas); iaSet('im-cidade',p.cidade_end); iaSet('im-bairro-end',p.bairro_end); iaSet('im-quadra',p.quadra); iaSet('im-lote',p.lote); iaSet('im-desc',p.descricao); iaSet('im-dif',(p.diferenciais||[]).join(', ')); iaSet('im-seo-titulo',p.seo_title); iaSet('im-seo-desc',p.seo_description); iaSet('im-seo-kw',p.seo_keywords); iaSet('im-seo-slogan',p.seo_slogan); iaSet('im-pub','0'); iaSet('im-destaque','0');
+    const sel=document.getElementById('im-cond'); if(sel&&p.condominio){const target=String(p.condominio).toLowerCase();const opt=[...sel.options].find(o=>o.textContent.toLowerCase().includes(target));if(opt)sel.value=opt.value;}
+    iF=iaFotosBase64.slice(); iFS=iF.map(()=>true); rFG('i');
+    toast('Prévia aplicada. Revise o formulário e salve como rascunho.','success');
+  },120);
+}
 </script>
-
 <!-- MOBILE BOTTOM NAV -->
 <nav class="mob-nav">
   <div class="mob-nav-inner">
