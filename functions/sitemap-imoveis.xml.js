@@ -28,7 +28,7 @@ export async function onRequest(context) {
     erroBusca = 'SUPABASE_ANON_KEY não configurada';
   } else {
     try {
-      const url = `${SB_URL}/rest/v1/imoveis?select=*&limit=2000`;
+      const url = `${SB_URL}/rest/v1/imoveis?select=slug,codigo,updated_at,fotos_no_site,titulo,cidade_end,publicar,status&limit=2000`;
       const r = await fetch(url, {
         headers: { apikey: key, Authorization: `Bearer ${key}` }
       });
@@ -48,7 +48,7 @@ export async function onRequest(context) {
   const urls = validos.map(im => {
     const ref = im.slug || im.codigo || im.id;
     const loc = `${SITE}/imovel/${encodeURIComponent(ref)}/`;
-    const data = im.atualizado_em || im.updated_at || im.criado_em || im.created_at;
+      const data = im.updated_at;
     let lastmod = '';
     if (data) {
       try { lastmod = `\n    <lastmod>${new Date(data).toISOString().slice(0, 10)}</lastmod>`; } catch (_) {}
@@ -56,10 +56,10 @@ export async function onRequest(context) {
 
     let imgs = '';
     try {
-      let fotos = im.fotos_no_site || im.fotos || [];
+      let fotos = im.fotos_no_site || [];
       if (typeof fotos === 'string') fotos = JSON.parse(fotos);
       const lista = Array.isArray(fotos) ? fotos : [fotos];
-      const titulo = `${im.titulo || 'Imóvel'}${im.cidade ? ` em ${im.cidade}` : ''}`;
+      const titulo = `${im.titulo || 'Imóvel'}${im.cidade_end ? ` em ${im.cidade_end}` : ''}`;
       lista.slice(0, 6).forEach(f => {
         const raw = typeof f === 'string' ? f : f?.url;
         const imageUrl = raw && /^https?:\/\//i.test(raw) ? fotoPublica(raw) : '';
