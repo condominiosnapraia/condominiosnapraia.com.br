@@ -27,6 +27,10 @@ export async function onRequest(context) {
       const im = Array.isArray(arr) && arr[0];
       if (im) {
         const canonical = im.slug || im.codigo || im.id;
+        // A rota [id].js também captura /imovel/<slug>/; não redirecionar para a própria URL.
+        if (String(im.slug || '') === String(ref) || (!im.slug && String(canonical) === String(ref))) {
+          return next();
+        }
         return Response.redirect(`${SITE}/imovel/${encodeURIComponent(canonical)}/`, 301);
       }
     } catch (_) {}
