@@ -35,11 +35,11 @@
 <meta name="theme-color" content="#0c4a6e">
 <title>Portal Meu Litoral | Imóvel</title>
 <meta name="description" content="Detalhes do imóvel no Litoral Norte Gaúcho.">
-<link rel="canonical" href="https://condominiosnapraia.com.br/imovel">
+<link rel="canonical" href="https://condominiosnapraia.com.br/imovel/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Portal Meu Litoral | Imóvel">
 <meta property="og:description" content="Imóvel à venda no Litoral Norte Gaúcho.">
-<meta property="og:url" content="https://condominiosnapraia.com.br/imovel">
+<meta property="og:url" content="https://condominiosnapraia.com.br/imovel/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Imóvel | Condomínios na Praia">
 <meta name="twitter:description" content="Imóvel à venda no Litoral Norte Gaúcho.">
@@ -962,7 +962,7 @@ function render(im,cond){
     // CANONICAL correto para este imóvel
     var can=document.querySelector('link[rel="canonical"]');
     var ref = im.slug || im.id;
-    if(can && ref) can.setAttribute('href','https://condominiosnapraia.com.br/imovel?id='+encodeURIComponent(ref));
+    if(can && ref) can.setAttribute('href','https://condominiosnapraia.com.br/imovel/?id='+encodeURIComponent(ref));
 
     // ═══ SCHEMA.ORG — dados estruturados (o Google entende que é um imóvel à venda) ═══
     try{
@@ -972,7 +972,7 @@ function render(im,cond){
         "@type":"RealEstateListing",
         "name": tit,
         "description": desc,
-        "url": 'https://condominiosnapraia.com.br/imovel?id=' + encodeURIComponent(ref||''),
+        "url": 'https://condominiosnapraia.com.br/imovel/?id=' + encodeURIComponent(ref||''),
         "datePosted": im.criado_em || undefined,
         "image": fotos.length ? fotos : undefined,
         "address": {
@@ -1007,7 +1007,7 @@ function render(im,cond){
     function setOG(prop,val){const m=document.querySelector('meta[property="'+prop+'"]');if(m&&val)m.setAttribute('content',val);}
     setOG('og:title',(im.titulo||'Imóvel')+(cond.nome?(' · '+cond.nome):''));
     if(im.descricao)setOG('og:description',String(im.descricao).slice(0,155));
-    setOG('og:url','https://condominiosnapraia.com.br/imovel?id='+encodeURIComponent(im.id));
+    setOG('og:url','https://condominiosnapraia.com.br/imovel/?id='+encodeURIComponent(im.id));
     const f=fotosValidas(im.fotos_no_site||im.fotos);
     if(f.length)setOG('og:image',f[0]);
     setOG('og:type','product');
@@ -1016,7 +1016,7 @@ function render(im,cond){
   // ── Schema dinâmico: RealEstateListing + BreadcrumbList ──
   (function(){
     const el=document.getElementById('ld-imovel'); if(!el) return;
-    const pageUrl='https://condominiosnapraia.com.br/imovel?id='+encodeURIComponent(im.id);
+    const pageUrl='https://condominiosnapraia.com.br/imovel/?id='+encodeURIComponent(im.id);
     const fotosSchema=fotosValidas(im.fotos_no_site||im.fotos).slice(0,8);
     const cidade=cond.localizacao||cond.cidade||im.cidade||'Litoral Norte Gaúcho';
     const listing={
@@ -1263,7 +1263,7 @@ function urlCompartilhar(){
   if(im){
     // prioridade: CÓDIGO (bonito) → slug → id
     var ref = im.codigo || im.slug || im.id;
-    if(ref) return 'https://condominiosnapraia.com.br/imovel/' + encodeURIComponent(ref);
+    if(ref) return 'https://condominiosnapraia.com.br/imovel//' + encodeURIComponent(ref);
   }
   return window.location.href;
 }

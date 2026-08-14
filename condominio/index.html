@@ -35,11 +35,11 @@
 <meta name="theme-color" content="#0c4a6e">
 <title>Portal Meu Litoral | Condomínio</title>
 <meta name="description" content="">
-<link rel="canonical" id="cond-canonical" href="https://condominiosnapraia.com.br/condominio">
+<link rel="canonical" id="cond-canonical" href="https://condominiosnapraia.com.br/condominio/">
 <meta property="og:type" content="website">
 <meta property="og:title" id="cond-og-title" content="Condomínios na Praia">
 <meta property="og:description" id="cond-og-desc" content="">
-<meta property="og:url" id="cond-og-url" content="https://condominiosnapraia.com.br/condominio">
+<meta property="og:url" id="cond-og-url" content="https://condominiosnapraia.com.br/condominio/">
 <meta property="og:image" id="cond-og-image" content="https://condominiosnapraia.com.br/img/og-default.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" id="cond-tw-image" content="https://condominiosnapraia.com.br/img/og-default.jpg">
@@ -786,7 +786,7 @@ async function init() {
   const slugAtual = (cond.slug || cond.id || '').toString();
   const condUrlAbs = SLUGS_ESTATICOS.indexOf(slugAtual) !== -1
     ? 'https://condominiosnapraia.com.br/' + slugAtual
-    : 'https://condominiosnapraia.com.br/condominio?id=' + encodeURIComponent(slugAtual);
+    : 'https://condominiosnapraia.com.br/condominio/?id=' + encodeURIComponent(slugAtual);
   const setAttr = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
   setAttr('cond-canonical', 'href', condUrlAbs);
   setAttr('cond-og-url', 'content', condUrlAbs);
@@ -1266,7 +1266,7 @@ function urlCompartilharCond(){
   if(cond){
     var ref = cond.slug || cond.id;
     // a URL /condominio/SLUG passa pela Function que gera a prévia com foto
-    return 'https://condominiosnapraia.com.br/condominio/' + encodeURIComponent(ref);
+    return 'https://condominiosnapraia.com.br//' + encodeURIComponent(ref);
   }
   return location.href;
 }

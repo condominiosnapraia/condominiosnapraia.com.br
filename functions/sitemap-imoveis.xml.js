@@ -7,6 +7,10 @@ const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const SITE = 'https://condominiosnapraia.com.br';
 
+function slugify(s){
+  return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+}
 function esc(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 }
@@ -34,14 +38,20 @@ export async function onRequest(context) {
   // mesmo critério do site: publicados e não vendidos
   const validos = (Array.isArray(imoveis) ? imoveis : []).filter(im => {
     if (im.publicar === false) return false;
-    if (im.status === 'Vendido') return false;
-    return true;
+    if (im.status === 'Vendido' || im.status === 'Inativo') return false;
+    return Boolean(String(im.codigo || im.slug || '').trim());
   });
 
+  const vistos = new Set();
   const urls = validos.map(im => {
     // URL bonita: prioriza o CÓDIGO do imóvel
-    const ref = im.codigo || im.slug || im.id;
-    const loc = SITE + '/imovel/' + encodeURIComponent(ref);
+    const ref = String(im.codigo || im.slug || '').trim();
+    const slug = slugify(ref);
+    if (vistos.has(slug)) return '';
+    vistos.add(slug);
+    // XAN-224 não possui página final publicada; não enviar URL 404 ao Google.
+    if (slug === 'xan-224') return '';
+    const loc = SITE + '/imovel-' + encodeURIComponent(slug) + '/';
     const data = im.atualizado_em || im.updated_at || im.criado_em || im.created_at;
     let lastmod = '';
     if (data) {
@@ -70,7 +80,7 @@ export async function onRequest(context) {
            '\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>' +
            imgs +
            '\n  </url>';
-  }).join('\n');
+  }).filter(Boolean).join('\n');
 
   // modo diagnóstico: adicione ?debug=1 na URL para ver o que está acontecendo
   try{

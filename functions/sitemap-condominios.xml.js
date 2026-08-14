@@ -34,12 +34,15 @@ export async function onRequest(context) {
   // só os ativos (se o campo existir)
   const validos = (Array.isArray(condominios) ? condominios : []).filter(c => {
     if (c.ativo === false) return false;
-    return true;
+    return Boolean(String(c.slug || '').trim());
   });
 
+  const vistos = new Set();
   const urls = validos.map(c => {
-    const ref = c.slug || c.id;
-    const loc = SITE + '/condominio/' + encodeURIComponent(ref);
+    const ref = String(c.slug || '').trim();
+    const loc = SITE + '/' + encodeURIComponent(ref) + '/';
+    if (vistos.has(loc)) return '';
+    vistos.add(loc);
     const data = c.atualizado_em || c.updated_at || c.criado_em || c.created_at;
     let lastmod = '';
     if (data) {
@@ -70,7 +73,7 @@ export async function onRequest(context) {
            '\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>' +
            imgs +
            '\n  </url>';
-  }).join('\n');
+  }).filter(Boolean).join('\n');
 
   // modo diagnóstico
   try {
