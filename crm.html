@@ -3626,8 +3626,16 @@ async function savCond(){
   const eid=document.getElementById('cm-id').value,id=eid||(sl(nome)+'-'+uid().slice(0,4));
   const btn=document.querySelector('#cond-mo .btn.bp');if(btn){btn.disabled=true;btn.textContent='Salvando...';}
   try{
-    // Upload de fotos novas para Supabase Storage
-    const fotosUrls = await uploadFotos(cF, cFS, 'cond', id, ['condominio',cidade,nome].join(' '));
+    // Preserva fotos existentes quando elas ainda não terminaram de carregar no formulário.
+    // Em edições, PATCH evita regravar campos/arrays ausentes no payload.
+    const atual = DB.co.find(x=>x.id===id) || {};
+    const fotosCarregadas = Array.isArray(cF) && cF.length > 0;
+    const fotosUrls = fotosCarregadas
+      ? await uploadFotos(cF, cFS, 'cond', id, ['condominio',cidade,nome].join(' '))
+      : {all:Array.isArray(atual.fotos)?atual.fotos:[], site:Array.isArray(atual.fotos_no_site)?atual.fotos_no_site:[]};
+    const fotosParaSite = fotosCarregadas
+      ? (Array.isArray(cFS)?cFS:[])
+      : (Array.isArray(atual.fotos_para_site)?atual.fotos_para_site:(Array.isArray(atual.fotosParaSite)?atual.fotosParaSite:[]));
     const o={
       id, nome, cidade,
       bairro:document.getElementById('cm-bairro').value,
@@ -3645,7 +3653,7 @@ async function savCond(){
       site_oficial:document.getElementById('cm-site').value,
       fotos: fotosUrls.all,
       fotos_no_site: fotosUrls.site,
-      fotos_para_site: cFS,
+      fotos_para_site: fotosParaSite,
       ativo:document.getElementById('cm-pub').value==='1',
       seo_data:{titulo:document.getElementById('cm-seo-titulo').value,desc:document.getElementById('cm-seo-desc').value,keywords:document.getElementById('cm-seo-kw').value,slogan:document.getElementById('cm-seo-slogan').value,tour:document.getElementById('cm-seo-tour').value,video:document.getElementById('cm-seo-video').value},
       // ── CMS: novos campos SEO/conteúdo/mídia/local ──
@@ -3675,7 +3683,8 @@ async function savCond(){
       updated_at:new Date().toISOString()
     };
     cmClearDraft();
-    await sb.upsert('condominios', o);
+    if(eid) await sb.patch('condominios', id, o);
+    else await sb.upsert('condominios', o);
     DB.invalidate('co');
     const fresh = await sb.get('condominios','?order=nome.asc');
     DB._cache.co = {data:fresh, ts:Date.now()};
@@ -6658,7 +6667,7 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
 
 
 // ── GERADOR DE PAGINAS SEO DE IMOVEIS ──
-// Cria uma pagina estatica por imovel publicado, em /imovel-<codigo-ou-slug>/index.html.
+// Cria uma pagina estatica por imovel publicado, em /imovel/<slug>/index.html.
 // Motivo: as fichas de imovel so existiam atras do JavaScript, invisiveis para o Google.
 // A pagina traz titulo, preco, caracteristicas, fotos com alt, schema e link para o condominio.
 async function gerarPaginasImoveis(){
@@ -6749,8 +6758,8 @@ async function gerarPaginasImoveis(){
     const condNome = cond ? cond.nome : (im.condominio||'');
     const cidade = (cond && (cond.localizacao||cond.cidade)) || im.cidade || 'Litoral Norte';
     const ref = im.codigo || im.slug || im.id;
-    const slug = 'imovel-' + slugify(ref);
-    const url = BASE + '/' + slug;
+    const slug = im.slug || ('imovel-' + slugify(ref));
+    const url = BASE + '/imovel/' + encodeURIComponent(slug) + '/';
     const tipo = im.tipo || 'Imovel';
     const preco = moeda(im.preco);
 
@@ -6778,11 +6787,11 @@ async function gerarPaginasImoveis(){
       const scNome = sc?sc.nome:(s.condominio||'');
       const scCidade = (sc&&(sc.localizacao||sc.cidade))||s.cidade||'';
       const sref = s.codigo||s.slug||s.id;
-      const sslug = 'imovel-'+slugify(sref);
+      const sslug = s.slug || ('imovel-'+slugify(sref));
       const sfoto = ((s.fotos_no_site&&s.fotos_no_site.length?s.fotos_no_site:(s.fotos||[])).filter(f=>typeof f==='string'&&f.indexOf('http')===0))[0];
       const spreco = moeda(s.preco);
       const sbits=[]; if(s.suites)sbits.push(s.suites+' suítes'); else if(s.quartos)sbits.push(s.quartos+' dorm.'); if(s.area)sbits.push(s.area+'m²');
-      return `<a class="sim-card" href="/${sslug}">${sfoto?`<div class="sim-img"><img src="${esc(sfoto)}" alt="${esc((s.tipo||'Imóvel')+(scNome?' no '+scNome:''))}" loading="lazy"></div>`:'<div class="sim-img sim-noimg">🏠</div>'}<div class="sim-b"><div class="sim-eyebrow">${esc(scCidade)}</div><div class="sim-nome">${esc(s.titulo||((s.tipo||'Imóvel')+(scNome?' no '+scNome:'')))}</div>${sbits.length?`<div class="sim-bits">${esc(sbits.join(' · '))}</div>`:''}<div class="sim-preco">${spreco||'Sob consulta'}</div></div></a>`;
+      return `<a class="sim-card" href="/imovel/${encodeURIComponent(sslug)}/">${sfoto?`<div class="sim-img"><img src="${esc(sfoto)}" alt="${esc((s.tipo||'Imóvel')+(scNome?' no '+scNome:''))}" loading="lazy"></div>`:'<div class="sim-img sim-noimg">🏠</div>'}<div class="sim-b"><div class="sim-eyebrow">${esc(scCidade)}</div><div class="sim-nome">${esc(s.titulo||((s.tipo||'Imóvel')+(scNome?' no '+scNome:'')))}</div>${sbits.length?`<div class="sim-bits">${esc(sbits.join(' · '))}</div>`:''}<div class="sim-preco">${spreco||'Sob consulta'}</div></div></a>`;
     }).join('')}</div></div>` : '';
 
     const specs=[];
@@ -6999,7 +7008,7 @@ document.addEventListener('keydown',function(e){if(!document.getElementById('lb'
 <${'/'}script>
 </body>
 </html>`;
-    zip.file(`${slug}/index.html`, html);
+    zip.file(`imovel/${slug}/index.html`, html);
     gerados.push(url);
   });
 
@@ -7044,13 +7053,13 @@ async function gerarSitemap(){
   }catch(e){ toast('Aviso: não consegui buscar condomínios — '+e.message,'error'); }
   const hoje=new Date().toISOString().slice(0,10);
   let xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-  // imoveis publicados: mesma regra de slug do gerador de paginas (imovel-<codigo>)
+  // imóveis publicados: usa o slug persistido; fallback compatível inclui o código ou ID
   let imovUrls=[];
   try{
     const _slugify=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
     const ims=await sb.get('imoveis','?select=id,codigo,slug,status,publicar,updated_at&limit=2000');
-    imovUrls=(ims||[]).filter(im=> im && im.publicar!==false && im.status!=='Vendido')
-      .map(im=>({ loc:BASE+'/imovel-'+_slugify(im.codigo||im.slug||im.id), lastmod:(im.updated_at||'').slice(0,10) }));
+    imovUrls=(ims||[]).filter(im=> im && im.publicar!==false && im.status!=='Vendido' && (im.slug||im.codigo||im.id))
+      .map(im=>({ loc:BASE+'/imovel/'+encodeURIComponent(im.slug||('imovel-'+_slugify(im.codigo||im.id)))+'/', lastmod:(im.updated_at||'').slice(0,10) }));
   }catch(e){ imovUrls=[]; }
 
   estaticas.forEach(u=>{ xml+=`  <url>\n    <loc>${BASE}${u}</loc>\n    <lastmod>${hoje}</lastmod>\n    <changefreq>monthly</changefreq>\n  </url>\n`; });
@@ -9333,7 +9342,7 @@ function iaPreviewHtml(p){
   const faq=(p.faq||[]).map(x=>`<div style="padding:8px 0;border-bottom:1px solid var(--bd)"><strong>${esc(x.q)}</strong><div style="color:var(--t2);margin-top:3px">${esc(x.a)}</div></div>`).join('');
   return `<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:18px">
     <div><div class="fsec">Dados principais</div><h3 style="font-size:20px;margin-bottom:8px">${esc(p.titulo||'Sem título')}</h3><div style="color:var(--t2);line-height:1.55;white-space:pre-wrap">${esc(p.descricao||'')}</div><div class="fsec">Diferenciais</div><ul style="padding-left:20px;color:var(--t2)">${dif||'<li>Não informado</li>'}</ul></div>
-    <div><div class="fsec">SEO</div><div class="drow"><span class="drl">SEO title</span><span class="drv">${esc(p.seo_title||'')}</span></div><div class="drow"><span class="drl">Meta description</span><span class="drv">${esc(p.seo_description||'')}</span></div><div class="drow"><span class="drl">Palavras-chave</span><span class="drv">${esc(p.seo_keywords||'')}</span></div><div class="fsec">Campos identificados</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--t2)">${[['Tipo',p.tipo],['Cidade',p.cidade_end],['Preço',p.preco],['Área',p.area],['Quartos',p.quartos],['Suítes',p.suites],['Banheiros',p.banheiros],['Vagas',p.vagas],['Quadra',p.quadra],['Lote',p.lote]].map(([k,v])=>`<div><strong>${k}:</strong> ${esc(v==null?'—':v)}</div>`).join('')}</div></div>
+    <div><div class="fsec">SEO</div><div class="drow"><span class="drl">SEO title</span><span class="drv">${esc(p.seo_title||'')}</span></div><div class="drow"><span class="drl">Meta description</span><span class="drv">${esc(p.seo_description||'')}</span></div><div class="drow"><span class="drl">Palavras-chave</span><span class="drv">${esc(p.seo_keywords||'')}</span></div><div class="fsec">Campos identificados</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--t2)">${[['Tipo',p.tipo],['Condomínio',p.condominio_nome],['Fora de condomínio',p.fora_condominio?'Sim':'Não'],['Cidade',p.cidade_end],['Bairro',p.bairro_end],['Rua',p.logradouro],['Número',p.numero],['Preço',p.preco],['Área',p.area],['Quartos',p.quartos],['Suítes',p.suites],['Banheiros',p.banheiros],['Vagas',p.vagas],['Quadra',p.quadra],['Lote',p.lote],['Proprietário',p.proprietario_nome],['Telefone',p.proprietario_telefone]].map(([k,v])=>`<div><strong>${k}:</strong> ${esc(v==null?'—':v)}</div>`).join('')}</div></div>
   </div>${falt?`<div class="fsec">Revisar antes de aprovar</div><div>${falt}</div>`:''}${faq?`<div class="fsec">FAQ gerado</div>${faq}`:''}`;
 }
 async function iaGerarPreview(){
@@ -9351,13 +9360,15 @@ async function iaGerarPreview(){
 }
 function iaLimparPreview(){iaPreview=null;const c=document.getElementById('ia-preview-card');if(c)c.style.display='none';}
 function iaSet(id,value){const e=document.getElementById(id);if(!e||value==null)return;e.value=String(value);e.dispatchEvent(new Event('input',{bubbles:true}));}
-function iaAplicarRascunho(){
+async function iaAplicarRascunho(){
   if(!iaPreview){toast('Gere uma prévia primeiro.','error');return;}
   oMo('imov-mo'); rImF();
-  setTimeout(()=>{
+  setTimeout(async()=>{
     const p=iaPreview;
-    iaSet('im-title',p.titulo); iaSet('im-tit',p.titulo); iaSet('im-final',p.finalidade||'venda'); iaSet('im-tipo',p.tipo); iaSet('im-st','Disponível'); iaSet('im-preco',p.preco); iaSet('im-area',p.area); iaSet('im-areac',p.area_construida); iaSet('im-qtos',p.quartos); iaSet('im-sui',p.suites); iaSet('im-ban',p.banheiros); iaSet('im-vag',p.vagas); iaSet('im-cidade',p.cidade_end); iaSet('im-bairro-end',p.bairro_end); iaSet('im-quadra',p.quadra); iaSet('im-lote',p.lote); iaSet('im-desc',p.descricao); iaSet('im-dif',(p.diferenciais||[]).join(', ')); iaSet('im-seo-titulo',p.seo_title); iaSet('im-seo-desc',p.seo_description); iaSet('im-seo-kw',p.seo_keywords); iaSet('im-seo-slogan',p.seo_slogan); iaSet('im-pub','0'); iaSet('im-destaque','0');
-    const sel=document.getElementById('im-cond'); if(sel&&p.condominio){const target=String(p.condominio).toLowerCase();const opt=[...sel.options].find(o=>o.textContent.toLowerCase().includes(target));if(opt)sel.value=opt.value;}
+    iaSet('im-title',p.titulo); iaSet('im-tit',p.titulo); iaSet('im-final',p.finalidade||'venda'); iaSet('im-tipo',p.tipo); iaSet('im-st','Disponível'); iaSet('im-preco',p.preco); iaSet('im-area',p.area); iaSet('im-areac',p.area_construida); iaSet('im-qtos',p.quartos); iaSet('im-sui',p.suites); iaSet('im-ban',p.banheiros); iaSet('im-vag',p.vagas); iaSet('im-cidade',p.cidade_end); iaSet('im-bairro-end',p.bairro_end); iaSet('im-ref-local',[p.logradouro,p.numero].filter(Boolean).join(', ')); iaSet('im-quadra',p.quadra); iaSet('im-lote',p.lote); iaSet('im-desc',p.descricao); iaSet('im-dif',(p.diferenciais||[]).join(', ')); iaSet('im-seo-titulo',p.seo_title); iaSet('im-seo-desc',p.seo_description); iaSet('im-seo-kw',p.seo_keywords); iaSet('im-seo-slogan',p.seo_slogan); iaSet('im-pub','0'); iaSet('im-destaque','0');
+    const fora=document.getElementById('im-fora-cond'); if(fora){fora.checked=!!p.fora_condominio;toggleForaCond();}
+    const sel=document.getElementById('im-cond'); const nomeCond=p.condominio_nome||p.condominio; if(sel&&!p.fora_condominio&&nomeCond){const target=String(nomeCond).toLowerCase();const opt=[...sel.options].find(o=>o.textContent.toLowerCase().includes(target));if(opt)sel.value=opt.value;}
+    const propNome=String(p.proprietario_nome||'').trim().toLowerCase(); const propTel=String(p.proprietario_telefone||'').trim(); if(propNome){const prop=(DB.pr||[]).find(x=>String(x.nome||'').trim().toLowerCase()===propNome); if(prop){iaSet('im-prop',prop.id);} else if(propTel){try{const novoProp={id:uid(),nome:p.proprietario_nome,tipo:'PF',tel:propTel,wpp:propTel,email:null,updated_at:new Date().toISOString()};await sb.upsert('proprietarios',novoProp);DB.invalidate('pr');DB._cache.pr={data:await sb.get('proprietarios','?order=nome.asc'),ts:Date.now()};pPS();iaSet('im-prop',novoProp.id);toast('Proprietário novo criado e vinculado ao rascunho.','success');}catch(e){toast('Não foi possível criar o proprietário automaticamente: '+e.message,'error');}} else {toast('Informe o telefone do proprietário antes de salvar o rascunho.','info');}}
     iF=iaFotosBase64.slice(); iFS=iF.map(()=>true); rFG('i');
     toast('Prévia aplicada. Revise o formulário e salve como rascunho.','success');
   },120);

@@ -169,6 +169,30 @@ function resumoDe(p, corpoLimpo){
   return (p.resumo || p.excerpt || corpoLimpo || '').replace(/\s+/g,' ').trim().slice(0,155);
 }
 
+// Links contextuais para ligar cada artigo ao cluster regional correto.
+// A seleção usa somente título, categoria e texto do próprio artigo.
+function linksCluster(a){
+  const hay = `${a.titulo} ${a.categoria} ${a.corpoLimpo}`.toLowerCase();
+  const links = [];
+  const add = (href, label) => { if (!links.some(x=>x.href===href)) links.push({href,label}); };
+  if(/xangri[- ]l[áa]|atl[âa]ntida|amare|allure|sense|rossi|zen concept|vientos|ventura|sea coast|l[óo]tus|wave/.test(hay)){
+    add('/xangri-la/','Guia de imóveis e condomínios em Xangri-Lá');
+    if(/atl[âa]ntida/.test(hay)) add('/xangri-la-atlantida','Imóveis e condomínios em Atlântida');
+    if(/marina|n[áa]utic|lagoa/.test(hay)) add('/xangri-la-marina','Condomínios náuticos na Marina de Xangri-Lá');
+  } else if(/cap[ãa]o da canoa|cap[ãa]o ilhas|dubai|murano|terrasul|curumim|velas da marina/.test(hay)){
+    add('/capao-da-canoa/','Guia de imóveis e condomínios em Capão da Canoa');
+    add('/casas-em-condominio','Casas em condomínio no Litoral Norte');
+  } else if(/os[óo]rio|lagoa do passo|marina del faro|duo nautic|brisas bairro/.test(hay)){
+    add('/osorio/','Guia de imóveis e condomínios em Osório');
+  } else if(/maquin[ée]|la marina|br[áa]via|m[ôo]naco grand marina|rio tramanda[íi]/.test(hay)){
+    add('/maquine/','Guia de imóveis e condomínios em Maquiné');
+  } else {
+    add('/condominios/','Condomínios fechados no Litoral Norte Gaúcho');
+  }
+  add('/imoveis/','Imóveis à venda no Litoral Norte Gaúcho');
+  return `<aside class="cluster-related" aria-labelledby="cluster-related-title"><h2 id="cluster-related-title">Continue sua pesquisa</h2><p>Encontre informações regionais e oportunidades relacionadas a este conteúdo.</p><nav>${links.map(x=>`<a href="${x.href}">${esc(x.label)}</a>`).join('')}</nav></aside>`;
+}
+
 // Transforma texto simples (ou HTML) do corpo em HTML de artigo.
 // Mesma lógica do /blog/index.html antigo, para manter consistência.
 function formatarCorpo(txt){
@@ -378,7 +402,7 @@ ${CSS_COMUM}
 .av strong{font-family:'Fraunces',serif;color:var(--ocean);font-weight:600;font-size:15px}
 .av-next{text-align:right}
 @media(max-width:600px){.artigo-vizinhos{grid-template-columns:1fr}}
-.artigo-cta{max-width:760px;margin:34px auto 0;padding:22px 24px;background:linear-gradient(150deg,#0c4a6e,#0e7490);color:#fff;border-radius:16px;text-align:center}
+.cluster-related{max-width:760px;margin:34px auto 0;padding:22px 24px;background:#e8f7f8;border:1px solid rgba(31,181,196,.18);border-radius:16px}.cluster-related h2{font-family:'Fraunces',serif;color:#0d3b54;font-size:24px;margin:0 0 6px}.cluster-related p{color:#5b7585;font-size:14px;margin:0 0 12px}.cluster-related nav{display:flex;flex-wrap:wrap;gap:8px}.cluster-related a{color:#0e8a99;text-decoration:none;font-weight:600;font-size:14px;background:#fff;border-radius:999px;padding:8px 12px}.artigo-cta{max-width:760px;margin:34px auto 0;padding:22px 24px;background:linear-gradient(150deg,#0c4a6e,#0e7490);color:#fff;border-radius:16px;text-align:center}
 .artigo-cta h3{font-family:'Fraunces',serif;font-weight:600;font-size:20px;margin-bottom:8px}
 .artigo-cta p{opacity:.9;font-size:14px;margin-bottom:14px}
 .artigo-cta a{display:inline-block;background:#25d366;color:#fff;text-decoration:none;font-weight:700;padding:11px 22px;border-radius:100px}
@@ -397,6 +421,7 @@ ${HEADER_HTML}
   <h1 class="artigo-titulo">${esc(a.titulo)}</h1>
   ${capaHtml}
   <div class="artigo-corpo">${formatarCorpo(a.corpo)}</div>
+  ${linksCluster(a)}
   <div class="bl-share"><span>Compartilhar:</span>
     <a href="${wa}" target="_blank" rel="nofollow" title="WhatsApp">💬</a>
     <a href="${fb}" target="_blank" rel="nofollow" title="Facebook">f</a>

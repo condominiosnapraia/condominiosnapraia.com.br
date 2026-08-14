@@ -1611,7 +1611,7 @@ if(_savedToken && _savedUser){
       </div>
       <div class="fg"><label class="fl">Tags (separadas por vírgula)</label><input class="fi" id="post-tags" placeholder="Xangri-lá, condomínio, bairro planejado"></div>
       <div class="fg"><label class="fl">Status</label>
-        <select class="fse" id="post-pub"><option value="1">✓ Publicado</option><option value="0">◯ Rascunho</option></select>
+        <select class="fse" id="post-pub"><option value="0">◯ Rascunho — revisão humana</option><option value="1">✓ Publicado</option></select>
       </div>
     </div>
   </div>
@@ -4886,7 +4886,7 @@ function openNovoPosto(){
   document.getElementById('blog-mo-title').textContent='Novo Artigo';
   ['post-titulo','post-resumo','post-corpo','post-tags','post-autor'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
   document.getElementById('post-cat').value='Notícias';
-  document.getElementById('post-pub').value='1';
+  document.getElementById('post-pub').value='0';
   document.getElementById('post-data').value=new Date().toISOString().split('T')[0];
   document.getElementById('post-capa-prev').innerHTML='📸 Clique para adicionar foto de capa';
   document.getElementById('post-capa-prev').dataset.src='';
@@ -4932,7 +4932,7 @@ async function savPost(){
     saveBlogPosts(posts);
     cMo('blog-mo');buildBlog();
     logAtividade(eid?'editou':'criou','blog',id,o.titulo||'');
-    toast(eid?'Artigo atualizado!':'Artigo publicado no Supabase!','success');
+    toast(eid?(o.publicado?'Artigo publicado!':'Rascunho atualizado!'):(o.publicado?'Artigo publicado no Supabase!':'Rascunho salvo no Supabase!'),'success');
   }catch(e){
     toast('Erro ao salvar: '+e.message,'error');console.error(e);
   }
