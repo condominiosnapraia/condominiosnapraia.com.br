@@ -84,25 +84,27 @@ export async function onRequest(context) {
   const ogImage = Array.isArray(fotos) && fotos.length ? fotoPublica(typeof fotos[0] === 'string' ? fotos[0] : fotos[0]?.url) : OG_FALLBACK;
   const canonicalUrl = `${SITE}/imovel/${encodeURIComponent(canonicalSlug)}/`;
 
-  return new HTMLRewriter()
-    .on('title', { element(e) { e.setInnerContent(`${ogTitle} | Condomínios na Praia`); } })
-    .on('meta[name="description"]', { element(e) { e.setAttribute('content', ogDesc); } })
-    .on('meta[property="og:title"]', { element(e) { e.setAttribute('content', ogTitle); } })
-    .on('meta[property="og:description"]', { element(e) { e.setAttribute('content', ogDesc); } })
-    .on('meta[property="og:url"]', { element(e) { e.setAttribute('content', canonicalUrl); } })
-    .on('meta[property="og:type"]', { element(e) { e.setAttribute('content', 'product'); } })
-    .on('meta[name="twitter:title"]', { element(e) { e.setAttribute('content', ogTitle); } })
-    .on('meta[name="twitter:description"]', { element(e) { e.setAttribute('content', ogDesc); } })
-    .on('link[rel="canonical"]', { element(e) { e.setAttribute('href', canonicalUrl); } })
-    .on('head', { element(e) {
-      e.append(
-        `\n<meta property="og:image" content="${esc(ogImage)}">` +
-        `\n<meta property="og:image:width" content="1200">` +
-        `\n<meta property="og:image:height" content="900">` +
-        `\n<meta name="twitter:image" content="${esc(ogImage)}">` +
-        '\n<meta name="twitter:card" content="summary_large_image">',
-        { html: true }
-      );
-    } })
-    .transform(response);
+  const html = await response.text();
+  const htmlTitle = `${esc(ogTitle)} | Condomínios na Praia`;
+  const htmlDesc = esc(ogDesc);
+  const htmlUrl = esc(canonicalUrl);
+  const additions = `\n<meta property="og:image" content="${esc(ogImage)}">` +
+    `\n<meta property="og:image:width" content="1200">` +
+    `\n<meta property="og:image:height" content="900">` +
+    `\n<meta name="twitter:image" content="${esc(ogImage)}">` +
+    '\n<meta name="twitter:card" content="summary_large_image">';
+  const transformed = html
+    .replace(/<title>[\s\S]*?<\/title>/i, `<title>${htmlTitle}</title>`)
+    .replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${htmlDesc}">`)
+    .replace(/<meta\s+property=["']og:title["'][^>]*>/i, `<meta property="og:title" content="${esc(ogTitle)}">`)
+    .replace(/<meta\s+property=["']og:description["'][^>]*>/i, `<meta property="og:description" content="${htmlDesc}">`)
+    .replace(/<meta\s+property=["']og:url["'][^>]*>/i, `<meta property="og:url" content="${htmlUrl}">`)
+    .replace(/<meta\s+property=["']og:type["'][^>]*>/i, '<meta property="og:type" content="product">')
+    .replace(/<meta\s+name=["']twitter:title["'][^>]*>/i, `<meta name="twitter:title" content="${esc(ogTitle)}">`)
+    .replace(/<meta\s+name=["']twitter:description["'][^>]*>/i, `<meta name="twitter:description" content="${htmlDesc}">`)
+    .replace(/<link\s+rel=["']canonical["'][^>]*>/i, `<link rel="canonical" href="${htmlUrl}">`)
+    .replace(/<\/head>/i, `${additions}\n</head>`);
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  return new Response(transformed, { status: response.status, statusText: response.statusText, headers });
 }
