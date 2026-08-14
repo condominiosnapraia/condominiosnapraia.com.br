@@ -55,7 +55,7 @@ async function buscarImovel(ref, key) {
 }
 
 async function servirPagina(context) {
-  const assetUrl = new URL('/imovel/index.html', context.request.url);
+  const assetUrl = new URL('/imovel/', context.request.url);
   return context.env?.ASSETS?.fetch(assetUrl.toString());
 }
 
