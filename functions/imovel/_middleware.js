@@ -68,7 +68,9 @@ export async function onRequest(context) {
   if (pathRef && im.slug && pathRef !== im.slug) {
     return Response.redirect(`${SITE}/imovel/${encodeURIComponent(im.slug)}/`, 301);
   }
-  if (!isCrawler(request.headers.get('user-agent') || '')) return response;
+  // Em páginas com slug, canonical e metadados precisam ser corretos para qualquer User-Agent.
+  // Para a URL legada sem slug, humanos seguem no HTML normal quando não houve redirect.
+  if (!pathRef && !isCrawler(request.headers.get('user-agent') || '')) return response;
 
   const titulo = im.titulo || 'Imóvel à venda';
   const cidade = im.cidade_end ? ` — ${im.cidade_end}` : '';
