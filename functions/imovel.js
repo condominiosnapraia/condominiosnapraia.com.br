@@ -75,6 +75,17 @@ export async function onRequest(context) {
 
   if (!im) return response;
 
+  // PRIVACIDADE: remove identificadores internos (unidade, torre, quadra, lote, box)
+  // da descrição antes de qualquer uso público (og:description, etc.)
+  function limparInternos(txt){
+    if(!txt) return txt;
+    var d = String(txt);
+    d = d.replace(/[,;.\s]*\b(localizad[oa]s?\s+)?(n[oa]s?|d[oa]s?|em)?\s*\b(unidade|torre|quadra|lote|box|apto\.?|apartamento\s+n[ºo°]?)\s*[:nº°o]*\s*[\w-]+/gi, '');
+    d = d.replace(/\s*[·|]\s*(?=[·|]|$)/g,' ').replace(/\s{2,}/g,' ').replace(/^[\s·|,;.-]+|[\s·|,;.-]+$/g,'').trim();
+    return d;
+  }
+  if (im.descricao) im.descricao = limparInternos(im.descricao);
+
   // Monta os valores das tags
   const titulo = im.titulo || "Imóvel à venda";
   const cidade = im.cidade ? ` — ${im.cidade}` : "";

@@ -483,7 +483,10 @@ details[open] .dec-faq-q:after{content:"−"}
 .il-layout.mapon .il-grid{grid-template-columns:1fr;max-height:78vh;overflow-y:auto;padding-right:6px}
 .il-layout.mapon .il-mapwrap{display:block;position:sticky;top:12px;height:78vh}
 .il-card.il-card-active{outline:2px solid var(--gold,#e0b34d);outline-offset:2px;border-radius:16px}
-.il-card-mapbtn{margin-top:10px;width:100%;background:#eef7f8;border:1px solid var(--border);color:#0c4a6e;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:8px;border-radius:8px;cursor:pointer;transition:all .2s}
+.il-card-acoes{display:flex;gap:8px;margin-top:12px;align-items:stretch}
+.il-card-verbtn{flex:1;display:flex;align-items:center;justify-content:center;background:#0c4a6e;color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:10px;border-radius:8px;transition:background .2s}
+.il-card:hover .il-card-verbtn{background:#0e7490}
+.il-card-mapbtn{flex:0 0 auto;background:#eef7f8;border:1px solid var(--border);color:#0c4a6e;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:8px 12px;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .il-card-mapbtn:hover{background:#0c4a6e;color:#fff}
 /* marcador customizado */
 .il-price-wrap{background:transparent!important;border:none!important}
@@ -690,7 +693,7 @@ details[open] .dec-faq-q:after{content:"−"}
     </div></div>
   </div>
   <div class="ftr-bottom">
-    <span>© 2025 Os melhores condomínios do litoral · Todos os direitos reservados</span>
+    <span>© 2025 Portal Meu Litoral · Todos os direitos reservados</span>
     <span class="ftr-bottom-r">Litoral Norte Gaúcho · RS</span>
   </div>
 </footer>
@@ -814,7 +817,10 @@ function render(lista){
         (cond.nome?'<div class="il-card-loc">📍 '+cond.nome+'</div>':'')+
         (specs.length?'<div class="il-card-specs">'+specs.map(s=>'<span>'+s+'</span>').join('')+'</div>':'')+
         '<div class="il-card-price">'+brl(i.preco)+'</div>'+
-        '<button type="button" class="il-card-mapbtn" onclick="event.preventDefault();event.stopPropagation();focarImovel(\''+(i.codigo||i.slug||i.id)+'\')" aria-label="Ver este imóvel no mapa">📍 Ver no mapa</button>'+
+        '<div class="il-card-acoes">'+
+          '<span class="il-card-verbtn">Ver imóvel →</span>'+
+          '<button type="button" class="il-card-mapbtn" onclick="event.preventDefault();event.stopPropagation();focarImovel(\''+(i.codigo||i.slug||i.id)+'\')" aria-label="Ver este imóvel no mapa">📍 Mapa</button>'+
+        '</div>'+
       '</div></a>';
   }).join('');
 }

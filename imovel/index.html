@@ -773,7 +773,7 @@ details[open] .dec-faq-q:after{content:"−"}
     </div></div>
   </div>
   <div class="ftr-bottom">
-    <span>© 2025 Os melhores condomínios do litoral · Todos os direitos reservados</span>
+    <span>© 2025 Portal Meu Litoral · Todos os direitos reservados</span>
     <span class="ftr-bottom-r">Litoral Norte Gaúcho · RS</span>
   </div>
 </footer>
@@ -893,6 +893,17 @@ async function init(){
 
 function render(im,cond){
   window._imAtual=im; window._condAtual=cond;
+  // ═══ PRIVACIDADE: remove identificadores internos da descrição pública ═══
+  // (unidade, torre, quadra, lote, box, apto nº) nunca devem aparecer publicamente
+  (function(){
+    if(!im || !im.descricao) return;
+    var d = String(im.descricao);
+    // remove frases "localizada na unidade 204, torre 24" e blocos "Unidade 204 · Torre 24"
+    d = d.replace(/[,;.\s]*\b(localizad[oa]s?\s+)?(n[oa]s?|d[oa]s?|em)?\s*\b(unidade|torre|quadra|lote|box|apto\.?|apartamento\s+n[ºo°]?)\s*[:nº°o]*\s*[\w-]+/gi, '');
+    // remove separadores órfãos deixados pela limpeza (· | - duplicados nas pontas)
+    d = d.replace(/\s*[·|]\s*(?=[·|]|$)/g,' ').replace(/\s{2,}/g,' ').replace(/^[\s·|,;.-]+|[\s·|,;.-]+$/g,'').trim();
+    im.descricao = d;
+  })();
   // rastreio: se o cliente já é lead cadastrado, registra que ele viu este imóvel
   try{ if(window.lgRegistrarView && window.lgLiberado && window.lgLiberado()) window.lgRegistrarView(im, false); }catch(e){}
   // SEO dinâmico

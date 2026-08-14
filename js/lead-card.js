@@ -58,7 +58,7 @@
       '</div>'+
       '<button class="ldc-btn" id="ldc-btn">Quero receber opções</button>'+
       '<div class="ldc-msg" id="ldc-msg"></div>'+
-      '<div class="ldc-priv">Seus dados ficam seguros e não são compartilhados.</div>'+
+      '<div class="ldc-priv">Seus dados são usados para atendimento e podem ser compartilhados apenas quando necessário para viabilizar o serviço, conforme nossa <a href="/politica-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</div>'+
     '</div>'+
     '<div class="ldc-ok" id="ldc-ok">'+
       '<div class="ldc-ok-ico">✓</div>'+
