@@ -20,7 +20,6 @@
 
 const SUPABASE_URL = "https://cddgkhkzcnyzzcllgzoz.supabase.co";
 const SITE = "https://condominiosnapraia.com.br";
-const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoiY2RkZ2toemNueXp6Y2xsZ296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const OG_FALLBACK = `${SITE}/img/og-home.jpg`;
 
 // Detecta se quem acessa é um robô de pré-visualização (não um humano)
@@ -52,12 +51,13 @@ export async function onRequest(context) {
   // Pega o HTML original da página /imovel (o arquivo estático)
   const response = await next();
 
-  if (!id) return response;
+  // Só reescreve para crawlers e quando há id — humanos recebem a página normal.
+  if (!id || !isCrawler(ua)) return response;
 
-  // Busca o imóvel para canonicalizar a URL antiga e, para crawlers, enriquecer a prévia.
+  // Busca o imóvel no Supabase.
   let im = null;
   try {
-    const key = env.SUPABASE_ANON_KEY || SB_ANON_FALLBACK;
+    const key = env.SUPABASE_ANON_KEY;
     const q = `${SUPABASE_URL}/rest/v1/imoveis?or=(codigo.eq.${encodeURIComponent(id)},slug.eq.${encodeURIComponent(id)},id.eq.${encodeURIComponent(id)})&select=*&limit=1`;
     const r = await fetch(q, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
@@ -71,10 +71,6 @@ export async function onRequest(context) {
   }
 
   if (!im) return response;
-  if (im.slug && String(id) !== String(im.slug)) {
-    return Response.redirect(`${SITE}/imovel/${encodeURIComponent(im.slug)}/`, 301);
-  }
-  if (!isCrawler(ua)) return response;
 
   // PRIVACIDADE: remove identificadores internos (unidade, torre, quadra, lote, box)
   // da descrição antes de qualquer uso público (og:description, etc.)
