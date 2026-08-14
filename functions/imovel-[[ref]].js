@@ -1,14 +1,18 @@
-// Cloudflare Pages Function — compatibilidade para /imovel/:id
-// Redireciona a rota antiga específica para /imovel/<slug>/ com status 301.
+// Compatibilidade com páginas estáticas antigas: /imovel-XAN-001/
+// Redireciona para /imovel/<slug>/ sem apagar a página ou o cadastro antigo.
 
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SITE = 'https://condominiosnapraia.com.br';
 
 export async function onRequest(context) {
-  const { params, env, next } = context;
-  const ref = params.id;
+  const { request, env, next } = context;
+  const url = new URL(request.url);
+  const match = url.pathname.match(/^\/imovel-([^/]+)\/?$/i);
+  if (!match) return next();
+
+  const ref = decodeURIComponent(match[1]);
   const key = env.SUPABASE_ANON_KEY;
-  if (!ref || !key) return next();
+  if (!key) return next();
 
   const valor = encodeURIComponent(ref);
   const consultas = [
