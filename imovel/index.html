@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <script>
-/* A URL antiga com ?id= continua funcionando, mas a versão indexável é /imovel/slug/. */
+/* SEO: rotas paramétricas (?id=) não devem ser indexadas — a versão indexável é a URL semântica /nome-cidade/ */
 (function(){try{if(location.search.indexOf("id=")>-1){var m=document.createElement("meta");m.name="robots";m.content="noindex,follow";document.head.appendChild(m);}}catch(e){}})();
 </script>
 <script>(function(){var P='https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/',F=window.fetch;window.fetch=function(u,o){var s=typeof u==='string'?u:(u&&u.url)||'';var p=F.call(window,u,o);if(s.indexOf('.supabase.co/rest/v1/')===-1)return p;return p.then(function(r){var ct=r.headers.get('content-type')||'';if(ct.indexOf('json')===-1)return r;return r.text().then(function(t){return new Response(t.split(P).join(location.origin+'/cdn-fotos/'),{status:r.status,statusText:r.statusText,headers:r.headers})})})};})();</script>
@@ -35,11 +35,11 @@
 <meta name="theme-color" content="#0c4a6e">
 <title>Portal Meu Litoral | Imóvel</title>
 <meta name="description" content="Detalhes do imóvel no Litoral Norte Gaúcho.">
-<link rel="canonical" href="https://condominiosnapraia.com.br/imovel">
+<link rel="canonical" href="https://condominiosnapraia.com.br/imovel/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Portal Meu Litoral | Imóvel">
 <meta property="og:description" content="Imóvel à venda no Litoral Norte Gaúcho.">
-<meta property="og:url" content="https://condominiosnapraia.com.br/imovel">
+<meta property="og:url" content="https://condominiosnapraia.com.br/imovel/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Imóvel | Condomínios na Praia">
 <meta name="twitter:description" content="Imóvel à venda no Litoral Norte Gaúcho.">
@@ -773,7 +773,7 @@ details[open] .dec-faq-q:after{content:"−"}
     </div></div>
   </div>
   <div class="ftr-bottom">
-    <span>© 2025 Os melhores condomínios do litoral · Todos os direitos reservados</span>
+    <span>© 2025 Portal Meu Litoral · Todos os direitos reservados</span>
     <span class="ftr-bottom-r">Litoral Norte Gaúcho · RS</span>
   </div>
 </footer>
@@ -796,8 +796,6 @@ function refImovel(){
 function brl(v){if(v==null||v==='')return 'Sob consulta';const n=Number(v);if(isNaN(n))return String(v);return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});}
 function m2(v){return v?(v+' m²'):'—';}
 function fotosValidas(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
-function urlPublicaImovel(im){const ref=im&& (im.slug||im.codigo||im.id);return ref?('/imovel/'+encodeURIComponent(ref)+'/'):'/imovel/';}
-function descricaoPublica(texto){return String(texto||'').replace(/\b(?:unidade|apt(?:o)?|apartamento)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi,'').replace(/\btorre\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi,'').replace(/\b(?:quadra|lote|box)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi,'').replace(/\bcasa\s*(?:n[ºo°.]?|número)\s*[a-z0-9-]+/gi,'').replace(/\s{2,}/g,' ').replace(/\s+([,.;])/g,'$1').trim();}
 
 let GAL=[], gi=0;
 function ipDesliza(){var t=document.getElementById('ip-track');if(!t)return;var n=GAL.length;var desk=window.matchMedia('(min-width:981px)').matches;
@@ -895,6 +893,17 @@ async function init(){
 
 function render(im,cond){
   window._imAtual=im; window._condAtual=cond;
+  // ═══ PRIVACIDADE: remove identificadores internos da descrição pública ═══
+  // (unidade, torre, quadra, lote, box, apto nº) nunca devem aparecer publicamente
+  (function(){
+    if(!im || !im.descricao) return;
+    var d = String(im.descricao);
+    // remove frases "localizada na unidade 204, torre 24" e blocos "Unidade 204 · Torre 24"
+    d = d.replace(/[,;.\s]*\b(localizad[oa]s?\s+)?(n[oa]s?|d[oa]s?|em)?\s*\b(unidade|torre|quadra|lote|box|apto\.?|apartamento\s+n[ºo°]?)\s*[:nº°o]*\s*[\w-]+/gi, '');
+    // remove separadores órfãos deixados pela limpeza (· | - duplicados nas pontas)
+    d = d.replace(/\s*[·|]\s*(?=[·|]|$)/g,' ').replace(/\s{2,}/g,' ').replace(/^[\s·|,;.-]+|[\s·|,;.-]+$/g,'').trim();
+    im.descricao = d;
+  })();
   // rastreio: se o cliente já é lead cadastrado, registra que ele viu este imóvel
   try{ if(window.lgRegistrarView && window.lgLiberado && window.lgLiberado()) window.lgRegistrarView(im, false); }catch(e){}
   // SEO dinâmico
@@ -926,7 +935,7 @@ function render(im,cond){
     document.title = titulo + SUFIXO;
 
     // DESCRIPTION: usa a descrição real, ou monta uma automática rica
-    var desc = descricaoPublica(im.descricao).replace(/\s+/g,' ').trim();
+    var desc = (im.descricao || '').replace(/\s+/g,' ').trim();
     if(desc.length < 60){
       var d = [tipo];
       if(s) d.push('com ' + s);
@@ -953,7 +962,7 @@ function render(im,cond){
     // CANONICAL correto para este imóvel
     var can=document.querySelector('link[rel="canonical"]');
     var ref = im.slug || im.id;
-    if(can) can.setAttribute('href','https://condominiosnapraia.com.br'+urlPublicaImovel(im));
+    if(can && ref) can.setAttribute('href','https://condominiosnapraia.com.br/imovel/?id='+encodeURIComponent(ref));
 
     // ═══ SCHEMA.ORG — dados estruturados (o Google entende que é um imóvel à venda) ═══
     try{
@@ -963,7 +972,7 @@ function render(im,cond){
         "@type":"RealEstateListing",
         "name": tit,
         "description": desc,
-        "url": 'https://condominiosnapraia.com.br' + urlPublicaImovel(im),
+        "url": 'https://condominiosnapraia.com.br/imovel/?id=' + encodeURIComponent(ref||''),
         "datePosted": im.criado_em || undefined,
         "image": fotos.length ? fotos : undefined,
         "address": {
@@ -997,8 +1006,8 @@ function render(im,cond){
   (function(){
     function setOG(prop,val){const m=document.querySelector('meta[property="'+prop+'"]');if(m&&val)m.setAttribute('content',val);}
     setOG('og:title',(im.titulo||'Imóvel')+(cond.nome?(' · '+cond.nome):''));
-    if(im.descricao)setOG('og:description',descricaoPublica(im.descricao).slice(0,155));
-    setOG('og:url','https://condominiosnapraia.com.br'+urlPublicaImovel(im));
+    if(im.descricao)setOG('og:description',String(im.descricao).slice(0,155));
+    setOG('og:url','https://condominiosnapraia.com.br/imovel/?id='+encodeURIComponent(im.id));
     const f=fotosValidas(im.fotos_no_site||im.fotos);
     if(f.length)setOG('og:image',f[0]);
     setOG('og:type','product');
@@ -1007,7 +1016,7 @@ function render(im,cond){
   // ── Schema dinâmico: RealEstateListing + BreadcrumbList ──
   (function(){
     const el=document.getElementById('ld-imovel'); if(!el) return;
-    const pageUrl='https://condominiosnapraia.com.br'+urlPublicaImovel(im);
+    const pageUrl='https://condominiosnapraia.com.br/imovel/?id='+encodeURIComponent(im.id);
     const fotosSchema=fotosValidas(im.fotos_no_site||im.fotos).slice(0,8);
     const cidade=cond.localizacao||cond.cidade||im.cidade||'Litoral Norte Gaúcho';
     const listing={
@@ -1016,7 +1025,7 @@ function render(im,cond){
       "name":im.titulo||'Imóvel',
       "url":pageUrl
     };
-    if(im.descricao) listing.description=descricaoPublica(im.descricao).slice(0,300);
+    if(im.descricao) listing.description=String(im.descricao).slice(0,300);
     if(fotosSchema.length) listing.image=fotosSchema;
     // oferta com preço
     if(im.preco && Number(im.preco)>0){
@@ -1147,7 +1156,7 @@ function render(im,cond){
         '<h1 class="ip-title">'+(im.titulo||'Imóvel')+'</h1>'+
         (loc?'<div class="ip-loc">📍 '+loc+'</div>':'')+
         (specs.length?'<div class="ip-specs">'+specHtml+'</div>':'')+
-        (im.descricao?('<div class="ip-sec-h">Sobre o imóvel</div><div class="ip-desc">'+descricaoPublica(im.descricao)+'</div>'):'')+
+        (im.descricao?('<div class="ip-sec-h">Sobre o imóvel</div><div class="ip-desc">'+im.descricao+'</div>'):'')+
         difHtml+exHtml+videoHtml+
       '</div>'+
       '<aside class="ip-side"><div class="ip-card">'+
@@ -1242,19 +1251,19 @@ async function carregarSimilares(im,cond){
   el.innerHTML='<div class="ip-sec-h">Imóveis semelhantes</div><div class="ip-sim-grid">'+lista.map(function(x){
     const f=fotosValidas(x.fotos_no_site||x.fotos);
     const img=f.length?'<img src="'+f[0]+'" alt="'+(x.titulo||'')+'" loading="lazy">':'🏠';
-    return '<a class="ip-simcard" href="'+urlPublicaImovel(x)+'"><div class="ip-simcard-img">'+img+'</div><div class="ip-simcard-b"><div class="ip-eyebrow">'+(x.tipo||'Imóvel')+'</div><div class="ip-simcard-t">'+(x.titulo||'—')+'</div><div class="ip-simcard-p">'+brl(x.preco)+'</div></div></a>';
+    return '<a class="ip-simcard" href="/imovel?id='+encodeURIComponent(x.id)+'"><div class="ip-simcard-img">'+img+'</div><div class="ip-simcard-b"><div class="ip-eyebrow">'+(x.tipo||'Imóvel')+'</div><div class="ip-simcard-t">'+(x.titulo||'—')+'</div><div class="ip-simcard-p">'+brl(x.preco)+'</div></div></a>';
   }).join('')+'</div>';
   el.style.display='block';
 }
 
 function notFound(){return '<div class="ip-notfound"><h2>Imóvel não encontrado</h2><p>Este imóvel pode ter sido vendido ou removido.</p><br><a href="/#imoveis">Ver imóveis disponíveis →</a></div>';}
-// Compartilhamento sempre usa a URL canônica amigável quando o slug está disponível.
+// URL correta para compartilhar: /imovel/ID (essa passa pela Function que gera a prévia com foto)
 function urlCompartilhar(){
   var im = window._imAtual;
   if(im){
-    // prioridade: slug estável → código legado → id
-    var ref = im.slug || im.codigo || im.id;
-    if(ref) return 'https://condominiosnapraia.com.br/imovel/' + encodeURIComponent(ref) + '/';
+    // prioridade: CÓDIGO (bonito) → slug → id
+    var ref = im.codigo || im.slug || im.id;
+    if(ref) return 'https://condominiosnapraia.com.br/imovel//' + encodeURIComponent(ref);
   }
   return window.location.href;
 }
