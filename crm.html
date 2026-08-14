@@ -4062,7 +4062,7 @@ async function savImov(){
   try{
     const _condSeo=(DB.co||[]).find(c=>c.id===condId)||{}; const fotosUrls = await uploadFotos(iF, iFS, 'imov', id, ['imovel',_condSeo.cidade,_condSeo.nome,titulo].filter(Boolean).join(' '));
     const o={
-      id,titulo,cond_id:condId,fora_condominio:foraCond,ref:gv('im-ref'),codigo:codigoImovel,
+      id,titulo,cond_id:foraCond ? null : (condId || null),fora_condominio:foraCond,ref:gv('im-ref'),codigo:codigoImovel,
       lote:gv('im-lote'),quadra:gv('im-quadra'),cep:gv('im-cep'),cidade_end:gv('im-cidade'),bairro_end:gv('im-bairro-end'),ref_local:gv('im-ref-local'),
       finalidade:gv('im-final'),tipo:gv('im-tipo'),status:gv('im-st'),
       publicar:gv('im-pub')==='1',
