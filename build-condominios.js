@@ -160,6 +160,14 @@ const fotoUrl = f => {
   return STORAGE + String(f).replace(/^\/+/, '');
 };
 
+// Identificadores internos não podem aparecer nos títulos dos cards públicos.
+const tituloPublico = value => String(value || 'Imóvel')
+  .replace(/\b(?:unidade|apt(?:o)?|apartamento|torre|quadra|lote|box|casa)\s*(?:n[ºo°.]?\s*)?(?:[a-z]*\d[a-z0-9-]*)\b/gi, '')
+  .replace(/\s{2,}/g, ' ')
+  .replace(/\s*([,·|])\s*([,·|])/g, '$1')
+  .replace(/^\s*[-–—,:·|]+\s*|\s*[-–—,:·|]+\s*$/g, '')
+  .trim() || 'Imóvel no condomínio';
+
 // monta os parágrafos a partir de um campo de texto (quebra em \n\n)
 const paras = txt => String(txt || '')
   .split(/\n{2,}|\r\n\r\n/).map(p => p.trim()).filter(Boolean)
@@ -257,10 +265,11 @@ function blocoConteudo(cond, imoveis) {
     partes.push(`<h2 style="font-family:'Fraunces',serif;font-size:20px;color:#0d3b54;margin:26px 0 12px">Imóveis à venda no ${esc(nome)}</h2>`);
     partes.push(`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">`);
     imoveis.forEach(im => {
-      const tit = im.titulo || im.nome || (im.tipo ? im.tipo + ' em ' + nome : 'Imóvel');
+      const tit = tituloPublico(im.titulo || im.nome || (im.tipo ? im.tipo + ' em ' + nome : 'Imóvel'));
       const preco = fmtPreco(im.preco || im.valor);
       const foto = fotoUrl((Array.isArray(im.fotos) ? im.fotos[0] : im.foto) || '');
-      const href = im.slug ? '/' + im.slug : (im.id ? '/imovel/?id=' + encodeURIComponent(im.id) : '#');
+      const slugImovel = im.slug ? String(im.slug).replace(/^\/+|\/+$/g, '') : '';
+      const href = slugImovel ? '/imovel/' + slugImovel + '/' : (im.id ? '/imovel/?id=' + encodeURIComponent(im.id) : '#');
       partes.push(`<a href="${esc(href)}" style="display:block;border:1px solid #e5ded3;border-radius:12px;overflow:hidden;text-decoration:none;background:#fff">`);
       if (foto) partes.push(`<img src="${esc(foto)}" alt="${esc(tit)} — ${esc(cidade)}" width="400" height="240" loading="lazy" style="width:100%;height:180px;object-fit:cover;display:block">`);
       partes.push(`<div style="padding:12px 14px"><div style="font-size:14px;color:#0d3b54;font-weight:600;line-height:1.35">${esc(tit)}</div>${preco ? `<div style="font-family:'Fraunces',serif;font-size:17px;color:#0c4a6e;margin-top:6px">${esc(preco)}</div>` : ''}</div>`);
@@ -284,7 +293,7 @@ function preencherPagina(filerel, cond, imoveis) {
   const bloco = blocoConteudo(cond, imoveis);
 
   // remove bloco antigo (idempotência) — tanto o full quanto o texto-seo simples
-  h = h.replace(/<section class="cond-conteudo-full">[\s\S]*?<\/section>\s*/g, '');
+  h = h.replace(/<section class="cond-conteudo-full"[^>]*>[\s\S]*?<\/section>\s*/g, '');
   h = h.replace(/<section class="cond-texto-seo"[\s\S]*?<\/section>\s*/g, '');
 
   const idx = h.indexOf('<footer');
