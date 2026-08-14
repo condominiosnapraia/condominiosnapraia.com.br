@@ -4,6 +4,7 @@
 
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SITE = 'https://condominiosnapraia.com.br';
+	const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoiY2RkZ2toemNueXp6Y2xsZ296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const OG_FALLBACK = `${SITE}/img/og-home.jpg`;
 
 function isCrawler(ua = '') {
@@ -63,7 +64,7 @@ export async function onRequest(context) {
   const ref = Array.isArray(params?.id) ? params.id.join('/') : params?.id;
   if (!ref) return servirPagina(context);
 
-  const im = await buscarImovel(ref, env?.SUPABASE_ANON_KEY);
+  const im = await buscarImovel(ref, env?.SUPABASE_ANON_KEY || SB_ANON_FALLBACK);
   if (!im) return servirPagina(context);
 
   const canonicalSlug = im.slug || im.codigo || im.id;
