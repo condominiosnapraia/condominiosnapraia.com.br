@@ -1,115 +1,91 @@
-// Cloudflare Pages Function — Sitemap DINÂMICO de imóveis
-// URL: condominiosnapraia.com.br/sitemap-imoveis.xml
-// Busca os imóveis publicados no Supabase e gera o sitemap na hora.
-// Todo imóvel novo cadastrado aparece automaticamente para o Google.
+// Cloudflare Pages Function — sitemap dinâmico de imóveis
+// URL: /sitemap-imoveis.xml
+// A chave do Supabase deve existir em Pages > Settings > Environment variables.
 
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
-const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const SITE = 'https://condominiosnapraia.com.br';
 
-function slugify(s){
-  return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-    .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-}
 function esc(s) {
-  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+  return String(s || '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+}
+
+function fotoPublica(u) {
+  if (!u) return '';
+  const marker = '/storage/v1/object/public/';
+  const i = String(u).indexOf(marker);
+  return i === -1 ? String(u) : `${SITE}/cdn-fotos/` + String(u).slice(i + marker.length);
 }
 
 export async function onRequest(context) {
+  const key = context.env.SUPABASE_ANON_KEY;
   let imoveis = [];
   let erroBusca = null;
-  try {
-    // buscar apenas imóveis publicados; campos mínimos para o sitemap
-    // select=* evita erro caso algum campo não exista na tabela
-    const url = SB_URL + '/rest/v1/imoveis?select=*&limit=2000';
-    const r = await fetch(url, {
-      headers: { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON }
-    });
-    if (r.ok) {
-      imoveis = await r.json();
-    } else {
-      erroBusca = 'HTTP ' + r.status + ': ' + (await r.text()).slice(0,300);
+
+  if (!key) {
+    erroBusca = 'SUPABASE_ANON_KEY não configurada';
+  } else {
+    try {
+      const url = `${SB_URL}/rest/v1/imoveis?select=*&limit=2000`;
+      const r = await fetch(url, {
+        headers: { apikey: key, Authorization: `Bearer ${key}` }
+      });
+      if (r.ok) imoveis = await r.json();
+      else erroBusca = `HTTP ${r.status}`;
+    } catch (e) {
+      erroBusca = e?.message || String(e);
     }
-  } catch (e) {
-    erroBusca = 'Exceção: ' + (e && e.message ? e.message : String(e));
-    imoveis = [];
   }
 
-  // mesmo critério do site: publicados e não vendidos
   const validos = (Array.isArray(imoveis) ? imoveis : []).filter(im => {
     if (im.publicar === false) return false;
     if (im.status === 'Vendido' || im.status === 'Inativo') return false;
-    return Boolean(String(im.codigo || im.slug || '').trim());
+    return Boolean(im.slug || im.codigo || im.id);
   });
 
-  const vistos = new Set();
   const urls = validos.map(im => {
-    // URL bonita: prioriza o CÓDIGO do imóvel
-    const ref = String(im.codigo || im.slug || '').trim();
-    const slug = slugify(ref);
-    if (vistos.has(slug)) return '';
-    vistos.add(slug);
-    // XAN-224 não possui página final publicada; não enviar URL 404 ao Google.
-    if (slug === 'xan-224') return '';
-    const loc = SITE + '/imovel-' + encodeURIComponent(slug) + '/';
+    const ref = im.slug || im.codigo || im.id;
+    const loc = `${SITE}/imovel/${encodeURIComponent(ref)}/`;
     const data = im.atualizado_em || im.updated_at || im.criado_em || im.created_at;
     let lastmod = '';
     if (data) {
-      try { lastmod = '\n    <lastmod>' + new Date(data).toISOString().slice(0, 10) + '</lastmod>'; } catch (e) {}
+      try { lastmod = `\n    <lastmod>${new Date(data).toISOString().slice(0, 10)}</lastmod>`; } catch (_) {}
     }
-    // fotos do imóvel (para o Google Imagens)
+
     let imgs = '';
     try {
-      const fotos = im.fotos_no_site || im.fotos || [];
+      let fotos = im.fotos_no_site || im.fotos || [];
+      if (typeof fotos === 'string') fotos = JSON.parse(fotos);
       const lista = Array.isArray(fotos) ? fotos : [fotos];
-      const titulo = (im.titulo || 'Imóvel') + (im.cidade ? (' em ' + im.cidade) : '');
+      const titulo = `${im.titulo || 'Imóvel'}${im.cidade ? ` em ${im.cidade}` : ''}`;
       lista.slice(0, 6).forEach(f => {
-        let url = null;
-        if (typeof f === 'string' && /^https?:\/\//i.test(f)) url = f;
-        else if (f && typeof f === 'object' && f.url) url = f.url;
-        if (url) {
-          imgs += '\n    <image:image>' +
-                  '\n      <image:loc>' + esc(url) + '</image:loc>' +
-                  '\n      <image:title>' + esc(titulo) + '</image:title>' +
-                  '\n    </image:image>';
+        const raw = typeof f === 'string' ? f : f?.url;
+        const imageUrl = raw && /^https?:\/\//i.test(raw) ? fotoPublica(raw) : '';
+        if (imageUrl) {
+          imgs += `\n    <image:image>\n      <image:loc>${esc(imageUrl)}</image:loc>\n      <image:title>${esc(titulo)}</image:title>\n    </image:image>`;
         }
       });
-    } catch (e) {}
+    } catch (_) {}
 
-    return '  <url>\n    <loc>' + esc(loc) + '</loc>' + lastmod +
-           '\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>' +
-           imgs +
-           '\n  </url>';
-  }).filter(Boolean).join('\n');
+    return `  <url>\n    <loc>${esc(loc)}</loc>${lastmod}\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>${imgs}\n  </url>`;
+  }).join('\n');
 
-  // modo diagnóstico: adicione ?debug=1 na URL para ver o que está acontecendo
-  try{
-    const u = new URL(context.request.url);
-    if (u.searchParams.get('debug') === '1') {
-      return new Response(JSON.stringify({
-        total_recebido_do_banco: Array.isArray(imoveis) ? imoveis.length : 0,
-        validos_para_o_sitemap: validos.length,
-        erro_na_busca: erroBusca,
-        amostra_dos_3_primeiros: (Array.isArray(imoveis) ? imoveis.slice(0,3) : []),
-        motivos_de_exclusao: (Array.isArray(imoveis) ? imoveis : []).slice(0,10).map(im => ({
-          id: im.id,
-          publicar: im.publicar,
-          status: im.status,
-          entra_no_sitemap: !(im.publicar === false || im.status === 'Vendido')
-        }))
-      }, null, 2), { headers: { 'Content-Type': 'application/json; charset=utf-8' } });
-    }
-  }catch(e){}
+  const requestUrl = new URL(context.request.url);
+  if (requestUrl.searchParams.get('debug') === '1') {
+    return new Response(JSON.stringify({
+      total_recebido_do_banco: Array.isArray(imoveis) ? imoveis.length : 0,
+      validos_para_o_sitemap: validos.length,
+      erro_na_busca: erroBusca,
+      amostra: validos.slice(0, 3).map(im => ({ codigo: im.codigo, slug: im.slug, publicar: im.publicar, status: im.status }))
+    }, null, 2), { headers: { 'Content-Type': 'application/json; charset=utf-8' } });
+  }
 
-  const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
-    urls + '\n' +
-    '</urlset>';
-
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls}\n</urlset>`;
   return new Response(xml, {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600' // cache de 1h para não sobrecarregar
+      'Cache-Control': 'public, max-age=3600'
     }
   });
 }

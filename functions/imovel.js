@@ -51,16 +51,12 @@ export async function onRequest(context) {
   // Pega o HTML original da página /imovel (o arquivo estático)
   const response = await next();
 
-  // Só reescreve para crawlers e quando há id — humanos recebem a página normal
-  if (!id || !isCrawler(ua)) {
-    return response;
-  }
+  if (!id) return response;
 
-  // Busca o imóvel no Supabase
+  // Busca o imóvel para canonicalizar a URL antiga e, para crawlers, enriquecer a prévia.
   let im = null;
   try {
     const key = env.SUPABASE_ANON_KEY;
-    // tenta por codigo, depois por id/slug
     const q = `${SUPABASE_URL}/rest/v1/imoveis?or=(codigo.eq.${encodeURIComponent(id)},slug.eq.${encodeURIComponent(id)},id.eq.${encodeURIComponent(id)})&select=*&limit=1`;
     const r = await fetch(q, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
@@ -74,6 +70,10 @@ export async function onRequest(context) {
   }
 
   if (!im) return response;
+  if (im.slug && String(id) !== String(im.slug)) {
+    return Response.redirect(`${SITE}/imovel/${encodeURIComponent(im.slug)}/`, 301);
+  }
+  if (!isCrawler(ua)) return response;
 
   // PRIVACIDADE: remove identificadores internos (unidade, torre, quadra, lote, box)
   // da descrição antes de qualquer uso público (og:description, etc.)
