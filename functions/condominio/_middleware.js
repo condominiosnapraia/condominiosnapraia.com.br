@@ -102,13 +102,8 @@ export async function onRequest(context) {
 
   const html = await response.text();
   const additions = `\n<meta name="robots" content="noindex,follow">` +
-    `\n<meta property="og:image" content="${esc(image)}">` +
     `\n<meta property="og:image:width" content="1200">` +
-    `\n<meta property="og:image:height" content="900">` +
-    `\n<meta name="twitter:card" content="summary_large_image">` +
-    `\n<meta name="twitter:title" content="${esc(title)}">` +
-    `\n<meta name="twitter:description" content="${esc(description)}">` +
-    `\n<meta name="twitter:image" content="${esc(image)}">`;
+    `\n<meta property="og:image:height" content="900">`;
   const transformed = html
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(title)}</title>`)
     .replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${esc(description)}">`)
@@ -117,6 +112,11 @@ export async function onRequest(context) {
     .replace(/<meta\s+property=["']og:description["'][^>]*>/i, `<meta property="og:description" content="${esc(description)}">`)
     .replace(/<meta\s+property=["']og:url["'][^>]*>/i, `<meta property="og:url" content="${esc(canonicalUrl)}">`)
     .replace(/<meta\s+property=["']og:type["'][^>]*>/i, '<meta property="og:type" content="website">')
+    .replace(/<meta\s+property=["']og:image["'][^>]*>/i, `<meta property="og:image" content="${esc(image)}">`)
+    .replace(/<meta\s+name=["']twitter:card["'][^>]*>/i, '<meta name="twitter:card" content="summary_large_image">')
+    .replace(/<meta\s+name=["']twitter:title["'][^>]*>/i, `<meta name="twitter:title" content="${esc(title)}">`)
+    .replace(/<meta\s+name=["']twitter:description["'][^>]*>/i, `<meta name="twitter:description" content="${esc(description)}">`)
+    .replace(/<meta\s+name=["']twitter:image["'][^>]*>/i, `<meta name="twitter:image" content="${esc(image)}">`)
     .replace(/<script\s+type=["']application\/ld\+json["']\s+id=["']ld-cond["']>[\s\S]*?<\/script>/i, `<script type="application/ld+json" id="ld-cond">${JSON.stringify(schema)}</script>`)
     .replace(/<\/head>/i, `${additions}\n</head>`);
   const headers = new Headers(response.headers);
