@@ -144,8 +144,11 @@ def main():
             soup.head.append(BeautifulSoup(STYLE, 'html.parser'))
         if not soup.find(id='cond-lagos-lightbox'):
             soup.body.append(BeautifulSoup(LIGHTBOX, 'html.parser'))
-        if not soup.find('script', id='cond-lagos-gallery-script'):
-            soup.body.append(BeautifulSoup(SCRIPT, 'html.parser'))
+        old_script = soup.find('script', id='cond-lagos-gallery-script')
+        if old_script:
+            old_script.decompose()
+        if not soup.find('script', src='/js/cond-lagos-gallery.js'):
+            soup.body.append(BeautifulSoup('<script src="/js/cond-lagos-gallery.js" defer></script>', 'html.parser'))
         PAGE.write_text(str(soup), encoding='utf-8')
         print(f'Página já normalizada; assets verificados: {PAGE}')
         return
@@ -231,8 +234,11 @@ def main():
         soup.head.append(BeautifulSoup(STYLE, 'html.parser'))
     if not soup.find(id='cond-lagos-lightbox'):
         soup.body.append(BeautifulSoup(LIGHTBOX, 'html.parser'))
-    if not soup.find('script', id='cond-lagos-gallery-script'):
-        soup.body.append(BeautifulSoup(SCRIPT, 'html.parser'))
+    old_script = soup.find('script', id='cond-lagos-gallery-script')
+    if old_script:
+        old_script.decompose()
+    if not soup.find('script', src='/js/cond-lagos-gallery.js'):
+        soup.body.append(BeautifulSoup('<script src="/js/cond-lagos-gallery.js" defer></script>', 'html.parser'))
 
     PAGE.write_text(str(soup), encoding='utf-8')
     print(f'Página atualizada: {PAGE}')
