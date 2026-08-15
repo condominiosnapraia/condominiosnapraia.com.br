@@ -20,6 +20,7 @@ LOCATION_TEXT = re.compile(
     r'(\s+style=")'
 )
 AMLIST = re.compile(r'(<div\s+class="amlist">.*?</div>)', re.S)
+MAP_KICKER = re.compile(r'\s*<div\s+class="cond-mapa-kicker">Localização</div>')
 INLINE_INFRA = re.compile(r'<div\s+class="cond-infra-detalhada-inline">.*?</div>\s*', re.S)
 
 
@@ -30,6 +31,7 @@ def normalize(path: Path) -> bool:
 
     original = text
     text = INLINE_INFRA.sub('', text)
+    text = MAP_KICKER.sub('', text)
 
     match = INFRA_BLOCK.search(text)
     if match:
