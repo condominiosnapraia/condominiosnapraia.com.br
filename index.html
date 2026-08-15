@@ -138,6 +138,29 @@
 @media (min-width: 769px){#view-home .hero{min-height:680px}}
 @media (max-width: 768px){#view-home .hero{background-size:auto 116%;background-position:center 62%!important}}
 </style>
+<style id="home-layout-desktop-refinement">
+/* Composição desktop: mais respiro lateral e grades equilibradas */
+@media (min-width: 769px){
+  .qr-sec{padding-left:clamp(44px,5vw,88px);padding-right:clamp(44px,5vw,88px)}
+  .qr-inner{max-width:1320px}
+  .navq-grid{max-width:1320px;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px}
+  .navq-card{grid-column:span 3;min-height:104px}
+  .navq-card:nth-child(5){grid-column:2 / span 3}
+  .navq-card:nth-child(6){grid-column:5 / span 3}
+  .navq-card:nth-child(7){grid-column:8 / span 3}
+  .dest-section{padding-left:clamp(44px,5vw,88px);padding-right:clamp(44px,5vw,88px)}
+  .dest-inner{max-width:1360px}
+  .igrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+  .cgrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+  .lch-inner{max-width:1360px}
+  .lch-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+  .lch-card:nth-last-child(2){grid-column:2}
+  .lch-card:last-child{grid-column:3}
+}
+/* A seção após a Navegação rápida recebe um verde sálvia quase espuma. */
+#sec-imoveis{background:var(--home-sage)!important}
+#sec-imoveis.sec-onda::before{background:var(--home-sand)!important}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
