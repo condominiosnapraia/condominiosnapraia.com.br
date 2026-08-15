@@ -113,3 +113,71 @@ footer .ftr-links-grid a {
     margin-right: auto;
   }
 }
+
+
+/* Portal Meu Litoral — acabamento editorial compartilhado do WhatsApp */
+footer .ftr-wpp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: max-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 11px 16px;
+  background: #fffdf8;
+  color: #0d4b62;
+  border: 1px solid rgba(217,168,63,.48);
+  border-radius: 10px;
+  box-shadow: 0 5px 16px rgba(4,30,42,.12);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+footer .ftr-wpp svg { color: #25d366; }
+footer .ftr-wpp:hover {
+  background: #f7eedf;
+  border-color: #d9a83f;
+  transform: translateY(-1px);
+}
+.mob-footer-nav .wpp-btn { color: #178a54 !important; }
+.mob-footer-nav .wpp-btn .mob-footer-ico {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(37,211,102,.10);
+}
+@media (max-width: 600px) {
+  footer .ftr-wpp {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 9px;
+  }
+}
+
+
+/* WhatsApp do cabeçalho: contato visível sem competir com a navegação */
+.desk-header .dh-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #fffdf8;
+  color: #0d4b62;
+  border: 1px solid rgba(217,168,63,.48);
+  padding: 8px 13px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(13,75,98,.10);
+  font-size: 11px;
+  font-weight: 700;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.desk-header .dh-cta svg { color: #25d366; }
+.desk-header .dh-cta:hover {
+  background: #f7eedf;
+  border-color: #d9a83f;
+  box-shadow: 0 6px 16px rgba(13,75,98,.14);
+  transform: translateY(-1px);
+}

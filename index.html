@@ -318,6 +318,57 @@
 .dest-header .dest-ver-btn{display:none}
 .dest-header .eyebrow{justify-content:center}
 </style>
+<style id="home-wave-and-editorial-polish">
+/* Ondas: contorno fino para uma transição mais natural entre superfícies */
+.sec-onda::before{
+  height:48px;
+  top:-1px;
+  border-top:0;
+  -webkit-filter:drop-shadow(0 -1px 0 rgba(18,63,83,.16));
+  filter:drop-shadow(0 -1px 0 rgba(18,63,83,.16));
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0 62 C180 104 350 18 530 50 C710 82 870 112 1045 58 C1210 20 1325 58 1440 38 L1440 120 L0 120 Z' fill='black'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0 62 C180 104 350 18 530 50 C710 82 870 112 1045 58 C1210 20 1325 58 1440 38 L1440 120 L0 120 Z' fill='black'/%3E%3C/svg%3E");
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  mask-position:center;
+  -webkit-mask-size:100% 100%;
+  mask-size:100% 100%;
+}
+.hero-wave-svg{filter:drop-shadow(0 -1px 0 rgba(18,63,83,.16))}
+.ftr-wave{filter:drop-shadow(0 -1px 0 rgba(18,63,83,.16))}
+
+/* Títulos: nome principal grande e contexto em linha menor */
+.sectit-stacked{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center}
+.sectit-stacked .sectit-main{display:block}
+.sectit-stacked .sectit-sub{display:block;font-family:'Outfit',sans-serif;font-size:clamp(11px,1.25vw,16px);font-style:normal;font-weight:600;line-height:1.25;letter-spacing:.18em;text-transform:uppercase;color:#a67f37}
+.lch-head .sectit-stacked{margin-bottom:16px}
+.dest-header .sectit-stacked{margin-bottom:0}
+.cdest-sec .sectit-stacked,.pcred-sec .sectit-stacked,.guias-sec .sectit-stacked{margin-left:auto;margin-right:auto}
+.qfilter-title-stacked{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center}
+.qfilter-title-stacked small,.viver-intro-title-stacked small{display:block;font-family:'Outfit',sans-serif;font-size:clamp(11px,1.25vw,16px);font-style:normal;font-weight:600;line-height:1.25;letter-spacing:.18em;text-transform:uppercase;color:#a67f37}
+.viver-intro-title-stacked{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center}
+
+/* WhatsApp: menos saturação e aparência mais editorial */
+.desk-float-wpp{width:auto!important;height:44px!important;padding:0 15px 0 12px!important;gap:8px;border-radius:14px!important;background:#fffdf8!important;color:var(--home-ocean,#0d4b62)!important;border:1px solid rgba(217,168,63,.48);box-shadow:0 6px 20px rgba(13,75,98,.14)!important}
+.desk-float-wpp svg{color:#25d366!important;fill:currentColor}
+.desk-float-wpp:hover{background:#f7eedf!important;border-color:#d9a83f;transform:translateY(-2px) scale(1.01)!important}
+.desk-float-txt{color:var(--home-ocean,#0d4b62)!important;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+footer .ftr-wpp{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;background:#fffdf8;color:var(--home-ocean,#0d4b62);border:1px solid rgba(217,168,63,.48);border-radius:10px;box-shadow:0 5px 16px rgba(4,30,42,.12);font-weight:600;text-decoration:none;transition:background .2s,border-color .2s,transform .2s}
+footer .ftr-wpp svg{color:#25d366}
+footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translateY(-1px)}
+.wpp-btn{color:#178a54!important}
+.desk-header .dh-cta{background:#fffdf8!important;color:var(--home-ocean,#0d4b62)!important;border:1px solid rgba(217,168,63,.48);box-shadow:0 4px 12px rgba(13,75,98,.10)!important;border-radius:12px!important;font-size:11px}
+.desk-header .dh-cta svg{color:#25d366!important}
+.desk-header .dh-cta:hover{background:#f7eedf!important;border-color:#d9a83f;box-shadow:0 6px 16px rgba(13,75,98,.14)!important}
+.wpp-btn .mob-footer-ico{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(37,211,102,.10)}
+@media(max-width:600px){
+  .sec-onda::before{height:34px}
+  .sectit-stacked .sectit-sub,.qfilter-title-stacked small,.viver-intro-title-stacked small{font-size:10px;letter-spacing:.16em}
+  .desk-float-wpp{display:none!important}
+  footer .ftr-wpp{padding:10px 14px;border-radius:9px}
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -430,7 +481,7 @@
     <div class="lch-inner">
       <div class="lch-head">
         <p class="eyebrow" style="justify-content:center">Lançamentos e Oportunidades</p>
-        <h2 class="sectit">Lançamentos e <em>Oportunidades</em></h2>
+        <h2 class="sectit sectit-stacked"><span class="sectit-main">Lançamentos</span> <span class="sectit-sub">Oportunidades</span></h2>
       </div>
       <div class="lch-grid" id="lch-grid">
         <a class="lch-card" href="/origem-natureza-habitada-xangri-la/">
@@ -520,7 +571,7 @@
       <div class="dest-header">
         <div>
           <p class="eyebrow">Imóveis Selecionados</p>
-          <h2 class="sectit">Casas e Sobrados em <em>Condomínio</em></h2>
+          <h2 class="sectit sectit-stacked"><span class="sectit-main">Casas e Sobrados</span> <span class="sectit-sub">Em condomínio</span></h2>
         </div>
         <a class="dest-ver-btn" href="/imoveis/?tipo=Casa">Ver todos</a>
       </div>
@@ -539,7 +590,7 @@
       <div class="dest-header">
         <div>
           <p class="eyebrow">Imóveis Selecionados</p>
-          <h2 class="sectit">Apartamentos à <em>Venda</em></h2>
+          <h2 class="sectit sectit-stacked"><span class="sectit-main">Apartamentos</span> <span class="sectit-sub">À venda</span></h2>
         </div>
         <a class="dest-ver-btn" href="/imoveis/?tipo=Apartamento">Ver todos</a>
       </div>
@@ -558,7 +609,7 @@
       <div class="dest-header">
         <div>
           <p class="eyebrow">Imóveis de rua</p>
-          <h2 class="sectit">Casas e Sobrados Fora de <em>Condomínio</em></h2>
+          <h2 class="sectit sectit-stacked"><span class="sectit-main">Casas e Sobrados</span> <span class="sectit-sub">Fora de condomínio</span></h2>
         </div>
         <a class="dest-ver-btn" href="/imoveis/?fora=1">Ver todos</a>
       </div>
@@ -577,7 +628,7 @@
       <div class="dest-header">
         <div>
           <p class="eyebrow">Imóveis Selecionados</p>
-          <h2 class="sectit">Terrenos em <em>Condomínio</em></h2>
+          <h2 class="sectit sectit-stacked"><span class="sectit-main">Terrenos</span> <span class="sectit-sub">Em condomínio</span></h2>
         </div>
         <a class="dest-ver-btn" href="/imoveis/?tipo=Terreno">Ver todos</a>
       </div>
@@ -596,7 +647,7 @@
       <div class="dest-header">
         <div>
           <p class="eyebrow">Imóveis de rua</p>
-          <h2 class="sectit">Terrenos Fora de <em>Condomínio</em></h2>
+          <h2 class="sectit sectit-stacked"><span class="sectit-main">Terrenos</span> <span class="sectit-sub">Fora de condomínio</span></h2>
         </div>
         <a class="dest-ver-btn" href="/imoveis/?fora=1&amp;tipo=Terreno">Ver todos</a>
       </div>
@@ -613,7 +664,7 @@
   <section class="qfilter-sec sec-onda" id="qfilter2">
   <div class="qfilter-inner">
     <div class="qfilter-eyebrow">Encontre o seu</div>
-    <h2 class="qfilter-title">O que você está <em>procurando</em>?</h2>
+    <h2 class="qfilter-title qfilter-title-stacked"><span>O que você está</span> <small>Procurando?</small></h2>
     <div class="qfilter-grid">
       <a class="qfilter-card" href="/imoveis/?tipo=Casa">
         <div class="qfilter-bg" data-foto-card="filtro-casas" style="background:linear-gradient(160deg,#0c4a6e,#0e8a99)"></div>
@@ -648,7 +699,7 @@
       <div class="dest-header">
         <div>
           <p class="eyebrow">Nosso Portfólio</p>
-          <h2 class="sectit">Condomínios em <em>Destaque</em></h2>
+          <h2 class="sectit sectit-stacked"><span class="sectit-main">Condomínios</span> <span class="sectit-sub">Em destaque</span></h2>
         </div>
         <a class="dest-ver-btn" href="/condominios/">Ver todos</a>
       </div>
@@ -665,7 +716,7 @@
   <section class="viver-intro sec-onda" id="viver-intro-sec">
     <div class="viver-intro-inner">
       <p class="viver-intro-eyebrow">Três estilos de vida</p>
-      <h2 class="viver-intro-title">Escolha o seu lado do <em>Litoral Norte</em></h2>
+      <h2 class="viver-intro-title viver-intro-title-stacked"><span>Escolha o seu lado do</span> <small>Litoral Norte</small></h2>
       <p class="viver-intro-sub">A tranquilidade da lagoa, a liberdade do mar ou a praticidade da cidade. Encontre o cenário que combina com o seu jeito de viver.</p>
     </div>
   </section>
@@ -726,7 +777,7 @@
   <section class="cdest-sec sec-onda" id="cond-capao">
     <div class="cdest-inner">
       <p class="eyebrow" style="justify-content:center">Em destaque</p>
-      <h2 class="sectit">Condomínios de <em>Capão da Canoa</em></h2>
+      <h2 class="sectit sectit-stacked"><span class="sectit-main">Condomínios</span> <span class="sectit-sub">De Capão da Canoa</span></h2>
       <p class="cidades-sub">Empreendimentos selecionados na maior cidade do litoral</p>
       <div class="cdest-grid" id="cdest-capao"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
       <div style="text-align:center;margin-top:26px">
@@ -738,7 +789,7 @@
   <section class="cdest-sec sec-onda" id="cond-xangri">
     <div class="cdest-inner">
       <p class="eyebrow" style="justify-content:center">Em destaque</p>
-      <h2 class="sectit">Condomínios de <em>Xangri-lá</em></h2>
+      <h2 class="sectit sectit-stacked"><span class="sectit-main">Condomínios</span> <span class="sectit-sub">De Xangri-lá</span></h2>
       <p class="cidades-sub">Os empreendimentos mais procurados da capital dos condomínios</p>
       <div class="cdest-grid" id="cdest-xangri"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
       <div style="text-align:center;margin-top:26px">
@@ -750,7 +801,7 @@
   <section class="cdest-sec sec-onda" id="cond-osorio">
     <div class="cdest-inner">
       <p class="eyebrow" style="justify-content:center">Em destaque</p>
-      <h2 class="sectit">Condomínios de <em>Osório</em></h2>
+      <h2 class="sectit sectit-stacked"><span class="sectit-main">Condomínios</span> <span class="sectit-sub">De Osório</span></h2>
       <p class="cidades-sub">Empreendimentos na porta de entrada do litoral</p>
       <div class="cdest-grid" id="cdest-osorio"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
       <div style="text-align:center;margin-top:26px">
@@ -762,7 +813,7 @@
   <section class="cdest-sec sec-onda" id="cond-maquine">
     <div class="cdest-inner">
       <p class="eyebrow" style="justify-content:center">Em destaque</p>
-      <h2 class="sectit">Condomínios de <em>Maquiné</em></h2>
+      <h2 class="sectit sectit-stacked"><span class="sectit-main">Condomínios</span> <span class="sectit-sub">De Maquiné</span></h2>
       <p class="cidades-sub">Empreendimentos no vale verde do litoral</p>
       <div class="cdest-grid" id="cdest-maquine"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
       <div style="text-align:center;margin-top:26px">
@@ -784,7 +835,7 @@
 <section class="qfilter-sec sec-onda" id="qfilter">
   <div class="qfilter-inner">
     <div class="qfilter-eyebrow">Encontre o seu</div>
-    <h2 class="qfilter-title">O que você está <em>procurando</em>?</h2>
+    <h2 class="qfilter-title qfilter-title-stacked"><span>O que você está</span> <small>Procurando?</small></h2>
     <div class="qfilter-grid">
       <a class="qfilter-card" href="/imoveis/?tipo=Casa">
         <div class="qfilter-bg" data-foto-card="filtro-casas" style="background:linear-gradient(160deg,#0c4a6e,#0e8a99)"></div>
@@ -810,7 +861,7 @@
   <section class="pcred-sec sec-onda" id="pcred-sec-sec">
     <div class="pcred-inner">
       <p class="eyebrow" style="justify-content:center">Soluções de crédito</p>
-      <h2 class="sectit">Precisando de <em>crédito?</em></h2>
+      <h2 class="sectit sectit-stacked"><span class="sectit-main">Precisando de</span> <span class="sectit-sub">Crédito?</span></h2>
       <p class="cidades-sub">Escolha a solução ideal para realizar seu negócio</p>
       <div class="pcred-grid">
         <a class="pcred-card" href="/contemplado-imoveis/">
@@ -842,7 +893,7 @@
   <section class="guias-sec sec-onda" id="guias-cidades">
     <div class="guias-inner">
       <p class="eyebrow" style="justify-content:center">Turismo</p>
-      <h2 class="sectit">Conheça as <em>Cidades</em></h2>
+      <h2 class="sectit sectit-stacked"><span class="sectit-main">Conheça as</span> <span class="sectit-sub">Cidades</span></h2>
       <p class="cidades-sub">Tudo sobre morar e investir em cada cidade do Litoral Norte</p>
       <div class="guias-grid">
         <a class="guia-card" href="/xangri-la/">
@@ -892,7 +943,7 @@
   <section class="guias-sec sec-onda" id="guias-decisao">
     <div class="guias-inner">
       <p class="eyebrow" style="justify-content:center">Guias para Decidir</p>
-      <h2 class="sectit">Está em <em>dúvida</em>?</h2>
+      <h2 class="sectit sectit-stacked"><span class="sectit-main">Está em</span> <span class="sectit-sub">Dúvida?</span></h2>
       <p class="cidades-sub">Comparativos honestos para você escolher com segurança</p>
       <div class="guias-grid" id="decisao-grid">
         <a class="guia-card" href="/xangri-la-ou-capao-da-canoa/">
@@ -956,7 +1007,7 @@
       <div class="dest-header">
         <div>
           <p class="eyebrow">Notícias & Conteúdo</p>
-          <h2 class="sectit">Últimas do <em>Blog</em></h2>
+          <h2 class="sectit sectit-stacked"><span class="sectit-main">Últimas</span> <span class="sectit-sub">Do blog</span></h2>
         </div>
         <a class="dest-ver-btn" href="#" onclick="event.preventDefault();openBlog()">Ver mais notícias →</a>
       </div>
@@ -3856,7 +3907,6 @@ async function renderContempladasCards(targetId){
         <div class="hero-brand-underline" aria-hidden="true"></div>
         <div class="hero-brand-tagline">VIVA O MELHOR DO LITORAL</div>
       </div>
-      <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
       <a class="ftr-wpp" href="https://wa.me/5551982868888" target="_blank" rel="nofollow"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"></path></svg> Falar no WhatsApp</a>
     </div>
     <div class="ftr-col">
