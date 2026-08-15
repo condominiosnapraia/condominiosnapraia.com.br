@@ -90,38 +90,43 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 .content{max-width:1140px;margin:0 auto;padding:0 40px}
 
 /* ── INFO SECTION ── */
-.info-section{padding:48px 0;display:block;gap:48px;align-items:start}
-.cond-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.info-section{padding:42px 0 34px;display:block;align-items:start}
+.info-main{max-width:900px;margin:0 auto}
+.cond-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .cond-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
-.cond-title{font-family:'Fraunces',serif;font-size:clamp(26px,3.2vw,40px);font-weight:300;color:var(--ocean);line-height:1.05;margin-bottom:16px}
+.cond-title{font-family:'Fraunces',serif;font-size:clamp(30px,4vw,48px);font-weight:400;color:var(--ocean);line-height:1.02;letter-spacing:-.02em;margin-bottom:10px}
 .cond-title em{font-style:italic;color:var(--gold)}
-.cond-location{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);letter-spacing:.08em;margin-bottom:20px}
-.cond-desc{font-size:15px;line-height:1.7;color:var(--text-muted);font-weight:300;margin-top:28px;margin-bottom:24px}
+.cond-location{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);letter-spacing:.08em;margin:0 0 18px}
+.cond-location span:first-child{font-size:15px}
+.cond-desc{font-size:15px;line-height:1.72;color:var(--text-muted);font-weight:300;margin:24px 0 22px;max-width:820px}
+.cond-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 26px}
+.cond-primary-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:#fff;text-decoration:none;border-radius:999px;padding:12px 20px;font-size:12px;font-weight:700;letter-spacing:.05em;box-shadow:0 8px 18px rgba(37,211,102,.18);transition:transform .2s,box-shadow .2s}
+.cond-primary-cta:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(37,211,102,.25)}
+.cond-primary-cta svg{width:17px;height:17px;fill:currentColor}
+.cond-badges{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 20px}
+.badge{padding:5px 11px;border:1px solid var(--border);border-radius:999px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);background:rgba(255,255,255,.72)}
+.badge.highlight{background:var(--ocean);color:var(--white);border-color:var(--ocean)}
 .cond-rich{margin-top:8px}
 .cond-rich h2{font-size:20px;color:var(--ocean,#0c4a6e);font-weight:600;margin:32px 0 12px}
 .cond-rich p{font-size:15px;line-height:1.75;color:var(--text-muted,#455);margin-bottom:14px}
 .cond-rich .dif-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .cond-rich .dif-list span{background:rgba(14,138,153,.09);color:#0c4a6e;font-size:13px;padding:6px 13px;border-radius:100px}
 @media(max-width:600px){.cond-rich h2{font-size:18px;margin:26px 0 10px}}
-.cond-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
-.badge{padding:4px 14px;border:1px solid var(--border);border-radius:2px;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted)}
-.badge.highlight{background:var(--ocean);color:var(--white);border-color:var(--ocean)}
-
 /* ── DADOS RÁPIDOS ── */
-.dados-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:28px}
-.dado{background:var(--white);padding:14px 16px}
-.dado-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px}
-.dado-val{font-family:'Fraunces',serif;font-size:18px;color:var(--ocean);font-weight:600}
+.dados-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 22px}
+.dado{background:var(--sand-light);border:1px solid rgba(31,181,196,.14);border-radius:12px;padding:15px 16px;min-width:0}
+.dado-label{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dado-val{font-family:'Fraunces',serif;font-size:20px;color:var(--ocean);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* ── AMENIDADES ── */
-.amenidades-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
-.amenidades-list{display:flex;flex-wrap:wrap;gap:8px}
+.amenidades-title{font-family:'Fraunces',serif;font-size:22px;letter-spacing:0;color:var(--ocean);margin:34px 0 14px}
+.amenidades-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .cond-video{margin-top:30px}
 .cond-video-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px}
 .cond-video-frame{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#0d3b54}
 .cond-video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.amenidade{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--sand-light);border-radius:2px;font-size:11px;letter-spacing:.08em;color:var(--text-muted)}
-.amenidade::before{content:'✓';color:var(--gold);font-size:10px;font-weight:600}
+.amenidade{display:flex;align-items:center;gap:8px;padding:9px 11px;background:var(--sand-light);border:1px solid rgba(31,181,196,.12);border-radius:10px;font-size:11px;letter-spacing:.03em;color:var(--text-muted);line-height:1.25}
+.amenidade::before{content:'✓';color:var(--gold);font-size:11px;font-weight:700;flex-shrink:0}
 
 /* ── CARD LATERAL ── */
 .side-card{background:var(--ocean);border-radius:4px;padding:28px;position:sticky;top:80px}
@@ -264,6 +269,13 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
   .gallery-thumb{display:none}
   .content{padding:0 20px}
   .info-section{grid-template-columns:1fr;gap:28px;padding:32px 0}
+  .info-main{max-width:none}
+  .dados-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  .dado{padding:12px 10px}
+  .dado-val{font-size:18px}
+  .amenidades-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cond-actions{margin-top:16px}
+  .cond-primary-cta{flex:1;min-width:210px}
   .side-card{position:static}
   .contact-section{margin:0;padding:40px 20px;box-sizing:border-box;width:100%;max-width:100%;overflow:hidden}
   .contact-grid{grid-template-columns:1fr;gap:32px}
@@ -276,6 +288,23 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
   .gallery-section-title{font-size:22px}
   .gallery-section-title span{font-size:13px}
   .hero-gallery{height:auto;aspect-ratio:4/3;min-height:0}
+  .content{padding:0 18px}
+  .info-section{padding:30px 0 24px}
+  .cond-title{font-size:clamp(30px,9vw,40px)}
+  .cond-location{font-size:11px;margin-bottom:14px}
+  .cond-badges{margin-bottom:16px}
+  .dados-grid{gap:6px}
+  .dado{padding:11px 9px}
+  .dado-label{font-size:8px;letter-spacing:.1em}
+  .dado-val{font-size:17px}
+  .amenidades-title{font-size:20px;margin-top:28px}
+  .amenidades-list{grid-template-columns:1fr 1fr;gap:7px}
+  .amenidade{font-size:10.5px;padding:8px 9px}
+  .cond-actions{align-items:stretch;flex-direction:column}
+  .cond-primary-cta{width:100%;min-width:0}
+  .cond-actions>div{width:100%}
+  .cond-actions .cd-share{width:100%;justify-content:center}
+  .cond-desc{font-size:14px;line-height:1.65;margin-top:20px}
   .imoveis-grid{grid-template-columns:1fr}
   .im-specs-grid{grid-template-columns:1fr 1fr}
   .im-modal-footer{flex-direction:column}
@@ -454,9 +483,12 @@ body{padding-top:56px}
 
   <!-- INFO + SIDE CARD -->
   <div class="info-section">
-    <div>
+    <div class="info-main">
       <div class="cond-eyebrow" id="cond-cidade">Carregando...</div>
       <h1 class="cond-title" id="cond-title">—</h1>
+      <div class="cond-location" id="cond-location">
+        <span>📍</span><span id="cond-location-text">—</span>
+      </div>
       <div class="cond-badges" id="cond-badges"></div>
 
       <div class="dados-grid" id="dados-grid"></div>
@@ -471,19 +503,22 @@ body{padding-top:56px}
         <div class="cond-video-frame" id="cond-video-frame"></div>
       </div>
 
-      <div style="position:relative;display:inline-block">
-        <button class="cd-share" onclick="compartilharCond()">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
-          Compartilhar
-        </button>
-        <div class="cd-share-menu" id="cd-share-menu">
-          <a id="cd-share-wa" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
-          <a id="cd-share-fb" href="#" target="_blank" rel="noopener">📘 Facebook</a>
-          <button onclick="copiarLinkCond(this)">🔗 Copiar link</button>
+      <div class="cond-actions">
+        <a class="cond-primary-cta" id="cond-quick-wa" href="#" target="_blank" rel="nofollow noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487 2.981 1.287 2.981.858 3.518.804.537-.054 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+          Falar com um consultor
+        </a>
+        <div style="position:relative;display:inline-block">
+          <button class="cd-share" onclick="compartilharCond()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
+            Compartilhar
+          </button>
+          <div class="cd-share-menu" id="cd-share-menu">
+            <a id="cd-share-wa" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+            <a id="cd-share-fb" href="#" target="_blank" rel="noopener">📘 Facebook</a>
+            <button onclick="copiarLinkCond(this)">🔗 Copiar link</button>
+          </div>
         </div>
-      </div>
-      <div class="cond-location" id="cond-location" style="margin-top:20px">
-        <span>📍</span><span id="cond-location-text">—</span>
       </div>
 
       <p class="cond-desc" id="cond-desc" style="margin-top:20px">Carregando informações...</p>
@@ -1038,6 +1073,7 @@ async function init() {
   const wppMsg = encodeURIComponent(`Olá! Tenho interesse no condomínio *${cond.nome}*. Gostaria de mais informações.`);
   const wppUrl = `https://wa.me/${WPP_NUM}?text=${wppMsg}`;
   var _wb = document.getElementById('wpp-btn'); if (_wb) _wb.href = wppUrl;
+  var _quick = document.getElementById('cond-quick-wa'); if (_quick) _quick.href = wppUrl;
   document.getElementById('wpp-float').href = wppUrl;
   document.getElementById('wpp-success').href = wppUrl;
 
