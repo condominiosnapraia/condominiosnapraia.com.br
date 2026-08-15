@@ -23,8 +23,9 @@ ABOUT = (
 
 PRESENTATION_STYLE = r'''
 <style id="cond-lagos-presentation-style">
+.cond-lagos-presentation-wrap{display:block!important;max-width:1000px!important;margin:0 auto!important;padding:0 24px!important}
 .cond-lagos-presentation{display:block!important;max-width:900px!important;margin:28px 0 34px!important;padding:0!important;font-family:'Outfit',sans-serif!important;font-size:clamp(20px,2.2vw,27px)!important;line-height:1.72!important;font-weight:300!important;color:#667b86!important}
-@media(max-width:600px){.cond-lagos-presentation{font-size:21px!important;line-height:1.72!important;margin:24px 0 30px!important}}
+@media(max-width:600px){.cond-lagos-presentation-wrap{padding:0 16px!important}.cond-lagos-presentation{font-size:21px!important;line-height:1.72!important;margin:24px 0 30px!important}}
 </style>
 '''
 
@@ -145,10 +146,19 @@ def main():
     # Idempotência: se a galeria nova já existe, apenas garanta os assets restantes.
     if soup.select_one('#cond-lagos-gallery-track'):
         clean = soup.select_one('section.cond-lagos-clean')
-        first_desc = soup.select_one('.wrap .desc')
+        hero_wrap = soup.select_one('.hero-wrap')
+        presentation = soup.select_one('.cond-lagos-presentation')
+        first_desc = presentation or soup.select_one('.wrap .desc')
         if first_desc:
             first_desc['class'] = list(dict.fromkeys((first_desc.get('class') or []) + ['cond-lagos-presentation']))
             first_desc.string = SUMMARY
+            if hero_wrap and first_desc.parent != hero_wrap:
+                wrapper = soup.select_one('.cond-lagos-presentation-wrap')
+                if not wrapper:
+                    wrapper = soup.new_tag('section', attrs={'class':'cond-lagos-presentation-wrap', 'aria-label':'Apresentação do condomínio'})
+                    hero_wrap.insert_after(wrapper)
+                first_desc.extract()
+                wrapper.append(first_desc)
         intro_existing = clean.select_one('.cond-lagos-intro') if clean else None
         if intro_existing:
             intro_p = intro_existing.find('p')
@@ -199,10 +209,16 @@ def main():
         loc.clear(); loc.append(loc_text)
 
     # The first paragraph below the hero becomes the requested introduction.
+    hero_wrap = soup.select_one('.hero-wrap')
     first_desc = soup.select_one('.wrap .desc')
     if first_desc:
         first_desc['class'] = list(dict.fromkeys((first_desc.get('class') or []) + ['cond-lagos-presentation']))
         first_desc.clear(); first_desc.append(SUMMARY)
+        if hero_wrap:
+            wrapper = soup.new_tag('section', attrs={'class':'cond-lagos-presentation-wrap', 'aria-label':'Apresentação do condomínio'})
+            first_desc.extract()
+            wrapper.append(first_desc)
+            hero_wrap.insert_after(wrapper)
 
     section = soup.select_one('section.cond-conteudo-full')
     if not section:
