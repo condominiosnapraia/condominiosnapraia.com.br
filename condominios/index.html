@@ -742,13 +742,14 @@ details[open] .dec-faq-q:after{content:"−"}
 <script>
 const SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
+const CAT_COND_SELECT='id,slug,nome,cidade,bairro,perfil,tipo,descricao,amenidades,fotos_no_site,ativo';
 async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
 function fotos(a){return (a||[]).filter(function(f){return f&&(String(f).startsWith('http')||String(f).startsWith('data:'));});}
 const PERFIL_LBL={mar:'Beira-mar',lagoa:'Beira da lagoa',cidade:'Cidade'};
 let TODOS=[];
 
 async function carregar(){
-  var conds=await sbGet('condominios','?ativo=eq.true&order=nome.asc');
+  var conds=await sbGet('condominios','?ativo=eq.true&select='+encodeURIComponent(CAT_COND_SELECT)+'&order=nome.asc&limit=200');
   TODOS=Array.isArray(conds)?conds:[];
   var cidades=new Set(), tipos=new Set();
   TODOS.forEach(function(c){

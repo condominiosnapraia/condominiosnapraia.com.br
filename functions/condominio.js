@@ -45,7 +45,7 @@ export async function onRequest(context) {
   let cond = null;
   try {
     const key = env.SUPABASE_ANON_KEY;
-    const q = `${SUPABASE_URL}/rest/v1/condominios?or=(slug.eq.${encodeURIComponent(id)},id.eq.${encodeURIComponent(id)})&select=*&limit=1`;
+    const q = `${SUPABASE_URL}/rest/v1/condominios?or=(slug.eq.${encodeURIComponent(id)},id.eq.${encodeURIComponent(id)})&select=id,slug,nome,cidade,descricao,fotos_no_site,fotos&limit=1`;
     const r = await fetch(q, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
     if (r.ok) { const arr = await r.json(); cond = arr && arr[0]; }
   } catch (e) { /* segue com HTML original */ }

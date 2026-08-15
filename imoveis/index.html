@@ -698,6 +698,7 @@ details[open] .dec-faq-q:after{content:"−"}
 <script>
 const SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
+const CAT_IMOV_SELECT='id,slug,codigo,titulo,cond_id,fora_condominio,status,publicar,tipo,preco,quartos,suites,vagas,area,area_privativa,area_construida,cidade_end,bairro_end,fotos_no_site';
 async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
 function brl(v){if(v==null||v==='')return 'Sob consulta';const n=Number(v);if(isNaN(n))return String(v);return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});}
 function fotos(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
@@ -706,7 +707,7 @@ let TODOS=[], CONDS={};
 async function carregar(){
   const conds=await sbGet('condominios','?select=id,nome,cidade,latitude,longitude');
   if(Array.isArray(conds)) conds.forEach(c=>CONDS[c.id]=c);
-  let imv=await sbGet('imoveis','?order=created_at.desc');
+  let imv=await sbGet('imoveis','?status=neq.Vendido&publicar=eq.true&select='+encodeURIComponent(CAT_IMOV_SELECT)+'&order=created_at.desc&limit=500');
   TODOS=Array.isArray(imv)?imv.filter(i=>i.publicar!==false&&i.status!=='Vendido'):[];
   // popular filtros de cidade e tipo
   const cidades=new Set(), tipos=new Set();

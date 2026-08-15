@@ -8050,7 +8050,10 @@ function edRestore(){
 
 // ── UPLOAD FOTOS PARA SUPABASE STORAGE ──
 function seoSlug(txt){
-  return String(txt||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').substring(0,60);
+  const publico=String(txt||'')
+    .replace(/\b(?:quadra|lote|torre|unidade|box|apt(?:o)?|apartamento)\s*(?:n[ºo°.]?\s*)?(?:[a-z0-9-]*\d[a-z0-9-]*|[a-z]\b)/gi,'')
+    .replace(/\bcasa\s*(?:n[ºo°.]?|número)\s*[a-z0-9-]+\b/gi,'');
+  return publico.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').substring(0,60) || 'foto-imovel';
 }
 async function uploadFotos(fotosBase64, selecao, prefix, recordId, nomeSeo){
   const urls = { all: [], site: [] };

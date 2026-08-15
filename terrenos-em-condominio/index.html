@@ -499,16 +499,35 @@ body{padding-top:56px}
   var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
   var FILTRO='tipo=Lote';
   function brl(v){try{return Number(String(v||0).replace(/\D/g,'')).toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:0});}catch(e){return'Consulte';}}
+  function esc(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+  function fotoPublica(u){
+    var s=String(u||'').trim();
+    if(!s)return '';
+    if(s.indexOf('/cdn-fotos/')===0||s.indexOf('data:')===0)return s;
+    var marker='/storage/v1/object/public/';
+    var ix=s.indexOf(marker);
+    return ix>=0?'/cdn-fotos/'+s.slice(ix+marker.length).replace(/^\/+/,''):s;
+  }
+  function fotoVariante(u,w,fmt){
+    var b=fotoPublica(u).split('?')[0];
+    return b.indexOf('/cdn-fotos/')===0?b+'?w='+w+'&q=78&fmt='+(fmt||'webp'):b;
+  }
+  function fotoTag(u,alt){
+    var b=fotoPublica(u); if(!b)return '';
+    var set=b.indexOf('/cdn-fotos/')===0?[320,480,640,768,960].map(function(w){return fotoVariante(b,w,'webp')+' '+w+'w';}).join(', '):'';
+    return '<img src="'+esc(fotoVariante(b,640,'jpeg'))+'"'+(set?' srcset="'+esc(set)+'" sizes="(max-width:680px) 100vw, (max-width:1100px) 50vw, 420px"':'')+' alt="'+esc(alt)+'" loading="lazy" decoding="async" width="640" height="480">';
+  }
+
   function card(i){
-    var foto=(i.fotos||[]).find(function(f){return f&&(f.indexOf('http')===0||f.indexOf('data:')===0);});
+    var foto=(i.fotos_no_site||i.fotos||[]).find(function(f){return f&&(String(f).indexOf('http')===0||String(f).indexOf('/cdn-fotos/')===0||String(f).indexOf('data:')===0);});
     var loc=[i.bairro_end,i.cidade_end].filter(Boolean).join(' · ');
     var specs=[i.quartos?('🛏 '+i.quartos):null,i.suites?('🛁 '+i.suites):null,(i.area||i.area_privativa)?('📐 '+(i.area||i.area_privativa)+'m²'):null,i.vagas?('🚗 '+i.vagas):null].filter(Boolean).map(function(s){return '<span class="icspec">'+s+'</span>';}).join('');
     return '<a class="icard vis" href="/imovel?id='+encodeURIComponent(i.codigo||i.id)+'" style="text-decoration:none;color:inherit;display:block">'+
-      '<div class="icimg">'+(foto?'<img src="'+foto+'" alt="'+(i.titulo||'')+'" loading="lazy">':'🏠')+'<div class="icst stv">'+(i.status||'Disponível')+'</div>'+(i.codigo?'<div class="iccod">'+i.codigo+'</div>':'')+'</div>'+
+      '<div class="icimg">'+(foto?fotoTag(foto,i.titulo||''):'🏠')+'<div class="icst stv">'+(i.status||'Disponível')+'</div>'+(i.codigo?'<div class="iccod">'+i.codigo+'</div>':'')+'</div>'+
       '<div class="icbody"><div class="ictipo">'+(i.tipo||'Imóvel')+'</div><div class="ictit">'+(i.titulo||'—')+'</div>'+(loc?'<div class="iccond">📍 '+loc+'</div>':'')+'<div class="icspecs">'+specs+'</div></div>'+
       '<div class="icfoot"><div class="icpreco">'+brl(i.preco)+'</div><span style="font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#0c4a6e">Ver →</span></div></a>';
   }
-  fetch(SB+'/rest/v1/imoveis?select=*&order=created_at.desc',{headers:{apikey:KEY}}).then(function(r){return r.json();}).then(function(data){
+  fetch(SB+'/rest/v1/imoveis?status=neq.Vendido&publicar=eq.true&select=id,slug,codigo,titulo,cond_id,fora_condominio,status,publicar,tipo,preco,quartos,suites,vagas,area,area_privativa,area_construida,cidade_end,bairro_end,fotos_no_site&order=created_at.desc&limit=500',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}}).then(function(r){return r.json();}).then(function(data){
     if(!Array.isArray(data))data=[];
     var lista=data.filter(function(i){return i.publicar!==false && i.status==='Disponível';});
     // filtro por tipo/padrao
