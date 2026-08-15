@@ -1142,6 +1142,62 @@ function applyCtConfig(cfg){
   }catch(e){console.warn('applyCtConfig:',e);}
 }
 
+const STORAGE_PUBLIC_PREFIX = SUPABASE_URL + '/storage/v1/object/public/';
+
+function fotoPublica(raw) {
+  const s = String(raw || '').trim();
+  if (!s) return '';
+  if (s.startsWith('data:') || s.startsWith('blob:')) return s;
+  if (s.startsWith('/cdn-fotos/')) return s;
+  if (s.startsWith(STORAGE_PUBLIC_PREFIX)) return '/cdn-fotos/' + s.slice(STORAGE_PUBLIC_PREFIX.length).replace(/^\/+/, '');
+  if (/^https?:\/\//i.test(s)) return s;
+  return '/cdn-fotos/' + s.replace(/^\/+/, '');
+}
+
+function fotoVariante(raw, width, format = 'webp', quality = 78) {
+  const base = fotoPublica(raw).split('?')[0];
+  if (!base || !base.startsWith('/cdn-fotos/')) return base;
+  return `${base}?w=${width}&q=${quality}&fmt=${format}`;
+}
+
+function fotoSrcset(raw, format = 'webp', quality = 78) {
+  const base = fotoPublica(raw).split('?')[0];
+  if (!base || !base.startsWith('/cdn-fotos/')) return '';
+  return [320, 480, 640, 768, 960, 1280].map((width) => `${fotoVariante(base, width, format, quality)} ${width}w`).join(', ');
+}
+
+function escapeAttr(value) {
+  return String(value || '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+
+function fotoTag(raw, alt, options = {}) {
+  const {className = '', sizes = '100vw', width = 640, height = 384, eager = false, fetchPriority = false} = options;
+  const base = fotoPublica(raw);
+  if (!base) return '';
+  const loading = eager ? 'eager' : 'lazy';
+  const priority = fetchPriority ? ' fetchpriority="high"' : '';
+  const srcset = fotoSrcset(base, 'webp');
+  const srcsetAttr = srcset ? ` srcset="${escapeAttr(srcset)}" sizes="${escapeAttr(sizes)}"` : '';
+  const src = base.startsWith('/cdn-fotos/') ? fotoVariante(base, width, 'jpeg') : base;
+  return `<img class="${escapeAttr(className)}" src="${escapeAttr(src)}"${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority} alt="${escapeAttr(alt)}">`;
+}
+
+const HOME_COND_SELECT = [
+  'id','slug','nome','cidade','bairro','descricao','padrao','tipo','amenidades',
+  'fotos','fotos_no_site','ativo','latitude','longitude','area_total_m2','lotes',
+  'incorporadora','ano','endereco','maps','perfil','seo_data','seo_title',
+  'seo_description','seo_keywords','seo_content','canonical_url','og_image',
+  'faq_json','historia_condominio','infraestrutura_detalhada',
+  'localizacao_detalhada','mercado_imobiliario','diferenciais','valorizacao_anual'
+].join(',');
+
+const HOME_IMOV_SELECT = [
+  'id','slug','codigo','titulo','cond_id','fora_condominio','status','publicar',
+  'finalidade','tipo','preco','quartos','suites','banheiros','vagas','area',
+  'area_privativa','area_construida','terreno','cidade_end','bairro_end',
+  'cond_taxa','descricao','diferenciais','seo_data','fotos','fotos_no_site','created_at'
+].join(',');
+
 async function fetchSiteData(){
   const now = Date.now();
   if(_siteCache && (now - _siteCacheTs) < SITE_CACHE_TTL) return _siteCache;
@@ -1150,8 +1206,8 @@ async function fetchSiteData(){
     const CHAVES = ['destaques_cond','destaques_imov','destaques_terreno','destaques_capao','destaques_xangri','site_config','turismo_config','fotos_site'];
     // TUDO em paralelo numa única leva (o navegador dispara todas juntas)
     const [condominios, imoveis, cfgsRaw, carrosselFotos, capasDecisao] = await Promise.all([
-      sbSite.get('condominios', '?ativo=eq.true&order=nome.asc'),
-      sbSite.get('imoveis', '?status=eq.Disponível&publicar=eq.true&order=created_at.asc'),
+      sbSite.get('condominios', `?ativo=eq.true&select=${encodeURIComponent(HOME_COND_SELECT)}&order=nome.asc`),
+      sbSite.get('imoveis', `?status=eq.Disponível&publicar=eq.true&select=${encodeURIComponent(HOME_IMOV_SELECT)}&order=created_at.asc`),
       sbSite.get('configuracoes', '?chave=in.(' + CHAVES.join(',') + ')&select=chave,valor'),
       sbSite.get('os_carrossel_home', '?select=slot,foto_url').catch(function(){ return []; }),
       sbSite.get('os_capas_decisao', '?select=slug,foto_url').catch(function(){ return []; }),
@@ -2405,11 +2461,11 @@ function buildCondCard(c){
   let imgH;
   if(fotos.length>1){
     // carrossel automático de imagens
-    const slides=fotos.map((f,i)=>`<img src="${f}" alt="${c.nome}" loading="lazy" class="ci-slide${i===0?' ativa':''}">`).join('');
+    const slides=fotos.map((f,i)=>fotoTag(f,c.nome,{className:`ci-slide${i===0?' ativa':''}`,sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384})).join('');
     const dots=fotos.map((f,i)=>`<span class="ci-dot${i===0?' ativa':''}"></span>`).join('');
     imgH=`<div class="ci-carousel" data-total="${fotos.length}">${slides}<div class="ci-dots">${dots}</div></div>`;
   } else if(fotos.length===1){
-    imgH=`<img src="${fotos[0]}" alt="${c.nome}" loading="lazy">`;
+    imgH=fotoTag(fotos[0],c.nome,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
   } else {
     imgH=`<div class="ci-grad ${GI[loc]||'g-ot'}">${GE[loc]||'🏠'}</div>`;
   }
@@ -2470,7 +2526,7 @@ function buildImovCard(i){
     i.vagas?`🚗 ${i.vagas} ${i.vagas==1?'vaga':'vagas'}`:null
   ].filter(Boolean).map(s=>`<span class="icspec">${s}</span>`).join('');
   return`<a class="icard vis" href="/imovel?id=${encodeURIComponent(i.codigo||i.slug||i.id)}" style="text-decoration:none;color:inherit;display:block">
-    <div class="icimg">${foto?`<img src="${foto}" alt="${i.titulo}" loading="lazy">`:'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
+    <div class="icimg">${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
     <div class="icbody">
       <div class="ictipo">${i.tipo||'Imóvel'}</div>
       <div class="ictit">${i.titulo||'—'}</div>
@@ -2659,32 +2715,37 @@ async function fetchBlogPosts(){
 }
 
 async function fetchBlogPostsLeve(){
-  const H={'apikey':SUPABASE_KEY,'Content-Type':'application/json'};
-  // tentativas em ordem: consulta enxuta ideal → variação → qualquer coisa que funcione
-  const tentativas=[
-    '/rest/v1/blog_posts?publicado=eq.true&order=created_at.desc&select=id,titulo,resumo,capa,categoria,data,created_at&limit=8',
-    '/rest/v1/blog_posts?publicado=eq.true&order=data.desc&select=id,titulo,resumo,capa,categoria,data&limit=8',
-    '/rest/v1/blog_posts?publicado=eq.true&limit=8'
-  ];
-  for(let i=0;i<tentativas.length;i++){
-    try{
-      const r=await fetch(SUPABASE_URL+tentativas[i],{headers:H});
-      if(!r.ok) continue;
-      const data=await r.json();
-      if(Array.isArray(data)) return data;
-    }catch(e){}
-  }
-  return [];
+  const params='?publicado=eq.true&order=data.desc&select=id,slug,titulo,resumo,capa,categoria,data,created_at&limit=8';
+  try{
+    const r=await fetch(SUPABASE_URL+'/rest/v1/blog_posts'+params,{headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'}});
+    if(!r.ok)return [];
+    const data=await r.json();
+    return Array.isArray(data)?data:[];
+  }catch(e){return [];}
 }
 
+async function fetchBlogPost(idOuSlug){
+  const chave=encodeURIComponent(String(idOuSlug||'').trim());
+  if(!chave)return null;
+  const params=`?or=(id.eq.${chave},slug.eq.${chave})&select=id,slug,titulo,resumo,capa,categoria,data,created_at,autor,corpo,publicado&limit=1`;
+  try{
+    const r=await fetch(SUPABASE_URL+'/rest/v1/blog_posts'+params,{headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'}});
+    if(!r.ok)return null;
+    const data=await r.json();
+    return Array.isArray(data)?(data[0]||null):null;
+  }catch(e){return null;}
+}
+
+let _blogHomePromise=null;
 function buildHomeBlog(){
-  fetchBlogPostsLeve().then(posts=>{
+  if(!_blogHomePromise)_blogHomePromise=fetchBlogPostsLeve();
+  _blogHomePromise.then(posts=>{
     const grid=document.getElementById('home-blog-grid');
     if(!grid)return;
     const recent=(posts||[]).filter(p=>p.publicado!==false).slice(0,8);
     if(!recent.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">📰</div><p>Nenhum artigo publicado ainda.</p></div>';return;}
     grid.innerHTML=recent.map(p=>{
-      const img=p.capa?`<img class="bpcard-img" src="${p.capa}" alt="${p.titulo}" loading="lazy">`:`<div class="bpcard-img-ph">📰</div>`;
+      const img=p.capa?fotoTag(p.capa,p.titulo,{className:'bpcard-img',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 33vw, 320px',width:640,height:360}):'<div class="bpcard-img-ph">📰</div>';
       const data=(p.data||p.created_at)?new Date(p.data||p.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}):'';
       return`<div class="bpcard" onclick="window.location.href='/blog?id='+encodeURIComponent('${p.slug||p.id}')">
         ${img}
@@ -2714,10 +2775,10 @@ function rBlog(){
   const grid=document.getElementById('blog-grid');
   if(!grid)return;
   grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">⏳</div><p>Carregando...</p></div>';
-  fetchBlogPosts().then(posts=>{
+  fetchBlogPostsLeve().then(posts=>{
     if(!posts||!posts.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">📰</div><p>Nenhum artigo publicado.</p></div>';return;}
     grid.innerHTML=posts.map(p=>{
-      const img=p.capa?`<img class="bpcard-img" src="${p.capa}" alt="${p.titulo}" loading="lazy">`:`<div class="bpcard-img-ph">📰</div>`;
+      const img=p.capa?fotoTag(p.capa,p.titulo,{className:'bpcard-img',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 33vw, 320px',width:640,height:360}):'<div class="bpcard-img-ph">📰</div>';
       const dt=(p.data||p.created_at)?new Date(p.data||p.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}):'';
       return`<div class="bpcard" onclick="window.location.href='/blog?id='+encodeURIComponent('${p.slug||p.id}')">
         ${img}
@@ -2780,8 +2841,7 @@ function openArtigo(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
   const va=document.getElementById('view-artigo');
   if(va)va.classList.add('on');
-  fetchBlogPosts().then(posts=>{
-    const p=posts.find(x=>String(x.id)===String(id));
+  fetchBlogPost(id).then(p=>{
     if(!p)return;
     const tit=document.getElementById('artigo-titulo');if(tit)tit.textContent=p.titulo;
     const capa=document.getElementById('artigo-capa');
@@ -3230,6 +3290,7 @@ async function renderContempladasCards(targetId){
   
   // Carrega dados do Supabase
   try{
+    if(!_blogHomePromise)_blogHomePromise=fetchBlogPostsLeve();
     await fetchSiteData();
     const h=location.hash;
     if(h.startsWith('#cond/')){ location.replace('/condominio?id='+encodeURIComponent(h.replace('#cond/',''))); return; }

@@ -46,7 +46,7 @@
         '<input id="ldc-nome" type="text" placeholder="Seu nome" autocomplete="name">'+
         '<input id="ldc-tel" type="tel" placeholder="WhatsApp com DDD" autocomplete="tel" inputmode="numeric">'+
         '<input id="ldc-email" class="ldc-full" type="email" placeholder="Seu e-mail" autocomplete="email">'+
-        '<select id="ldc-int" class="ldc-full">'+
+        '<select id="ldc-int" class="ldc-full" aria-label="Interesse (opcional)">'+
           '<option value="">Interesse (opcional)</option>'+
           '<option>Casa em condomínio</option>'+
           '<option>Apartamento</option>'+

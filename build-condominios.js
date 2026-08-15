@@ -154,10 +154,40 @@ const fmtPreco = v => {
   return 'R$ ' + n.toLocaleString('pt-BR');
 };
 
-const fotoUrl = f => {
-  if (!f) return '';
-  if (/^https?:\/\//.test(f)) return f;
-  return STORAGE + String(f).replace(/^\/+/, '');
+const SITE_ORIGIN = 'https://condominiosnapraia.com.br';
+const CDN_ORIGIN = SITE_ORIGIN + '/cdn-fotos/';
+
+const fotoUrl = raw => {
+  if (!raw) return '';
+  const s = String(raw).trim();
+  if (s.startsWith('data:') || s.startsWith('blob:')) return s;
+  if (s.startsWith('/cdn-fotos/')) return SITE_ORIGIN + s;
+  if (s.startsWith(STORAGE)) return CDN_ORIGIN + s.slice(STORAGE.length).replace(/^\/+/, '');
+  if (/^https?:\/\//i.test(s)) return s;
+  return CDN_ORIGIN + s.replace(/^\/+/, '');
+};
+
+const fotoVariante = (raw, width, format = 'webp', quality = 78) => {
+  const base = fotoUrl(raw).split('?')[0];
+  if (!base || !base.startsWith(CDN_ORIGIN)) return base;
+  return `${base}?w=${width}&q=${quality}&fmt=${format}`;
+};
+
+const fotoSrcset = raw => {
+  const base = fotoUrl(raw).split('?')[0];
+  if (!base || !base.startsWith(CDN_ORIGIN)) return '';
+  return [320, 480, 640, 768, 960, 1280]
+    .map(width => `${fotoVariante(base, width, 'webp')} ${width}w`)
+    .join(', ');
+};
+
+const fotoTag = (raw, alt, { sizes = '100vw', width = 640, height = 384, eager = false } = {}) => {
+  const base = fotoUrl(raw);
+  if (!base) return '';
+  const src = base.startsWith(CDN_ORIGIN) ? fotoVariante(base, width, 'jpeg') : base;
+  const set = fotoSrcset(base);
+  const attrs = set ? ` srcset="${esc(set)}" sizes="${esc(sizes)}"` : '';
+  return `<img src="${esc(src)}"${attrs} alt="${esc(alt)}" width="${width}" height="${height}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''} style="width:100%;height:200px;object-fit:cover;border-radius:12px;display:block">`;
 };
 
 // Identificadores internos não podem aparecer nos títulos dos cards públicos.
@@ -188,7 +218,7 @@ function blocoConteudo(cond, imoveis) {
     partes.push(`<h2 style="font-family:'Fraunces',serif;font-size:23px;color:#0d3b54;margin:8px 0 14px">Fotos do ${esc(nome)}</h2>`);
     partes.push(`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:26px">`);
     fotos.slice(0, 24).forEach((src, i) => {
-      partes.push(`<img src="${esc(src)}" alt="${esc(nome)} — foto ${i + 1} — ${esc(cidade)}" width="400" height="300" loading="${i < 2 ? 'eager' : 'lazy'}" style="width:100%;height:200px;object-fit:cover;border-radius:12px;display:block">`);
+      partes.push(fotoTag(src, `${nome} — foto ${i + 1} — ${cidade}`, {sizes:'(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 240px', width:640, height:480, eager:i===0}));
     });
     partes.push(`</div>`);
   }
@@ -271,7 +301,7 @@ function blocoConteudo(cond, imoveis) {
       const slugImovel = im.slug ? String(im.slug).replace(/^\/+|\/+$/g, '') : '';
       const href = slugImovel ? '/imovel/' + slugImovel + '/' : (im.id ? '/imovel/?id=' + encodeURIComponent(im.id) : '#');
       partes.push(`<a href="${esc(href)}" style="display:block;border:1px solid #e5ded3;border-radius:12px;overflow:hidden;text-decoration:none;background:#fff">`);
-      if (foto) partes.push(`<img src="${esc(foto)}" alt="${esc(tit)} — ${esc(cidade)}" width="400" height="240" loading="lazy" style="width:100%;height:180px;object-fit:cover;display:block">`);
+      if (foto) partes.push(fotoTag(foto, `${tit} — ${cidade}`, {sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 260px', width:640, height:384}));
       partes.push(`<div style="padding:12px 14px"><div style="font-size:14px;color:#0d3b54;font-weight:600;line-height:1.35">${esc(tit)}</div>${preco ? `<div style="font-family:'Fraunces',serif;font-size:17px;color:#0c4a6e;margin-top:6px">${esc(preco)}</div>` : ''}</div>`);
       partes.push(`</a>`);
     });
