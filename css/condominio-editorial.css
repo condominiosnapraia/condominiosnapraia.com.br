@@ -1,0 +1,71 @@
+/* Portal Meu Litoral — layout editorial de condomínios fechados
+   Estrutura inspirada no Vientos Resort; cores próprias do portal. */
+
+:root{
+  --cond-ocean:#0d3b54;
+  --cond-ocean-mid:#0e8a99;
+  --cond-foam:#e8f7f8;
+  --cond-sand:#f7f1e8;
+  --cond-gold:#e0b34d;
+  --cond-text:#33454f;
+  --cond-muted:#5b7585;
+}
+
+body{background:#fff;color:var(--cond-text)}
+.hero-wrap{max-width:none!important;margin:0!important;padding:0!important;position:relative;background:var(--cond-ocean)}
+.hero{height:min(72vh,720px)!important;min-height:480px;border-radius:0!important;position:relative;background:var(--cond-ocean)!important;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,59,84,.05) 20%,rgba(13,59,84,.16) 48%,rgba(5,25,38,.86) 100%);pointer-events:none}
+.hero img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important}
+.hero-wrap + .wrap{max-width:1140px;margin:-205px auto 0;padding:0 40px 72px;position:relative;z-index:3}
+.hero-wrap + .wrap .crumb{color:rgba(255,255,255,.72);padding:0 0 22px;font-size:12px;text-shadow:0 2px 12px rgba(0,0,0,.24)}
+.hero-wrap + .wrap .crumb a{color:rgba(255,255,255,.9)}
+.hero-wrap + .wrap > .eyebrow{color:var(--cond-gold);text-shadow:0 2px 14px rgba(0,0,0,.25);margin-top:0}
+.hero-wrap + .wrap > h1{color:#fff;font-size:clamp(34px,5vw,64px);line-height:1.06;letter-spacing:-.025em;text-shadow:0 3px 24px rgba(0,0,0,.3);max-width:860px;margin:0 0 10px}
+.hero-wrap + .wrap > .loc{color:rgba(255,255,255,.88);text-shadow:0 2px 12px rgba(0,0,0,.25);margin:0 0 14px}
+.hero-wrap + .wrap > .badges{margin:0 0 170px}
+.hero-wrap + .wrap > .badges .badge{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.42);color:#fff;backdrop-filter:blur(6px)}
+.hero-wrap + .wrap > .badges .badge.on{background:var(--cond-gold);border-color:var(--cond-gold);color:var(--cond-ocean)}
+.hero-wrap + .wrap > .dados{margin:0 0 32px;border-radius:16px;gap:0;background:rgba(31,181,196,.16);border-color:rgba(31,181,196,.25);box-shadow:0 10px 28px rgba(13,59,84,.08)}
+.hero-wrap + .wrap > .dados .dado{padding:18px 20px;background:#fff}
+.hero-wrap + .wrap > .dados .dado .l{font-size:10px;color:var(--cond-muted)}
+.hero-wrap + .wrap > .dados .dado .v{font-size:22px;color:var(--cond-ocean)}
+.hero-wrap + .wrap > .desc{font-size:16px;line-height:1.85;max-width:840px;margin:24px 0 30px}
+.cta-box{background:linear-gradient(135deg,var(--cond-ocean),var(--cond-ocean-mid))!important;border-radius:22px!important;padding:42px 34px!important;box-shadow:0 16px 38px rgba(13,59,84,.14);margin:40px 0!important}
+.cta-box h2{font-size:clamp(24px,3.2vw,32px)!important}
+.cta-box p{font-size:15px!important;opacity:.88}
+section[data-entity-template]{max-width:1080px!important;margin:18px auto 36px!important;padding:32px 30px!important;background:var(--cond-foam)!important;border:1px solid rgba(31,181,196,.2)!important;border-radius:20px!important}
+section[data-entity-template] h2{font-size:clamp(24px,3vw,32px)!important;color:var(--cond-ocean)!important}
+section[data-entity-template] nav a{border-radius:100px!important}
+.cond-conteudo-full{max-width:1140px!important;padding:28px 40px 64px!important}
+.cond-conteudo-full>h2{font-family:'Fraunces',serif!important;font-size:clamp(24px,3vw,32px)!important;color:var(--cond-ocean)!important;margin:34px 0 16px!important}
+.cond-conteudo-full>div[style*="grid-template-columns"]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important;margin-bottom:34px!important}
+.cond-conteudo-full>div[style*="grid-template-columns"] img{width:100%!important;height:220px!important;object-fit:cover!important;border-radius:14px!important;display:block!important}
+.cond-conteudo-full>div[style*="grid-template-columns"]+h2{margin-top:38px!important}
+.cond-conteudo-full p{font-size:16px!important;line-height:1.82!important;color:var(--cond-text)!important}
+.cond-conteudo-full a{color:var(--cond-ocean-mid)}
+
+@media(max-width:900px){
+  .hero{height:64vh!important;min-height:420px}
+  .hero-wrap + .wrap{margin-top:-155px;padding:0 20px 56px}
+  .hero-wrap + .wrap > .badges{margin-bottom:120px}
+  .cond-conteudo-full{padding:20px 20px 52px!important}
+  .cond-conteudo-full>div[style*="grid-template-columns"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:600px){
+  .hero{height:62vh!important;min-height:390px}
+  .hero-wrap + .wrap{margin-top:-116px;padding:0 16px 44px}
+  .hero-wrap + .wrap .crumb{padding-bottom:14px;font-size:11px}
+  .hero-wrap + .wrap > h1{font-size:clamp(30px,9vw,42px);line-height:1.04}
+  .hero-wrap + .wrap > .loc{font-size:12px}
+  .hero-wrap + .wrap > .badges{margin-bottom:96px}
+  .hero-wrap + .wrap > .dados{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:26px}
+  .hero-wrap + .wrap > .dados .dado{padding:14px 12px}
+  .hero-wrap + .wrap > .dados .dado .v{font-size:19px}
+  .hero-wrap + .wrap > .desc{font-size:15px}
+  .cta-box{padding:32px 22px!important}
+  section[data-entity-template]{margin:12px 16px 28px!important;padding:24px 20px!important}
+  .cond-conteudo-full{padding:16px 16px 42px!important}
+  .cond-conteudo-full>div[style*="grid-template-columns"]{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  .cond-conteudo-full>div[style*="grid-template-columns"] img{height:150px!important;border-radius:10px!important}
+  .cond-conteudo-full p{font-size:15px!important}
+}
