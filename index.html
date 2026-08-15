@@ -202,7 +202,10 @@
 .navq-arrow{background:#f3e3bb;color:#0d3b54;border:1px solid rgba(224,179,77,.35);box-shadow:0 3px 10px rgba(13,59,84,.07)}
 .navq-card:hover .navq-arrow{background:#e0b34d;color:#0d3b54;transform:translateX(3px)}
 .navq-card:focus-visible{outline:3px solid rgba(224,179,77,.55);outline-offset:3px}
-@media(max-width:768px){.navq-card:hover .navq-arrow{transform:translateY(-50%) translateX(3px)}}
+@media(max-width:768px){
+  .navq-arrow{top:50%;transform:translateY(-50%)}
+  .navq-card:hover .navq-arrow{transform:translateY(-50%) translateX(3px)}
+}
 </style>
 </head>
 <body>
