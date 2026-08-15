@@ -69,3 +69,25 @@ section[data-entity-template] nav a{border-radius:100px!important}
   .cond-conteudo-full>div[style*="grid-template-columns"] img{height:150px!important;border-radius:10px!important}
   .cond-conteudo-full p{font-size:15px!important}
 }
+
+/* Ordem editorial solicitada: apresentação → infraestrutura → localização → diferenciais → galeria → imóveis */
+.cond-conteudo-full{display:flex!important;flex-direction:column!important}
+.cond-conteudo-full > h2:nth-of-type(1){order:60}
+.cond-conteudo-full > div:nth-of-type(1){order:61;display:grid!important;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))!important;gap:10px!important}
+.cond-conteudo-full > div:nth-of-type(1) img{height:200px!important;object-fit:cover!important;border-radius:12px!important}
+.cond-conteudo-full > h2:nth-of-type(2){order:10}
+.cond-conteudo-full > p:nth-of-type(1){order:11}
+.cond-conteudo-full > div:nth-of-type(2){order:12}
+.cond-conteudo-full > h2:nth-of-type(3){order:20}
+.cond-conteudo-full > p:nth-of-type(2){order:21}
+.cond-conteudo-full > h2:nth-of-type(4){order:30}
+.cond-conteudo-full > p:nth-of-type(3){order:31}
+.cond-conteudo-full > h2:nth-of-type(5){order:40}
+.cond-conteudo-full > p:nth-of-type(4){order:41}
+.cond-conteudo-full > h2:nth-of-type(6){order:70}
+.cond-conteudo-full > div:nth-of-type(3){order:71}
+.cond-conteudo-full > p:nth-of-type(5){order:72}
+@media(max-width:600px){
+  .cond-conteudo-full > div:nth-of-type(1){grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  .cond-conteudo-full > div:nth-of-type(1) img{height:150px!important;border-radius:10px!important}
+}
