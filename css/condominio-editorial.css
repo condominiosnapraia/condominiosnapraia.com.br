@@ -75,6 +75,8 @@ section[data-entity-template] nav a{border-radius:100px!important}
 .cond-conteudo-full > h2:nth-of-type(1){order:30}
 .cond-conteudo-full > div:nth-of-type(1){order:31;display:grid!important;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))!important;gap:10px!important}
 .cond-conteudo-full > div:nth-of-type(1) img{height:200px!important;object-fit:cover!important;border-radius:12px!important}
+.cond-infra-detalhada-inline{max-width:860px;margin:18px 0 0;padding-top:4px;border-top:1px solid rgba(31,181,196,.12)}
+.cond-infra-detalhada-inline p{font-family:'Outfit',sans-serif!important;font-size:15px!important;line-height:1.75!important;color:var(--text-muted,#5b7585)!important;font-weight:300!important;margin:14px 0 0!important}
 .cond-conteudo-full > h2:nth-of-type(2){order:10}
 .cond-conteudo-full > p:nth-of-type(1){order:11}
 .cond-conteudo-full > div:nth-of-type(2){order:22}
