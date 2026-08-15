@@ -712,6 +712,28 @@ details[open] .dec-faq-q:after{content:"−"}
   .ip-specs{margin-top:18px}
   .ip-spec{padding:11px 5px}
 }
+/* === RESTAURAÇÃO MOBILE — mantém o template desktop, recupera a composição estável no celular === */
+@media(max-width:980px){
+  .ip-wrap{max-width:1180px;margin:0 auto;padding:24px}
+  .ip-gal{width:100vw;margin-left:calc(50% - 50vw);border-radius:0;height:55vw;min-height:260px;margin-bottom:12px;box-shadow:none}
+  .ip-track.multi{display:flex!important;grid-template-columns:none!important;grid-template-rows:none!important;gap:10px}
+  .ip-track.multi .ip-slide{display:block!important;flex:0 0 100%!important;height:100%!important;min-height:0!important;border-radius:0!important}
+  .ip-track.multi .ip-slide img{object-fit:cover}
+  .ip-gallery-more{display:none!important}
+  .ip-title{font-size:clamp(26px,3.6vw,40px);font-weight:600;letter-spacing:-.01em;max-width:none}
+  .ip-side{position:static!important;top:auto!important}
+  .ip-desc{font-size:15.5px;line-height:1.8;max-width:none}
+}
+@media(max-width:600px){
+  .ip-wrap{padding:18px 14px 60px}
+  .ip-gal{height:60vw;min-height:220px}
+  .ip-title{font-size:clamp(26px,7.2vw,32px);line-height:1.12}
+  .ip-specs{grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:6px;margin-bottom:22px;border-top:0;border-bottom:0;border-radius:14px;background:var(--border)}
+  .ip-spec{padding:9px 4px;border-right:0;border-radius:9px;background:#fff}
+  .ip-spec-ico{font-size:16px;margin-bottom:2px}
+  .ip-spec-v{font-size:15px}
+  .ip-spec-l{font-size:9px;letter-spacing:.03em;margin-top:1px}
+}
 </style>
 
 <body>
