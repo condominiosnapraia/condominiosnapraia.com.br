@@ -66,10 +66,10 @@
 .qr-sec{background:var(--home-mist)!important;border-top:1px solid rgba(18,63,83,.06);border-bottom:1px solid rgba(18,63,83,.06)}
 #sec-imoveis{background:var(--home-sand)!important}
 #sec-imoveis.sec-onda::before{background:var(--home-mist)!important}
-#sec-fora-cond{background:#fff!important;border-top:1px solid rgba(18,63,83,.06)}
+#sec-fora-cond{background:#fbfaf7!important;border-top:1px solid rgba(18,63,83,.06)}
 #sec-fora-cond.sec-onda::before{background:var(--home-sand)!important}
 #qfilter2{background:var(--home-foam)!important;border-top:1px solid rgba(31,181,196,.12);border-bottom:1px solid rgba(31,181,196,.12)}
-#qfilter2.sec-onda::before{background:#fff!important}
+#qfilter2.sec-onda::before{background:#fbfaf7!important}
 #lch-sec-sec{background:linear-gradient(145deg,#0d4056 0%,#0c5c6c 100%)!important;color:#fff}
 #lch-sec-sec.sec-onda::before{background:var(--home-foam)!important}
 #lch-sec-sec .eyebrow{color:#f2cb71}
@@ -78,10 +78,10 @@
 #lch-sec-sec .sectit em{color:#f2cb71}
 #lch-sec-sec .lch-card{background:rgba(255,255,255,.96);border-color:rgba(255,255,255,.22);box-shadow:0 14px 34px rgba(4,30,42,.16)}
 #lch-sec-sec .lch-ver a{color:#f2cb71;border-color:rgba(242,203,113,.55)}
-#sec-terrenos{background:#fff!important}
-#sec-terrenos.sec-onda::before{background:linear-gradient(145deg,#0d4056 0%,#0c5c6c 100%)!important}
+#sec-terrenos{background:#fbfaf7!important}
+#sec-terrenos.sec-onda::before{background:#0c5c6c!important}
 #sec-condominios{background:var(--home-mist)!important;border-top:1px solid rgba(13,75,98,.06)}
-#sec-condominios.sec-onda::before{background:#fff!important}
+#sec-condominios.sec-onda::before{background:#fbfaf7!important}
 #viver-intro-sec{background:#f5f2eb!important}
 #viver-intro-sec.sec-onda::before{background:var(--home-mist)!important}
 #cond-capao{background:#fffaf2!important}
@@ -176,7 +176,14 @@
     
   </div>
   <svg class="hero-wave-svg" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,64 C240,120 480,20 720,52 C960,84 1200,120 1440,60 L1440,120 L0,120 Z" fill="#fff"></path>
+    <defs>
+      <linearGradient id="hero-wave-fill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#817875"></stop>
+        <stop offset="48%" stop-color="#c2b7ad"></stop>
+        <stop offset="100%" stop-color="#f3f8fa"></stop>
+      </linearGradient>
+    </defs>
+    <path d="M0,64 C240,120 480,20 720,52 C960,84 1200,120 1440,60 L1440,120 L0,120 Z" fill="url(#hero-wave-fill)"></path>
   </svg>
 </section>
 
