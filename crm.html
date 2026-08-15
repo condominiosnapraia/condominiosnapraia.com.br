@@ -1300,7 +1300,7 @@ if(_savedToken && _savedUser){
 <div class="panel" id="panel-fotos">
   <div class="ph">
     <div><div class="pht">📸 Fotos do Site</div><div class="phs">Envie as fotos dos cards da home (cidades, atrações e bairros) direto por aqui — sem depender de pasta.</div></div>
-    <div class="phr"><button class="btn bg" onclick="migrarTudoStorage()" style="margin-right:8px" title="Move todas as fotos antigas (base64) para o Supabase Storage: site, imóveis e condomínios">⚡ Migrar todas as fotos p/ Storage</button><button class="btn bs" onclick="gerarPaginasCondominios()" style="margin-right:8px">🏗 Gerar Páginas SEO</button><button class="btn bs" onclick="gerarPaginasImoveis()" style="margin-right:8px" title="Cria uma página estática por imóvel publicado, para o Google indexar">🏠 Gerar Páginas de Imóveis</button><button class="btn bs" onclick="gerarSitemap()" style="margin-right:8px">🗺 Gerar Sitemap SEO</button><span id="fotos-status" style="font-size:12px;color:var(--t2)"></span></div>
+    <div class="phr"><button class="btn bg" onclick="migrarTudoStorage()" style="margin-right:8px" title="Move todas as fotos antigas (base64) para o Supabase Storage: site, imóveis, condomínios e lançamentos">⚡ Migrar todas as fotos p/ Storage</button><button class="btn bs" onclick="gerarPaginasCondominios()" style="margin-right:8px">🏗 Gerar Páginas SEO</button><button class="btn bs" onclick="gerarPaginasImoveis()" style="margin-right:8px" title="Cria uma página estática por imóvel publicado, para o Google indexar">🏠 Gerar Páginas de Imóveis</button><button class="btn bs" onclick="gerarSitemap()" style="margin-right:8px">🗺 Gerar Sitemap SEO</button><span id="fotos-status" style="font-size:12px;color:var(--t2)"></span></div>
   </div>
   <div class="tw" id="fotos-body">
     <div class="empty"><div class="empty-ico">📸</div><p>Carregando espaços de foto...</p></div>
@@ -8169,7 +8169,7 @@ async function uploadFotos(fotosBase64, selecao, prefix, recordId, nomeSeo){
 // ── MIGRAÇÃO COMPLETA: move TODAS as fotos antigas (base64) para o Storage ──
 // Cobre: fotos do site (fotos_site), imóveis e condomínios. Seguro rodar várias vezes.
 async function migrarTudoStorage(){
-  if(!confirm('Isso vai mover TODAS as fotos antigas (do site, imóveis e condomínios) para o Storage do Supabase, deixando o site bem mais rápido.\n\nPode levar alguns minutos. Continuar?')) return;
+  if(!confirm('Isso vai mover TODAS as fotos antigas (do site, imóveis, condomínios e lançamentos) para o Storage do Supabase, deixando o site bem mais rápido.\n\nPode levar alguns minutos. Continuar?')) return;
   var totalMig=0, falhas=0;
   function isB64(v){ return typeof v==='string' && v.indexOf('data:image')===0; }
 
@@ -8224,6 +8224,23 @@ async function migrarTudoStorage(){
       var csite=(cd.fotos_no_site||[]).map(function(u){ var idx=cfotos.indexOf(u); return idx>-1?cnovas[idx]:u; });
       await sb.upsert('condominios',{id:cd.id, fotos:cnovas, fotos_no_site:csite});
       toast('Condomínios: '+(c+1)+'/'+conds.length,'info');
+    }
+  }catch(e){}
+
+  // 4) LANÇAMENTOS — atualiza somente `foto` depois que o upload termina.
+  // O base64 original permanece no banco se o upload falhar; não há exclusão de dados.
+  try{
+    var lancs=await sb.get('lancamentos','?select=id,foto,titulo');
+    for(var l=0;l<lancs.length;l++){
+      var lanc=lancs[l];
+      if(!isB64(lanc.foto)) continue;
+      try{
+        var nome=(lanc.titulo||'lancamento').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60)||'lancamento';
+        var fotoUrl=await sb.uploadFoto('lancamentos/'+lanc.id+'/'+nome+'-capa-'+Date.now()+'.jpg', lanc.foto);
+        await sb.patch('lancamentos',lanc.id,{foto:fotoUrl});
+        totalMig++;
+      }catch(e){ falhas++; }
+      toast('Lançamentos: '+(l+1)+'/'+lancs.length,'info');
     }
   }catch(e){}
 
