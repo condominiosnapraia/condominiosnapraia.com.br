@@ -603,7 +603,7 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-cond-track{display:flex;gap:12px;overflow-x:auto;scroll-behavior:smooth;scroll-snap-type:x mandatory;padding-bottom:6px;-ms-overflow-style:none;scrollbar-width:none;max-width:100%}
 .ip-cond-track::-webkit-scrollbar{display:none}
 .ip-cond-foto{flex:0 0 auto;width:520px;height:340px;background-size:cover;background-position:center;border-radius:14px;cursor:pointer;scroll-snap-align:start;transition:transform .2s;box-shadow:0 3px 14px rgba(13,59,84,.12)}
-.ip-cond-foto:hover{transform:translateY(-3px)}
+.ip-cond-foto:hover{transform:translateY(-3px)}.ip-cond-foto img{width:100%;height:100%;object-fit:cover;border-radius:14px;display:block}
 @media(max-width:640px){
   .ip-cond-foto{width:90vw;height:66vw}
   /* o carrossel usa a largura toda da tela, ignorando o padding do container */
@@ -780,6 +780,62 @@ details[open] .dec-faq-q:after{content:"−"}
 
 <script>
 const SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE', WPP='5551982868888';
+
+const DYN_STORAGE_PREFIX = SB_URL + '/storage/v1/object/public/';
+
+function dynEsc(value) {
+  return String(value || '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+
+function dynFotoPublica(raw) {
+  const value = String(raw || '').trim();
+  if (!value) return '';
+  if (value.startsWith('data:') || value.startsWith('blob:')) return value;
+  if (value.startsWith('/cdn-fotos/')) return value;
+  if (value.startsWith(DYN_STORAGE_PREFIX)) return '/cdn-fotos/' + value.slice(DYN_STORAGE_PREFIX.length).replace(/^\/+/, '');
+  if (/^https?:\/\//i.test(value)) return value;
+  return '/cdn-fotos/' + value.replace(/^\/+/, '');
+}
+
+function dynFotoVariante(raw, width, format = 'webp', quality = 78) {
+  const base = dynFotoPublica(raw).split('?')[0];
+  if (!base || !base.startsWith('/cdn-fotos/')) return base;
+  return `${base}?w=${width}&q=${quality}&fmt=${format}`;
+}
+
+function dynFotoSrcset(raw, format = 'webp', quality = 78) {
+  const base = dynFotoPublica(raw).split('?')[0];
+  if (!base || !base.startsWith('/cdn-fotos/')) return '';
+  return [320,480,640,768,960,1280].map((width) => `${dynFotoVariante(base,width,format,quality)} ${width}w`).join(', ');
+}
+
+function dynFotoTag(raw, alt, options = {}) {
+  const {className = '', sizes = '100vw', width = 640, height = 384, eager = false, style = ''} = options;
+  const base = dynFotoPublica(raw);
+  if (!base) return '';
+  const src = base.startsWith('/cdn-fotos/') ? dynFotoVariante(base, width, 'jpeg') : base;
+  const srcset = dynFotoSrcset(base);
+  const responsive = srcset ? ` srcset="${dynEsc(srcset)}" sizes="${dynEsc(sizes)}"` : '';
+  const classAttr = className ? ` class="${dynEsc(className)}"` : '';
+  const styleAttr = style ? ` style="${dynEsc(style)}"` : '';
+  return `<img${classAttr} src="${dynEsc(src)}"${responsive} width="${width}" height="${height}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''}${styleAttr} alt="${dynEsc(alt)}">`;
+}
+
+const DYN_COND_SELECT = [
+  'id','slug','nome','cidade','bairro','endereco','descricao','padrao','tipo',
+  'amenidades','fotos','fotos_no_site','ano','area_total_m2',
+  'lotes','incorporadora','diferenciais','historia_condominio',
+  'infraestrutura_detalhada','localizacao_detalhada','mercado_imobiliario',
+  'seo_data','video_youtube','latitude','longitude'
+].join(',');
+
+const DYN_IMOV_SELECT = [
+  'id','slug','codigo','titulo','cond_id','status','publicar','tipo','preco',
+  'quartos','suites','banheiros','vagas','area','area_privativa','area_construida','cidade_end',
+  'descricao','diferenciais','fotos','fotos_no_site','financiamento','permuta',
+  'iptu','cond_taxa','seo_data'
+].join(',');
+
 const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
 async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
 function qs(k){return new URLSearchParams(location.search).get(k);}
@@ -798,6 +854,7 @@ function m2(v){return v?(v+' m²'):'—';}
 function fotosValidas(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
 function urlPublicaImovel(im){const ref=im&& (im.slug||im.codigo||im.id);return ref?('/imovel/'+encodeURIComponent(ref)+'/'):'/imovel/';}
 function descricaoPublica(texto){return String(texto||'').replace(/\b(?:unidade|apt(?:o)?|apartamento)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi,'').replace(/\btorre\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi,'').replace(/\b(?:quadra|lote|box)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi,'').replace(/\bcasa\s*(?:n[ºo°.]?|número)\s*[a-z0-9-]+/gi,'').replace(/\r\n?/g,'\n').split('\n').map(function(l){return l.replace(/[ \t]{2,}/g,' ').replace(/[ \t]+([,.;])/g,'$1').trim();}).join('\n').replace(/\n{3,}/g,'\n\n').trim();}
+function diferenciaisPublicos(value){var arr=Array.isArray(value)?value:String(value||'').split(/[;\n]|,(?=\s*[A-ZÀ-Ú])/);return arr.map(function(v){return descricaoPublica(v).replace(/^[\s·|,;:/-]+|[\s·|,;:/-]+$/g,'').trim();}).filter(function(v){return v && !/^(quadra|lote|torre|unidade|box|apartamento|casa)\b/i.test(v);});}
 
 let GAL=[], gi=0;
 function ipDesliza(){var t=document.getElementById('ip-track');if(!t)return;var n=GAL.length;var desk=window.matchMedia('(min-width:981px)').matches;
@@ -812,18 +869,18 @@ document.addEventListener('touchstart',function(e){g=e.target.closest('.ip-gal')
 document.addEventListener('touchend',function(e){if(!g)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)galNav(dx>0?-1:1);g=null;},{passive:true});})();
 function galShow(n){if(!GAL.length)return;gi=(n+GAL.length)%GAL.length;ipDesliza();document.querySelectorAll('.ip-dot').forEach(function(d,i){d.classList.toggle('on',i===gi);});document.getElementById('ip-gal-i').textContent=(gi+1)+'/'+GAL.length;document.querySelectorAll('.ip-thumb').forEach((t,k)=>t.classList.toggle('on',k===gi));}
 function galNav(d){galShow(gi+d);}
-function ipLbOpen(){if(!GAL.length)return;window._lbMode='main';document.getElementById('ip-lb-img').src=GAL[gi];document.getElementById('ip-lb').classList.add('on');}
+function ipLbOpen(){if(!GAL.length)return;window._lbMode='main';document.getElementById('ip-lb-img').src=dynFotoVariante(GAL[gi],1600,'jpeg');document.getElementById('ip-lb').classList.add('on');}
 function ipLbClose(){document.getElementById('ip-lb').classList.remove('on');}
 function lbNav(d){
   if(window._lbMode==='cond'){
     const fotos=window._condFotos||[];
     if(fotos.length<2)return;
     window._condLbIdx=((window._condLbIdx||0)+d+fotos.length)%fotos.length;
-    document.getElementById('ip-lb-img').src=fotos[window._condLbIdx];
+    document.getElementById('ip-lb-img').src=dynFotoVariante(fotos[window._condLbIdx],1280,'jpeg');
   }else{
     if(!GAL.length)return;
     galNav(d);
-    document.getElementById('ip-lb-img').src=GAL[gi];
+    document.getElementById('ip-lb-img').src=dynFotoVariante(GAL[gi],1600,'jpeg');
   }
 }
 function condLbOpen(i){
@@ -831,7 +888,7 @@ function condLbOpen(i){
   if(!fotos.length) return;
   window._condLbIdx=i;
   window._lbMode='cond';
-  document.getElementById('ip-lb-img').src=fotos[i];
+  document.getElementById('ip-lb-img').src=dynFotoVariante(fotos[i],1280,'jpeg');
   document.getElementById('ip-lb').classList.add('on');
 }
 function condCarr(d){
@@ -876,19 +933,19 @@ async function init(){
   const _ref = encodeURIComponent(id);
   let imv = [];
   // 1) tentar pelo CÓDIGO
-  try{ imv = await sbGet('imoveis','?codigo=eq.'+_ref+'&limit=1'); }catch(e){ imv=[]; }
+  try{ imv = await sbGet('imoveis','?codigo=eq.'+_ref+'&select='+encodeURIComponent(DYN_IMOV_SELECT)+'&limit=1'); }catch(e){ imv=[]; }
   // 2) se não achou, tentar pelo SLUG
   if(!Array.isArray(imv) || !imv.length){
-    try{ imv = await sbGet('imoveis','?slug=eq.'+_ref+'&limit=1'); }catch(e){ imv=[]; }
+    try{ imv = await sbGet('imoveis','?slug=eq.'+_ref+'&select='+encodeURIComponent(DYN_IMOV_SELECT)+'&limit=1'); }catch(e){ imv=[]; }
   }
   // 3) se não achou, tentar pelo ID
   if(!Array.isArray(imv) || !imv.length){
-    try{ imv = await sbGet('imoveis','?id=eq.'+_ref+'&limit=1'); }catch(e){ imv=[]; }
+    try{ imv = await sbGet('imoveis','?id=eq.'+_ref+'&select='+encodeURIComponent(DYN_IMOV_SELECT)+'&limit=1'); }catch(e){ imv=[]; }
   }
   if(!Array.isArray(imv)||!imv.length){cont.innerHTML=notFound();return;}
   const im=imv[0];
   let cond={};
-  if(im.cond_id){const c=await sbGet('condominios','?id=eq.'+encodeURIComponent(im.cond_id)+'&limit=1');if(Array.isArray(c)&&c.length)cond=c[0];}
+  if(im.cond_id){const c=await sbGet('condominios','?id=eq.'+encodeURIComponent(im.cond_id)+'&select='+encodeURIComponent(DYN_COND_SELECT)+'&limit=1');if(Array.isArray(c)&&c.length)cond=c[0];}
   render(im,cond);
   carregarSimilares(im,cond);
 }
@@ -1053,7 +1110,7 @@ function render(im,cond){
         var overlay = (_bloqueadas>0 && i===GAL.length-1)
           ? '<div class="ip-gal-locked" onclick="event.stopPropagation();lgOpen()"><span class="ico">🔒</span><span class="txt">+'+_bloqueadas+' fotos exclusivas<br>Faça seu cadastro para ver todas</span><button class="btn" onclick="event.stopPropagation();lgOpen()">Ver todas as fotos</button></div>'
           : '';
-        return '<div class="ip-slide" onclick="ipSlideClick('+i+')"><img src="'+f+'" alt="'+((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1)+'"'+(i>1?' loading="lazy"':'')+'>'+overlay+'</div>';
+        return '<div class="ip-slide" onclick="ipSlideClick('+i+')">'+dynFotoTag(f,((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1),{sizes:'100vw',width:1280,height:720,eager:i===0})+overlay+'</div>';
       }).join('')+'</div>'+
       (GAL.length>1?'<button class="ip-gal-arrow prev" onclick="galNav(-1)">&#8249;</button><button class="ip-gal-arrow next" onclick="galNav(1)">&#8250;</button>':'')+
       '<div class="ip-gal-count" id="ip-gal-i">1/'+GAL.length+'</div>'+
@@ -1063,7 +1120,7 @@ function render(im,cond){
   // miniaturas + card de bloqueio se houver fotos escondidas
   let thumbs = '';
   if(GAL.length>1 || _bloqueadas>0){
-    const tArr = GAL.map((f,i)=>'<div class="ip-thumb'+(i===0?' on':'')+'" onclick="galShow('+i+')"><img src="'+f+'" alt="'+((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1)+'" loading="lazy"></div>');
+    const tArr = GAL.map((f,i)=>'<div class="ip-thumb'+(i===0?' on':'')+'" onclick="galShow('+i+')">'+dynFotoTag(f,((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1),{sizes:'88px',width:176,height:128})+'</div>');
     if(_bloqueadas>0){
       tArr.push('<div class="ip-thumb-lock" onclick="lgOpen()" title="Cadastre-se para ver todas as fotos"><span class="lk">🔒</span><span class="n">+'+_bloqueadas+'</span></div>');
     }
@@ -1083,7 +1140,7 @@ function render(im,cond){
   ].filter(s=>s.v!==null&&s.v!==''&&s.v!==0);
   const specHtml=specs.map(s=>'<div class="ip-spec"><div class="ip-spec-ico">'+s.i+'</div><div class="ip-spec-v">'+s.v+'</div><div class="ip-spec-l">'+s.l+'</div></div>').join('');
 
-  const difs=im.diferenciais||[];
+  const difs=diferenciaisPublicos(im.diferenciais);
   const difHtml=difs.length?'<div class="ip-sec-h">Diferenciais</div><div class="ip-difs">'+difs.map(d=>'<span class="ip-dif">'+d+'</span>').join('')+'</div>':'';
 
   const ex=[];
@@ -1109,7 +1166,7 @@ function render(im,cond){
     const cLoc=[cond.endereco,cond.bairro,cond.cidade||cond.localizacao].filter(Boolean).join(', ');
     const cAmen=cond.amenidades||cond.infra||[];
     const amenHtml=(Array.isArray(cAmen)&&cAmen.length)?('<div class="ip-cond-amen">'+cAmen.map(function(a){return '<span class="ip-cond-tag">'+a+'</span>';}).join('')+'</div>'):'';
-    const fotosHtml=cFotos.length?('<div class="ip-cond-carr">'+(cFotos.length>1?'<button class="ip-cond-arrow prev" onclick="condCarr(-1)">&#8249;</button><button class="ip-cond-arrow next" onclick="condCarr(1)">&#8250;</button>':'')+'<div class="ip-cond-track" id="ip-cond-track">'+cFotos.map(function(f,i){return '<div class="ip-cond-foto" role="img" aria-label="'+((cond.nome||'Condomínio')+' — infraestrutura '+(i+1))+'" onclick="condLbOpen('+i+')" style="background-image:url('+f+')"></div>';}).join('')+'</div></div>'):'';
+    const fotosHtml=cFotos.length?('<div class="ip-cond-carr">'+(cFotos.length>1?'<button class="ip-cond-arrow prev" onclick="condCarr(-1)">&#8249;</button><button class="ip-cond-arrow next" onclick="condCarr(1)">&#8250;</button>':'')+'<div class="ip-cond-track" id="ip-cond-track">'+cFotos.map(function(f,i){return '<div class="ip-cond-foto" role="img" aria-label="'+((cond.nome||'Condomínio')+' — infraestrutura '+(i+1))+'" onclick="condLbOpen('+i+')">'+dynFotoTag(f,(cond.nome||'Condomínio')+' — infraestrutura '+(i+1),{sizes:'(max-width: 700px) 90vw, 520px',width:960,height:640})+'</div>';}).join('')+'</div></div>'):'';
     window._condFotos=cFotos;
     // linha de destaques (só o que existe): nº de amenidades, nº de fotos, padrão
     const stats=[];
@@ -1196,12 +1253,12 @@ function render(im,cond){
         if(fotos.length>1){
           if(e.key==='ArrowRight')window._condLbIdx=(window._condLbIdx+1)%fotos.length;
           if(e.key==='ArrowLeft')window._condLbIdx=(window._condLbIdx-1+fotos.length)%fotos.length;
-          document.getElementById('ip-lb-img').src=fotos[window._condLbIdx];
+          document.getElementById('ip-lb-img').src=dynFotoVariante(fotos[window._condLbIdx],1280,'jpeg');
         }
         return;
       }
-      if(e.key==='ArrowRight'){galNav(1);document.getElementById('ip-lb-img').src=GAL[gi];}
-      if(e.key==='ArrowLeft'){galNav(-1);document.getElementById('ip-lb-img').src=GAL[gi];}
+      if(e.key==='ArrowRight'){galNav(1);document.getElementById('ip-lb-img').src=dynFotoVariante(GAL[gi],1600,'jpeg');}
+      if(e.key==='ArrowLeft'){galNav(-1);document.getElementById('ip-lb-img').src=dynFotoVariante(GAL[gi],1600,'jpeg');}
       return;
     }
     if(e.key==='ArrowRight')galNav(1);if(e.key==='ArrowLeft')galNav(-1);
@@ -1211,7 +1268,7 @@ function render(im,cond){
 async function carregarSimilares(im,cond){
   const el=document.getElementById('ip-sim');if(!el)return;
   // buscar outros imóveis (mesmo tipo, disponíveis)
-  let outros=await sbGet('imoveis','?id=neq.'+encodeURIComponent(im.id)+'&limit=60&order=created_at.desc');
+  let outros=await sbGet('imoveis','?id=neq.'+encodeURIComponent(im.id)+'&status=neq.Vendido&publicar=eq.true&select='+encodeURIComponent(DYN_IMOV_SELECT)+'&limit=24&order=created_at.desc');
   if(!Array.isArray(outros)||!outros.length)return;
   // só imóveis publicados e não vendidos
   outros=outros.filter(function(x){return x.publicar!==false && x.status!=='Vendido';});
@@ -1241,7 +1298,7 @@ async function carregarSimilares(im,cond){
   if(lista.length<9)add(outros);
   el.innerHTML='<div class="ip-sec-h">Imóveis semelhantes</div><div class="ip-sim-grid">'+lista.map(function(x){
     const f=fotosValidas(x.fotos_no_site||x.fotos);
-    const img=f.length?'<img src="'+f[0]+'" alt="'+(x.titulo||'')+'" loading="lazy">':'🏠';
+    const img=f.length?dynFotoTag(f[0],x.titulo||'',{sizes:'(max-width: 700px) 90vw, 320px',width:640,height:420}):'🏠';
     return '<a class="ip-simcard" href="'+urlPublicaImovel(x)+'"><div class="ip-simcard-img">'+img+'</div><div class="ip-simcard-b"><div class="ip-eyebrow">'+(x.tipo||'Imóvel')+'</div><div class="ip-simcard-t">'+(x.titulo||'—')+'</div><div class="ip-simcard-p">'+brl(x.preco)+'</div></div></a>';
   }).join('')+'</div>';
   el.style.display='block';

@@ -728,14 +728,86 @@ const m2  = n => n ? Number(n).toLocaleString('pt-BR') + 'm²' : '—';
 const SUPABASE_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 
+const DYN_STORAGE_PREFIX = SUPABASE_URL + '/storage/v1/object/public/';
+
+function dynEsc(value) {
+  return String(value || '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+
+function dynFotoPublica(raw) {
+  const value = String(raw || '').trim();
+  if (!value) return '';
+  if (value.startsWith('data:') || value.startsWith('blob:')) return value;
+  if (value.startsWith('/cdn-fotos/')) return value;
+  if (value.startsWith(DYN_STORAGE_PREFIX)) return '/cdn-fotos/' + value.slice(DYN_STORAGE_PREFIX.length).replace(/^\/+/, '');
+  if (/^https?:\/\//i.test(value)) return value;
+  return '/cdn-fotos/' + value.replace(/^\/+/, '');
+}
+
+function dynFotoVariante(raw, width, format = 'webp', quality = 78) {
+  const base = dynFotoPublica(raw).split('?')[0];
+  if (!base || !base.startsWith('/cdn-fotos/')) return base;
+  return `${base}?w=${width}&q=${quality}&fmt=${format}`;
+}
+
+function dynFotoSrcset(raw, format = 'webp', quality = 78) {
+  const base = dynFotoPublica(raw).split('?')[0];
+  if (!base || !base.startsWith('/cdn-fotos/')) return '';
+  return [320,480,640,768,960,1280].map((width) => `${dynFotoVariante(base,width,format,quality)} ${width}w`).join(', ');
+}
+
+function dynFotoTag(raw, alt, options = {}) {
+  const {className = '', sizes = '100vw', width = 640, height = 384, eager = false, style = ''} = options;
+  const base = dynFotoPublica(raw);
+  if (!base) return '';
+  const src = base.startsWith('/cdn-fotos/') ? dynFotoVariante(base, width, 'jpeg') : base;
+  const srcset = dynFotoSrcset(base);
+  const responsive = srcset ? ` srcset="${dynEsc(srcset)}" sizes="${dynEsc(sizes)}"` : '';
+  const classAttr = className ? ` class="${dynEsc(className)}"` : '';
+  const styleAttr = style ? ` style="${dynEsc(style)}"` : '';
+  return `<img${classAttr} src="${dynEsc(src)}"${responsive} width="${width}" height="${height}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''}${styleAttr} alt="${dynEsc(alt)}">`;
+}
+
+function dynPublicString(value) {
+  return String(value || '')
+    .replace(/\b(?:unidade|apt(?:o)?|apartamento)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
+    .replace(/\btorre\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
+    .replace(/\b(?:quadra|lote|box)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
+    .replace(/\bcasa\s*(?:n[ºo°.]?|número)\s*[a-z0-9-]+/gi, '')
+    .replace(/^[\s·|,;:/-]+|[\s·|,;:/-]+$/g, '')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
+}
+
+function dynPublicArray(value) {
+  const raw = Array.isArray(value) ? value : String(value || '').split(/[;\n]|,(?=\s*[A-ZÀ-Ú])/);
+  return raw.map(dynPublicString).filter(Boolean);
+}
+
+const DYN_COND_SELECT = [
+  'id','slug','nome','cidade','bairro','endereco','descricao','padrao','tipo',
+  'amenidades','fotos','fotos_no_site','ano','area_total_m2',
+  'lotes','incorporadora','diferenciais','historia_condominio',
+  'infraestrutura_detalhada','localizacao_detalhada','mercado_imobiliario',
+  'seo_data','video_youtube','latitude','longitude'
+].join(',');
+
+const DYN_IMOV_SELECT = [
+  'id','slug','codigo','titulo','cond_id','status','publicar','tipo','preco',
+  'quartos','suites','banheiros','vagas','area','area_privativa','area_construida','cidade_end',
+  'descricao','diferenciais','fotos','fotos_no_site','financiamento','permuta',
+  'iptu','cond_taxa','seo_data'
+].join(',');
+
+
 // Busca os condomínios: 1º tenta o Supabase (indexável), com fallback ao localStorage.
 async function getData() {
   const HDR = { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } };
   try {
     // busca os condomínios E os imóveis em paralelo
     const [rc, ri] = await Promise.all([
-      fetch(SUPABASE_URL + '/rest/v1/condominios?select=*', HDR),
-      fetch(SUPABASE_URL + '/rest/v1/imoveis?select=*', HDR)
+      fetch(SUPABASE_URL + '/rest/v1/condominios?select=' + encodeURIComponent(DYN_COND_SELECT), HDR),
+      fetch(SUPABASE_URL + '/rest/v1/imoveis?select=' + encodeURIComponent(DYN_IMOV_SELECT) + '&status=neq.Vendido&publicar=eq.true&limit=500', HDR)
     ]);
 
     let condos = rc.ok ? await rc.json() : [];
@@ -778,7 +850,7 @@ async function init() {
   // SEO
   document.title = cond.nome + ' — Condomínios na Praia';
   const metaDesc = document.querySelector('meta[name="description"]');
-  const descSeo = (cond.descricao || cond.nome || '').slice(0,155);
+  const descSeo = dynPublicString(cond.descricao || cond.nome || '').slice(0,155);
   if (metaDesc) metaDesc.content = descSeo;
   // canonical + Open Graph dinâmicos (cada condomínio com sua URL única)
   // Se o condomínio tem página estática premium própria, o canonical aponta para ela (evita duplicação no Google)
@@ -838,7 +910,7 @@ async function init() {
   document.getElementById('cond-title').innerHTML = cond.nome.replace(/(\s\S+)$/, '<em>$1</em>');
   document.getElementById('cond-location-text').textContent =
     [cond.bairro, cond.localizacao || cond.cidade].filter(Boolean).join(', ');
-  document.getElementById('cond-desc').textContent = cond.descricao || '';
+  document.getElementById('cond-desc').textContent = dynPublicString(cond.descricao || '');
 
   // Conteúdo rico gerado pelo CRM — exibe história, infraestrutura, localização,
   // mercado e diferenciais quando existirem no banco.
@@ -846,7 +918,7 @@ async function init() {
     var alvo = document.getElementById('cond-conteudo-rico');
     if(!alvo) return;
     function paragrafos(txt){
-      return String(txt).split(/\n{2,}|\r\n\r\n/).map(function(p){return p.trim();}).filter(Boolean)
+      return String(txt).split(/\n{2,}|\r\n\r\n/).map(function(p){return dynPublicString(p);}).filter(Boolean)
         .map(function(p){return '<p>'+p.replace(/</g,'&lt;')+'</p>';}).join('');
     }
     var blocos = [
@@ -864,7 +936,7 @@ async function init() {
     // diferenciais pode ser texto ou array
     var dif = cond.diferenciais;
     if(dif){
-      var lista = Array.isArray(dif) ? dif : String(dif).split(/[;\n]|,(?=\s*[A-ZÀ-Ú])/).map(function(s){return s.trim();}).filter(Boolean);
+      var lista = dynPublicArray(dif);
       if(lista.length){
         html += '<h2>Diferenciais</h2><div class="dif-list">'+
           lista.map(function(d){return '<span>'+d.replace(/</g,'&lt;')+'</span>';}).join('')+'</div>';
@@ -978,7 +1050,7 @@ function buildGallery(fotos) {
   main.style.display = 'flex';
   main.classList.toggle('multi', fotos.length >= 3);
   main.innerHTML = fotos.map((f, i) =>
-    `<div class="gal-slide" onclick="galSlideClick(${i})"><img src="${f}" alt="${cond.nome} — foto ${i+1}"${i>1?' loading="lazy"':''}></div>`
+    `<div class="gal-slide" onclick="galSlideClick(${i})">${dynFotoTag(f, `${cond.nome} — foto ${i+1}`, {sizes:'100vw', width:1280, height:720, eager:i===0})}</div>`
   ).join('');
   ov.style.display = 'block';
   if (fotos.length > 1) {
@@ -993,7 +1065,7 @@ function buildGallery(fotos) {
   // thumbs (desktop)
   document.getElementById('gallery-thumbs').innerHTML =
     fotos.slice(0, 5).map((f, i) =>
-      `<img class="gallery-thumb ${i === 0 ? 'active' : ''}" src="${f}" onclick="galTo(${i})" alt="${cond.nome} — foto ${i+1}" loading="lazy">`
+      `${dynFotoTag(f, `${cond.nome} — foto ${i+1}`, {className:`gallery-thumb ${i === 0 ? 'active' : ''}`, sizes:'60px', width:120, height:90})}`
     ).join('');
 
   galTo(0);
@@ -1061,13 +1133,13 @@ function buildImoveis(imoveis) {
     const statusCls = im.status === 'Disponível' ? 'disp' : 'neg';
     const _fts = im.fotos_no_site || im.fotos || [];
     const _f0 = Array.isArray(_fts) ? _fts.find(f => typeof f === 'string' && f.indexOf('http') === 0) : null;
-    const foto = _f0 ? `<img src="${_f0}" alt="${im.titulo || 'Imóvel'} — ${cond.nome || ''}" loading="lazy">` : '🏠';
+    const foto = _f0 ? dynFotoTag(_f0, `${im.titulo || 'Imóvel'} — ${cond.nome || ''}`, {sizes:'(max-width: 700px) 90vw, 360px', width:640, height:440}) : '🏠';
     const specs = [];
     if (im.area)    specs.push(`<span class="ic-spec"><span class="ic-spec-ico">📐</span>${m2(im.area)}</span>`);
     if (im.quartos) specs.push(`<span class="ic-spec"><span class="ic-spec-ico">🛏</span>${im.quartos} qtos</span>`);
     if (im.suites)  specs.push(`<span class="ic-spec"><span class="ic-spec-ico">🚿</span>${im.suites} suítes</span>`);
     if (im.vagas)   specs.push(`<span class="ic-spec"><span class="ic-spec-ico">🚗</span>${im.vagas} vagas</span>`);
-    const difs = (im.diferenciais || []).slice(0, 3).map(d => `<span class="ic-dif">${d}</span>`).join('');
+    const difs = dynPublicArray(im.diferenciais).slice(0, 3).map(d => `<span class="ic-dif">${dynEsc(d)}</span>`).join('');
     return `
       <a class="imovel-card" href="/imovel?id=${encodeURIComponent(im.codigo || im.slug || im.id)}" style="text-decoration:none;color:inherit;display:block">
         <div class="ic-img">
@@ -1096,7 +1168,7 @@ function openImModal(imId) {
   // gallery
   const gallery = document.getElementById('im-modal-gallery');
   if (im.fotos && im.fotos.length) {
-    gallery.innerHTML = `<img src="${im.fotos[0]}" alt="${im.titulo}" style="width:100%;height:100%;object-fit:cover">`;
+    gallery.innerHTML = dynFotoTag(im.fotos[0], im.titulo, {sizes:'(max-width: 700px) 90vw, 520px', width:960, height:640, eager:true, style:'width:100%;height:100%;object-fit:cover'});
     if (im.fotos.length > 1) {
       let mIdx = 0;
       gallery.innerHTML += `
@@ -1122,9 +1194,9 @@ function openImModal(imId) {
     `<div class="im-spec-item"><div class="im-spec-ico">${s.ico}</div><div class="im-spec-val">${s.val}</div><div class="im-spec-lbl">${s.lbl}</div></div>`
   ).join('');
 
-  document.getElementById('im-modal-desc').textContent = im.descricao || '';
+  document.getElementById('im-modal-desc').textContent = dynPublicString(im.descricao || '');
 
-  const difs = im.diferenciais || [];
+  const difs = dynPublicArray(im.diferenciais);
   const difWrap = document.getElementById('im-difs-wrap');
   if (difs.length) {
     difWrap.style.display = '';
@@ -1155,7 +1227,7 @@ function closeImModal(e) {
 let imGalCurrent = 0;
 function imGalNav(d, fotos) {
   imGalCurrent = (imGalCurrent + d + fotos.length) % fotos.length;
-  document.querySelector('#im-modal-gallery img').src = fotos[imGalCurrent];
+  document.querySelector('#im-modal-gallery img').src = dynFotoVariante(fotos[imGalCurrent], 960, 'jpeg');
 }
 
 // ── FORM ──
@@ -1217,7 +1289,7 @@ async function carregarImoveisDoCondominio(condominio){
 
   var imoveis = [];
   try{
-    var r = await fetch(SUPABASE_URL + '/rest/v1/imoveis?cond_id=eq.' + encodeURIComponent(condominio.id) + '&select=*',
+    var r = await fetch(SUPABASE_URL + '/rest/v1/imoveis?cond_id=eq.' + encodeURIComponent(condominio.id) + '&status=neq.Vendido&publicar=eq.true&select=' + encodeURIComponent(DYN_IMOV_SELECT) + '&limit=60',
       { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } });
     if(r.ok) imoveis = await r.json();
   }catch(e){ imoveis = []; }
@@ -1246,7 +1318,7 @@ async function carregarImoveisDoCondominio(condominio){
     return '<a class="ci-card" href="/imovel?id=' + encodeURIComponent(ref) + '">' +
       '<div class="ci-foto">' +
         (foto
-          ? '<img src="' + foto + '" alt="' + (im.titulo || 'Imóvel') + ' no ' + (condominio.nome||'') + '" loading="lazy">'
+          ? dynFotoTag(foto, (im.titulo || 'Imóvel') + ' no ' + (condominio.nome||''), {sizes:'(max-width: 700px) 90vw, 360px', width:640, height:440})
           : '<div class="ci-foto-ph">🏠</div>') +
         (im.tipo ? '<span class="ci-tag">' + im.tipo + '</span>' : '') +
       '</div>' +
