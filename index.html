@@ -207,6 +207,52 @@
   .navq-card:hover .navq-arrow{transform:translateY(-50%) translateX(3px)}
 }
 </style>
+<style id="home-viver-cards-v2">
+/* VIVER — editorial cards V2: três caminhos com peso visual equilibrado */
+.viver-intro{
+  padding:84px 22px 34px !important;
+  background:linear-gradient(180deg,#fffefb 0%,#fbf5eb 100%) !important;
+}
+.viver-intro-inner{max-width:760px}
+.viver-intro-eyebrow{display:flex;align-items:center;justify-content:center;gap:10px;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px}
+.viver-intro-eyebrow::before,.viver-intro-eyebrow::after{content:"";width:28px;height:2px;border-radius:2px;background:var(--gold);opacity:.75}
+.viver-intro-title{font-size:clamp(30px,4vw,46px);line-height:1.13;margin-bottom:16px}
+.viver-intro-sub{max-width:650px;font-size:16px;line-height:1.7;padding-bottom:0}
+.viv-editorial-card{
+  max-width:1180px;
+  margin:0 auto 24px;
+  padding:0 22px 22px;
+  display:grid;
+  grid-template-columns:minmax(0,1.2fr) minmax(340px,.8fr);
+  gap:22px;
+  align-items:stretch;
+}
+.viv-editorial-card .viv-photo{height:clamp(330px,34vw,470px);border-radius:26px;box-shadow:0 14px 34px rgba(13,59,84,.12)}
+.viv-editorial-card .viv-photo-head{padding:0 30px 30px;text-align:left}
+.viv-editorial-card .viv-title{font-size:clamp(36px,4.4vw,60px);max-width:540px}
+.viv-editorial-card .viv-cap{display:inline-flex;align-items:center;background:rgba(13,37,53,.72);padding:7px 12px;border-radius:999px;font-size:12px;margin-top:13px;backdrop-filter:blur(8px)}
+.viv-editorial-card .viv-body{min-height:330px;display:flex;flex-direction:column;justify-content:center;text-align:left;padding:38px 32px 32px;border-radius:26px;box-shadow:0 10px 28px rgba(13,59,84,.07)!important}
+.viv-editorial-card.viv-lagoa .viv-body{background:linear-gradient(155deg,#eef8f5,#dcefeb)!important}
+.viv-editorial-card.viv-mar .viv-body{background:linear-gradient(155deg,#eef7fb,#dcebf5)!important}
+.viv-editorial-card.viv-cidade .viv-body{background:linear-gradient(155deg,#fffaf0,#f1e7d5)!important}
+.viv-editorial-card .viv-text{max-width:560px;margin:0 0 26px;font-size:16px;line-height:1.75}
+.viv-editorial-card .viv-text .viv-lead{font-size:23px;line-height:1.35;margin-bottom:14px}
+.viv-editorial-card .viv-cta{align-self:flex-start;margin-top:0;padding:13px 18px;font-size:12px;letter-spacing:.05em}
+@media(max-width:768px){
+  .viver-intro{padding:60px 20px 28px !important}
+  .viver-intro-title{font-size:clamp(29px,8vw,38px);line-height:1.14;margin-bottom:14px}
+  .viver-intro-sub{font-size:15px;line-height:1.65}
+  .viv-editorial-card{display:block;margin:0;padding:0 16px 16px}
+  .viv-editorial-card .viv-photo{height:clamp(270px,78vw,340px);border-radius:22px 22px 0 0;box-shadow:none}
+  .viv-editorial-card .viv-photo-head{padding:0 22px 23px;text-align:left}
+  .viv-editorial-card .viv-title{font-size:clamp(30px,8vw,42px);line-height:1.04}
+  .viv-editorial-card .viv-cap{font-size:11px;margin-top:10px;padding:6px 10px}
+  .viv-editorial-card .viv-body{min-height:0;padding:26px 22px 24px;border-radius:0 0 22px 22px;text-align:left;box-shadow:0 8px 20px rgba(13,59,84,.07)!important}
+  .viv-editorial-card .viv-text{font-size:15px;line-height:1.65;margin-bottom:20px}
+  .viv-editorial-card .viv-text .viv-lead{font-size:20px;line-height:1.3;margin-bottom:11px}
+  .viv-editorial-card .viv-cta{width:100%;justify-content:space-between;padding:13px 15px;font-size:11px;letter-spacing:.035em}
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -553,13 +599,14 @@
   <!-- ══ CABEÇALHO: Lagoa ou Mar? ══ -->
   <section class="viver-intro sec-onda" id="viver-intro-sec">
     <div class="viver-intro-inner">
-      <h2 class="viver-intro-title">Morar à beira da <em>lagoa</em> ou à beira do <em>mar</em>?</h2>
-      <p class="viver-intro-sub">Cada endereço tem sua própria alma. Conheça os três lados do Litoral Norte — a lagoa, o mar e o coração das cidades — e descubra qual combina com o seu jeito de viver.</p>
+      <p class="viver-intro-eyebrow">Três estilos de vida</p>
+      <h2 class="viver-intro-title">Escolha o seu lado do <em>Litoral Norte</em></h2>
+      <p class="viver-intro-sub">A tranquilidade da lagoa, a liberdade do mar ou a praticidade da cidade. Encontre o cenário que combina com o seu jeito de viver.</p>
     </div>
   </section>
 
   <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: LAGOA DOS QUADROS ══ -->
-  <section class="viv-sec viv-lagoa" id="viver-lagoa">
+  <section class="viv-sec viv-editorial-card viv-lagoa" id="viver-lagoa">
     <div class="viv-photo" data-slot="lagoa-1">
       <div class="viv-photo-ph"></div>
       <div class="viv-photo-grad"></div>
@@ -576,7 +623,7 @@
   </section>
 
   <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: MAR ══ -->
-  <section class="viv-sec viv-mar" id="viver-mar">
+  <section class="viv-sec viv-editorial-card viv-mar" id="viver-mar">
     <div class="viv-photo" data-slot="mar-1">
       <div class="viv-photo-ph"></div>
       <div class="viv-photo-grad"></div>
@@ -593,7 +640,7 @@
   </section>
 
   <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: CIDADE (meio-termo) ══ -->
-  <section class="viv-sec viv-cidade" id="viver-cidade">
+  <section class="viv-sec viv-editorial-card viv-cidade" id="viver-cidade">
     <div class="viv-photo" data-slot="cidade-1">
       <div class="viv-photo-ph"></div>
       <div class="viv-photo-grad"></div>
