@@ -1106,8 +1106,9 @@ if(_savedToken && _savedUser){
   </div>
   <div class="chips" id="i-chips"></div>
   <div class="ttb">
-    <input class="sr" id="i-srch" placeholder="🔍 Buscar por condomínio, quadra, lote, proprietário..." oninput="rImV()">
+    <input class="sr" id="i-srch" placeholder="🔍 Buscar por imóvel, cidade, bairro, proprietário..." oninput="rImV()">
     <select class="fs" id="i-cf" onchange="rImV()"><option value="">Todos condomínios</option></select>
+    <select class="fs" id="i-lf" onchange="rImV()"><option value="">Todas localizações</option><option value="cond">Em condomínio</option><option value="fora">Fora de condomínio</option></select>
     <select class="fs" id="i-sf" onchange="rImV()">
       <option value="">Todos status</option><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option>
     </select>
@@ -1120,7 +1121,7 @@ if(_savedToken && _savedUser){
     <span style="margin-left:auto;font-size:11px;color:var(--t3)" id="i-cnt"></span>
   </div>
   <div class="tw" id="i-twrap">
-    <table><thead><tr><th>Código</th><th>Imóvel</th><th>Condomínio</th><th>Tipo</th><th>Preço</th><th>Proprietário</th><th>Status</th><th>Site</th><th>Ações</th></tr></thead>
+    <table><thead><tr><th>Código</th><th>Imóvel</th><th>Origem / Cidade</th><th>Tipo</th><th>Preço</th><th>Proprietário</th><th>Status</th><th>Site</th><th>Ações</th></tr></thead>
     <tbody id="i-tbody"></tbody></table>
   </div>
   <div id="i-cwrap" style="display:none"><div class="cg" id="i-cgrid" style="margin-top:4px"></div></div>
@@ -2605,7 +2606,7 @@ if(_savedToken && _savedUser){
       <div class="fsec">Endereço</div>
       <div style="grid-column:1/-1;margin:2px 0 10px">
         <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--t2);background:#eef9fa;border:1px solid var(--bd,#d5e6ea);border-radius:8px;padding:9px 14px">
-          <input type="checkbox" id="im-fora-cond" onchange="toggleForaCond()" style="accent-color:var(--ac);width:16px;height:16px"> 🏠 Imóvel fora de condomínio (casa/sobrado de rua, bairro)
+          <input type="checkbox" id="im-fora-cond" onchange="toggleForaCond()" style="accent-color:var(--ac);width:16px;height:16px"> 🏠 Imóvel fora de condomínio (casa, sobrado ou terreno de rua/bairro)
         </label>
       </div>
       <div class="fgg">
@@ -3095,7 +3096,7 @@ const DB = {
   
   // Compatibilidade com código legado (síncrono → retorna cache ou [])
   get co(){ return this._cache.co?.data || []; },
-  get im(){ return (this._cache.im?.data || []).map(x=>x.condId!==undefined?x:Object.assign({},x,{condId:x.cond_id,propId:x.prop_id,areaConstruida:x.areaConstruida!==undefined?x.areaConstruida:x.area_construida,precoMinimo:x.precoMinimo!==undefined?x.precoMinimo:x.preco_minimo})); },
+  get im(){ return (this._cache.im?.data || []).map(x=>x.condId!==undefined?x:Object.assign({},x,{condId:x.cond_id,propId:x.prop_id,foraCondominio:x.foraCondominio!==undefined?x.foraCondominio:x.fora_condominio,cidadeEnd:x.cidadeEnd!==undefined?x.cidadeEnd:x.cidade_end,bairroEnd:x.bairroEnd!==undefined?x.bairroEnd:x.bairro_end,refLocal:x.refLocal!==undefined?x.refLocal:x.ref_local,areaConstruida:x.areaConstruida!==undefined?x.areaConstruida:x.area_construida,precoMinimo:x.precoMinimo!==undefined?x.precoMinimo:x.preco_minimo})); },
   get pr(){ return (this._cache.pr?.data || []).map(p=>p.telefone!==undefined&&p.whatsapp!==undefined?p:Object.assign({},p,{telefone:p.telefone!==undefined?p.telefone:p.tel,whatsapp:p.whatsapp!==undefined?p.whatsapp:p.wpp})); },
   get ne(){ return this._cache.ne?.data || []; },
   get ev(){ return this._cache.ev?.data || []; },
@@ -3808,6 +3809,16 @@ function sCDrw(id){
 }
 
 // ── IMÓVEIS ──
+function tipoCategoriaImovel(v){
+  const t=String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  if(/terreno|lote/.test(t)) return 'Terreno';
+  if(/apart|loft|kitnet|flat|studio/.test(t)) return 'Apartamento';
+  return 'Casa';
+}
+function isForaImovel(x){return x?.fora_condominio===true || x?.foraCondominio===true;}
+function condDoImovel(x){return (DB.co||[]).find(y=>y.id===(x.condId||x.cond_id))||{};}
+function localImovelLabel(x){return isForaImovel(x)?'Fora de condomínio':(condDoImovel(x).nome||'—');}
+function cidadeImovelLabel(x){const c=condDoImovel(x);return c.cidade||c.localizacao||x.cidade_end||x.cidadeEnd||x.cidade||'—';}
 function pCS(){
   const co=DB.co;
   const o='<option value="">Selecione...</option>'+co.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
@@ -3823,6 +3834,7 @@ function rImV(){const v=document.getElementById('i-view').value;document.getElem
 function iFiltered(){
   const s=(document.getElementById('i-srch')||{value:''}).value.toLowerCase().trim();
   const cf=(document.getElementById('i-cf')||{value:''}).value;
+  const lf=(document.getElementById('i-lf')||{value:''}).value;
   const sf=(document.getElementById('i-sf')||{value:''}).value;
   const pf=(document.getElementById('i-pf')||{value:''}).value;
   const co=DB.co;const pr=DB.pr||[];
@@ -3830,13 +3842,14 @@ function iFiltered(){
     const c=co.find(y=>y.id===x.condId)||{nome:''};
     const p=pr.find(y=>y.id===(x.propId||x.prop_id))||{nome:'',telefone:''};
     // busca ampla: título, condomínio, quadra, lote, proprietário (nome+telefone), código
-    const alvo=[x.titulo,c.nome,x.quadra,x.lote,p.nome,p.telefone,p.whatsapp,x.codigo,x.ref,x.bairro,x.cidade].map(v=>String(v||'').toLowerCase()).join(' ');
+    const alvo=[x.titulo,c.nome,x.quadra,x.lote,p.nome,p.telefone,p.whatsapp,x.codigo,x.ref,x.bairro,x.bairro_end,x.bairroEnd,x.cidade,x.cidade_end,x.cidadeEnd].map(v=>String(v||'').toLowerCase()).join(' ');
     const ms=!s||alvo.includes(s);
     const mc=!cf||x.condId===cf;
     const mst=!sf||x.status===sf;
-    const mt=!tF||x.tipo===tF;
+    const ml=!lf||(lf==='fora'?isForaImovel(x):!isForaImovel(x));
+    const mt=!tF||tipoCategoriaImovel(x.tipo)===tF;
     let mp=true;if(pf){const[mn,mx]=pf.split('-').map(Number);mp=(+x.preco||0)>=mn&&(+x.preco||0)<mx}
-    return ms&&mc&&mst&&mt&&mp;
+    return ms&&mc&&mst&&ml&&mt&&mp;
   });
 }
 function rImT(){
@@ -3855,7 +3868,7 @@ function rImT(){
           ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:42px;height:30px;object-fit:cover;border-radius:4px;flex-shrink:0">`:`<div style="width:42px;height:30px;background:var(--s4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px">🏠</div>`}
           <div><div class="cm">${x.titulo||'—'}</div><div class="cs">${[x.quadra,x.lote].filter(Boolean).join(' · ')}</div></div>
         </div></td>
-        <td><div style="font-size:12.5px">${c.nome}</div><div class="cs">${c.cidade}</div></td>
+        <td><div style="font-size:12.5px">${localImovelLabel(x)}</div><div class="cs">${cidadeImovelLabel(x)}</div></td>
         <td><span class="tag tbl">${x.tipo||'—'}</span></td>
         <td><strong style="color:var(--go)">${brl(x.preco)}</strong></td>
         <td><div style="font-size:12.5px;font-weight:600">${p.nome}</div>${telProp?`<div class="cs">📞 ${telProp}</div>`:''}</td>
@@ -3877,7 +3890,9 @@ function rImC(){
       const tel=(p.telefone||p.whatsapp||'').toString();
       const telLink=tel.replace(/\D/g,'');
       const ql=[x.quadra?'Q '+x.quadra:'',x.lote?'L '+x.lote:''].filter(Boolean).join(' · ');
-      const local=[x.bairro,c.nome,x.cidade].filter(Boolean).join(', ');
+      const local=isForaImovel(x)
+        ? [x.bairro_end||x.bairroEnd||x.bairro,cidadeImovelLabel(x)].filter(Boolean).join(', ')
+        : [x.bairro,c.nome,x.cidade].filter(Boolean).join(', ');
       const fmtD=d=>{if(!d)return '—';try{return new Date(d).toLocaleDateString('pt-BR');}catch(e){return '—';}};
       const dtCad=fmtD(x.created_at||x.criado_em||x.data_cadastro);
       const dtAtu=fmtD(x.updated_at||x.atualizado_em);
@@ -3903,7 +3918,7 @@ function rImC(){
               ${tel?`<a class="brk-prop-tel" href="https://wa.me/55${telLink}" target="_blank" onclick="event.stopPropagation()">📞 ${tel}</a>`:'<span class="brk-prop-tel off">sem telefone</span>'}
             </div>
             <div class="brk-local">
-              <div class="brk-local-nome">📍 ${c.nome}</div>
+              <div class="brk-local-nome">📍 ${localImovelLabel(x)}</div>
               <div class="brk-local-end">${local||'Localização não definida'}${ql?' — '+ql:''}</div>
             </div>
           </div>
@@ -4073,7 +4088,7 @@ async function gerarCodigosEmMassa(){
   for(const im of semCodigo){
     try{
       const cond=(DB.co||[]).find(c=>c.id===(im.condId||im.cond_id));
-      const cidade=cond?(cond.cidade||cond.localizacao||''):'';
+      const cidade=cond?(cond.cidade||cond.localizacao||''):(im.cidade_end||im.cidadeEnd||im.cidade||'');
       const pref=prefixoCidade(cidade);
       contador[pref]=(contador[pref]||0)+1;
       const codigo=pref+'-'+String(contador[pref]).padStart(3,'0');
@@ -4187,7 +4202,7 @@ async function savImov(){
 async function dImov(id){if(!confirm('Excluir imóvel?'))return;try{await sb.delete('imoveis',id);DB._cache.im.data=DB.im.filter(x=>x.id!==id);rImV();upB();toast('Imóvel excluído','info');}catch(e){toast('Erro: '+e.message,'error');}}
 function sIDrw(id){
   const x=DB.im.find(y=>y.id===id);if(!x)return;
-  const c=DB.co.find(y=>y.id===x.condId)||{nome:'—'};
+  const c=DB.co.find(y=>y.id===(x.condId||x.cond_id))||{nome:'—'};
   const p=DB.pr.find(y=>y.id===(x.propId||x.prop_id))||{nome:'—',telefone:'—'};
   const sc={Disponível:'tgn',Negociando:'tgo',Vendido:'tbl',Retirado:'trd'};
   document.getElementById('drw-title').textContent=x.titulo||'Imóvel';
@@ -4215,7 +4230,7 @@ function sIDrw(id){
       </div>
     </div>
     <div class="dsec">Características</div>
-    <div class="drow"><span class="drl">Condomínio</span><span class="drv">${c.nome}</span></div>
+    <div class="drow"><span class="drl">Origem</span><span class="drv">${localImovelLabel(x)}</span></div>
     <div class="drow"><span class="drl">Área Total</span><span class="drv">${m2(x.area)}</span></div>
     ${x.areaConstruida?`<div class="drow"><span class="drl">Área Construída</span><span class="drv">${m2(x.areaConstruida)}</span></div>`:''}
     ${x.quartos?`<div class="drow"><span class="drl">Quartos/Suítes</span><span class="drv">${x.quartos} qtos · ${x.suites||0} suítes</span></div>`:''}
@@ -7539,12 +7554,14 @@ function normalizeRow(table, row){
     return {
       id:row.id, titulo:row.titulo,
       cond_id:row.condId||row.cond_id,
-      ref:row.ref, finalidade:row.finalidade||'venda',
+      fora_condominio:row.foraCondominio===true||row.fora_condominio===true,
+      ref:row.ref, codigo:row.codigo, finalidade:row.finalidade||'venda',
       tipo:row.tipo||'Casa', status:row.status||'Disponível',
       publicar:row.publicar!==false, destaque:row.destaque||false,
-      lote:row.lote, quartos:row.quartos, suites:row.suites,
+      lote:row.lote, quadra:row.quadra, cep:row.cep, cidade_end:row.cidadeEnd||row.cidade_end, bairro_end:row.bairroEnd||row.bairro_end, ref_local:row.refLocal||row.ref_local,
+      quartos:row.quartos, suites:row.suites,
       banheiros:row.banheiros, vagas:row.vagas,
-      area:row.area, area_construida:row.areaConstruida||row.area_construida,
+      area:row.area, terreno:row.terreno, area_construida:row.areaConstruida||row.area_construida,
       area_privativa:row.areaPrivativa||row.area_privativa,
       sol:row.sol, preco:row.preco, iptu:row.iptu,
       cond_taxa:row.condTaxa||row.cond_taxa,
