@@ -1,0 +1,33 @@
+/* Mapa de localização dos condomínios — Portal Meu Litoral */
+.cond-mapa-section{max-width:1140px;margin:42px auto 44px;padding:0 40px;scroll-margin-top:24px}
+.cond-mapa-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:18px}
+.cond-mapa-kicker{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#0e8a99;font-weight:700;margin-bottom:8px}
+.cond-mapa-title{font-family:'Fraunces',serif;font-size:clamp(25px,3vw,34px);font-weight:500;line-height:1.1;color:#0d3b54;margin:0}
+.cond-mapa-subtitle{max-width:620px;margin:8px 0 0;color:#5b7585;font-size:14px;line-height:1.6}
+.cond-mapa-open{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex-shrink:0;padding:10px 16px;border-radius:999px;background:#0d3b54;color:#fff;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.03em;transition:transform .2s ease,background .2s ease,box-shadow .2s ease}
+.cond-mapa-open:hover{background:#0e8a99;transform:translateY(-1px);box-shadow:0 8px 18px rgba(13,59,84,.16)}
+.cond-mapa-open:focus-visible{outline:3px solid #e0b34d;outline-offset:3px}
+.cond-mapa-frame{position:relative;min-height:330px;overflow:hidden;border-radius:18px;background:#e8f7f8;border:1px solid rgba(31,181,196,.2);box-shadow:0 12px 32px rgba(13,59,84,.08)}
+.cond-mapa-frame iframe{display:block;width:100%;height:360px;border:0}
+.cond-mapa-frame.approximate iframe{filter:saturate(.82)}
+.cond-mapa-notice{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f7f1e8;color:#5b7585;font-size:11px;line-height:1.45;border-top:1px solid rgba(224,179,77,.25)}
+.cond-mapa-notice strong{color:#0d3b54;font-weight:600}
+@media(max-width:900px){
+  .cond-mapa-section{padding:0 20px;margin:36px auto 40px}
+  .cond-mapa-head{align-items:flex-start}
+  .cond-mapa-frame iframe{height:320px}
+}
+@media(max-width:600px){
+  .cond-mapa-section{padding:0 16px;margin:32px auto 36px}
+  .cond-mapa-head{display:block;margin-bottom:14px}
+  .cond-mapa-title{font-size:27px}
+  .cond-mapa-subtitle{font-size:13px}
+  .cond-mapa-open{margin-top:13px;width:100%}
+  .cond-mapa-frame{min-height:260px;border-radius:14px}
+  .cond-mapa-frame iframe{height:260px}
+  .cond-mapa-notice{align-items:flex-start;font-size:10.5px}
+}
+
+/* As páginas editoriais já têm seu próprio container; o mapa ocupa a mesma largura útil. */
+.cond-conteudo-full + .cond-mapa-section{max-width:1140px}
+.cond-conteudo-full > .cond-mapa-section{order:25}
