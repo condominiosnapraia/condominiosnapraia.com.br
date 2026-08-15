@@ -760,6 +760,8 @@ async function doLogin(){
       document.getElementById('login-screen').style.display='none';
       updateSidebarUser(prof2);
       btn.disabled=false;btn.textContent='Entrar';
+      // Recarrega com o token autenticado; a primeira tentativa pode ter ocorrido como anônima.
+      await loadAllData();
       return;
     }
     if(!prof.ativo){
@@ -776,6 +778,8 @@ async function doLogin(){
     logAtividade('logou',null,null,null);
     updateSidebarUser(prof);
     btn.disabled=false;btn.textContent='Entrar';
+    // Recarrega com o token autenticado; evita exigir atualização manual para proprietários/contatos.
+    await loadAllData();
   }catch(e){
     loginAlert('login-error','Erro de conexão: '+e.message);
     btn.disabled=false;btn.textContent='Entrar';
@@ -2973,9 +2977,30 @@ const sb = {
     return r;
   },
   async get(table, params=''){
-    const r = await this._fetchRetry(`${SUPABASE_URL}/rest/v1/${table}${params}`, { method:'GET' });
-    if(!r.ok) throw new Error(await r.text());
-    return r.json();
+    const url = `${SUPABASE_URL}/rest/v1/${table}${params}`;
+    let lastError;
+    for(let attempt=0; attempt<2; attempt++){
+      try{
+        const r = await this._fetchRetry(url, { method:'GET' });
+        if(r.ok) return r.json();
+        const body = await r.text();
+        const retryable = [408,425,429,500,502,503,504].includes(r.status);
+        if(retryable && attempt===0){
+          await new Promise(resolve=>setTimeout(resolve,350));
+          continue;
+        }
+        throw new Error(body || `HTTP ${r.status}`);
+      }catch(e){
+        lastError=e;
+        const transient = /Failed to fetch|NetworkError|timed out|timeout|Load failed/i.test(String(e&&e.message||e));
+        if(transient && attempt===0){
+          await new Promise(resolve=>setTimeout(resolve,350));
+          continue;
+        }
+        throw e;
+      }
+    }
+    throw lastError || new Error('Falha ao carregar '+table);
   },
   async post(table, data){
     const r = await this._fetchRetry(`${SUPABASE_URL}/rest/v1/${table}`, { method:'POST', body: JSON.stringify(data) });
@@ -3052,14 +3077,25 @@ const DB = {
 // Carrega todos os dados na inicialização
 async function loadAllData(){
   showLoading(true);
+  const falhas=[];
+  const carregar=async(table, params, optional=false)=>{
+    try{ return await sb.get(table, params); }
+    catch(e){
+      console.error('Falha ao carregar '+table+':',e);
+      if(!optional) falhas.push(table);
+      return [];
+    }
+  };
   try {
+    // Cada tabela falha de forma independente: uma indisponibilidade transitória
+    // não pode esconder proprietários, imóveis ou condomínios na primeira carga.
     const [co, im, pr, ne, ev, cl] = await Promise.all([
-      sb.get('condominios', '?order=nome.asc'),
-      sb.get('imoveis', '?order=created_at.asc'),
-      sb.get('proprietarios', '?order=nome.asc'),
-      sb.get('negociacoes', '?order=created_at.desc'),
-      sb.get('eventos', '?order=data.asc'),
-      sb.get('clientes', '?order=created_at.desc').catch(()=>[]), // tabela nova — não quebra se ainda não existir
+      carregar('condominios', '?order=nome.asc'),
+      carregar('imoveis', '?order=created_at.asc'),
+      carregar('proprietarios', '?order=nome.asc'),
+      carregar('negociacoes', '?order=created_at.desc'),
+      carregar('eventos', '?order=data.asc'),
+      carregar('clientes', '?order=created_at.desc', true), // tabela nova — não quebra se ainda não existir
     ]);
     DB._cache = {
       co: { data: co, ts: Date.now() },
@@ -3087,9 +3123,16 @@ async function loadAllData(){
       };
       if(rerender[pid]) try{ rerender[pid](); }catch(_){}
     }
-    toast('✓ ' + co.length + ' condomínios, ' + im.length + ' imóveis carregados', 'success');
+    toast('✓ ' + co.length + ' condomínios, ' + im.length + ' imóveis carregados', falhas.length ? 'info' : 'success');
+    if(falhas.length){
+      toast('⚠ Recarregando dados: '+falhas.join(', ')+' não responderam na primeira tentativa.','info');
+      if(!loadAllData._retryScheduled){
+        loadAllData._retryScheduled=true;
+        setTimeout(()=>{ loadAllData._retryScheduled=false; loadAllData(); },1800);
+      }
+    }
   } catch(e) {
-    toast('⚠ Erro ao conectar com Supabase: ' + e.message, 'error');
+    toast('⚠ Erro ao preparar o CRM: ' + e.message, 'error');
     console.error(e);
   } finally {
     showLoading(false);
