@@ -734,6 +734,23 @@ details[open] .dec-faq-q:after{content:"−"}
   .ip-spec-v{font-size:15px}
   .ip-spec-l{font-size:9px;letter-spacing:.03em;margin-top:1px}
 }
+
+/* AJUSTE-IMOVEL: galeria limpa e identificação compacta */
+.ip-dots{display:none!important}
+.ip-meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:4px 0 9px}
+.ip-meta-row .ip-eyebrow{margin:0;font-size:9px;padding:4px 10px;letter-spacing:.1em;white-space:nowrap}
+.ip-share-compact{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--ocean);border:1px solid var(--ocean);color:#fff;border-radius:100px;padding:5px 11px;font:600 11px 'Outfit',sans-serif;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+.ip-share-compact:hover{background:var(--om);border-color:var(--om);transform:translateY(-1px)}
+.ip-share-compact svg{width:14px;height:14px;flex:0 0 auto}
+.ip-meta-sub{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 17px;color:var(--tm);font-size:12px}
+.ip-meta-sub span{display:inline-flex;align-items:center;background:#f7fbfc;border:1px solid var(--border);border-radius:100px;padding:3px 9px}
+.ip-share-inline{max-width:280px;margin:0 0 14px}
+@media(max-width:600px){
+  .ip-title{font-size:clamp(23px,6.4vw,28px);line-height:1.12;letter-spacing:-.015em}
+  .ip-meta-row .ip-eyebrow{font-size:8.5px;padding:4px 9px;letter-spacing:.08em}
+  .ip-share-compact{font-size:10.5px;padding:5px 9px}
+  .ip-meta-sub{font-size:11px;margin-bottom:16px}
+}
 </style>
 
 <body>
@@ -1248,7 +1265,8 @@ function render(im,cond){
   const videoHtml=vm?'<div class="ip-video"><div class="ip-sec-h">Vídeo do imóvel</div><div class="ip-video-frame"><iframe src="https://www.youtube.com/embed/'+vm[1]+'" title="Vídeo" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>':'';
 
   const loc=[cond.nome,cond.localizacao||cond.cidade||im.cidade].filter(Boolean).join(' · ');
-  const tipoLinha=[im.codigo?('Cód: '+im.codigo):null,im.tipo,im.status].filter(Boolean).join(' · ');
+  const codigoLinha=im.codigo?('Cód: '+im.codigo):'Imóvel';
+  const tipoLinha=[im.tipo,im.status].filter(Boolean);
 
   // ── Bloco de detalhes do CONDOMÍNIO ──
   let condHtml='';
@@ -1291,7 +1309,16 @@ function render(im,cond){
     '<div class="ip-gal">'+galHtml+'</div>'+thumbs+
     '<div class="ip-grid">'+
       '<div class="ip-main">'+
-        '<div class="ip-eyebrow">'+(tipoLinha||'Imóvel')+'</div>'+
+        '<div class="ip-meta-row">'+
+          '<div class="ip-eyebrow">'+codigoLinha+'</div>'+
+          '<button class="ip-share-compact" onclick="compartilharImovel()" aria-label="Compartilhar imóvel" title="Compartilhar imóvel"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>Compartilhar</span></button>'+
+        '</div>'+
+        (tipoLinha.length?'<div class="ip-meta-sub">'+tipoLinha.map(function(v){return '<span>'+v+'</span>';}).join('')+'</div>':'')+
+        '<div class="ip-share-menu ip-share-inline" id="ip-share-menu" style="display:none">'+
+          '<a class="ip-share-opt wa" id="ip-share-wa" target="_blank" rel="nofollow">💬 WhatsApp</a>'+
+          '<a class="ip-share-opt fb" id="ip-share-fb" target="_blank" rel="nofollow">f Facebook</a>'+
+          '<button class="ip-share-opt cp" onclick="copiarLinkImovel(this)">🔗 Copiar link</button>'+
+        '</div>'+
         '<h1 class="ip-title">'+(im.titulo||'Imóvel')+'</h1>'+
         (loc?'<div class="ip-loc">📍 '+loc+'</div>':'')+
         (specs.length?'<div class="ip-specs">'+specHtml+'</div>':'')+
@@ -1304,12 +1331,8 @@ function render(im,cond){
         (im.status?'<span class="ip-status">'+im.status+'</span>':'')+
         '<a class="ip-wpp" href="https://wa.me/'+WPP+'?text='+wm+'" target="_blank" rel="nofollow"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-1.6-.8-2.7-1.5-3.7-3.3-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5C10.2 9 9.7 7.7 9.5 7.2 9.3 6.7 9 6.7 8.9 6.7h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.2 3 .1.2 2 3.1 4.9 4.3 2.9 1.2 2.9.8 3.4.8.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.2-.3-.2-.6-.3z"/></svg>Conversar no WhatsApp</a>'+
         '<a class="ip-call" href="https://wa.me/'+WPP+'" target="_blank" rel="nofollow">📞 (51) 98286-8888</a>'+
-        '<button class="ip-share-btn" onclick="compartilharImovel()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Compartilhar imóvel</button>'+
-        '<div class="ip-share-menu" id="ip-share-menu" style="display:none">'+
-          '<a class="ip-share-opt wa" id="ip-share-wa" target="_blank" rel="nofollow">💬 WhatsApp</a>'+
-          '<a class="ip-share-opt fb" id="ip-share-fb" target="_blank" rel="nofollow">f Facebook</a>'+
-          '<button class="ip-share-opt cp" onclick="copiarLinkImovel(this)">🔗 Copiar link</button>'+
-        '</div>'+
+
+
         '<div class="ip-formwrap"><div class="ip-form-h">Ou deixe seus dados</div>'+
           '<input class="ip-inp" id="ip-f-nome" placeholder="Seu nome" autocomplete="name">'+
           '<input class="ip-inp" id="ip-f-tel" placeholder="Seu telefone / WhatsApp" inputmode="tel" autocomplete="tel">'+
