@@ -111,8 +111,6 @@
 #sec-blog-preview.sec-onda::before{background:#fff!important}
 .viv-lagoa .viv-body{background:linear-gradient(180deg,#f4f8f5,#e9f0eb)!important}
 .viv-lagoa .viv-text{color:#31545a!important}
-.viv-lagoa::before{background:#f5f2eb!important}
-.viv-mar::before{background:#e9f0eb!important}
 #sec-terrenos,#sec-condominios,#viver-intro-sec,#cond-capao,#cond-xangri,#cond-osorio,#cond-maquine,#sec-blog-preview{padding-top:56px!important}
 @media(max-width:600px){#sec-terrenos,#sec-condominios,#viver-intro-sec,#cond-capao,#cond-xangri,#cond-osorio,#cond-maquine,#sec-blog-preview{padding-top:42px!important}.hero-brand-lockup{margin-bottom:30px}.hero-brand-kicker{gap:10px;font-size:10px;letter-spacing:.3em}.hero-brand-line{width:24px}.hero-brand-name{font-size:clamp(54px,16vw,72px);letter-spacing:-.065em}.hero-inner{transform:translateY(-5vh)}.ftr-brand-lockup{align-items:center;margin:0 auto 18px;text-align:center}.ftr-brand-lockup .hero-brand-name{font-size:clamp(38px,12vw,52px)}#view-home .hero-h1{font-size:clamp(20px,5vw,26px);line-height:1.2}.hero-brand-underline{height:9px;margin-top:6px;border-bottom-width:3px}.hero-brand-tagline{font-size:8px;letter-spacing:.2em}}
 
@@ -389,14 +387,11 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #guias-cidades.sec-onda::before{background:#fff!important}
 #guias-decisao.sec-onda::before{background:#faf6ef!important}
 #sec-blog-preview.sec-onda::before{background:#fff!important}
-/* Lagoa, Mar e Cidade: CTAs e etiquetas brancos, com leitura azul profunda. */
+  /* Lagoa, Mar e Cidade: CTAs e etiquetas brancos, com leitura azul profunda. */
 .viv-editorial-card .viv-cta{background:#fff!important;color:#0d4b62!important;border:1px solid rgba(13,75,98,.22)!important;box-shadow:0 5px 14px rgba(13,75,98,.07)!important}
 .viv-editorial-card .viv-cta:hover{background:#f7eedf!important;color:#0d4b62!important;border-color:#d9a83f!important;box-shadow:0 8px 20px rgba(13,75,98,.12)!important}
 .viv-editorial-card .viv-cap{background:rgba(255,255,255,.94)!important;color:#0d4b62!important;border:1px solid rgba(217,168,63,.34)!important;box-shadow:0 4px 12px rgba(13,75,98,.08)}
-/* As ondas internas dos três cards seguem o fundo que termina imediatamente antes. */
-.viv-lagoa::before{background:#fff!important}
-.viv-mar::before{background:#e9f0eb!important}
-.viv-cidade::before{background:#dcebf5!important}
+
 </style>
 <style id="home-wave-global-final">
 /* Sistema global final de transições: uma onda limpa, sem sombra, por seção. */
@@ -506,35 +501,18 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #guias-cidades.sec-onda::before{--wave-from:#faf6ef}
 #guias-decisao.sec-onda::before{--wave-from:#fff}
 #sec-blog-preview.sec-onda::before{--wave-from:#faf6ef}
-/* Lagoa, Mar e Cidade passam a usar a mesma onda; eliminamos o clip-path elíptico antigo. */
+/* As cards Lagoa, Mar e Cidade são blocos editoriais contínuos: sem pseudo-ondas internas. */
 .viv-sec{position:relative!important;overflow:visible!important;margin-top:0!important}
-.viv-sec::before{
-  content:""!important;
-  position:absolute!important;
-  top:0!important;
-  left:0!important;
-  right:0!important;
-  height:42px!important;
-  z-index:3!important;
-  pointer-events:none!important;
-  background:var(--wave-from,#fff)!important;
-  clip-path:none!important;
-  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 52 C170 82 330 24 510 48 C690 72 840 86 1030 48 C1200 16 1310 68 1440 40 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%;
-  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 52 C170 82 330 24 510 48 C690 72 840 86 1030 48 C1200 16 1310 68 1440 40 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%;
-}
-#viver-lagoa::before{--wave-from:#fff}
-#viver-mar::before{--wave-from:#e9f0eb}
-#viver-cidade::before{--wave-from:#dcebf5}
+.viv-sec::before{content:none!important;display:none!important}
 .hero-wave-svg{filter:none!important;-webkit-filter:none!important;height:64px!important}
 @media(max-width:768px){
   .sec-onda{padding-top:36px!important}
-  .sec-onda::before,.viv-sec::before{height:32px!important}
   .hero-wave-svg{height:46px!important}
 }
 </style>
 <style id="home-wave-geometry-fix">
 /* Correção: a geometria anterior tinha pouca amplitude e era percebida como uma faixa horizontal. */
-.sec-onda::before,.viv-sec::before{
+.sec-onda::before{
   top:-72px!important;
   height:72px!important;
   background:var(--wave-from,#fbf5eb)!important;
@@ -546,7 +524,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   .sec-onda{padding-top:58px!important}
 @media(max-width:768px){
   .sec-onda{padding-top:44px!important}
-  .sec-onda::before,.viv-sec::before{top:-48px!important;height:48px!important}
+  .sec-onda::before{top:-48px!important;height:48px!important}
 }
 </style>
 </head>
