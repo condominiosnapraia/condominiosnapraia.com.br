@@ -1,5 +1,7 @@
 # Redirects estáticos gerados a partir de public.imoveis (codigo -> slug).
 # Query strings não entram aqui: o Cloudflare Pages _redirects não suporta parâmetros.
+/atlantida /condominios/ 301
+/LINK_DE_AVALIACAO /contato/ 301
 /imovel-XAN-096 /imovel/lote-beira-lago-a-venda-no-condominio-isla-xangri-la-xan-096/ 301
 /imovel-XAN-096/ /imovel/lote-beira-lago-a-venda-no-condominio-isla-xangri-la-xan-096/ 301
 /imovel-CAP-057 /imovel/terreno-a-venda-no-condominio-velas-da-marina-450-m-capao-da-canoa-cap-057/ 301
