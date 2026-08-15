@@ -13,6 +13,21 @@ SUMMARY = (
     "aquático e áreas para passeios de caiaque ou botes, além de ampla "
     "infraestrutura de lazer e esporte."
 )
+ABOUT = (
+    "O Atlântida Lagos Park nasceu para oferecer uma experiência de vida completa "
+    "em Xangri-lá, no Litoral Norte gaúcho. Concebido como um condomínio fechado "
+    "de alto padrão, combina projeto urbanístico planejado, baixa densidade de "
+    "ocupação e amplas áreas verdes, criando um ambiente de tranquilidade, "
+    "segurança e contato com a natureza."
+)
+
+PRESENTATION_STYLE = r'''
+<style id="cond-lagos-presentation-style">
+.cond-lagos-presentation{display:block!important;max-width:900px!important;margin:28px 0 34px!important;padding:0!important;font-family:'Outfit',sans-serif!important;font-size:clamp(20px,2.2vw,27px)!important;line-height:1.72!important;font-weight:300!important;color:#667b86!important}
+@media(max-width:600px){.cond-lagos-presentation{font-size:21px!important;line-height:1.72!important;margin:24px 0 30px!important}}
+</style>
+'''
+
 INFRA = (
     "Infraestrutura confirmada: lagos para esportes náuticos; raias para esqui "
     "aquático; lago para passeios de caiaque ou botes; vigias 24 horas; várias "
@@ -130,6 +145,15 @@ def main():
     # Idempotência: se a galeria nova já existe, apenas garanta os assets restantes.
     if soup.select_one('#cond-lagos-gallery-track'):
         clean = soup.select_one('section.cond-lagos-clean')
+        first_desc = soup.select_one('.wrap .desc')
+        if first_desc:
+            first_desc['class'] = list(dict.fromkeys((first_desc.get('class') or []) + ['cond-lagos-presentation']))
+            first_desc.string = SUMMARY
+        intro_existing = clean.select_one('.cond-lagos-intro') if clean else None
+        if intro_existing:
+            intro_p = intro_existing.find('p')
+            if intro_p:
+                intro_p.string = ABOUT
         infra_existing = clean.select_one('.cond-lagos-infra') if clean else None
         gallery_title = clean.select_one('.cond-lagos-section-title') if clean else None
         gallery_count = clean.select_one('.cond-lagos-gallery-count') if clean else None
@@ -142,6 +166,8 @@ def main():
             infra_existing.insert_after(gallery_title)
         if not soup.find('style', id='cond-lagos-clean-style'):
             soup.head.append(BeautifulSoup(STYLE, 'html.parser'))
+        if not soup.find('style', id='cond-lagos-presentation-style'):
+            soup.head.append(BeautifulSoup(PRESENTATION_STYLE, 'html.parser'))
         if not soup.find(id='cond-lagos-lightbox'):
             soup.body.append(BeautifulSoup(LIGHTBOX, 'html.parser'))
         old_script = soup.find('script', id='cond-lagos-gallery-script')
@@ -175,6 +201,7 @@ def main():
     # The first paragraph below the hero becomes the requested introduction.
     first_desc = soup.select_one('.wrap .desc')
     if first_desc:
+        first_desc['class'] = list(dict.fromkeys((first_desc.get('class') or []) + ['cond-lagos-presentation']))
         first_desc.clear(); first_desc.append(SUMMARY)
 
     section = soup.select_one('section.cond-conteudo-full')
@@ -217,7 +244,7 @@ def main():
     nxt = soup.new_tag('button', attrs={'class':'cond-lagos-gallery-arrow next', 'type':'button', 'aria-label':'Próxima foto'}); nxt.string = '›'
     gallery.extend([prev, viewport, nxt]); new_section.append(gallery)
 
-    intro = soup.new_tag('section', attrs={'class':'cond-lagos-intro'}); h = soup.new_tag('h2'); h.string='Sobre o Atlântida Lagos Park'; p=soup.new_tag('p'); p.string=SUMMARY; intro.extend([h,p]); new_section.append(intro)
+    intro = soup.new_tag('section', attrs={'class':'cond-lagos-intro'}); h = soup.new_tag('h2'); h.string='Sobre o Atlântida Lagos Park'; p=soup.new_tag('p'); p.string=ABOUT; intro.extend([h,p]); new_section.append(intro)
     availability = soup.new_tag('section', attrs={'class':'cond-lagos-availability-section'}); h=soup.new_tag('h2'); h.string='Disponibilidades'; availability.append(h)
     cards=soup.new_tag('div', attrs={'class':'cond-lagos-availability'}); card=soup.new_tag('div', attrs={'class':'cond-lagos-availability-card'}); label=soup.new_tag('div', attrs={'class':'cond-lagos-availability-label'}); label.string='Imóveis disponíveis'; value=soup.new_tag('div', attrs={'class':'cond-lagos-availability-value'}); value.string=str(available); card.extend([label,value]); cards.append(card); availability.append(cards); new_section.append(availability)
     infra=soup.new_tag('section', attrs={'class':'cond-lagos-infra'}); h=soup.new_tag('h2'); h.string='Infraestrutura e Amenidades'; p=soup.new_tag('p'); p.string=INFRA; infra.extend([h,p]); new_section.append(infra)
@@ -232,6 +259,8 @@ def main():
     # Append page-specific carousel/lightbox assets once.
     if not soup.find('style', id='cond-lagos-clean-style'):
         soup.head.append(BeautifulSoup(STYLE, 'html.parser'))
+    if not soup.find('style', id='cond-lagos-presentation-style'):
+        soup.head.append(BeautifulSoup(PRESENTATION_STYLE, 'html.parser'))
     if not soup.find(id='cond-lagos-lightbox'):
         soup.body.append(BeautifulSoup(LIGHTBOX, 'html.parser'))
     old_script = soup.find('script', id='cond-lagos-gallery-script')
