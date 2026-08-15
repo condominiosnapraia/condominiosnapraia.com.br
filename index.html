@@ -84,6 +84,12 @@
 .hero-brand-name{font-family:'Fraunces',serif;font-size:clamp(54px,8.2vw,98px);font-weight:500;letter-spacing:-.055em;line-height:.92;color:#082f4c;white-space:nowrap}
 .hero-brand-underline{width:58%;height:11px;margin:7px auto 1px;border-bottom:4px solid #0d5c86;border-radius:50%;transform:rotate(-1.5deg)}
 .hero-brand-tagline{font-family:'Outfit',sans-serif;font-size:clamp(8px,1vw,12px);font-weight:500;letter-spacing:.3em;line-height:1.2;color:#082f4c;white-space:nowrap}
+.ftr-brand-lockup{display:flex;flex-direction:column;align-items:flex-start;width:max-content;max-width:100%;margin:0 0 18px;text-align:left;line-height:1}
+.ftr-brand-lockup .hero-brand-kicker{gap:10px;font-size:10px;letter-spacing:.3em;color:#f3e3bb}
+.ftr-brand-lockup .hero-brand-line{width:25px;background:#d5aa57}
+.ftr-brand-lockup .hero-brand-name{font-size:clamp(38px,4.6vw,58px);color:#fff}
+.ftr-brand-lockup .hero-brand-underline{width:58%;height:8px;margin:6px 0 1px;border-bottom-width:3px;border-bottom-color:#5aa6c7}
+.ftr-brand-lockup .hero-brand-tagline{font-size:8px;letter-spacing:.2em;color:#f3d585}
 #view-home .hero-h1{font-size:clamp(27px,3.8vw,46px)}
 .qr-sec .navq-card,.qr-sec .navq-card:hover{box-shadow:none!important}
 #sec-terrenos{background:#fbfaf7!important}
@@ -107,7 +113,7 @@
 .viv-lagoa::before{background:#f5f2eb!important}
 .viv-mar::before{background:#e9f0eb!important}
 #sec-terrenos,#sec-condominios,#viver-intro-sec,#cond-capao,#cond-xangri,#cond-osorio,#cond-maquine,#sec-blog-preview{padding-top:56px!important}
-@media(max-width:600px){#sec-terrenos,#sec-condominios,#viver-intro-sec,#cond-capao,#cond-xangri,#cond-osorio,#cond-maquine,#sec-blog-preview{padding-top:42px!important}.hero-brand-lockup{margin-bottom:30px}.hero-brand-kicker{gap:10px;font-size:10px;letter-spacing:.3em}.hero-brand-line{width:24px}.hero-brand-name{font-size:clamp(50px,15vw,66px)}#view-home .hero-h1{font-size:clamp(20px,5vw,26px);line-height:1.2}.hero-brand-underline{height:9px;margin-top:6px;border-bottom-width:3px}.hero-brand-tagline{font-size:8px;letter-spacing:.2em}}
+@media(max-width:600px){#sec-terrenos,#sec-condominios,#viver-intro-sec,#cond-capao,#cond-xangri,#cond-osorio,#cond-maquine,#sec-blog-preview{padding-top:42px!important}.hero-brand-lockup{margin-bottom:30px}.hero-brand-kicker{gap:10px;font-size:10px;letter-spacing:.3em}.hero-brand-line{width:24px}.hero-brand-name{font-size:clamp(50px,15vw,66px)}.ftr-brand-lockup{align-items:center;margin:0 auto 18px;text-align:center}.ftr-brand-lockup .hero-brand-name{font-size:clamp(38px,12vw,52px)}#view-home .hero-h1{font-size:clamp(20px,5vw,26px);line-height:1.2}.hero-brand-underline{height:9px;margin-top:6px;border-bottom-width:3px}.hero-brand-tagline{font-size:8px;letter-spacing:.2em}}
 
 </style>
 
@@ -3659,7 +3665,12 @@ async function renderContempladasCards(targetId){
   <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
   <div class="ftr-main">
     <div class="ftr-col ftr-col-brand">
-      <div class="ftr-logo"><img src="/img/logo-rodape.png" alt="Meu Litoral - O Portal do Litoral Gaúcho" class="ftr-logo-img" width="230" height="154" loading="lazy"></div>
+      <div class="ftr-logo ftr-brand-lockup" role="img" aria-label="Portal Meu Litoral — Viva o melhor do litoral">
+        <div class="hero-brand-kicker ftr-brand-kicker"><span class="hero-brand-line"></span><span>PORTAL</span><span class="hero-brand-line"></span></div>
+        <div class="hero-brand-name">Meu Litoral</div>
+        <div class="hero-brand-underline" aria-hidden="true"></div>
+        <div class="hero-brand-tagline">VIVA O MELHOR DO LITORAL</div>
+      </div>
       <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
       <a class="ftr-wpp" href="https://wa.me/5551982868888"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
     </div>
