@@ -254,6 +254,49 @@
   .viv-editorial-card .viv-cta{width:100%;justify-content:space-between;padding:13px 15px;font-size:11px;letter-spacing:.035em}
 }
 </style>
+<style id="home-cta-consistency">
+/* CTA único para o encerramento das seções */
+.dest-btn-all.cta-section-all,
+.lch-btn.cta-section-all{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:48px;
+  min-width:250px;
+  padding:14px 24px;
+  border:1px solid var(--home-ocean,#0d4b62);
+  border-radius:6px;
+  background:var(--home-ocean,#0d4b62)!important;
+  color:#fff!important;
+  font-family:'Outfit',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  line-height:1.2;
+  text-align:center;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  box-shadow:0 4px 14px rgba(13,75,98,.16);
+}
+.dest-btn-all.cta-section-all:hover,
+.lch-btn.cta-section-all:hover{
+  background:#155872!important;
+  border-color:#155872;
+  box-shadow:0 8px 20px rgba(13,75,98,.22);
+  transform:translateY(-2px);
+}
+.dest-btn-all.cta-section-all:focus-visible,
+.lch-btn.cta-section-all:focus-visible{
+  outline:3px solid rgba(217,168,63,.55);
+  outline-offset:3px;
+}
+@media(max-width:600px){
+  .dest-btn-all.cta-section-all,
+  .lch-btn.cta-section-all{width:100%;min-width:0;padding:13px 16px;font-size:11px}
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -365,8 +408,8 @@
   <section class="lch-sec sec-onda" id="lch-sec-sec">
     <div class="lch-inner">
       <div class="lch-head">
-        <p class="eyebrow" style="justify-content:center">Lançamentos &amp; Oportunidades</p>
-        <h2 class="sectit">Lançamentos & <em>Oportunidades</em></h2>
+        <p class="eyebrow" style="justify-content:center">Lançamentos e Oportunidades</p>
+        <h2 class="sectit">Lançamentos e <em>Oportunidades</em></h2>
       </div>
       <div class="lch-grid" id="lch-grid">
         <a class="lch-card" href="/origem-natureza-habitada-xangri-la/">
@@ -443,7 +486,7 @@
         </a>
       </div>
       <div class="lch-ver">
-        <a class="lch-btn" href="/lancamentos/">
+        <a class="lch-btn cta-section-all" href="/lancamentos/">
           Ver todos os lançamentos
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
@@ -456,14 +499,14 @@
       <div class="dest-header">
         <div>
           <p class="eyebrow">Imóveis Selecionados</p>
-          <h2 class="sectit">Casas & Sobrados em <em>Condomínio</em></h2>
+          <h2 class="sectit">Casas e Sobrados em <em>Condomínio</em></h2>
         </div>
-        <a class="dest-ver-btn" href="/imoveis/?tipo=Casa">Ver todas as casas →</a>
+        <a class="dest-ver-btn" href="/imoveis/?tipo=Casa">Ver todos</a>
       </div>
       <div class="igrid" id="home-imov-grid" style="min-height:200px"></div>
       <div class="dest-ver-all">
-        <a class="dest-btn-all dest-btn-alt" href="/imoveis/?tipo=Casa">
-          Ver todas casas e sobrados disponíveis
+        <a class="dest-btn-all dest-btn-alt cta-section-all" href="/imoveis/?tipo=Casa">
+          Ver todos os imóveis disponíveis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -477,12 +520,12 @@
           <p class="eyebrow">Imóveis Selecionados</p>
           <h2 class="sectit">Apartamentos à <em>Venda</em></h2>
         </div>
-        <a class="dest-ver-btn" href="/imoveis/?tipo=Apartamento">Ver todos →</a>
+        <a class="dest-ver-btn" href="/imoveis/?tipo=Apartamento">Ver todos</a>
       </div>
       <div class="igrid" id="home-apartamento-grid" style="min-height:200px"></div>
       <div class="dest-ver-all">
-        <a class="dest-btn-all" href="/imoveis/?tipo=Apartamento">
-          Ver todos os apartamentos
+        <a class="dest-btn-all cta-section-all" href="/imoveis/?tipo=Apartamento">
+          Ver todos os apartamentos disponíveis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -494,14 +537,14 @@
       <div class="dest-header">
         <div>
           <p class="eyebrow">Imóveis de rua</p>
-          <h2 class="sectit">Casas & Sobrados Fora de <em>Condomínio</em></h2>
+          <h2 class="sectit">Casas e Sobrados Fora de <em>Condomínio</em></h2>
         </div>
-        <a class="dest-ver-btn" href="/imoveis/?fora=1">Ver todas →</a>
+        <a class="dest-ver-btn" href="/imoveis/?fora=1">Ver todos</a>
       </div>
       <div class="igrid" id="home-fora-grid" style="min-height:200px"></div>
       <div class="dest-ver-all">
-        <a class="dest-btn-all dest-btn-alt" href="/imoveis/?fora=1">
-          Ver todas as casas fora de condomínio
+        <a class="dest-btn-all dest-btn-alt cta-section-all" href="/imoveis/?fora=1">
+          Ver todos os imóveis disponíveis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -515,12 +558,12 @@
           <p class="eyebrow">Imóveis Selecionados</p>
           <h2 class="sectit">Terrenos em <em>Condomínio</em></h2>
         </div>
-        <a class="dest-ver-btn" href="/imoveis/?tipo=Terreno">Ver todos os lotes →</a>
+        <a class="dest-ver-btn" href="/imoveis/?tipo=Terreno">Ver todos</a>
       </div>
       <div class="igrid" id="home-terreno-grid" style="min-height:200px"></div>
       <div class="dest-ver-all">
-        <a class="dest-btn-all" href="/imoveis/?tipo=Terreno">
-          Ver todos os lotes disponíveis
+        <a class="dest-btn-all cta-section-all" href="/imoveis/?tipo=Terreno">
+          Ver todos os terrenos disponíveis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -534,12 +577,12 @@
           <p class="eyebrow">Imóveis de rua</p>
           <h2 class="sectit">Terrenos Fora de <em>Condomínio</em></h2>
         </div>
-        <a class="dest-ver-btn" href="/imoveis/?fora=1&amp;tipo=Terreno">Ver todos →</a>
+        <a class="dest-ver-btn" href="/imoveis/?fora=1&amp;tipo=Terreno">Ver todos</a>
       </div>
       <div class="igrid" id="home-terreno-fora-grid" style="min-height:200px"></div>
       <div class="dest-ver-all">
-        <a class="dest-btn-all" href="/imoveis/?fora=1&amp;tipo=Terreno">
-          Ver todos os terrenos fora de condomínio
+        <a class="dest-btn-all cta-section-all" href="/imoveis/?fora=1&amp;tipo=Terreno">
+          Ver todos os terrenos disponíveis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -586,12 +629,12 @@
           <p class="eyebrow">Nosso Portfólio</p>
           <h2 class="sectit">Condomínios em <em>Destaque</em></h2>
         </div>
-        <a class="dest-ver-btn" href="/condominios/">Ver todos os condomínios →</a>
+        <a class="dest-ver-btn" href="/condominios/">Ver todos</a>
       </div>
       <div class="cgrid" id="home-cond-grid" style="min-height:200px"></div>
       <div class="dest-ver-all">
-        <a class="dest-btn-all" href="/condominios/">
-          Ver todos os condomínios
+        <a class="dest-btn-all cta-section-all" href="/condominios/">
+          Ver todos os condomínios disponíveis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -1686,7 +1729,7 @@ function sfcTab(btn,tipo){
   var btnBuscar=document.querySelector('.sfc-btn');
   if(tipo==='lancamentos'){
     // aba Lançamentos: leva direto à página de lançamentos
-    if(lab) lab.textContent='Lançamentos & Oportunidades';
+    if(lab) lab.textContent='Lançamentos e Oportunidades';
     if(inp){ inp.placeholder='Veja todos os lançamentos do litoral'; inp.value=''; inp.readOnly=true; inp.style.cursor='pointer'; inp.onclick=function(){ window.location='/lancamentos'; }; }
     if(lab2) lab2.textContent='Empreendimento';
     sfcPreencherLista();
