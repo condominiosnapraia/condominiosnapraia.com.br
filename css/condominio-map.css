@@ -30,4 +30,4 @@
 
 /* As páginas editoriais já têm seu próprio container; o mapa ocupa a mesma largura útil. */
 .cond-conteudo-full + .cond-mapa-section{max-width:1140px}
-.cond-conteudo-full > .cond-mapa-section{order:25}
+.cond-conteudo-full > .cond-mapa-section{order:65}
