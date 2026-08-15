@@ -3080,6 +3080,9 @@ const sb = {
 const cache = { co:null, im:null, pr:null, ne:null, ev:null, ts:0 };
 const CACHE_TTL = 30000; // 30 segundos
 
+// Estado explícito evita mostrar “Nenhum proprietário” enquanto a primeira carga ainda está em andamento.
+let CRM_DATA_RETRYING = false;
+
 const DB = {
   _cache: {},
   async load(key, table, params=''){
@@ -3105,6 +3108,7 @@ const DB = {
 
 // Carrega todos os dados na inicialização
 async function loadAllData(){
+  CRM_DATA_RETRYING = false;
   showLoading(true);
   const falhas=[];
   const carregar=async(table, params, optional=false)=>{
@@ -3134,6 +3138,7 @@ async function loadAllData(){
       ev: { data: ev, ts: Date.now() },
       cl: { data: cl, ts: Date.now() },
     };
+    CRM_DATA_RETRYING = falhas.length > 0;
     upB(); buildDash();
     // Atualiza o painel que estiver ativo assim que os dados chegam
     // (antes só atualizava condomínios, por isso proprietários exigia F5)
@@ -4258,11 +4263,17 @@ function sIDrw(id){
 function rProp(){
   const s=(document.getElementById('p-srch').value||'').toLowerCase();
   const tp=document.getElementById('p-tf').value;
-  const data=DB.pr.filter(p=>(!s||p.nome.toLowerCase().includes(s)||(p.email||'').toLowerCase().includes(s))&&(!tp||p.tipo===tp));
-  document.getElementById('p-sub').textContent=`${data.length} proprietário${data.length!==1?'s':''}`;
+  if(!DB._cache.pr){
+    document.getElementById('p-sub').textContent='Carregando proprietários…';
+    document.getElementById('p-cnt').textContent='Aguarde a primeira sincronização';
+    document.getElementById('p-tbody').innerHTML='<tr><td colspan="7"><div class="te"><div class="te-ic">⏳</div><h3>Carregando proprietários…</h3><p>Estamos sincronizando os contatos do CRM.</p></div></td></tr>';
+    return;
+  }
+  const data=DB.pr.filter(p=>{const nome=String(p.nome||'').toLowerCase();const email=String(p.email||'').toLowerCase();return (!s||nome.includes(s)||email.includes(s))&&(!tp||p.tipo===tp)});
+  document.getElementById('p-sub').textContent=CRM_DATA_RETRYING&&data.length===0?'Sincronizando proprietários…':`${data.length} proprietário${data.length!==1?'s':''}`;
   document.getElementById('p-cnt').textContent=data.length+' resultado'+(data.length!==1?'s':'');
   const im=DB.im;
-  document.getElementById('p-tbody').innerHTML=data.length===0?`<tr><td colspan="7"><div class="te"><div class="te-ic">👤</div><h3>Nenhum proprietário</h3></div></td></tr>`
+  document.getElementById('p-tbody').innerHTML=data.length===0?(CRM_DATA_RETRYING?`<tr><td colspan="7"><div class="te"><div class="te-ic">⏳</div><h3>Sincronizando proprietários…</h3><p>A primeira tentativa não concluiu; o CRM tentará novamente automaticamente.</p></div></td></tr>`:`<tr><td colspan="7"><div class="te"><div class="te-ic">👤</div><h3>Nenhum proprietário</h3></div></td></tr>`)
     :data.map(p=>{
       const n=im.filter(x=>(x.propId||x.prop_id)===p.id).length;
       const ini=p.nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();

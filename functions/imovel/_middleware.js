@@ -235,5 +235,8 @@ export async function onRequest(context) {
     .replace(/<\/head>/i, `${additions}\n</head>`);
   const headers = new Headers(response.headers);
   headers.delete('content-length');
+  // A página é pública e pode ser cacheada por poucos minutos; isso evita repetir a consulta SSR a cada visita.
+  headers.set('Cache-Control', 'public, max-age=300, s-maxage=900, stale-while-revalidate=86400');
+  headers.set('Vary', 'Accept-Encoding');
   return new Response(transformed, { status: response.status, statusText: response.statusText, headers });
 }
