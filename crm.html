@@ -306,6 +306,20 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 .mob-ni .mico{font-size:20px;line-height:1}
 .mob-ni.on{color:var(--ac)}
 .mob-ni span{letter-spacing:.03em}
+.mob-more-sheet{display:none;position:fixed;inset:0;z-index:260}
+.mob-more-sheet.open{display:block}
+.mob-more-backdrop{position:absolute;inset:0;background:rgba(12,18,28,.56);backdrop-filter:blur(3px)}
+.mob-more-card{position:absolute;left:0;right:0;bottom:0;max-height:min(78vh,620px);overflow:auto;background:var(--sf);border:1px solid var(--bd2);border-bottom:0;border-radius:18px 18px 0 0;padding:18px 14px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -18px 50px rgba(0,0,0,.24);animation:mobSheetUp .2s ease-out}
+@keyframes mobSheetUp{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mob-more-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 4px 16px}
+.mob-more-kicker{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--ac);font-weight:700;margin-bottom:3px}
+.mob-more-head h2{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:var(--tx)}
+.mob-more-close{width:36px;height:36px;border:1px solid var(--bd2);border-radius:50%;background:var(--s3);color:var(--t2);font-size:24px;line-height:1;cursor:pointer}
+.mob-more-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.mob-more-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:74px;padding:10px 6px;border:1px solid var(--bd);border-radius:12px;background:var(--s2);color:var(--t2);font:500 11px 'DM Sans',sans-serif;cursor:pointer;text-align:center}
+.mob-more-item span{font-size:22px;line-height:1}
+.mob-more-item strong{font-weight:600;line-height:1.15}
+.mob-more-item:active{transform:scale(.97);background:var(--acd);color:var(--ac)}
 
 /* ── TABLET 768-1024 ── */
 @media(max-width:1024px) and (min-width:769px){
@@ -327,43 +341,50 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
   html,body{overflow:hidden;font-size:14px}
 
   /* Layout: topbar + main only, nav at bottom */
-  .app{display:grid;grid-template-columns:1fr;grid-template-rows:52px 1fr;height:100vh}
+  .app{display:grid;grid-template-columns:1fr;grid-template-rows:56px 1fr;height:100vh}
   .rail,.sidebar{display:none}
-  .mob-nav{display:block}
-  .main{overflow-y:auto;padding-bottom:68px}
+  .mob-nav{display:block;height:70px;padding:0 2px}
+  .mob-nav-inner{height:70px;overflow:hidden;justify-content:space-around}
+  .mob-ni{flex:1;min-width:0;height:70px;padding:9px 3px 7px;font-size:10px;gap:4px}
+  .mob-ni .mico{font-size:21px}
+  .main{overflow-y:auto;padding-bottom:78px}
 
-  /* Topbar mobile */
-  .topbar{padding:0 12px;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  /* Topbar mobile: compacta e com ações tocáveis */
+  .topbar{height:56px;padding:0 12px;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch}
   .topbar::-webkit-scrollbar{display:none}
   .tbsep,.tbst{display:none}
-  .tbb{padding:6px 10px;font-size:11px;white-space:nowrap;flex-shrink:0}
+  .tbb{min-height:40px;padding:8px 11px;font-size:11px;white-space:nowrap;flex-shrink:0}
   .brand{font-size:15px}
   .tbr{gap:6px;flex-shrink:0}
 
   /* Panel padding */
-  .panel{padding:12px 14px;min-height:100%}
+  .panel{padding:14px 12px;min-height:100%}
 
   /* Page header */
-  .ph{flex-direction:column;gap:10px;margin-bottom:14px}
-  .phr{flex-wrap:wrap}
-  .pht{font-size:20px}
+  .ph{flex-direction:column;gap:12px;margin-bottom:14px}
+  .phr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:8px}
+  .phr .btn,.phr .fs{width:100%;justify-content:center;min-height:42px}
+  .pht{font-size:21px}
+  .phs{font-size:12px}
 
   /* Stats row: 2 cols */
-  .srow{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .srow{grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+  .sc{padding:13px 12px;min-height:92px}
   .scv{font-size:22px}
   .scl{font-size:10px}
 
   /* Dashboard grids */
-  #dash-stats ~ div{display:flex;flex-direction:column;gap:11px}
-  .rg,#rel-body{grid-template-columns:1fr;gap:11px}
+  #dash-stats ~ div{display:flex;flex-direction:column;gap:10px}
+  .rg,#rel-body{grid-template-columns:1fr;gap:10px}
 
-  /* Tables → scrollable */
-  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .ttb{flex-wrap:wrap;gap:8px;padding:10px 12px}
-  .sr{min-width:140px;width:100%;font-size:12px}
-  .fs{font-size:12px}
+  /* Tables and filters */
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px}
+  .ttb{flex-wrap:wrap;gap:8px;padding:11px 10px}
+  .sr{min-width:0;width:100%;font-size:13px;min-height:42px}
+  .fs{font-size:13px;min-height:42px}
+  .ttb .fs{flex:1;min-width:0}
   table{min-width:560px;font-size:12px}
-  th,td{padding:9px 10px}
+  th,td{padding:10px 9px}
 
   /* Hide less-critical columns on mobile */
   table th:nth-child(4),table td:nth-child(4),
@@ -371,46 +392,53 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 
   /* Cards grid */
   .cg{grid-template-columns:1fr;gap:11px}
+  .kd{border-radius:11px}
+  .kdi{height:145px}
 
   /* Kanban: horizontal scroll */
-  .kb{display:flex;overflow-x:auto;gap:11px;align-items:flex-start;padding-bottom:8px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+  .kb{display:flex;overflow-x:auto;gap:10px;align-items:flex-start;padding-bottom:8px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
   .kb::-webkit-scrollbar{display:none}
-  .kbc{min-width:260px;flex-shrink:0;scroll-snap-align:start}
+  .kbc{min-width:270px;flex-shrink:0;scroll-snap-align:start}
   .kb-board-wrap{overflow-x:auto}
 
   /* Agenda */
-  .agrid{grid-template-columns:1fr;gap:12px}
-  .calw{padding:12px}
-  .aevs{min-height:200px}
+  .agrid{grid-template-columns:1fr;gap:11px}
+  .calw{padding:11px}
+  .aevs{min-height:190px}
 
   /* Chips */
   .chips{gap:6px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;-webkit-overflow-scrolling:touch}
   .chips::-webkit-scrollbar{display:none}
-  .chip{flex-shrink:0;font-size:12px;padding:5px 13px}
+  .chip{flex-shrink:0;font-size:12px;padding:7px 13px}
 
   /* Modals: full screen bottom sheet */
   .ov{align-items:flex-end}
-  .mo,.mo-xl,.mo-sm{width:100%;max-width:100%;border-radius:16px 16px 0 0;max-height:92vh}
-  .mh{border-radius:16px 16px 0 0;padding:16px 18px 12px}
+  .mo,.mo-xl,.mo-sm{width:100%;max-width:100%;border-radius:16px 16px 0 0;max-height:94vh}
+  .mh{border-radius:16px 16px 0 0;padding:17px 16px 13px}
+  .mb{padding:16px}
+  .mf{padding:12px 16px;gap:8px}
+  .mf .btn{flex:1;justify-content:center;min-height:44px}
 
-  /* Forms */
+  /* Forms: campos maiores para toque */
   .fgg,.fgg3{grid-template-columns:1fr}
   .fgf{grid-column:1}
-  .fgrid{grid-template-columns:repeat(4,1fr)}
+  .fgrid{grid-template-columns:repeat(2,1fr)}
+  input.fi,select.fs,textarea.fta,.fi,.fs,.fta{font-size:16px;min-height:42px}
+  textarea.fta{min-height:100px}
 
   /* Drawer: full width */
-  .drw{width:100vw;top:52px}
+  .drw{width:100vw;top:56px}
 
   /* Buttons */
-  .btn{font-size:12px;padding:8px 13px}
-  .bxs{padding:6px 10px;font-size:12px}
-  .bsm{padding:6px 11px}
+  .btn{font-size:13px;min-height:42px;padding:9px 13px;touch-action:manipulation}
+  .bxs{min-height:38px;padding:8px 10px;font-size:12px}
+  .bsm{min-height:38px;padding:8px 11px}
 
   /* Toasts */
-  .toast{left:12px;right:12px;max-width:none;bottom:76px}
+  .toast{left:12px;right:12px;max-width:none;bottom:82px}
 
   /* Foto grid */
-  .fgrid{grid-template-columns:repeat(3,1fr)}
+  .fgrid{grid-template-columns:repeat(2,1fr)}
 }
 
 /* ── LARGE DESKTOP ≥1400 ── */
@@ -3160,6 +3188,23 @@ const tod=()=>new Date().toISOString().slice(0,10);
 const abb=n=>{if(n>=1e9)return(n/1e9).toFixed(1)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return String(n)};
 
 // ── NAV ──
+function toggleMobMore(trigger){
+  const sheet=document.getElementById('mob-more-sheet');
+  if(!sheet) return;
+  const open=!sheet.classList.contains('open');
+  sheet.classList.toggle('open',open);
+  sheet.setAttribute('aria-hidden',String(!open));
+  const btn=trigger||document.getElementById('mn-more');
+  if(btn) btn.setAttribute('aria-expanded',String(open));
+  if(open) setTimeout(()=>document.querySelector('.mob-more-close')?.focus(),0);
+}
+function mobGoMore(id,btn){
+  toggleMobMore();
+  const target=document.getElementById('mn-'+({lancamentos:'la',negociacoes:'ne',agenda:'ag',leadsfotos:'lf',leadscampanha:'lc',fotos:'fo',destaques:'de',blog:'bl',carrossel:'ca',capas:'cp',editor:'ed',relatorios:'re',admins:'ad',usuarios:'us',atividades:'at'}[id]||''));
+  go(id,target||btn);
+  const more=document.getElementById('mn-more');
+  if(more) more.classList.add('on');
+}
 function go(id,btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(b=>b.classList.remove('on'));
@@ -9421,31 +9466,39 @@ async function iaAplicarRascunho(){
 }
 </script>
 <!-- MOBILE BOTTOM NAV -->
-<nav class="mob-nav">
+<nav class="mob-nav" aria-label="Navegação principal do CRM">
   <div class="mob-nav-inner">
-    <button class="mob-ni on" id="mn-da" onclick="go('dashboard',this)"><span class="mico">📊</span><span>Dash</span></button>
-    <button class="mob-ni" id="mn-co" onclick="go('condominios',this)"><span class="mico">🏘</span><span>Condôm.</span></button>
+    <button class="mob-ni on" id="mn-da" onclick="go('dashboard',this)"><span class="mico">📊</span><span>Início</span></button>
+    <button class="mob-ni" id="mn-co" onclick="go('condominios',this)"><span class="mico">🏘</span><span>Condôs.</span></button>
     <button class="mob-ni" id="mn-im" onclick="go('imoveis',this)"><span class="mico">🏠</span><span>Imóveis</span></button>
-    <button class="mob-ni" id="mn-la" onclick="go('lancamentos',this)"><span class="mico">🏗</span><span>Lançam.</span></button>
     <button class="mob-ni" id="mn-ld" onclick="go('leads',this)"><span class="mico">📨</span><span>Leads</span></button>
-    <button class="mob-ni" id="mn-lf" onclick="go('leadsfotos',this)"><span class="mico">🔓</span><span>L. Fotos</span></button>
-    <button class="mob-ni" id="mn-lc" onclick="go('leadscampanha',this)"><span class="mico">🎯</span><span>L. Camp.</span></button>
-    <button class="mob-ni" id="mn-ne" onclick="go('negociacoes',this)"><span class="mico">🤝</span><span>Negoc.</span></button>
-    <button class="mob-ni" id="mn-ag" onclick="go('agenda',this)"><span class="mico">📅</span><span>Agenda</span></button>
-    <button class="mob-ni" id="mn-pr" onclick="go('proprietarios',this)"><span class="mico">👤</span><span>Proprit.</span></button>
-    <button class="mob-ni" id="mn-fo" onclick="go('fotos',this)"><span class="mico">📸</span><span>Fotos</span></button>
-    <button class="mob-ni" id="mn-de" onclick="go('destaques',this)"><span class="mico">⭐</span><span>Destaq.</span></button>
-    <button class="mob-ni" id="mn-ct" onclick="go('contempladas',this)"><span class="mico">💳</span><span>Cartas</span></button>
-    <button class="mob-ni" id="mn-bl" onclick="go('blog',this)"><span class="mico">📰</span><span>Blog</span></button>
-    <button class="mob-ni" id="mn-ca" onclick="go('carrossel',this)"><span class="mico">🎠</span><span>Carrossel</span></button>
-    <button class="mob-ni" id="mn-cp" onclick="go('capas',this)"><span class="mico">🖼️</span><span>Capas</span></button>
-    <button class="mob-ni" id="mn-ed" onclick="go('editor',this)"><span class="mico">🎨</span><span>Editor</span></button>
-    <button class="mob-ni" id="mn-re" onclick="go('relatorios',this)"><span class="mico">📈</span><span>Relat.</span></button>
-    <button class="mob-ni" id="mn-ad" onclick="go('admins',this)"><span class="mico">🏦</span><span>Admin.</span></button>
-    <button class="mob-ni" id="mn-us" onclick="go('usuarios',this)"><span class="mico">👥</span><span>Usuár.</span></button>
-    <button class="mob-ni" id="mn-at" onclick="go('atividades',this)"><span class="mico">📋</span><span>Ativid.</span></button>
-</div>
+    <button class="mob-ni" id="mn-pr" onclick="go('proprietarios',this)"><span class="mico">👤</span><span>Contatos</span></button>
+    <button class="mob-ni mob-more-trigger" id="mn-more" aria-expanded="false" aria-controls="mob-more-sheet" onclick="toggleMobMore(this)"><span class="mico">☰</span><span>Mais</span></button>
+  </div>
 </nav>
+<div class="mob-more-sheet" id="mob-more-sheet" aria-hidden="true">
+  <div class="mob-more-backdrop" onclick="toggleMobMore()"></div>
+  <section class="mob-more-card" role="dialog" aria-modal="true" aria-labelledby="mob-more-title">
+    <div class="mob-more-head"><div><div class="mob-more-kicker">CRM Praia</div><h2 id="mob-more-title">Mais ferramentas</h2></div><button class="mob-more-close" aria-label="Fechar menu" onclick="toggleMobMore()">×</button></div>
+    <div class="mob-more-grid">
+      <button class="mob-more-item" onclick="mobGoMore('lancamentos',this)"><span>🏗</span><strong>Lançamentos</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('negociacoes',this)"><span>🤝</span><strong>Negociações</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('agenda',this)"><span>📅</span><strong>Agenda</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('leadsfotos',this)"><span>🔓</span><strong>Leads Fotos</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('leadscampanha',this)"><span>🎯</span><strong>Campanhas</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('fotos',this)"><span>📸</span><strong>Fotos do Site</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('destaques',this)"><span>⭐</span><strong>Destaques</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('blog',this)"><span>📰</span><strong>Blog</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('carrossel',this)"><span>🎠</span><strong>Carrossel</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('capas',this)"><span>🖼️</span><strong>Capas</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('editor',this)"><span>🎨</span><strong>Editor</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('relatorios',this)"><span>📈</span><strong>Relatórios</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('admins',this)"><span>🏦</span><strong>Administradoras</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('usuarios',this)"><span>👥</span><strong>Usuários</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('atividades',this)"><span>📋</span><strong>Atividades</strong></button>
+    </div>
+  </section>
+</div>
 <div class="autosave-ind" id="cnp-autosave">💾 Rascunho salvo</div>
 </body>
 </html>
