@@ -241,7 +241,7 @@ body{padding-top:56px}
     <div class="fg"><label class="fl">Valor do imóvel</label>
       <input class="fi" id="sim-valor" inputmode="numeric" placeholder="R$ 500.000" oninput="simMask(this);simCalc()"></div>
     <div class="fg"><label class="fl">Banco</label>
-      <select class="fse" id="sim-banco" onchange="simCalc()">
+      <select class="fse" id="sim-banco" onchange="simCalc()" aria-label="Sim Banco">
         <option value="10.26|80|caixa.gov.br">Caixa — 10,26% a.a. (até 80%)</option>
         <option value="11.49|80|bb.com.br">Banco do Brasil — 11,49% a.a. (até 80%)</option>
         <option value="11.60|80|itau.com.br">Itaú — 11,60% a.a. (até 80%)</option>
@@ -249,7 +249,7 @@ body{padding-top:56px}
         <option value="11.70|80|bradesco.com.br">Bradesco — 11,70% a.a. (até 80%)</option>
       </select></div>
     <div class="fg"><label class="fl">Prazo: <strong id="sim-prazo-lbl">360 meses (30 anos)</strong></label>
-      <input type="range" class="rng" id="sim-prazo" min="120" max="420" step="12" value="360" oninput="simPrazoLbl();simCalc()"></div>
+      <input type="range" class="rng" id="sim-prazo" min="120" max="420" step="12" value="360" oninput="simPrazoLbl();simCalc()" aria-label="Sim Prazo"></div>
     <div class="einfo" id="sim-entrada-info"></div>
   </div>
   <div class="calc-result">
@@ -368,7 +368,7 @@ body{padding-top:56px}
         <a href="/condominios/">Condomínios</a>
         <a href="/imoveis/">Imóveis</a>
         <a href="/lancamentos/">Lançamentos</a>
-        <a href="/contemplado-imoveis">Crédito Contemplado</a>
+        <a href="/contemplado-imoveis/">Crédito Contemplado</a>
         <a href="/financiamento-imobiliario/">Financiamento</a>
         <a href="/seguro-fianca/">Seguro Fiança</a>
         <a href="/refinanciamento-imobiliario/">Refinanciamento</a>

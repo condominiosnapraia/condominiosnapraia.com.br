@@ -317,24 +317,6 @@
 .dest-header .eyebrow{justify-content:center}
 </style>
 <style id="home-wave-and-editorial-polish">
-/* Ondas: contorno fino para uma transição mais natural entre superfícies */
-.sec-onda::before{
-  height:48px;
-  top:-1px;
-  border-top:0;
-  -webkit-filter:drop-shadow(0 -1px 0 rgba(18,63,83,.16));
-  filter:drop-shadow(0 -1px 0 rgba(18,63,83,.16));
-  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0 62 C180 104 350 18 530 50 C710 82 870 112 1045 58 C1210 20 1325 58 1440 38 L1440 120 L0 120 Z' fill='black'/%3E%3C/svg%3E");
-  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0 62 C180 104 350 18 530 50 C710 82 870 112 1045 58 C1210 20 1325 58 1440 38 L1440 120 L0 120 Z' fill='black'/%3E%3C/svg%3E");
-  -webkit-mask-repeat:no-repeat;
-  mask-repeat:no-repeat;
-  -webkit-mask-position:center;
-  mask-position:center;
-  -webkit-mask-size:100% 100%;
-  mask-size:100% 100%;
-}
-.hero-wave-svg{filter:drop-shadow(0 -1px 0 rgba(18,63,83,.16))}
-.ftr-wave{filter:drop-shadow(0 -1px 0 rgba(18,63,83,.16))}
 
 /* Títulos: nome principal grande e contexto em linha menor */
 .sectit-stacked{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center}
@@ -361,116 +343,35 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 .desk-header .dh-cta:hover{background:#f7eedf!important;border-color:#d9a83f;box-shadow:0 6px 16px rgba(13,75,98,.14)!important}
 .wpp-btn .mob-footer-ico{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(37,211,102,.10)}
 @media(max-width:600px){
-  .sec-onda::before{height:34px}
   .sectit-stacked .sectit-sub,.qfilter-title-stacked small,.viver-intro-title-stacked small{font-size:10px;letter-spacing:.16em}
   .desk-float-wpp{display:none!important}
   footer .ftr-wpp{padding:10px 14px;border-radius:9px}
 }
 </style>
 <style id="home-wave-color-alignment">
-/* Ondas: cada transição usa a cor da superfície que termina antes dela. */
-#lch-sec-sec.sec-onda::before{background:#fbf5eb!important}
-#sec-imoveis.sec-onda::before{background:#f5f7f2!important}
-#sec-apartamentos.sec-onda::before{background:#f3f8fa!important}
-#sec-fora-cond.sec-onda::before{background:#fffaf2!important}
-#sec-terrenos.sec-onda::before{background:#eef8f7!important}
-#sec-terrenos-fora.sec-onda::before{background:#fbfaf7!important}
-#qfilter2.sec-onda::before{background:#f3f8fa!important}
-#sec-condominios.sec-onda::before{background:#fbf5eb!important}
-#viver-intro-sec.sec-onda::before{background:#fffaf2!important}
-#cond-capao.sec-onda::before{background:#f1e7d5!important}
-#cond-xangri.sec-onda::before{background:#fffaf2!important}
-#cond-osorio.sec-onda::before{background:#f2fafb!important}
-#cond-maquine.sec-onda::before{background:#edf5f2!important}
-#qfilter.sec-onda::before{background:#f6f1e8!important}
-#pcred-sec-sec.sec-onda::before{background:#faf6ef!important}
-#guias-cidades.sec-onda::before{background:#fff!important}
-#guias-decisao.sec-onda::before{background:#faf6ef!important}
-#sec-blog-preview.sec-onda::before{background:#fff!important}
   /* Lagoa, Mar e Cidade: CTAs e etiquetas brancos, com leitura azul profunda. */
 .viv-editorial-card .viv-cta{background:#fff!important;color:#0d4b62!important;border:1px solid rgba(13,75,98,.22)!important;box-shadow:0 5px 14px rgba(13,75,98,.07)!important}
 .viv-editorial-card .viv-cta:hover{background:#f7eedf!important;color:#0d4b62!important;border-color:#d9a83f!important;box-shadow:0 8px 20px rgba(13,75,98,.12)!important}
 .viv-editorial-card .viv-cap{background:rgba(255,255,255,.94)!important;color:#0d4b62!important;border:1px solid rgba(217,168,63,.34)!important;box-shadow:0 4px 12px rgba(13,75,98,.08)}
 
 </style>
-<style id="home-wave-global-final">
-/* Sistema global final de transições: uma onda limpa, sem sombra, por seção. */
-.sec-onda{
-  position:relative!important;
-  overflow:visible!important;
-  border-top:0!important;
-  border-bottom:0!important;
-  padding-top:64px!important;
-}
-.sec-onda::before{
-  top:0!important;
-  height:34px!important;
-  border:0!important;
-  box-shadow:none!important;
-  filter:none!important;
-  -webkit-filter:none!important;
-  background:var(--wave-from,#fbf5eb)!important;
-}
-.sec-onda>*{position:relative;z-index:2}
-.qr-sec{border-top:0!important;border-bottom:0!important}
-/* A superfície seguinte começa com a cor exata da superfície anterior. */
-#lch-sec-sec{background:#eef3ec!important}
-#lch-sec-sec.sec-onda::before{--wave-from:#fbf5eb;background:#fbf5eb!important}
-#sec-imoveis{background:#f3f8fa!important}
-#sec-imoveis.sec-onda::before{--wave-from:#eef3ec;background:#eef3ec!important}
-#sec-apartamentos{background:#fffaf2!important}
-#sec-apartamentos.sec-onda::before{--wave-from:#f3f8fa;background:#f3f8fa!important}
-#sec-fora-cond{background:#eef8f7!important}
-#sec-fora-cond.sec-onda::before{--wave-from:#fffaf2;background:#fffaf2!important}
-#sec-terrenos{background:#fbfaf7!important}
-#sec-terrenos.sec-onda::before{--wave-from:#eef8f7;background:#eef8f7!important}
-#sec-terrenos-fora{background:#f3f8fa!important}
-#sec-terrenos-fora.sec-onda::before{--wave-from:#fbfaf7;background:#fbfaf7!important}
-#qfilter2{background:#fbf5eb!important}
-#qfilter2.sec-onda::before{--wave-from:#f3f8fa;background:#f3f8fa!important}
-#sec-condominios{background:#eef3ec!important}
-#sec-condominios.sec-onda::before{--wave-from:#fbf5eb;background:#fbf5eb!important}
-#viver-intro-sec{background:#fffaf2!important}
-#viver-intro-sec.sec-onda::before{--wave-from:#eef3ec;background:#eef3ec!important}
-#cond-capao{background:#f1e7d5!important}
-#cond-capao.sec-onda::before{--wave-from:#fffaf2;background:#fffaf2!important}
-#cond-xangri{background:#f6f1e8!important}
-#cond-xangri.sec-onda::before{--wave-from:#f1e7d5;background:#f1e7d5!important}
-#cond-osorio{background:#f2fafb!important}
-#cond-osorio.sec-onda::before{--wave-from:#f6f1e8;background:#f6f1e8!important}
-#cond-maquine{background:#edf5f2!important}
-#cond-maquine.sec-onda::before{--wave-from:#f2fafb;background:#f2fafb!important}
-#qfilter{background:#f6f1e8!important}
-#qfilter.sec-onda::before{--wave-from:#edf5f2;background:#edf5f2!important}
-#pcred-sec-sec{background:#faf6ef!important}
-#pcred-sec-sec.sec-onda::before{--wave-from:#f6f1e8;background:#f6f1e8!important}
-#guias-cidades{background:#fff!important}
-#guias-cidades.sec-onda::before{--wave-from:#faf6ef;background:#faf6ef!important}
-#guias-decisao{background:#faf6ef!important}
-#guias-decisao.sec-onda::before{--wave-from:#fff;background:#fff!important}
-#sec-blog-preview{background:#fff!important}
-#sec-blog-preview.sec-onda::before{--wave-from:#faf6ef;background:#faf6ef!important}
-@media(max-width:600px){
-  .sec-onda{padding-top:44px!important}
-  .sec-onda::before{height:28px!important}
-}
-</style>
-<style id="home-wave-professional-v2">
-/* Sistema profissional de divisórias: uma geometria única, sem camadas concorrentes. */
+
+<style id="home-wave-system-final">
+/* Um único sistema de divisórias: a onda recebe a cor da seção anterior. */
 .sec-onda{
   position:relative!important;
   overflow:visible!important;
   margin-top:0!important;
-  padding-top:46px!important;
+  padding-top:58px!important;
   border:0!important;
 }
 .sec-onda::before{
   content:""!important;
   position:absolute!important;
-  top:0!important;
+  top:-72px!important;
   left:0!important;
   right:0!important;
-  height:42px!important;
+  height:72px!important;
   z-index:1!important;
   pointer-events:none!important;
   border:0!important;
@@ -478,57 +379,56 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   filter:none!important;
   -webkit-filter:none!important;
   background:var(--wave-from,#fbf5eb)!important;
-  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 52 C170 82 330 24 510 48 C690 72 840 86 1030 48 C1200 16 1310 68 1440 40 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%!important;
-  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 52 C170 82 330 24 510 48 C690 72 840 86 1030 48 C1200 16 1310 68 1440 40 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%!important;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 48 C110 96 230 100 350 46 C470 -2 590 4 720 50 C850 98 970 102 1090 44 C1200 -4 1325 2 1440 46 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%!important;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 48 C110 96 230 100 350 46 C470 -2 590 4 720 50 C850 98 970 102 1090 44 C1200 -4 1325 2 1440 46 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%!important;
 }
 .sec-onda>*{position:relative;z-index:2}
-/* Mantém cada transição ligada à superfície que termina antes dela. */
-#lch-sec-sec.sec-onda::before{--wave-from:#fbf5eb}
-#sec-imoveis.sec-onda::before{--wave-from:#eef3ec}
-#sec-apartamentos.sec-onda::before{--wave-from:#f3f8fa}
-#sec-fora-cond.sec-onda::before{--wave-from:#fffaf2}
-#sec-terrenos.sec-onda::before{--wave-from:#eef8f7}
-#sec-terrenos-fora.sec-onda::before{--wave-from:#fbfaf7}
-#qfilter2.sec-onda::before{--wave-from:#f3f8fa}
-#sec-condominios.sec-onda::before{--wave-from:#fbf5eb}
-#viver-intro-sec.sec-onda::before{--wave-from:#eef3ec}
-#cond-capao.sec-onda::before{--wave-from:#fffaf2}
-#cond-xangri.sec-onda::before{--wave-from:#f1e7d5}
-#cond-osorio.sec-onda::before{--wave-from:#f6f1e8}
-#cond-maquine.sec-onda::before{--wave-from:#f2fafb}
-#qfilter.sec-onda::before{--wave-from:#edf5f2}
-#pcred-sec-sec.sec-onda::before{--wave-from:#f6f1e8}
-#guias-cidades.sec-onda::before{--wave-from:#faf6ef}
-#guias-decisao.sec-onda::before{--wave-from:#fff}
-#sec-blog-preview.sec-onda::before{--wave-from:#faf6ef}
-/* As cards Lagoa, Mar e Cidade são blocos editoriais contínuos: sem pseudo-ondas internas. */
+.hero-wave-svg{filter:none!important;-webkit-filter:none!important;height:64px!important}
 .viv-sec{position:relative!important;overflow:visible!important;margin-top:0!important}
 .viv-sec::before{content:none!important;display:none!important}
-.hero-wave-svg{filter:none!important;-webkit-filter:none!important;height:64px!important}
-@media(max-width:768px){
-  .sec-onda{padding-top:36px!important}
-  .hero-wave-svg{height:46px!important}
-}
-</style>
-<style id="home-wave-geometry-fix">
-/* Correção: a geometria anterior tinha pouca amplitude e era percebida como uma faixa horizontal. */
-.sec-onda::before{
-  top:-72px!important;
-  height:72px!important;
-  background:var(--wave-from,#fbf5eb)!important;
-  filter:none!important;
-  -webkit-filter:none!important;
-  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 48 C110 96 230 100 350 46 C470 -2 590 4 720 50 C850 98 970 102 1090 44 C1200 -4 1325 2 1440 46 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E")!important;
-  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 48 C110 96 230 100 350 46 C470 -2 590 4 720 50 C850 98 970 102 1090 44 C1200 -4 1325 2 1440 46 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E")!important;
-}
-  .sec-onda{padding-top:58px!important}
-/* A onda de Capão começa dentro da própria seção para não invadir o card Cidade. */
-#cond-capao.sec-onda::before{top:0!important;height:42px!important}
+#lch-sec-sec{background:#eef3ec!important}
+#lch-sec-sec.sec-onda::before{--wave-from:#fbf5eb}
+#sec-imoveis{background:#f3f8fa!important}
+#sec-imoveis.sec-onda::before{--wave-from:#eef3ec}
+#sec-apartamentos{background:#fffaf2!important}
+#sec-apartamentos.sec-onda::before{--wave-from:#f3f8fa}
+#sec-fora-cond{background:#eef8f7!important}
+#sec-fora-cond.sec-onda::before{--wave-from:#fffaf2}
+#sec-terrenos{background:#fbfaf7!important}
+#sec-terrenos.sec-onda::before{--wave-from:#eef8f7}
+#sec-terrenos-fora{background:#f3f8fa!important}
+#sec-terrenos-fora.sec-onda::before{--wave-from:#fbfaf7}
+#qfilter2{background:#fbf5eb!important}
+#qfilter2.sec-onda::before{--wave-from:#f3f8fa}
+#sec-condominios{background:#eef3ec!important}
+#sec-condominios.sec-onda::before{--wave-from:#fbf5eb}
+#viver-intro-sec{background:#fffaf2!important}
+#viver-intro-sec.sec-onda::before{--wave-from:#eef3ec}
+#cond-capao{background:#f1e7d5!important}
+#cond-capao.sec-onda::before{--wave-from:#fffaf2}
+#cond-xangri{background:#f6f1e8!important}
+#cond-xangri.sec-onda::before{--wave-from:#f1e7d5}
+#cond-osorio{background:#f2fafb!important}
+#cond-osorio.sec-onda::before{--wave-from:#f6f1e8}
+#cond-maquine{background:#edf5f2!important}
+#cond-maquine.sec-onda::before{--wave-from:#f2fafb}
+#qfilter{background:#f6f1e8!important}
+#qfilter.sec-onda::before{--wave-from:#edf5f2}
+#pcred-sec-sec{background:#faf6ef!important}
+#pcred-sec-sec.sec-onda::before{--wave-from:#f6f1e8}
+#guias-cidades{background:#fff!important}
+#guias-cidades.sec-onda::before{--wave-from:#faf6ef}
+#guias-decisao{background:#faf6ef!important}
+#guias-decisao.sec-onda::before{--wave-from:#fff}
+#sec-blog-preview{background:#fff!important}
+#sec-blog-preview.sec-onda::before{--wave-from:#faf6ef}
 @media(max-width:768px){
   .sec-onda{padding-top:44px!important}
   .sec-onda::before{top:-48px!important;height:48px!important}
+  .hero-wave-svg{height:46px!important}
   #cond-capao.sec-onda::before{top:0!important;height:32px!important}
 }
+#cond-capao.sec-onda::before{top:0!important;height:42px!important}
 </style>
 </head>
 <body>
@@ -624,7 +524,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
           <span class="navq-s">Financie até 90% do seu novo imóvel</span>
                   <span class="navq-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
-        <a class="navq-card" href="/contemplado-imoveis">
+        <a class="navq-card" href="/contemplado-imoveis/">
           <span class="navq-t">Crédito Contemplado</span>
           <span class="navq-s">A solução ideal para comprar seu imóvel</span>
                   <span class="navq-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -1313,7 +1213,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
             </div>
             <div class="fg"><label class="fl">E-mail</label><input class="fi" id="f-email" type="email" placeholder="Digite seu melhor e-mail"></div>
             <div class="fg"><label class="fl">Interesse</label>
-              <select class="fse" id="f-int">
+              <select class="fse" id="f-int" aria-label="Int">
                 <option value="">Selecione...</option>
                 <option>Comprar imóvel neste condomínio</option>
                 <option>Terreno para construir</option>
@@ -1323,7 +1223,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
               </select>
             </div>
             <div class="fg"><label class="fl">Faixa de Investimento</label>
-              <select class="fse" id="f-fx">
+              <select class="fse" id="f-fx" aria-label="Fx">
                 <option value="">Selecione...</option>
                 <option>Até R$ 500.000</option><option>R$ 500k – R$ 1M</option>
                 <option>R$ 1M – R$ 2M</option><option>R$ 2M – R$ 5M</option><option>Acima de R$ 5M</option>
@@ -1665,6 +1565,26 @@ const HOME_IMOV_SELECT = [
   'cond_taxa','descricao','diferenciais','seo_data','fotos','fotos_no_site','created_at'
 ].join(',');
 
+let _extrasPromise = null;
+async function carregarDadosExtras(){
+  if(window._dadosExtrasCarregados) return;
+  if(!_extrasPromise){
+    _extrasPromise = Promise.all([
+      sbSite.get('os_carrossel_home', '?select=slot,foto_url').catch(function(){ return []; }),
+      sbSite.get('os_capas_decisao', '?select=slug,foto_url').catch(function(){ return []; })
+    ]).then(function(result){
+      window._carrosselFotos = Array.isArray(result[0]) ? result[0] : [];
+      window._capasDecisao = Array.isArray(result[1]) ? result[1] : [];
+      window._dadosExtrasCarregados = true;
+    }).catch(function(){
+      window._carrosselFotos = [];
+      window._capasDecisao = [];
+      window._dadosExtrasCarregados = true;
+    });
+  }
+  return _extrasPromise;
+}
+
 async function fetchSiteData(){
   const now = Date.now();
   if(_siteCache && (now - _siteCacheTs) < SITE_CACHE_TTL) return _siteCache;
@@ -1672,18 +1592,18 @@ async function fetchSiteData(){
     // OTIMIZADO: 3 requisições em vez de 8 (todas as configs vêm juntas)
     const CHAVES = ['destaques_cond','destaques_imov','destaques_terreno','destaques_capao','destaques_xangri','site_config','turismo_config','fotos_site'];
     // TUDO em paralelo numa única leva (o navegador dispara todas juntas)
-    const [condominios, imoveis, cfgsRaw, carrosselFotos, capasDecisao] = await Promise.all([
+    const [condominios, imoveis, cfgsRaw] = await Promise.all([
       sbSite.get('condominios', `?ativo=eq.true&select=${encodeURIComponent(HOME_COND_SELECT)}&order=nome.asc`),
       sbSite.get('imoveis', `?status=eq.Disponível&publicar=eq.true&select=${encodeURIComponent(HOME_IMOV_SELECT)}&order=created_at.asc`),
-      sbSite.get('configuracoes', '?chave=in.(' + CHAVES.join(',') + ')&select=chave,valor'),
-      sbSite.get('os_carrossel_home', '?select=slot,foto_url').catch(function(){ return []; }),
-      sbSite.get('os_capas_decisao', '?select=slug,foto_url').catch(function(){ return []; }),
+      sbSite.get('configuracoes', '?chave=in.(' + CHAVES.join(',') + ')&select=chave,valor')
     ]);
+    const carrosselFotos = [];
+    const capasDecisao = [];
     // guardar para as funções usarem sem buscar de novo
     try{
       window._carrosselFotos = Array.isArray(carrosselFotos) ? carrosselFotos : [];
       window._capasDecisao   = Array.isArray(capasDecisao)   ? capasDecisao   : [];
-      window._dadosExtrasCarregados = true;   // marca que já buscou (mesmo se vier vazio)
+      window._dadosExtrasCarregados = false;  // extras são carregados sob demanda após a primeira pintura
       // mapa nome→slug dos condomínios (para a busca rápida abrir a página certa)
       window._condSlugMap = {};
       (condominios||[]).forEach(function(c){ if(c && c.nome) window._condSlugMap[c.nome] = c.slug || c.id; });
@@ -3043,9 +2963,8 @@ function initTodosCarrosseis(){
 // Carrega as fotos dos carrosséis (gerenciadas pelo CRM, tabela os_carrossel_home)
 async function carregarFotosCarrossel(){
   try{
-    const fotos = window._dadosExtrasCarregados
-      ? (window._carrosselFotos || [])
-      : await sbSite.get('os_carrossel_home','?select=slot,foto_url');
+    await carregarDadosExtras();
+    const fotos = window._carrosselFotos || [];
     // diagnóstico: veja no Console (F12) o que o banco devolveu
     try{ console.log('[fotos carrossel] recebido do banco:', fotos); }catch(_){}
     if(!Array.isArray(fotos)){ console.warn('[fotos carrossel] resposta NÃO é lista:', fotos); return; }
@@ -3079,9 +2998,8 @@ async function carregarCapasDecisao(){
   try{
     const grid=document.getElementById('decisao-grid');
     if(!grid) return;
-    const capas = window._dadosExtrasCarregados
-      ? (window._capasDecisao || [])
-      : await sbSite.get('os_capas_decisao','?select=slug,foto_url');
+    await carregarDadosExtras();
+    const capas = window._capasDecisao || [];
     if(!Array.isArray(capas)) return;
     const mapa={};
     capas.forEach(c=>{ if(c.slug && c.foto_url) mapa[c.slug]=c.foto_url; });
@@ -4076,7 +3994,7 @@ async function renderContempladasCards(targetId){
         <a href="/condominios/">Condomínios</a>
         <a href="/imoveis/">Imóveis</a>
         <a href="/lancamentos/">Lançamentos</a>
-        <a href="/contemplado-imoveis">Crédito Contemplado</a>
+        <a href="/contemplado-imoveis/">Crédito Contemplado</a>
         <a href="/financiamento-imobiliario/">Financiamento</a>
         <a href="/seguro-fianca/">Seguro Fiança</a>
         <a href="/refinanciamento-imobiliario/">Refinanciamento</a>

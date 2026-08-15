@@ -4,7 +4,15 @@
 
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SITE = 'https://condominiosnapraia.com.br';
-	const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+const PUBLIC_SLUG_ALIASES = {
+  'XAN-018': 'lote-a-venda-monaco-yacht-club-xangri-la',
+  'XAN-019': 'lote-a-venda-monaco-yacht-club-xangri-la-2'
+};
+function slugPublico(im) {
+  const codigo = String(im?.codigo || '').toUpperCase();
+  return PUBLIC_SLUG_ALIASES[codigo] || im.slug || im.codigo || im.id;
+}
+		const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 
 function esc(s) {
   return String(s || '')
@@ -28,7 +36,7 @@ export async function onRequest(context) {
     erroBusca = 'SUPABASE_ANON_KEY não configurada';
   } else {
     try {
-      const url = `${SB_URL}/rest/v1/imoveis?select=slug,codigo,updated_at,fotos_no_site,titulo,cidade_end,publicar,status&limit=2000`;
+      const url = `${SB_URL}/rest/v1/imoveis?select=id,slug,codigo,updated_at,fotos_no_site,titulo,cidade_end,publicar,status&limit=2000`;
       const r = await fetch(url, {
         headers: { apikey: key, Authorization: `Bearer ${key}` }
       });
@@ -46,7 +54,7 @@ export async function onRequest(context) {
   });
 
   const urls = validos.map(im => {
-    const ref = im.slug || im.codigo || im.id;
+    const ref = slugPublico(im);
     const loc = `${SITE}/imovel/${encodeURIComponent(ref)}/`;
       const data = im.updated_at;
     let lastmod = '';

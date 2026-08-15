@@ -966,7 +966,7 @@ if(_savedToken && _savedUser){
     <button class="tbb tbb-gh" onclick="backupJSON()" title="Salvar backup completo dos seus dados">💾 Backup</button>
     <button class="tbb tbb-gh" onclick="document.getElementById('restore-inp').click()" title="Restaurar dados de um backup anterior">📂 Restaurar</button>
     <button class="tbb" onclick="importarDadosIniciais()" title="Importar condomínios pré-cadastrados" style="background:#1a9e5c;color:#fff">⬇ Importar Dados</button>
-    <input type="file" id="restore-inp" accept=".json" style="display:none" onchange="restoreJSON(this)">
+    <input type="file" id="restore-inp" accept=".json" style="display:none" onchange="restoreJSON(this)" aria-label="Restore Inp">
     <button class="tbb tbb-gh" onclick="exportCSV()">📊 Excel</button>
     <button class="tbb tbb-gh" onclick="window.print()">🖨 PDF</button>
   </div>
@@ -1058,33 +1058,33 @@ if(_savedToken && _savedUser){
   <div class="tw">
     <div class="ttb" style="flex-wrap:wrap;gap:8px">
       <input class="sr" id="c-srch" placeholder="🔍 Buscar nome, cidade, amenidade..." oninput="rCond()" style="min-width:220px;flex:1">
-      <select class="fs" id="c-cid" onchange="rCond()">
+      <select class="fs" id="c-cid" onchange="rCond()" aria-label="C Cid">
         <option value="">Todas as cidades</option>
         <option>Xangri-lá</option><option>Capão da Canoa</option><option>Atlântida</option>
         <option>Curumim</option><option>Lagoa dos Quadros</option><option>Osório</option><option>Maquiné</option>
       </select>
-      <select class="fs" id="c-pad" onchange="rCond()">
+      <select class="fs" id="c-pad" onchange="rCond()" aria-label="C Pad">
         <option value="">Todos os padrões</option>
         <option>Luxo</option><option>Super Luxo</option><option>Alto Padrão</option><option>Médio Padrão</option>
       </select>
-      <select class="fs" id="c-tipo" onchange="rCond()">
+      <select class="fs" id="c-tipo" onchange="rCond()" aria-label="C Tipo">
         <option value="">Todos os tipos</option>
         <option>Fechado</option><option>Bairro Planejado</option><option>Resort</option><option>Club</option>
       </select>
-      <select class="fs" id="c-am" onchange="rCond()">
+      <select class="fs" id="c-am" onchange="rCond()" aria-label="C Am">
         <option value="">Todos os diferenciais</option>
         <option>Acesso à lagoa</option><option>Heliponto</option><option>Marina</option>
         <option>Campo de golf</option><option>Spa</option><option>Academia</option>
         <option>Piscina</option><option>Quadra</option><option>Segurança 24h</option>
         <option>Beira-mar</option><option>Acesso à praia</option>
       </select>
-      <select class="fs" id="c-ord" onchange="rCond()">
+      <select class="fs" id="c-ord" onchange="rCond()" aria-label="C Ord">
         <option value="az">Nome A→Z</option>
         <option value="za">Nome Z→A</option>
         <option value="imoveis">Mais imóveis</option>
         <option value="fotos">Mais fotos</option>
       </select>
-      <select class="fs" id="c-pub" onchange="rCond()">
+      <select class="fs" id="c-pub" onchange="rCond()" aria-label="C Pub">
         <option value="">Todos</option><option value="1">Publicado</option><option value="0">Oculto</option>
       </select>
       <span style="font-size:11px;color:var(--t3);white-space:nowrap" id="c-cnt"></span>
@@ -1098,7 +1098,7 @@ if(_savedToken && _savedUser){
   <div class="ph">
     <div><div class="pht">Imóveis</div><div class="phs" id="i-sub"></div></div>
     <div class="phr">
-      <select class="fs" id="i-view" onchange="rImV()"><option value="cards">Lista detalhada</option><option value="table">Tabela compacta</option></select>
+      <select class="fs" id="i-view" onchange="rImV()" aria-label="I View"><option value="cards">Lista detalhada</option><option value="table">Tabela compacta</option></select>
       <button class="btn bg" onclick="gerarCodigosEmMassa()" title="Gera código para imóveis que ainda não têm">🔢 Gerar Códigos</button>
       <button class="btn bg" onclick="abrirCadastroIA()">✨ Cadastrar com IA</button>
       <button class="btn bp" onclick="oMo('imov-mo');rImF()">+ Novo Imóvel</button>
@@ -1107,12 +1107,12 @@ if(_savedToken && _savedUser){
   <div class="chips" id="i-chips"></div>
   <div class="ttb">
     <input class="sr" id="i-srch" placeholder="🔍 Buscar por imóvel, cidade, bairro, proprietário..." oninput="rImV()">
-    <select class="fs" id="i-cf" onchange="rImV()"><option value="">Todos condomínios</option></select>
-    <select class="fs" id="i-lf" onchange="rImV()"><option value="">Todas localizações</option><option value="cond">Em condomínio</option><option value="fora">Fora de condomínio</option></select>
-    <select class="fs" id="i-sf" onchange="rImV()">
+    <select class="fs" id="i-cf" onchange="rImV()" aria-label="I Cf"><option value="">Todos condomínios</option></select>
+    <select class="fs" id="i-lf" onchange="rImV()" aria-label="I Lf"><option value="">Todas localizações</option><option value="cond">Em condomínio</option><option value="fora">Fora de condomínio</option></select>
+    <select class="fs" id="i-sf" onchange="rImV()" aria-label="I Sf">
       <option value="">Todos status</option><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option>
     </select>
-    <select class="fs" id="i-pf" onchange="rImV()">
+    <select class="fs" id="i-pf" onchange="rImV()" aria-label="I Pf">
       <option value="">Todos preços</option>
       <option value="0-500000">Até R$500k</option><option value="500000-1000000">R$500k–1M</option>
       <option value="1000000-2000000">R$1M–2M</option><option value="2000000-5000000">R$2M–5M</option>
@@ -1137,7 +1137,7 @@ if(_savedToken && _savedUser){
     <div class="fsec">1. Informações fornecidas pelo corretor</div>
     <textarea class="fta" id="ia-imovel-texto" rows="9" placeholder="Ex.: Casa à venda no Condomínio X, em Xangri-lá. 4 dormitórios, 3 suítes, 280 m², piscina, R$ 2.400.000, quadra 12 lote 08..."></textarea>
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px">
-      <label class="btn bg" style="cursor:pointer">📷 Adicionar fotos<input id="ia-imovel-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple style="display:none" onchange="iaSelecionarFotos(this.files)"></label>
+      <label class="btn bg" style="cursor:pointer">📷 Adicionar fotos<input id="ia-imovel-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple style="display:none" onchange="iaSelecionarFotos(this.files)" aria-label="Ia Imovel Fotos"></label>
       <span id="ia-fotos-status" style="font-size:12px;color:var(--t3)">Nenhuma foto selecionada</span>
       <button class="btn bp" id="ia-gerar-btn" onclick="iaGerarPreview()">Gerar prévia</button>
     </div>
@@ -1161,7 +1161,7 @@ if(_savedToken && _savedUser){
   <div class="tw">
     <div class="ttb">
       <input class="sr" id="p-srch" placeholder="🔍 Buscar..." oninput="rProp()">
-      <select class="fs" id="p-tf" onchange="rProp()">
+      <select class="fs" id="p-tf" onchange="rProp()" aria-label="P Tf">
         <option value="">PF e PJ</option><option value="PF">Pessoa Física</option><option value="PJ">Pessoa Jurídica</option>
       </select>
       <span style="margin-left:auto;font-size:11px;color:var(--t3)" id="p-cnt"></span>
@@ -1185,7 +1185,7 @@ if(_savedToken && _savedUser){
   <div class="tw">
     <div class="ttb">
       <input class="sr" id="cl-srch" placeholder="🔍 Buscar por nome, telefone, e-mail..." oninput="rClientes()">
-      <select class="fs" id="cl-fst" onchange="rClientes()">
+      <select class="fs" id="cl-fst" onchange="rClientes()" aria-label="Cl Fst">
         <option value="">Todos os status</option>
         <option value="Novo">Novo</option>
         <option value="Em Atendimento">Em Atendimento</option>
@@ -1194,8 +1194,8 @@ if(_savedToken && _savedUser){
         <option value="Fechado">Fechado</option>
         <option value="Perdido">Perdido</option>
       </select>
-      <select class="fs" id="cl-fci" onchange="rClientes()"><option value="">Todas as cidades</option></select>
-      <select class="fs" id="cl-fco" onchange="rClientes()"><option value="">Todos os corretores</option></select>
+      <select class="fs" id="cl-fci" onchange="rClientes()" aria-label="Cl Fci"><option value="">Todas as cidades</option></select>
+      <select class="fs" id="cl-fco" onchange="rClientes()" aria-label="Cl Fco"><option value="">Todos os corretores</option></select>
       <span style="margin-left:auto;font-size:11px;color:var(--t3)" id="cl-cnt"></span>
     </div>
     <table><thead><tr><th>Cliente</th><th>Contato</th><th>Interesse</th><th>Faixa de preço</th><th>Compatíveis</th><th>Status</th><th>Ações</th></tr></thead>
@@ -1213,7 +1213,7 @@ if(_savedToken && _savedUser){
     <div class="cl-imp-col">
       <div class="fsec">1. Cole o texto ou envie um arquivo</div>
       <div class="cl-drop" id="cl-drop" onclick="document.getElementById('cl-file').click()">
-        <input type="file" id="cl-file" accept=".xlsx,.xls,.csv,.txt,.pdf,.docx" style="display:none" onchange="clImpFile(this.files[0])">
+        <input type="file" id="cl-file" accept=".xlsx,.xls,.csv,.txt,.pdf,.docx" style="display:none" onchange="clImpFile(this.files[0])" aria-label="Cl File">
         <div class="cl-drop-ic">📄</div>
         <div><strong>Clique para enviar</strong> ou arraste um arquivo aqui</div>
         <div style="font-size:11px;color:var(--t3);margin-top:4px">Excel, CSV, TXT, PDF ou DOCX</div>
@@ -1357,10 +1357,10 @@ if(_savedToken && _savedUser){
   <div class="ph">
     <div><div class="pht">📋 Rastreio de Atividades</div><div class="phs" id="ativ-sub">Histórico completo do sistema</div></div>
     <div class="phr" style="gap:8px">
-      <select class="fs" id="ativ-user-f" onchange="buildAtividades()" style="min-width:160px">
+      <select class="fs" id="ativ-user-f" onchange="buildAtividades()" style="min-width:160px" aria-label="Ativ User F">
         <option value="">Todos os usuários</option>
       </select>
-      <select class="fs" id="ativ-acao-f" onchange="buildAtividades()">
+      <select class="fs" id="ativ-acao-f" onchange="buildAtividades()" aria-label="Ativ Acao F">
         <option value="">Todas as ações</option>
         <option value="criou">Criou</option>
         <option value="editou">Editou</option>
@@ -1391,7 +1391,7 @@ if(_savedToken && _savedUser){
     <div class="mb" style="display:flex;flex-direction:column;gap:12px">
       <div style="text-align:center">
         <div id="perfil-foto-wrap" onclick="document.getElementById('perfil-foto-inp').click()" style="width:80px;height:80px;border-radius:50%;background:#e0e0e0;margin:0 auto 8px;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:32px;border:2px solid var(--bd)">👤</div>
-        <input type="file" id="perfil-foto-inp" accept="image/*" style="display:none" onchange="perfilFotoUpload(this)">
+        <input type="file" id="perfil-foto-inp" accept="image/*" style="display:none" onchange="perfilFotoUpload(this)" aria-label="Perfil Foto Inp">
         <div style="font-size:11px;color:var(--t3)">Clique para alterar foto</div>
       </div>
       <div class="fg"><label class="fl">Nome completo *</label><input class="fi" id="perfil-nome" placeholder="Seu nome"></div>
@@ -1399,7 +1399,7 @@ if(_savedToken && _savedUser){
         <div class="fg"><label class="fl">Telefone</label><input class="fi" id="perfil-tel" placeholder="(51) 99999-9999"></div>
         <div class="fg"><label class="fl">CRECI</label><input class="fi" id="perfil-creci" placeholder="CRECI-RS 00000"></div>
       </div>
-      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="perfil-email" disabled style="opacity:.6"></div>
+      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="perfil-email" disabled style="opacity:.6" aria-label="Perfil Email"></div>
       <div style="border-top:1px solid var(--bd);padding-top:12px">
         <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:10px">🔑 Alterar Senha (opcional)</div>
         <div class="fg"><label class="fl">Nova senha</label><input class="fi" type="password" id="perfil-pass" placeholder="Deixe em branco para manter"></div>
@@ -1420,12 +1420,12 @@ if(_savedToken && _savedUser){
     </div>
     <div class="mb" style="display:flex;flex-direction:column;gap:12px">
       <input type="hidden" id="usu-id">
-      <div class="fg"><label class="fl">Nome</label><input class="fi" id="usu-nome" disabled style="opacity:.7"></div>
-      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="usu-email" disabled style="opacity:.7"></div>
+      <div class="fg"><label class="fl">Nome</label><input class="fi" id="usu-nome" disabled style="opacity:.7" aria-label="Usu Nome"></div>
+      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="usu-email" disabled style="opacity:.7" aria-label="Usu Email"></div>
       <div class="fgg">
-        <div class="fg"><label class="fl">CRECI</label><input class="fi" id="usu-creci" disabled style="opacity:.7"></div>
+        <div class="fg"><label class="fl">CRECI</label><input class="fi" id="usu-creci" disabled style="opacity:.7" aria-label="Usu Creci"></div>
         <div class="fg"><label class="fl">Perfil</label>
-          <select class="fse" id="usu-role">
+          <select class="fse" id="usu-role" aria-label="Usu Role">
             <option value="visualizador">Visualizador</option>
             <option value="consultor">Consultor</option>
             <option value="admin">Administrador</option>
@@ -1433,7 +1433,7 @@ if(_savedToken && _savedUser){
         </div>
       </div>
       <div class="fg"><label class="fl">Status</label>
-        <select class="fse" id="usu-ativo">
+        <select class="fse" id="usu-ativo" aria-label="Usu Ativo">
           <option value="1">✅ Ativo — pode acessar o CRM</option>
           <option value="0">🚫 Bloqueado — sem acesso</option>
         </select>
@@ -1459,7 +1459,7 @@ if(_savedToken && _savedUser){
       <div class="fgg">
         <div class="fg"><label class="fl">CRECI (opcional)</label><input class="fi" id="nu-creci" placeholder="CRECI"></div>
         <div class="fg"><label class="fl">Perfil</label>
-          <select class="fse" id="nu-role">
+          <select class="fse" id="nu-role" aria-label="Nu Role">
             <option value="consultor">Consultor</option>
             <option value="visualizador">Visualizador</option>
             <option value="admin">Administrador</option>
@@ -1494,14 +1494,14 @@ if(_savedToken && _savedUser){
       </div>
       <div>
         <label class="lb">Tipo de imóvel visto</label>
-        <select class="in" id="lf-tipo" onchange="rLeadsFotos()">
+        <select class="in" id="lf-tipo" onchange="rLeadsFotos()" aria-label="Tipo">
           <option value="">Todos</option>
           <option>Casa</option><option>Terreno</option><option>Apartamento</option><option>Cobertura</option>
         </select>
       </div>
       <div>
         <label class="lb">Suítes (mínimo)</label>
-        <select class="in" id="lf-suites" onchange="rLeadsFotos()">
+        <select class="in" id="lf-suites" onchange="rLeadsFotos()" aria-label="Suites">
           <option value="">Qualquer</option>
           <option value="2">2+</option><option value="3">3+</option>
           <option value="4">4+</option><option value="5">5+</option>
@@ -1509,7 +1509,7 @@ if(_savedToken && _savedUser){
       </div>
       <div>
         <label class="lb">Faixa de preço vista</label>
-        <select class="in" id="lf-preco" onchange="rLeadsFotos()">
+        <select class="in" id="lf-preco" onchange="rLeadsFotos()" aria-label="Preço">
           <option value="">Qualquer</option>
           <option value="0-500000">Até R$ 500 mil</option>
           <option value="500000-1000000">R$ 500 mil – 1 mi</option>
@@ -1520,7 +1520,7 @@ if(_savedToken && _savedUser){
       </div>
       <div>
         <label class="lb">Cidade vista</label>
-        <select class="in" id="lf-cidade" onchange="rLeadsFotos()">
+        <select class="in" id="lf-cidade" onchange="rLeadsFotos()" aria-label="Cidade">
           <option value="">Todas</option>
           <option>Xangri-lá</option><option>Capão da Canoa</option>
           <option>Osório</option><option>Maquiné</option>
@@ -1528,7 +1528,7 @@ if(_savedToken && _savedUser){
       </div>
       <div>
         <label class="lb">Status</label>
-        <select class="in" id="lf-status" onchange="rLeadsFotos()">
+        <select class="in" id="lf-status" onchange="rLeadsFotos()" aria-label="Status">
           <option value="">Todos</option>
           <option value="nao">Não contatado</option>
           <option value="sim">Já contatado</option>
@@ -1562,7 +1562,7 @@ if(_savedToken && _savedUser){
       </div>
       <div>
         <label class="lb">Canal</label>
-        <select class="in" id="lc-canal" onchange="rLeadsCampanha()">
+        <select class="in" id="lc-canal" onchange="rLeadsCampanha()" aria-label="Lc Canal">
           <option value="">Todos</option>
           <option value="google">Google</option>
           <option value="facebook">Facebook</option>
@@ -1572,13 +1572,13 @@ if(_savedToken && _savedUser){
       </div>
       <div>
         <label class="lb">Campanha</label>
-        <select class="in" id="lc-campanha" onchange="rLeadsCampanha()">
+        <select class="in" id="lc-campanha" onchange="rLeadsCampanha()" aria-label="Lc Campanha">
           <option value="">Todas</option>
         </select>
       </div>
       <div>
         <label class="lb">Status</label>
-        <select class="in" id="lc-status" onchange="rLeadsCampanha()">
+        <select class="in" id="lc-status" onchange="rLeadsCampanha()" aria-label="Lc Status">
           <option value="">Todos</option>
           <option value="novo">Novo</option>
           <option value="contatado">Contatado</option>
@@ -1589,7 +1589,7 @@ if(_savedToken && _savedUser){
       </div>
       <div>
         <label class="lb">Prazo de compra</label>
-        <select class="in" id="lc-prazo" onchange="rLeadsCampanha()">
+        <select class="in" id="lc-prazo" onchange="rLeadsCampanha()" aria-label="Lc Prazo">
           <option value="">Qualquer</option>
           <option>Imediatamente</option>
           <option>Nos próximos 3 meses</option>
@@ -1632,14 +1632,14 @@ if(_savedToken && _savedUser){
       </div>
       <div class="fg"><label class="fl">Cor da marca</label>
         <div style="display:flex;gap:8px;align-items:center">
-          <input type="color" id="adm-cor" value="#1a3a4a" oninput="admCorFromPicker()" style="width:44px;height:34px;border:1px solid var(--bd);border-radius:6px;cursor:pointer;padding:2px">
+          <input type="color" id="adm-cor" value="#1a3a4a" oninput="admCorFromPicker()" style="width:44px;height:34px;border:1px solid var(--bd);border-radius:6px;cursor:pointer;padding:2px" aria-label="Adm Cor">
           <input class="fi" id="adm-cor-hex" placeholder="#1a3a4a" oninput="admCorFromHex()" style="flex:1;font-family:monospace">
           <div id="adm-cor-prev" style="width:72px;height:34px;border-radius:6px;background:#1a3a4a;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800;font-family:monospace;flex-shrink:0">POR</div>
         </div>
       </div>
       <div class="fg"><label class="fl">Logo (PNG/JPG — aparece nos cards)</label>
         <div id="adm-logo-drop" onclick="document.getElementById('adm-logo-inp').click()" style="border:2px dashed var(--bd);border-radius:8px;padding:18px;text-align:center;cursor:pointer;transition:border .2s" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd)'">
-          <input type="file" id="adm-logo-inp" accept="image/*" style="display:none" onchange="admLogoUpload(this)">
+          <input type="file" id="adm-logo-inp" accept="image/*" style="display:none" onchange="admLogoUpload(this)" aria-label="Adm Logo Inp">
           <div id="adm-logo-prev-wrap">
             <div style="font-size:32px;margin-bottom:6px">📷</div>
             <div style="font-size:11px;color:var(--t3)">Clique para carregar logo</div>
@@ -1663,15 +1663,15 @@ if(_savedToken && _savedUser){
   <div class="tw">
     <div class="ttb" style="flex-wrap:wrap;gap:8px">
       <input class="sr" id="cont-srch" placeholder="🔍 Código, administradora..." oninput="buildContempladas()" style="min-width:180px;flex:1">
-      <select class="fs" id="cont-adm-f" onchange="buildContempladas()"><option value="">Todas as adm.</option></select>
-      <select class="fs" id="cont-val" onchange="buildContempladas()">
+      <select class="fs" id="cont-adm-f" onchange="buildContempladas()" aria-label="Cont Adm F"><option value="">Todas as adm.</option></select>
+      <select class="fs" id="cont-val" onchange="buildContempladas()" aria-label="Cont Val">
         <option value="">Qualquer valor</option>
         <option value="100000">Até R$ 100k</option>
         <option value="200000">Até R$ 200k</option>
         <option value="300000">Até R$ 300k</option>
         <option value="500000">Até R$ 500k</option>
       </select>
-      <select class="fs" id="cont-sort" onchange="buildContempladas()">
+      <select class="fs" id="cont-sort" onchange="buildContempladas()" aria-label="Cont Sort">
         <option value="menor">Menor crédito</option>
         <option value="maior">Maior crédito</option>
         <option value="parcela">Menor parcela</option>
@@ -1697,7 +1697,7 @@ if(_savedToken && _savedUser){
       <input type="hidden" id="carta-id">
       <div class="fgg">
         <div class="fg" style="flex:2"><label class="fl">Administradora *</label>
-          <select class="fse" id="carta-adm-sel"><option value="">Selecione...</option></select>
+          <select class="fse" id="carta-adm-sel" aria-label="Carta Adm Sel"><option value="">Selecione...</option></select>
         </div>
         <div class="fg"><label class="fl">Código</label><input class="fi" id="carta-cod" placeholder="CI-0001"></div>
       </div>
@@ -1716,14 +1716,14 @@ if(_savedToken && _savedUser){
       <div class="fgg">
         <div class="fg"><label class="fl">Transferência (R$)</label><input class="fi" type="text" inputmode="numeric" id="carta-transf" placeholder="Ex: R$ 1.100,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
         <div class="fg"><label class="fl">Destaque</label>
-          <select class="fse" id="carta-dest"><option value="0">Não</option><option value="1">⭐ Sim</option></select>
+          <select class="fse" id="carta-dest" aria-label="Carta Dest"><option value="0">Não</option><option value="1">⭐ Sim</option></select>
         </div>
       </div>
       <div class="fg"><label class="fl">Observação</label><textarea class="fta" id="carta-obs" rows="2" placeholder="Informações adicionais..."></textarea></div>
     </div>
   </div>
 </div>
-<input type="file" id="cont-xls-inp" accept=".xlsx,.xls" style="display:none" onchange="contProcessXls(this)">
+<input type="file" id="cont-xls-inp" accept=".xlsx,.xls" style="display:none" onchange="contProcessXls(this)" aria-label="Cont Xls Inp">
 
 <!-- BLOG -->
 <div class="panel" id="panel-blog">
@@ -1764,18 +1764,18 @@ if(_savedToken && _savedUser){
       <div class="fg"><label class="fl">Link da página (URL)</label><input class="fi" id="lanc-url" placeholder="Ex: /condominio-alegro-curumim"></div>
       <div class="fg"><label class="fl">Foto de capa</label>
         <div class="fdrop" onclick="document.getElementById('lanc-foto-inp').click()" style="padding:14px;cursor:pointer">
-          <input type="file" id="lanc-foto-inp" accept="image/*" style="display:none" onchange="lancFotoUpload(this)">
+          <input type="file" id="lanc-foto-inp" accept="image/*" style="display:none" onchange="lancFotoUpload(this)" aria-label="Lanc Foto Inp">
           <div id="lanc-foto-prev">📸 Clique para adicionar foto de capa</div>
         </div>
       </div>
       <div class="fg"><label class="fl">🗺 Mapa de implantação (PDF)</label>
         <div class="fdrop" onclick="document.getElementById('lanc-pdf-inp').click()" style="padding:14px;cursor:pointer">
-          <input type="file" id="lanc-pdf-inp" accept="application/pdf,.pdf" style="display:none" onchange="lancPdfUpload(this)">
+          <input type="file" id="lanc-pdf-inp" accept="application/pdf,.pdf" style="display:none" onchange="lancPdfUpload(this)" aria-label="Lanc Pdf Inp">
           <div id="lanc-pdf-prev">📄 Clique para enviar o PDF do mapa de implantação</div>
         </div>
         <div style="font-size:12px;color:var(--t3);margin-top:6px">O PDF aparece na página do empreendimento, em alta resolução. Sobe direto para o Storage.</div>
       </div>
-      <div class="fg"><label class="fl">Status</label><select class="fi" id="lanc-ativo"><option value="true">Ativo (visível no site)</option><option value="false">Inativo (oculto)</option></select></div>
+      <div class="fg"><label class="fl">Status</label><select class="fi" id="lanc-ativo" aria-label="Lanc Ativo"><option value="true">Ativo (visível no site)</option><option value="false">Inativo (oculto)</option></select></div>
       <div id="lanc-galeria-wrap" style="display:none;margin-top:18px;border-top:1px solid var(--border);padding-top:16px">
         <div style="font-weight:600;color:var(--t1);margin-bottom:4px">🖼 Galeria de fotos da página</div>
         <div style="font-size:12px;color:var(--t3);margin-bottom:14px">Cada espaço abaixo corresponde a uma foto na página do empreendimento. Clique para enviar a imagem de cada ambiente.</div>
@@ -1804,18 +1804,18 @@ if(_savedToken && _savedUser){
       <div class="fg"><label class="fl">Título do Artigo *</label><input class="fi" id="post-titulo" placeholder="Ex: Santorini: O primeiro bairro planejado de Xangri-lá"></div>
       <div class="fgg">
         <div class="fg"><label class="fl">Categoria</label>
-          <select class="fse" id="post-cat">
+          <select class="fse" id="post-cat" aria-label="Post Cat">
             <option>Notícias</option><option>Mercado Imobiliário</option><option>Turismo</option><option>Condomínios</option><option>Investimento</option><option>Dicas</option>
           </select>
         </div>
-        <div class="fg"><label class="fl">Data</label><input class="fi" type="date" id="post-data"></div>
+        <div class="fg"><label class="fl">Data</label><input class="fi" type="date" id="post-data" aria-label="Post Data"></div>
         <div class="fg"><label class="fl">Autor</label><input class="fi" id="post-autor" placeholder="Equipe Condomínios na Praia"></div>
       </div>
       <div class="fg"><label class="fl">Resumo</label><textarea class="fta" id="post-resumo" rows="2" placeholder="Breve descrição do artigo..."></textarea></div>
       <div class="fg">
         <label class="fl">Foto de Capa</label>
         <div class="fdrop" onclick="document.getElementById('post-capa-inp').click()" style="padding:14px">
-          <input type="file" id="post-capa-inp" accept="image/*" style="display:none" onchange="postCapaUpload(this)">
+          <input type="file" id="post-capa-inp" accept="image/*" style="display:none" onchange="postCapaUpload(this)" aria-label="Post Capa Inp">
           <div id="post-capa-prev">📸 Clique para adicionar foto de capa</div>
         </div>
       </div>
@@ -1829,14 +1829,14 @@ if(_savedToken && _savedUser){
             <button class="btn bg bsm" onclick="postFmt('h3')">H3</button>
             <button class="btn bg bsm" onclick="postFmt('br')">¶</button>
             <button class="btn bg bsm" onclick="postImgInsert()">📸 Foto</button>
-            <input type="file" id="post-img-inp" accept="image/*" style="display:none" onchange="postImgUpload(this)">
+            <input type="file" id="post-img-inp" accept="image/*" style="display:none" onchange="postImgUpload(this)" aria-label="Post Img Inp">
           </div>
           <textarea class="fta" id="post-corpo" rows="14" placeholder="Escreva o conteúdo do artigo aqui...&#10;&#10;## Para título secundário use ## no início da linha&#10;### Para subtítulo use ###&#10;**negrito** e _itálico_" style="border:none;border-radius:0"></textarea>
         </div>
       </div>
       <div class="fg"><label class="fl">Tags (separadas por vírgula)</label><input class="fi" id="post-tags" placeholder="Xangri-lá, condomínio, bairro planejado"></div>
       <div class="fg"><label class="fl">Status</label>
-        <select class="fse" id="post-pub"><option value="1">✓ Publicado</option><option value="0">◯ Rascunho</option></select>
+        <select class="fse" id="post-pub" aria-label="Post Pub"><option value="1">✓ Publicado</option><option value="0">◯ Rascunho</option></select>
       </div>
     </div>
   </div>
@@ -1953,42 +1953,42 @@ if(_savedToken && _savedUser){
           <div class="ed-color-item">
             <label class="fl">Cor Principal (Ocean)</label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input type="color" id="ed-c-ocean" value="#1a3a4a" oninput="edColorPreview()" class="ed-color-input">
+              <input type="color" id="ed-c-ocean" value="#1a3a4a" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Ocean">
               <input class="fi" id="ed-c-ocean-hex" value="#1a3a4a" placeholder="#1a3a4a" oninput="syncColorPicker('ed-c-ocean','ed-c-ocean-hex');edColorPreview()" style="font-family:monospace">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Cor de Destaque (Gold)</label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input type="color" id="ed-c-gold" value="#b8935a" oninput="edColorPreview()" class="ed-color-input">
+              <input type="color" id="ed-c-gold" value="#b8935a" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Gold">
               <input class="fi" id="ed-c-gold-hex" value="#b8935a" placeholder="#b8935a" oninput="syncColorPicker('ed-c-gold','ed-c-gold-hex');edColorPreview()" style="font-family:monospace">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Cor Gold Light</label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input type="color" id="ed-c-gl" value="#d4aa72" oninput="edColorPreview()" class="ed-color-input">
+              <input type="color" id="ed-c-gl" value="#d4aa72" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Gl">
               <input class="fi" id="ed-c-gl-hex" value="#d4aa72" placeholder="#d4aa72" oninput="syncColorPicker('ed-c-gl','ed-c-gl-hex');edColorPreview()" style="font-family:monospace">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Fundo Geral (White)</label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input type="color" id="ed-c-bg" value="#fdfcfa" oninput="edColorPreview()" class="ed-color-input">
+              <input type="color" id="ed-c-bg" value="#fdfcfa" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Bg">
               <input class="fi" id="ed-c-bg-hex" value="#fdfcfa" placeholder="#fdfcfa" oninput="syncColorPicker('ed-c-bg','ed-c-bg-hex');edColorPreview()" style="font-family:monospace">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Fundo Areia (Sand Light)</label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input type="color" id="ed-c-sl" value="#f5f0e8" oninput="edColorPreview()" class="ed-color-input">
+              <input type="color" id="ed-c-sl" value="#f5f0e8" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Sl">
               <input class="fi" id="ed-c-sl-hex" value="#f5f0e8" placeholder="#f5f0e8" oninput="syncColorPicker('ed-c-sl','ed-c-sl-hex');edColorPreview()" style="font-family:monospace">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Texto Principal</label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input type="color" id="ed-c-text" value="#1a1a1a" oninput="edColorPreview()" class="ed-color-input">
+              <input type="color" id="ed-c-text" value="#1a1a1a" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Text">
               <input class="fi" id="ed-c-text-hex" value="#1a1a1a" placeholder="#1a1a1a" oninput="syncColorPicker('ed-c-text','ed-c-text-hex');edColorPreview()" style="font-family:monospace">
             </div>
           </div>
@@ -2071,7 +2071,7 @@ if(_savedToken && _savedUser){
           <div class="ed-section">Card de Turismo na Página Inicial</div>
           <div class="fg"><label class="fl">Tag</label><input class="fi" id="ed-tur-tag" placeholder="🌊 Guia Completo" oninput="edPreview()"></div>
           <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-tit" placeholder="Turismo em Xangri-Lá e Capão da Canoa" oninput="edPreview()"></div>
-          <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-tur-desc" rows="3" oninput="edPreview()"></textarea></div>
+          <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-tur-desc" rows="3" oninput="edPreview()" aria-label="Ed Tur Desc"></textarea></div>
           <div class="fg"><label class="fl">Texto do Botão</label><input class="fi" id="ed-tur-cta" placeholder="Explorar o Guia" oninput="edPreview()"></div>
         </div>
         <div class="ed-preview-col">
@@ -2090,7 +2090,7 @@ if(_savedToken && _savedUser){
       <div class="ed-section">Hero da Página de Turismo</div>
       <div class="fg"><label class="fl">Tag de localização</label><input class="fi" id="ed-tur-hero-tag" placeholder="📍 Litoral Norte Gaúcho"></div>
       <div class="fgg"><div class="fg"><label class="fl">Parte fixa do título</label><input class="fi" id="ed-tur-h1-pre" placeholder="Turismo em"></div><div class="fg"><label class="fl">Parte em itálico</label><input class="fi" id="ed-tur-h1" placeholder="Xangri-Lá"></div></div>
-      <div class="fg"><label class="fl">Subtítulo</label><textarea class="fta" id="ed-tur-sub" rows="3"></textarea></div>
+      <div class="fg"><label class="fl">Subtítulo</label><textarea class="fta" id="ed-tur-sub" rows="3" aria-label="Ed Tur Sub"></textarea></div>
       <div class="ed-section">Chips de Navegação</div>
       <div class="fgg"><div class="fg"><label class="fl">Chip 1</label><input class="fi" id="ed-tur-chip1" placeholder="🏖 Balneários"></div><div class="fg"><label class="fl">Chip 2</label><input class="fi" id="ed-tur-chip2" placeholder="📜 História"></div><div class="fg"><label class="fl">Chip 3</label><input class="fi" id="ed-tur-chip3" placeholder="🌊 Praias"></div><div class="fg"><label class="fl">Chip 4</label><input class="fi" id="ed-tur-chip4" placeholder="📊 Dados"></div><div class="fg"><label class="fl">Chip 5</label><input class="fi" id="ed-tur-chip5" placeholder="🏘 Imóveis"></div></div>
     </div>
@@ -2098,8 +2098,8 @@ if(_savedToken && _savedUser){
     <div class="tur-sub-panel" id="tsp-2">
       <div class="ed-section">Seção Balneários</div>
       <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-bal-tit" placeholder="Balneários de Xangri-Lá"></div>
-      <div class="fg"><label class="fl">Texto introdutório</label><textarea class="fta" id="ed-tur-bal-intro" rows="3"></textarea></div>
-      <div class="fg"><label class="fl">Texto complementar</label><textarea class="fta" id="ed-tur-bal-txt" rows="3"></textarea></div>
+      <div class="fg"><label class="fl">Texto introdutório</label><textarea class="fta" id="ed-tur-bal-intro" rows="3" aria-label="Ed Tur Bal Intro"></textarea></div>
+      <div class="fg"><label class="fl">Texto complementar</label><textarea class="fta" id="ed-tur-bal-txt" rows="3" aria-label="Ed Tur Bal Txt"></textarea></div>
       <div class="ed-section">Lista de Balneários (um por linha)</div>
       <div class="fg"><textarea class="fta" id="ed-tur-bal-list" rows="12" placeholder="Arpoador&#10;Atlântida&#10;Centro&#10;Guará&#10;Marina&#10;Maristela&#10;Noiva do Mar&#10;Praia dos Coqueiros&#10;Rainha do Mar&#10;Remanso"></textarea></div>
     </div>
@@ -2107,23 +2107,23 @@ if(_savedToken && _savedUser){
     <div class="tur-sub-panel" id="tsp-3">
       <div class="ed-section">Seção História e Origem do Nome</div>
       <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-hist-tit" placeholder="A história por trás do nome Xangri-Lá"></div>
-      <div class="fg"><label class="fl">Parágrafo 1</label><textarea class="fta" id="ed-tur-hist-p1" rows="4"></textarea></div>
-      <div class="fg"><label class="fl">Parágrafo 2</label><textarea class="fta" id="ed-tur-hist-p2" rows="3"></textarea></div>
+      <div class="fg"><label class="fl">Parágrafo 1</label><textarea class="fta" id="ed-tur-hist-p1" rows="4" aria-label="Ed Tur Hist P1"></textarea></div>
+      <div class="fg"><label class="fl">Parágrafo 2</label><textarea class="fta" id="ed-tur-hist-p2" rows="3" aria-label="Ed Tur Hist P2"></textarea></div>
       <div class="ed-section">Etimologia</div>
       <div class="fgg"><div class="fg"><label class="fl">Palavra 1</label><input class="fi" id="ed-tur-etym1" placeholder="Xangri"></div><div class="fg"><label class="fl">Significado 1</label><input class="fi" id="ed-tur-etym1d" placeholder="secreto"></div></div>
       <div class="fgg"><div class="fg"><label class="fl">Palavra 2</label><input class="fi" id="ed-tur-etym2" placeholder="Lá"></div><div class="fg"><label class="fl">Significado 2</label><input class="fi" id="ed-tur-etym2d" placeholder="desfiladeiro"></div></div>
       <div class="fg"><label class="fl">Nota final</label><input class="fi" id="ed-tur-hist-nota" placeholder="A pessoa nascida em Xangri-Lá é denominada xangrilense."></div>
       <div class="ed-section">Cards Laterais</div>
-      <div class="fgg"><div class="fg"><label class="fl">Card 1 — Ícone</label><input class="fi" id="ed-tur-card1-ico" placeholder="📖"></div><div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-card1-tit" placeholder='"Horizonte Perdido"'></div><div class="fg"><label class="fl">Sub</label><input class="fi" id="ed-tur-card1-sub" placeholder="James Hilton, 1933"></div></div>
-      <div class="fg"><label class="fl">Card 1 — Descrição</label><textarea class="fta" id="ed-tur-card1-desc" rows="2"></textarea></div>
+      <div class="fgg"><div class="fg"><label class="fl">Card 1 — Ícone</label><input class="fi" id="ed-tur-card1-ico" placeholder="📖"></div><div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-card1-tit" placeholder='"Horizonte Perdido"' aria-label="Ed Tur Card1 Tit"></div><div class="fg"><label class="fl">Sub</label><input class="fi" id="ed-tur-card1-sub" placeholder="James Hilton, 1933"></div></div>
+      <div class="fg"><label class="fl">Card 1 — Descrição</label><textarea class="fta" id="ed-tur-card1-desc" rows="2" aria-label="Ed Tur Card1 Desc"></textarea></div>
       <div class="fgg"><div class="fg"><label class="fl">Card 2 — Ícone</label><input class="fi" id="ed-tur-card2-ico" placeholder="🕊"></div><div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-card2-tit" placeholder="Lugar de paz e harmonia"></div><div class="fg"><label class="fl">Sub</label><input class="fi" id="ed-tur-card2-sub" placeholder="Significado original"></div></div>
-      <div class="fg"><label class="fl">Card 2 — Descrição</label><textarea class="fta" id="ed-tur-card2-desc" rows="2"></textarea></div>
+      <div class="fg"><label class="fl">Card 2 — Descrição</label><textarea class="fta" id="ed-tur-card2-desc" rows="2" aria-label="Ed Tur Card2 Desc"></textarea></div>
     </div>
 
     <div class="tur-sub-panel" id="tsp-4">
       <div class="ed-section">Seção Praias</div>
       <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-praias-tit" placeholder="5 praias imperdíveis de Capão da Canoa e Xangri-Lá"></div>
-      <div class="fg"><label class="fl">Texto introdutório</label><textarea class="fta" id="ed-tur-praias-intro" rows="3"></textarea></div>
+      <div class="fg"><label class="fl">Texto introdutório</label><textarea class="fta" id="ed-tur-praias-intro" rows="3" aria-label="Ed Tur Praias Intro"></textarea></div>
       <div class="ed-section">Praias (clique + para adicionar)</div>
       <div id="tur-praias-list"></div>
       <button class="btn bg bsm" onclick="addTurPraia()" style="margin-top:10px">+ Adicionar Praia</button>
@@ -2132,13 +2132,13 @@ if(_savedToken && _savedUser){
     <div class="tur-sub-panel" id="tsp-5">
       <div class="ed-section">Seção Desenvolvimento / Dados</div>
       <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-dados-tit" placeholder="Qualidade de vida e desenvolvimento"></div>
-      <div class="fg"><label class="fl">Texto introdutório</label><textarea class="fta" id="ed-tur-dados-intro" rows="3"></textarea></div>
+      <div class="fg"><label class="fl">Texto introdutório</label><textarea class="fta" id="ed-tur-dados-intro" rows="3" aria-label="Ed Tur Dados Intro"></textarea></div>
       <div class="fg"><label class="fl">Fonte</label><input class="fi" id="ed-tur-dados-fonte" placeholder="Fonte: IBGE"></div>
       <div class="ed-section">Cards de Estatísticas</div>
-      <div class="fgg"><div class="fg"><label class="fl">Stat 1 — Número</label><input class="fi" id="ed-ts1-num" placeholder="7º"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts1-desc" rows="2"></textarea></div></div>
-      <div class="fgg"><div class="fg"><label class="fl">Stat 2 — Número</label><input class="fi" id="ed-ts2-num" placeholder="3º"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts2-desc" rows="2"></textarea></div></div>
-      <div class="fgg"><div class="fg"><label class="fl">Stat 3 — Número</label><input class="fi" id="ed-ts3-num" placeholder="23"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts3-desc" rows="2"></textarea></div></div>
-      <div class="fgg"><div class="fg"><label class="fl">Stat 4 — Número</label><input class="fi" id="ed-ts4-num" placeholder="↑"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts4-desc" rows="2"></textarea></div></div>
+      <div class="fgg"><div class="fg"><label class="fl">Stat 1 — Número</label><input class="fi" id="ed-ts1-num" placeholder="7º"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts1-desc" rows="2" aria-label="Ed Ts1 Desc"></textarea></div></div>
+      <div class="fgg"><div class="fg"><label class="fl">Stat 2 — Número</label><input class="fi" id="ed-ts2-num" placeholder="3º"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts2-desc" rows="2" aria-label="Ed Ts2 Desc"></textarea></div></div>
+      <div class="fgg"><div class="fg"><label class="fl">Stat 3 — Número</label><input class="fi" id="ed-ts3-num" placeholder="23"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts3-desc" rows="2" aria-label="Ed Ts3 Desc"></textarea></div></div>
+      <div class="fgg"><div class="fg"><label class="fl">Stat 4 — Número</label><input class="fi" id="ed-ts4-num" placeholder="↑"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts4-desc" rows="2" aria-label="Ed Ts4 Desc"></textarea></div></div>
     </div>
 
     <div class="tur-sub-panel" id="tsp-6">
@@ -2153,7 +2153,7 @@ if(_savedToken && _savedUser){
       <div class="ed-section">📸 Fotos da Página de Turismo</div>
       <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:14px">Primeira foto = fundo do Hero. As demais aparecem em galeria na página.</div>
       <div class="fdrop" onclick="document.getElementById('tur-foto-inp').click()">
-        <input type="file" id="tur-foto-inp" multiple accept="image/*,.heic,.heif,.webp" style="display:none" onchange="addTurFoto(this)">
+        <input type="file" id="tur-foto-inp" multiple accept="image/*,.heic,.heif,.webp" style="display:none" onchange="addTurFoto(this)" aria-label="Tur Foto Inp">
         <div>📷 Clique para adicionar fotos do turismo</div>
       </div>
       <div class="fgrid" id="tur-foto-grid" style="margin-top:12px"></div>
@@ -2162,11 +2162,11 @@ if(_savedToken && _savedUser){
     <div class="tur-sub-panel" id="tsp-8">
       <div class="ed-section">CTA Final da Página de Turismo</div>
       <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-cta-tit" placeholder="Quer investir ou morar em Xangri-Lá?"></div>
-      <div class="fg"><label class="fl">Subtítulo</label><textarea class="fta" id="ed-tur-cta-sub" rows="3"></textarea></div>
+      <div class="fg"><label class="fl">Subtítulo</label><textarea class="fta" id="ed-tur-cta-sub" rows="3" aria-label="Ed Tur Cta Sub"></textarea></div>
       <div class="fgg"><div class="fg"><label class="fl">Botão WhatsApp</label><input class="fi" id="ed-tur-cta-btn1" placeholder="💬 Falar no WhatsApp"></div><div class="fg"><label class="fl">Botão Condomínios</label><input class="fi" id="ed-tur-cta-btn2" placeholder="Ver Condomínios →"></div></div>
       <div class="ed-section">Seção Qualidade de Vida</div>
       <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-qual-tit" placeholder="Invista no litoral gaúcho"></div>
-      <div class="fg"><label class="fl">Texto</label><textarea class="fta" id="ed-tur-qual-txt" rows="4"></textarea></div>
+      <div class="fg"><label class="fl">Texto</label><textarea class="fta" id="ed-tur-qual-txt" rows="4" aria-label="Ed Tur Qual Txt"></textarea></div>
     </div>
 
   </div>
@@ -2177,7 +2177,7 @@ if(_savedToken && _savedUser){
       <div class="ed-form-col">
         <div class="ed-section">Rodapé</div>
         <div class="fg"><label class="fl">Nome da Empresa</label><input class="fi" id="ed-rod-nome" placeholder="Condomínios na Praia" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">Tagline / Descrição</label><textarea class="fta" id="ed-rod-tag" rows="2" oninput="edPreview()"></textarea></div>
+        <div class="fg"><label class="fl">Tagline / Descrição</label><textarea class="fta" id="ed-rod-tag" rows="2" oninput="edPreview()" aria-label="Ed Rod Tag"></textarea></div>
         <div class="fg"><label class="fl">Domínio exibido</label><input class="fi" id="ed-rod-dom" placeholder="www.condominiosnapraia.com.br" oninput="edPreview()"></div>
         <div class="fg"><label class="fl">Copyright (ano)</label><input class="fi" id="ed-rod-copy" placeholder="© 2025 Condomínios na Praia. Todos os direitos reservados." oninput="edPreview()"></div>
         <div class="ed-section">Logo (sub-texto)</div>
@@ -2209,28 +2209,28 @@ if(_savedToken && _savedUser){
       <div class="fgg">
         <div class="fg">
           <label class="fl">Texto principal</label>
-          <input class="fi" id="wm-text" value="Condomínios na Praia" oninput="wmPreview()">
+          <input class="fi" id="wm-text" value="Condomínios na Praia" oninput="wmPreview()" aria-label="Wm Text">
         </div>
         <div class="fg">
           <label class="fl">Texto secundário (site)</label>
-          <input class="fi" id="wm-site" value="condominiosnapraia.com.br" oninput="wmPreview()">
+          <input class="fi" id="wm-site" value="condominiosnapraia.com.br" oninput="wmPreview()" aria-label="Wm Site">
         </div>
       </div>
       <div class="fgg fgg3" style="margin-top:4px">
         <div class="fg">
           <label class="fl">Opacidade (0.1 a 1.0)</label>
-          <input class="fi" id="wm-opacity" type="number" value="0.3" min="0.1" max="1" step="0.05" oninput="wmPreview()">
+          <input class="fi" id="wm-opacity" type="number" value="0.3" min="0.1" max="1" step="0.05" oninput="wmPreview()" aria-label="Wm Opacity">
         </div>
         <div class="fg">
           <label class="fl">Estilo</label>
-          <select class="fse" id="wm-repeat" onchange="wmPreview()">
+          <select class="fse" id="wm-repeat" onchange="wmPreview()" aria-label="Wm Repeat">
             <option value="0" selected>Central + canto</option>
             <option value="1">Repetida em diagonal</option>
           </select>
         </div>
         <div class="fg">
           <label class="fl">Cor do texto</label>
-          <select class="fse" id="wm-color" onchange="wmPreview()">
+          <select class="fse" id="wm-color" onchange="wmPreview()" aria-label="Wm Color">
             <option value="white">Branco (para fotos escuras)</option>
             <option value="black">Preto (para fotos claras)</option>
           </select>
@@ -2249,7 +2249,7 @@ if(_savedToken && _savedUser){
       <div class="ed-img-card">
         <div class="ed-img-label">Logo / Ícone do Site (Favicon)</div>
         <div class="ed-img-drop" id="ed-favicon-drop" onclick="document.getElementById('ed-favicon-inp').click()">
-          <input type="file" id="ed-favicon-inp" accept="image/png,image/ico,image/svg+xml" style="display:none" onchange="edImgUpload(this,'favicon')">
+          <input type="file" id="ed-favicon-inp" accept="image/png,image/ico,image/svg+xml" style="display:none" onchange="edImgUpload(this,'favicon')" aria-label="Ed Favicon Inp">
           <div class="ed-img-drop-ico" id="ed-favicon-prev">🌐</div>
           <div>Clique para adicionar favicon</div>
           <div style="font-size:11px;color:var(--t3);margin-top:3px">PNG 32x32 ou SVG recomendado</div>
@@ -2259,7 +2259,7 @@ if(_savedToken && _savedUser){
       <div class="ed-img-card">
         <div class="ed-img-label">Imagem de Compartilhamento (Open Graph)</div>
         <div class="ed-img-drop" id="ed-og-drop" onclick="document.getElementById('ed-og-inp').click()">
-          <input type="file" id="ed-og-inp" accept="image/*" style="display:none" onchange="edImgUpload(this,'og')">
+          <input type="file" id="ed-og-inp" accept="image/*" style="display:none" onchange="edImgUpload(this,'og')" aria-label="Ed Og Inp">
           <div id="ed-og-prev" style="font-size:32px;margin-bottom:8px">📸</div>
           <div>Foto que aparece ao compartilhar no WhatsApp</div>
           <div style="font-size:11px;color:var(--t3);margin-top:3px">Recomendado: 1200x630px</div>
@@ -2269,7 +2269,7 @@ if(_savedToken && _savedUser){
       <div class="ed-img-card" style="grid-column:1/-1">
         <div class="ed-img-label">Foto de Fundo do Hero (opcional — substitui o gradiente)</div>
         <div class="ed-img-drop" id="ed-hero-drop" onclick="document.getElementById('ed-hero-inp').click()">
-          <input type="file" id="ed-hero-inp" accept="image/*" style="display:none" onchange="edImgUpload(this,'heroBg')">
+          <input type="file" id="ed-hero-inp" accept="image/*" style="display:none" onchange="edImgUpload(this,'heroBg')" aria-label="Ed Hero Inp">
           <div id="ed-hero-prev" style="font-size:32px;margin-bottom:8px">🖼</div>
           <div>Clique para adicionar foto de fundo do Hero</div>
           <div style="font-size:11px;color:var(--t3);margin-top:3px">Recomendado: 1920x1080px · JPG ou WEBP</div>
@@ -2285,48 +2285,48 @@ if(_savedToken && _savedUser){
     <div class="ed-grid">
       <div class="ed-form-col">
         <div class="ed-section">Cabeçalho da Seção</div>
-        <div class="fg"><label class="fl">Badge (ex: 💳 Crédito Contemplado)</label><input class="fi" id="ct-ed-badge" oninput="ctPreview()"></div>
-        <div class="fg"><label class="fl">Título (parte normal)</label><input class="fi" id="ct-ed-title" oninput="ctPreview()"></div>
-        <div class="fg"><label class="fl">Título (parte em destaque verde)</label><input class="fi" id="ct-ed-title-em" oninput="ctPreview()"></div>
-        <div class="fg"><label class="fl">Subtítulo</label><textarea class="fta" id="ct-ed-sub" rows="2" oninput="ctPreview()"></textarea></div>
+        <div class="fg"><label class="fl">Badge (ex: 💳 Crédito Contemplado)</label><input class="fi" id="ct-ed-badge" oninput="ctPreview()" aria-label="Ct Ed Badge"></div>
+        <div class="fg"><label class="fl">Título (parte normal)</label><input class="fi" id="ct-ed-title" oninput="ctPreview()" aria-label="Ct Ed Title"></div>
+        <div class="fg"><label class="fl">Título (parte em destaque verde)</label><input class="fi" id="ct-ed-title-em" oninput="ctPreview()" aria-label="Ct Ed Title Em"></div>
+        <div class="fg"><label class="fl">Subtítulo</label><textarea class="fta" id="ct-ed-sub" rows="2" oninput="ctPreview()" aria-label="Ct Ed Sub"></textarea></div>
         <div class="fg"><label class="fl">Link do botão principal</label><input class="fi" id="ct-ed-link" placeholder="https://rzncontempladas.manus.space/"></div>
-        <div class="fg"><label class="fl">Texto do botão</label><input class="fi" id="ct-ed-btn" oninput="ctPreview()"></div>
+        <div class="fg"><label class="fl">Texto do botão</label><input class="fi" id="ct-ed-btn" oninput="ctPreview()" aria-label="Ct Ed Btn"></div>
 
         <div class="ed-section" style="margin-top:20px">Card 1</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Ícone</label><input class="fi" id="ct-ed-ico-1" style="font-size:20px"></div>
-          <div class="fg"><label class="fl">Tipo</label><input class="fi" id="ct-ed-tipo-1"></div>
+          <div class="fg"><label class="fl">Ícone</label><input class="fi" id="ct-ed-ico-1" style="font-size:20px" aria-label="Ct Ed Ico 1"></div>
+          <div class="fg"><label class="fl">Tipo</label><input class="fi" id="ct-ed-tipo-1" aria-label="Ct Ed Tipo 1"></div>
         </div>
-        <div class="fg"><label class="fl">Título</label><input class="fi" id="ct-ed-ctitle-1"></div>
+        <div class="fg"><label class="fl">Título</label><input class="fi" id="ct-ed-ctitle-1" aria-label="Ct Ed Ctitle 1"></div>
         <div class="fgg">
           <div class="fg"><label class="fl">Valor</label><input class="fi" id="ct-ed-val-1" placeholder="Até R$ 500 mil"></div>
           <div class="fg"><label class="fl">Taxa</label><input class="fi" id="ct-ed-taxa-1" placeholder="a partir de 11% ao ano"></div>
         </div>
-        <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ct-ed-desc-1" rows="2"></textarea></div>
+        <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ct-ed-desc-1" rows="2" aria-label="Ct Ed Desc 1"></textarea></div>
 
         <div class="ed-section" style="margin-top:20px">Card 2</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Ícone</label><input class="fi" id="ct-ed-ico-2" style="font-size:20px"></div>
-          <div class="fg"><label class="fl">Tipo</label><input class="fi" id="ct-ed-tipo-2"></div>
+          <div class="fg"><label class="fl">Ícone</label><input class="fi" id="ct-ed-ico-2" style="font-size:20px" aria-label="Ct Ed Ico 2"></div>
+          <div class="fg"><label class="fl">Tipo</label><input class="fi" id="ct-ed-tipo-2" aria-label="Ct Ed Tipo 2"></div>
         </div>
-        <div class="fg"><label class="fl">Título</label><input class="fi" id="ct-ed-ctitle-2"></div>
+        <div class="fg"><label class="fl">Título</label><input class="fi" id="ct-ed-ctitle-2" aria-label="Ct Ed Ctitle 2"></div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Valor</label><input class="fi" id="ct-ed-val-2"></div>
-          <div class="fg"><label class="fl">Taxa</label><input class="fi" id="ct-ed-taxa-2"></div>
+          <div class="fg"><label class="fl">Valor</label><input class="fi" id="ct-ed-val-2" aria-label="Ct Ed Val 2"></div>
+          <div class="fg"><label class="fl">Taxa</label><input class="fi" id="ct-ed-taxa-2" aria-label="Ct Ed Taxa 2"></div>
         </div>
-        <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ct-ed-desc-2" rows="2"></textarea></div>
+        <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ct-ed-desc-2" rows="2" aria-label="Ct Ed Desc 2"></textarea></div>
 
         <div class="ed-section" style="margin-top:20px">Card 3</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Ícone</label><input class="fi" id="ct-ed-ico-3" style="font-size:20px"></div>
-          <div class="fg"><label class="fl">Tipo</label><input class="fi" id="ct-ed-tipo-3"></div>
+          <div class="fg"><label class="fl">Ícone</label><input class="fi" id="ct-ed-ico-3" style="font-size:20px" aria-label="Ct Ed Ico 3"></div>
+          <div class="fg"><label class="fl">Tipo</label><input class="fi" id="ct-ed-tipo-3" aria-label="Ct Ed Tipo 3"></div>
         </div>
-        <div class="fg"><label class="fl">Título</label><input class="fi" id="ct-ed-ctitle-3"></div>
+        <div class="fg"><label class="fl">Título</label><input class="fi" id="ct-ed-ctitle-3" aria-label="Ct Ed Ctitle 3"></div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Valor</label><input class="fi" id="ct-ed-val-3"></div>
-          <div class="fg"><label class="fl">Taxa</label><input class="fi" id="ct-ed-taxa-3"></div>
+          <div class="fg"><label class="fl">Valor</label><input class="fi" id="ct-ed-val-3" aria-label="Ct Ed Val 3"></div>
+          <div class="fg"><label class="fl">Taxa</label><input class="fi" id="ct-ed-taxa-3" aria-label="Ct Ed Taxa 3"></div>
         </div>
-        <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ct-ed-desc-3" rows="2"></textarea></div>
+        <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ct-ed-desc-3" rows="2" aria-label="Ct Ed Desc 3"></textarea></div>
 
         <div style="margin-top:20px">
           <button class="btn bs" onclick="ctSave()">💾 Salvar Contempladas</button>
@@ -2392,7 +2392,7 @@ if(_savedToken && _savedUser){
       <div class="fgg">
         <div class="fg fgf"><label class="fl">Nome *</label><input class="fi" id="cm-nome" placeholder="Ex: Santorini Bairro Planejado" oninput="cmSlugPreview()"></div>
         <div class="fg"><label class="fl">Cidade *</label>
-          <select class="fse" id="cm-cid" onchange="cmSlugPreview()"><option value="">Selecione...</option>
+          <select class="fse" id="cm-cid" onchange="cmSlugPreview()" aria-label="Cid"><option value="">Selecione...</option>
             <option>Xangri-lá</option><option>Capão da Canoa</option><option>Atlântida</option>
             <option>Curumim</option><option>Lagoa dos Quadros</option><option>Osório</option><option>Maquiné</option><option>Torres</option></select></div>
         <div class="fg"><label class="fl">Bairro</label><input class="fi" id="cm-bairro" placeholder="Bairro / localização"></div>
@@ -2406,11 +2406,11 @@ if(_savedToken && _savedUser){
         <div class="fg"><label class="fl">Incorporadora</label><input class="fi" id="cm-inc" placeholder="Ex: Cyrela"></div>
         <div class="fg"><label class="fl">Ano Entrega</label><input class="fi" id="cm-ano" type="number" placeholder="2024"></div>
         <div class="fg"><label class="fl">Padrão</label>
-          <select class="fse" id="cm-pad"><option>Alto Padrão</option><option>Luxo</option><option>Super Luxo</option><option>Médio Padrão</option></select></div>
+          <select class="fse" id="cm-pad" aria-label="Pad"><option>Alto Padrão</option><option>Luxo</option><option>Super Luxo</option><option>Médio Padrão</option></select></div>
         <div class="fg"><label class="fl">Tipo</label>
-          <select class="fse" id="cm-tipo"><option>Fechado</option><option>Bairro Planejado</option><option>Resort</option><option>Marina</option><option>Club</option></select></div>
+          <select class="fse" id="cm-tipo" aria-label="Tipo"><option>Fechado</option><option>Bairro Planejado</option><option>Resort</option><option>Marina</option><option>Club</option></select></div>
         <div class="fg"><label class="fl">Perfil (localização) *</label>
-          <select class="fse" id="cm-perfil"><option value="">Selecione...</option><option value="mar">🌊 Beira-mar</option><option value="lagoa">🦢 Beira da lagoa</option><option value="cidade">🏙️ Cidade / Centro</option></select></div>
+          <select class="fse" id="cm-perfil" aria-label="Perfil"><option value="">Selecione...</option><option value="mar">🌊 Beira-mar</option><option value="lagoa">🦢 Beira da lagoa</option><option value="cidade">🏙️ Cidade / Centro</option></select></div>
       </div>
     </div>
 
@@ -2525,7 +2525,7 @@ if(_savedToken && _savedUser){
     <div class="cm-pane" data-cmpane="midia">
       <div class="fsec">Fotos</div>
       <div class="fdrop" onclick="document.getElementById('cfi').click()">
-        <input type="file" id="cfi" multiple accept="image/*,.heic,.heif,.webp" onchange="addF(this,'c')">
+        <input type="file" id="cfi" multiple accept="image/*,.heic,.heif,.webp" onchange="addF(this,'c')" aria-label="Cfi">
         <div>📷 Clique para adicionar fotos</div>
         <div style="font-size:11px;color:var(--t3);margin-top:3px">Primeira foto = capa · digite o número em "Ordem" para reposicionar</div>
       </div>
@@ -2544,15 +2544,15 @@ if(_savedToken && _savedUser){
       <div class="fsec">Status &amp; Publicação</div>
       <div class="fgg">
         <div class="fg"><label class="fl">Publicar no Site</label>
-          <select class="fse" id="cm-pub"><option value="1">Sim</option><option value="0">Não</option></select></div>
+          <select class="fse" id="cm-pub" aria-label="Pub"><option value="1">Sim</option><option value="0">Não</option></select></div>
       </div>
       <div class="fsec" style="margin-top:16px">Linkagem Interna</div>
       <div class="gen-box">💡 Relacione este condomínio a outros e a artigos do blog para fortalecer os links internos e o SEO.</div>
       <div class="fg fgf"><label class="fl">Condomínios Relacionados</label>
-        <select class="fse" id="cm-rel-cond" multiple size="4" style="height:auto"></select>
+        <select class="fse" id="cm-rel-cond" multiple size="4" style="height:auto" aria-label="Rel Cond"></select>
         <div style="font-size:10px;color:var(--t3);margin-top:3px">Ctrl/Cmd + clique para selecionar vários</div></div>
       <div class="fg fgf"><label class="fl">Artigos Relacionados (Blog)</label>
-        <select class="fse" id="cm-rel-art" multiple size="4" style="height:auto"></select></div>
+        <select class="fse" id="cm-rel-art" multiple size="4" style="height:auto" aria-label="Rel Art"></select></div>
       <div class="fsec" style="margin-top:16px">Deploy</div>
       <div class="gen-box" id="cm-deploy-box">Ao salvar, o site é atualizado no Supabase. Para regenerar as páginas estáticas (SSG) imediatamente, dispare o Deploy Hook.
         <br><button type="button" class="gen-btn" onclick="dispararDeploy()" style="background:var(--cy)">🚀 Disparar Deploy Hook</button>
@@ -2595,13 +2595,13 @@ if(_savedToken && _savedUser){
       <div class="fgg">
         <div class="fg fgf"><label class="fl">Título / Chamada *</label><input class="fi" id="im-tit" placeholder="Ex: Casa 3 suítes vista mar — Viva o melhor do litoral"></div>
         <div class="fg"><label class="fl">Finalidade *</label>
-          <select class="fse" id="im-final"><option value="venda">Venda</option><option value="locacao">Locação</option><option value="temporada">Temporada</option></select></div>
+          <select class="fse" id="im-final" aria-label="Final"><option value="venda">Venda</option><option value="locacao">Locação</option><option value="temporada">Temporada</option></select></div>
         <div class="fg"><label class="fl">Categoria / Tipo *</label>
-          <select class="fse" id="im-tipo"><option>Casa Térrea</option><option>Sobrado</option><option>Apartamento</option><option>Lote</option><option>Cobertura</option><option>Duplex</option><option>Kitnet</option><option>Galpão</option><option>Outro</option></select></div>
+          <select class="fse" id="im-tipo" aria-label="Tipo"><option>Casa Térrea</option><option>Sobrado</option><option>Apartamento</option><option>Lote</option><option>Cobertura</option><option>Duplex</option><option>Kitnet</option><option>Galpão</option><option>Outro</option></select></div>
         <div class="fg"><label class="fl">Código do Imóvel</label><input class="fi" id="im-codigo" placeholder="Gerado automaticamente (ex: XAN-001)" readonly style="background:#eef9fa;font-weight:700;color:#0d3b54"></div>
         <div class="fg"><label class="fl">Referência Interna</label><input class="fi" id="im-ref" placeholder="Ex: COND-001, REF-2025"></div>
         <div class="fg"><label class="fl">Status *</label>
-          <select class="fse" id="im-st"><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option></select></div>
+          <select class="fse" id="im-st" aria-label="St"><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option></select></div>
       </div>
       <div class="fsec">Endereço</div>
       <div style="grid-column:1/-1;margin:2px 0 10px">
@@ -2610,7 +2610,7 @@ if(_savedToken && _savedUser){
         </label>
       </div>
       <div class="fgg">
-        <div class="fg" id="wrap-im-cond"><label class="fl">Condomínio *</label><select class="fse" id="im-cond"><option value="">Selecione...</option></select></div>
+        <div class="fg" id="wrap-im-cond"><label class="fl">Condomínio *</label><select class="fse" id="im-cond" aria-label="Condomínio"><option value="">Selecione...</option></select></div>
         <div class="fg" id="wrap-im-quadra"><label class="fl">Quadra *</label><input class="fi" id="im-quadra" placeholder="Ex: Quadra B"></div>
         <div class="fg" id="wrap-im-lote"><label class="fl">Lote *</label><input class="fi" id="im-lote" placeholder="Ex: Lote 42-A"></div>
         <div class="fg"><label class="fl">CEP</label><input class="fi" id="im-cep" placeholder="95000-000"></div>
@@ -2651,9 +2651,9 @@ if(_savedToken && _savedUser){
       <div class="fgg fgg3">
         <div class="fg"><label class="fl">Posição / Andar</label><input class="fi" id="im-and" placeholder="Ex: 3º andar, Térreo"></div>
         <div class="fg"><label class="fl">Orientação Solar</label>
-          <select class="fse" id="im-sol"><option value="">—</option><option>Nascente</option><option>Poente</option><option>Norte</option><option>Sul</option><option>Frente ao Mar</option></select></div>
+          <select class="fse" id="im-sol" aria-label="Sol"><option value="">—</option><option>Nascente</option><option>Poente</option><option>Norte</option><option>Sul</option><option>Frente ao Mar</option></select></div>
         <div class="fg"><label class="fl">Vista</label>
-          <select class="fse" id="im-vista"><option value="">—</option><option>Vista para o Mar</option><option>Vista para Lagoa</option><option>Vista para a Piscina</option><option>Vista para Jardim</option><option>Sem Vista Especial</option></select></div>
+          <select class="fse" id="im-vista" aria-label="Vista"><option value="">—</option><option>Vista para o Mar</option><option>Vista para Lagoa</option><option>Vista para a Piscina</option><option>Vista para Jardim</option><option>Sem Vista Especial</option></select></div>
         <div class="fg"><label class="fl">Fachada</label><input class="fi" id="im-fachada" placeholder="Ex: Contemporânea, Clássica"></div>
         <div class="fg"><label class="fl">Ano de Construção</label><input class="fi" id="im-ano-const" type="number" placeholder="2022"></div>
         <div class="fg"><label class="fl">Total de Pavimentos</label><input class="fi" id="im-pavimentos" type="number" placeholder="2"></div>
@@ -2696,7 +2696,7 @@ if(_savedToken && _savedUser){
       <div class="fgg">
         <div class="fg"><label class="fl">Proprietário *</label>
           <div style="display:flex;gap:8px;align-items:center">
-            <select class="fse" id="im-prop" style="flex:1"><option value="">Selecione...</option></select>
+            <select class="fse" id="im-prop" style="flex:1" aria-label="Proprietário"><option value="">Selecione...</option></select>
             <button type="button" class="btn bp" onclick="novoPropDoImovel()" style="white-space:nowrap;padding:10px 14px" title="Cadastrar novo proprietário sem sair daqui">+ Novo</button>
           </div>
         </div>
@@ -2708,9 +2708,9 @@ if(_savedToken && _savedUser){
         <div class="fg"><label class="fl">Código da Incorporação</label><input class="fi" id="im-cod-inc" placeholder="Ex: 01"></div>
         <div class="fg"><label class="fl">Cartório</label><input class="fi" id="im-cart" placeholder="1º CRI Osório"></div>
         <div class="fg"><label class="fl">Situação Documental</label>
-          <select class="fse" id="im-doc"><option>Regular</option><option>Em regularização</option><option>Pendente</option></select></div>
+          <select class="fse" id="im-doc" aria-label="Doc"><option>Regular</option><option>Em regularização</option><option>Pendente</option></select></div>
         <div class="fg"><label class="fl">Habite-se</label>
-          <select class="fse" id="im-hab"><option>Possui</option><option>Em processo</option><option>Não possui</option></select></div>
+          <select class="fse" id="im-hab" aria-label="Hab"><option>Possui</option><option>Em processo</option><option>Não possui</option></select></div>
       </div>
     </div>
   </div>
@@ -2724,9 +2724,9 @@ if(_savedToken && _savedUser){
       <div class="fsec" style="margin-top:16px">Publicação</div>
       <div class="fgg">
         <div class="fg"><label class="fl">Publicar no Site</label>
-          <select class="fse" id="im-pub"><option value="1">Sim</option><option value="0">Não</option></select></div>
+          <select class="fse" id="im-pub" aria-label="Pub"><option value="1">Sim</option><option value="0">Não</option></select></div>
         <div class="fg" style="display:none">
-          <select class="fse" id="im-destaque"><option value="0">Normal</option><option value="1">⭐ Destaque</option></select></div>
+          <select class="fse" id="im-destaque" aria-label="Destaque"><option value="0">Normal</option><option value="1">⭐ Destaque</option></select></div>
       </div>
     </div>
   </div>
@@ -2739,7 +2739,7 @@ if(_savedToken && _savedUser){
         📷 A <strong>primeira foto</strong> será a capa do imóvel. Adicione fotos de todos os ambientes. Recomendado: mínimo 5 fotos.
       </div>
       <div class="fdrop" onclick="document.getElementById('ifi').click()">
-        <input type="file" id="ifi" multiple accept="image/*,.heic,.heif,.webp" onchange="addF(this,'i')">
+        <input type="file" id="ifi" multiple accept="image/*,.heic,.heif,.webp" onchange="addF(this,'i')" aria-label="Ifi">
         <div style="font-size:18px;margin-bottom:6px">📷</div>
         <div>Clique para adicionar fotos</div>
         <div style="font-size:11px;color:var(--t3);margin-top:4px">JPG, PNG, WEBP — Primeira = capa</div>
@@ -2798,11 +2798,11 @@ if(_savedToken && _savedUser){
     <div class="fgg">
       <div class="fg fgf"><label class="fl">Nome / Razão Social *</label><input class="fi" id="pm-nome" placeholder="Nome completo"></div>
       <div class="fg"><label class="fl">Tipo</label>
-        <select class="fse" id="pm-tipo" onchange="tDL()"><option value="PF">Pessoa Física</option><option value="PJ">Pessoa Jurídica</option></select></div>
+        <select class="fse" id="pm-tipo" onchange="tDL()" aria-label="Pm Tipo"><option value="PF">Pessoa Física</option><option value="PJ">Pessoa Jurídica</option></select></div>
       <div class="fg"><label class="fl" id="pm-dl">CPF</label><input class="fi" id="pm-doc" placeholder="000.000.000-00"></div>
       <div class="fg"><label class="fl">RG</label><input class="fi" id="pm-rg" placeholder="00.000.000-0"></div>
       <div class="fg"><label class="fl">Estado Civil</label>
-        <select class="fse" id="pm-ec"><option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option><option>Viúvo(a)</option><option>União Estável</option></select></div>
+        <select class="fse" id="pm-ec" aria-label="Pm Ec"><option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option><option>Viúvo(a)</option><option>União Estável</option></select></div>
       <div class="fg"><label class="fl">Profissão</label><input class="fi" id="pm-prof" placeholder="Ex: Empresário"></div>
     </div>
     <div class="fsec">Contato</div>
@@ -2829,9 +2829,9 @@ if(_savedToken && _savedUser){
     <input type="hidden" id="nm-id">
     <div class="fgg">
       <div class="fg fgf"><label class="fl">Cliente / Interessado *</label><input class="fi" id="nm-cli" placeholder="Nome do potencial comprador"></div>
-      <div class="fg"><label class="fl">Imóvel *</label><select class="fse" id="nm-imov"><option value="">Selecione...</option></select></div>
+      <div class="fg"><label class="fl">Imóvel *</label><select class="fse" id="nm-imov" aria-label="Nm Imov"><option value="">Selecione...</option></select></div>
       <div class="fg"><label class="fl">Etapa</label>
-        <select class="fse" id="nm-et">
+        <select class="fse" id="nm-et" aria-label="Nm Et">
           <option value="lead">Lead</option><option value="contato">Em Contato</option>
           <option value="visita">Visita</option><option value="proposta">Proposta</option>
           <option value="fechado">Fechado ✓</option><option value="perdido">Perdido ✗</option>
@@ -2857,13 +2857,13 @@ if(_savedToken && _savedUser){
     <div class="fgg">
       <div class="fg fgf"><label class="fl">Título *</label><input class="fi" id="em-tit" placeholder="Ex: Visita Santorini Lote 12"></div>
       <div class="fg"><label class="fl">Tipo</label>
-        <select class="fse" id="em-tipo">
+        <select class="fse" id="em-tipo" aria-label="Em Tipo">
           <option value="visita">🏠 Visita</option><option value="followup">📞 Follow-up</option>
           <option value="reuniao">🤝 Reunião</option><option value="ligacao">📱 Ligação</option></select></div>
-      <div class="fg"><label class="fl">Data *</label><input class="fi" id="em-data" type="date"></div>
-      <div class="fg"><label class="fl">Horário</label><input class="fi" id="em-hora" type="time" value="09:00"></div>
+      <div class="fg"><label class="fl">Data *</label><input class="fi" id="em-data" type="date" aria-label="Em Data"></div>
+      <div class="fg"><label class="fl">Horário</label><input class="fi" id="em-hora" type="time" value="09:00" aria-label="Em Hora"></div>
       <div class="fg"><label class="fl">Cliente</label><input class="fi" id="em-cli" placeholder="Nome do cliente"></div>
-      <div class="fg"><label class="fl">Imóvel</label><select class="fse" id="em-imov"><option value="">Nenhum</option></select></div>
+      <div class="fg"><label class="fl">Imóvel</label><select class="fse" id="em-imov" aria-label="Em Imov"><option value="">Nenhum</option></select></div>
       <div class="fg fgf"><label class="fl">Observações</label><textarea class="fta" id="em-obs" rows="2" placeholder="Detalhes..."></textarea></div>
     </div>
   </div>
@@ -2881,11 +2881,11 @@ if(_savedToken && _savedUser){
     <input type="hidden" id="hm-pid">
     <div class="fgg">
       <div class="fg"><label class="fl">Tipo</label>
-        <select class="fse" id="hm-tipo">
+        <select class="fse" id="hm-tipo" aria-label="Hm Tipo">
           <option>📞 Ligação</option><option>💬 WhatsApp</option><option>📧 E-mail</option>
           <option>🏠 Visita</option><option>🤝 Reunião</option><option>📝 Outro</option>
         </select></div>
-      <div class="fg"><label class="fl">Data</label><input class="fi" id="hm-data" type="date"></div>
+      <div class="fg"><label class="fl">Data</label><input class="fi" id="hm-data" type="date" aria-label="Hm Data"></div>
       <div class="fg fgf"><label class="fl">Anotação *</label><textarea class="fta" id="hm-nota" rows="4" placeholder="O que foi tratado..."></textarea></div>
     </div>
   </div>
@@ -2910,18 +2910,18 @@ if(_savedToken && _savedUser){
       <div class="fg"><label class="fl">Cidade</label><input class="fi" id="clm-cidade" placeholder="Xangri-lá"></div>
       <div class="fg"><label class="fl">Bairro</label><input class="fi" id="clm-bairro" placeholder="Centro"></div>
       <div class="fg"><label class="fl">Origem</label>
-        <select class="fse" id="clm-origem"><option value="">—</option><option>Site</option><option>Indicação</option><option>WhatsApp</option><option>Portal Imobiliário</option><option>Redes Sociais</option><option>Anúncio</option><option>Outro</option></select></div>
-      <div class="fg"><label class="fl">Corretor responsável</label><select class="fse" id="clm-corretor"><option value="">—</option></select></div>
+        <select class="fse" id="clm-origem" aria-label="Clm Origem"><option value="">—</option><option>Site</option><option>Indicação</option><option>WhatsApp</option><option>Portal Imobiliário</option><option>Redes Sociais</option><option>Anúncio</option><option>Outro</option></select></div>
+      <div class="fg"><label class="fl">Corretor responsável</label><select class="fse" id="clm-corretor" aria-label="Clm Corretor"><option value="">—</option></select></div>
       <div class="fg"><label class="fl">Status</label>
-        <select class="fse" id="clm-status"><option>Novo</option><option>Em Atendimento</option><option>Visita</option><option>Proposta</option><option>Fechado</option><option>Perdido</option></select></div>
+        <select class="fse" id="clm-status" aria-label="Clm Status"><option>Novo</option><option>Em Atendimento</option><option>Visita</option><option>Proposta</option><option>Fechado</option><option>Perdido</option></select></div>
     </div>
     <div class="fsec">Interesse (usado no match automático)</div>
     <div class="fgg">
       <div class="fg"><label class="fl">Tipo de imóvel</label>
-        <select class="fse" id="clm-itipo"><option value="">Qualquer</option><option>Casa</option><option>Apartamento</option><option>Cobertura</option><option>Terreno</option><option>Sobrado</option><option>Sala Comercial</option><option>Loja</option></select></div>
+        <select class="fse" id="clm-itipo" aria-label="Clm Itipo"><option value="">Qualquer</option><option>Casa</option><option>Apartamento</option><option>Cobertura</option><option>Terreno</option><option>Sobrado</option><option>Sala Comercial</option><option>Loja</option></select></div>
       <div class="fg"><label class="fl">Cidade de interesse</label><input class="fi" id="clm-icidade" placeholder="Xangri-lá"></div>
       <div class="fg"><label class="fl">Bairro de interesse</label><input class="fi" id="clm-ibairro" placeholder="Opcional"></div>
-      <div class="fg"><label class="fl">Condomínio de interesse</label><select class="fse" id="clm-icond"><option value="">Qualquer</option></select></div>
+      <div class="fg"><label class="fl">Condomínio de interesse</label><select class="fse" id="clm-icond" aria-label="Clm Icond"><option value="">Qualquer</option></select></div>
       <div class="fg"><label class="fl">Dormitórios (mín.)</label><input class="fi" id="clm-dorms" type="number" min="0" placeholder="Ex: 4"></div>
       <div class="fg"><label class="fl">Preço mínimo (R$)</label><input class="fi" id="clm-pmin" type="number" placeholder="0"></div>
       <div class="fg"><label class="fl">Preço máximo / até (R$)</label><input class="fi" id="clm-pmax" type="number" placeholder="Ex: 2000000"></div>
@@ -2943,11 +2943,11 @@ if(_savedToken && _savedUser){
     <input type="hidden" id="chm-cid">
     <div class="fgg">
       <div class="fg"><label class="fl">Tipo</label>
-        <select class="fse" id="chm-tipo">
+        <select class="fse" id="chm-tipo" aria-label="Chm Tipo">
           <option>📞 Contato realizado</option><option>💬 Mensagem</option><option>🏠 Visita</option>
           <option>📤 Imóveis enviados</option><option>🤝 Proposta</option><option>📝 Observação</option>
         </select></div>
-      <div class="fg"><label class="fl">Data</label><input class="fi" id="chm-data" type="date"></div>
+      <div class="fg"><label class="fl">Data</label><input class="fi" id="chm-data" type="date" aria-label="Chm Data"></div>
       <div class="fg fgf"><label class="fl">Anotação *</label><textarea class="fta" id="chm-nota" rows="4" placeholder="O que aconteceu..."></textarea></div>
     </div>
   </div>
@@ -3789,7 +3789,7 @@ function sCDrw(id){
   document.getElementById('drw-title').textContent=c.nome;
   document.getElementById('drw-edit').onclick=()=>{cDrw();eCond(id)};
   document.getElementById('drw-body').innerHTML=`
-    ${c.fotos&&c.fotos[0]?`<img src="${c.fotos[0]}" style="width:100%;height:150px;object-fit:cover;border-radius:var(--r);margin-bottom:11px">`:''}
+    ${c.fotos&&c.fotos[0]?`<img src="${c.fotos[0]}" style="width:100%;height:150px;object-fit:cover;border-radius:var(--r);margin-bottom:11px" alt="Foto do Portal Meu Litoral">`:''}
     <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px">
       ${c.padrao?`<span class="tag tgo">${c.padrao}</span>`:''}${c.tipo?`<span class="tag tbl">${c.tipo}</span>`:''}
       ${c.ativo!==false?'<span class="tag tgn">Publicado</span>':'<span class="tag trd">Oculto</span>'}
@@ -3804,7 +3804,7 @@ function sCDrw(id){
     <div class="drow"><span class="drl">Imóveis Cadastrados</span><span class="drv" style="color:var(--go)">${n}</span></div>
     ${c.descricao?`<div class="dsec">Descrição</div><p style="font-size:12.5px;color:var(--t2);line-height:1.6">${c.descricao}</p>`:''}
     ${c.amenidades&&c.amenidades.length?`<div class="dsec">Amenidades</div><div style="display:flex;flex-wrap:wrap;gap:5px">${c.amenidades.map(a=>`<span class="tag tbl">${a}</span>`).join('')}</div>`:''}
-    ${c.fotos&&c.fotos.length>1?`<div class="dsec">Fotos (${c.fotos.filter(f=>f).length})</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">${c.fotos.filter(f=>f).map(f=>`<img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px">`).join('')}</div>`:''}`;
+    ${c.fotos&&c.fotos.length>1?`<div class="dsec">Fotos (${c.fotos.filter(f=>f).length})</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">${c.fotos.filter(f=>f).map(f=>`<img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`).join('')}</div>`:''}`;
   oDrw();
 }
 
@@ -3865,7 +3865,7 @@ function rImT(){
       return`<tr onclick="sIDrw('${x.id}')">
         <td>${x.codigo?`<span style="display:inline-block;background:#0e8a99;color:#ffffff;font-weight:700;letter-spacing:.03em;padding:3px 10px;border-radius:20px;font-size:11px;white-space:nowrap">${x.codigo}</span>`:'<span class="cs">—</span>'}</td>
         <td><div style="display:flex;align-items:center;gap:8px">
-          ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:42px;height:30px;object-fit:cover;border-radius:4px;flex-shrink:0">`:`<div style="width:42px;height:30px;background:var(--s4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px">🏠</div>`}
+          ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:42px;height:30px;object-fit:cover;border-radius:4px;flex-shrink:0" alt="Foto do Portal Meu Litoral">`:`<div style="width:42px;height:30px;background:var(--s4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px">🏠</div>`}
           <div><div class="cm">${x.titulo||'—'}</div><div class="cs">${[x.quadra,x.lote].filter(Boolean).join(' · ')}</div></div>
         </div></td>
         <td><div style="font-size:12.5px">${localImovelLabel(x)}</div><div class="cs">${cidadeImovelLabel(x)}</div></td>
@@ -4208,7 +4208,7 @@ function sIDrw(id){
   document.getElementById('drw-title').textContent=x.titulo||'Imóvel';
   document.getElementById('drw-edit').onclick=()=>{cDrw();eImov(id)};
   document.getElementById('drw-body').innerHTML=`
-    ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:100%;height:230px;object-fit:cover;border-radius:var(--r);margin-bottom:12px">`:`<div style="width:100%;height:230px;background:var(--s4);border-radius:var(--r);margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:44px">🏠</div>`}
+    ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:100%;height:230px;object-fit:cover;border-radius:var(--r);margin-bottom:12px" alt="Foto do Portal Meu Litoral">`:`<div style="width:100%;height:230px;background:var(--s4);border-radius:var(--r);margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:44px">🏠</div>`}
     <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--go);margin-bottom:5px">${brl(x.preco)}</div>
     <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">
       <span class="tag tbl">${x.tipo||'—'}</span><span class="tag ${sc[x.status]||'tbl'}">${x.status||'—'}</span>
@@ -4250,7 +4250,7 @@ function sIDrw(id){
     <div class="drow"><span class="drl">Comissão</span><span class="drv">${x.comissao?x.comissao+'%':'—'}</span></div>
     ${x.diferenciais&&x.diferenciais.length?`<div class="dsec">Diferenciais</div><div style="display:flex;flex-wrap:wrap;gap:5px">${x.diferenciais.map(d=>`<span class="tag tcy">${d}</span>`).join('')}</div>`:''}
     ${x.obs?`<div class="dsec">Obs. Internas</div><p style="font-size:12px;color:var(--t2);background:var(--s2);padding:8px;border-radius:var(--rs)">${x.obs}</p>`:''}
-    ${x.fotos&&x.fotos.length>1?`<div class="dsec">Fotos</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">${x.fotos.filter(f=>f).map(f=>`<img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px">`).join('')}</div>`:''}`;
+    ${x.fotos&&x.fotos.length>1?`<div class="dsec">Fotos</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">${x.fotos.filter(f=>f).map(f=>`<img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`).join('')}</div>`:''}`;
   oDrw();
 }
 
@@ -4692,7 +4692,7 @@ function rFG(p){
     const isCapa = i === 0;
     return `
     <div style="position:relative;border-radius:var(--r);overflow:hidden;border:2px solid ${onSite?'var(--gn)':'var(--bd2)'}">
-      <img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;cursor:pointer" onclick="toggleSite('${p}',${i})" title="${onSite?'Publicar no site — clique para remover':'Não vai ao site — clique para incluir'}">
+      <img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;cursor:pointer" onclick="toggleSite('${p}',${i})" title="${onSite?'Publicar no site — clique para remover':'Não vai ao site — clique para incluir'}" alt="Foto do Portal Meu Litoral">
       ${isCapa?`<div style="position:absolute;top:5px;left:5px;background:var(--go);color:#fff;font-size:9px;padding:2px 7px;border-radius:3px;font-weight:700;letter-spacing:.08em">CAPA</div>`:''}
       <div style="position:absolute;top:5px;right:5px;display:flex;gap:4px">
         <button onclick="toggleSite('${p}',${i})" style="background:${onSite?'var(--gn)':'var(--s4)'};border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center" title="${onSite?'Remove do site':'Inclui no site'}">${onSite?'✓':'○'}</button>
@@ -4705,7 +4705,7 @@ function rFG(p){
             onclick="event.stopPropagation()"
             onchange="setFotoOrdem('${p}',${i},this.value)"
             onkeydown="if(event.key==='Enter'){setFotoOrdem('${p}',${i},this.value)}"
-            style="width:42px;padding:2px 4px;border-radius:4px;border:1px solid rgba(255,255,255,.4);background:#fff;color:var(--t1);font-size:12px;font-weight:600;text-align:center">
+            style="width:42px;padding:2px 4px;border-radius:4px;border:1px solid rgba(255,255,255,.4);background:#fff;color:var(--t1);font-size:12px;font-weight:600;text-align:center" aria-label="Campo">
         </div>
         <span style="font-size:9px;color:#fff;opacity:.85">${onSite?'✓ No site':'Oculta'}</span>
       </div>
@@ -4855,7 +4855,7 @@ async function buildLancamentos(){
   el.innerHTML=aviso+`<table class="tbl"><thead><tr><th>Foto</th><th>Título</th><th>Cidade</th><th>Status</th><th>Ações</th></tr></thead><tbody>`+
   listaFinal.map(l=>{
     const ref = l.id ? `'${l.id}'` : `'seed:${l.seed}'`;
-    const thumb = l.foto ? `<img src="${l.foto}" style="width:54px;height:38px;object-fit:cover;border-radius:5px">` : `<div style="width:54px;height:38px;border-radius:5px;background:#eef3f5;display:flex;align-items:center;justify-content:center;font-size:16px">📷</div>`;
+    const thumb = l.foto ? `<img src="${l.foto}" style="width:54px;height:38px;object-fit:cover;border-radius:5px" alt="Foto do Portal Meu Litoral">` : `<div style="width:54px;height:38px;border-radius:5px;background:#eef3f5;display:flex;align-items:center;justify-content:center;font-size:16px">📷</div>`;
     const ehSeed = !l.id;
     return `<tr>
     <td>${thumb}</td>
@@ -4885,7 +4885,7 @@ function lancFotoUpload(inp){
   const f=inp.files[0];if(!f)return;
   compressImgLanc(f,base64=>{
     const prev=document.getElementById('lanc-foto-prev');
-    prev.innerHTML=`<img src="${base64}" style="max-height:120px;border-radius:4px">`;
+    prev.innerHTML=`<img src="${base64}" style="max-height:120px;border-radius:4px" alt="Foto do Portal Meu Litoral">`;
     prev.dataset.src=base64;
   });
   inp.value='';
@@ -4934,7 +4934,7 @@ function eLanc(id){
   document.getElementById('lanc-tag').value=l.tag||'Lançamento';
   document.getElementById('lanc-url').value=l.url||'';
   var prev=document.getElementById('lanc-foto-prev');
-  if(l.foto){ prev.innerHTML=`<img src="${l.foto}" style="max-height:120px;border-radius:4px">`; prev.dataset.src=l.foto; }
+  if(l.foto){ prev.innerHTML=`<img src="${l.foto}" style="max-height:120px;border-radius:4px" alt="Foto do Portal Meu Litoral">`; prev.dataset.src=l.foto; }
   else { prev.innerHTML='📸 Clique para adicionar foto de capa'; prev.dataset.src=''; }
   var pdfp=document.getElementById('lanc-pdf-prev');
   var mpdf=l.mapa_pdf||l.mapaPdf||'';
@@ -4986,7 +4986,7 @@ async function montarGaleriaLanc(chave){
       ${selo}
       ${thumb}
       <div style="font-size:11px;color:${ehCapa?'#c79a3a':'var(--t2)'};font-weight:${ehCapa?'700':'400'};margin:7px 0 6px;line-height:1.3;min-height:28px">${ehCapa?'⭐ ':''}${cap}</div>
-      <input type="file" accept="image/*" style="display:none" id="gf-${esp.fk}" onchange="uploadGaleriaLanc('${esp.fk}',this)">
+      <input type="file" accept="image/*" style="display:none" id="gf-${esp.fk}" onchange="uploadGaleriaLanc('${esp.fk}',this)" aria-label="Gf ${Esp.Fk}">
       <button class="btn ${ehCapa?'bs':'bg'} bsm" style="width:100%" onclick="document.getElementById('gf-${esp.fk}').click()">${atual?'Trocar foto':'Enviar foto'}</button>
     </div>`;
   }).join('');
@@ -5405,7 +5405,7 @@ function ePost(id){
   document.getElementById('post-cat').value=p.categoria||'Notícias';
   document.getElementById('post-pub').value=p.publicado!==false?'1':'0';
   const prev=document.getElementById('post-capa-prev');
-  if(p.capa){prev.innerHTML=`<img src="${p.capa}" style="max-height:120px;border-radius:4px">`;prev.dataset.src=p.capa;}
+  if(p.capa){prev.innerHTML=`<img src="${p.capa}" style="max-height:120px;border-radius:4px" alt="Foto do Portal Meu Litoral">`;prev.dataset.src=p.capa;}
   else{prev.innerHTML='📸 Clique para adicionar foto de capa';prev.dataset.src='';}
   oMo('blog-mo');
 }
@@ -5454,7 +5454,7 @@ function postCapaUpload(inp){
   const f=inp.files[0];if(!f)return;
   compressImg(f,base64=>{
     const prev=document.getElementById('post-capa-prev');
-    prev.innerHTML=`<img src="${base64}" style="max-height:120px;border-radius:4px">`;
+    prev.innerHTML=`<img src="${base64}" style="max-height:120px;border-radius:4px" alt="Foto do Portal Meu Litoral">`;
     prev.dataset.src=base64;
   });
   inp.value='';
@@ -5545,7 +5545,7 @@ async function carregarLeads(){
       '<td style="padding:11px 10px"><b style="color:#0d3b54">'+(l.nome||'—')+'</b><br><span style="font-size:12px;color:#5b7585">'+(l.telefone||'')+'</span>'+(l.email?('<br><span style="font-size:12px;color:#5b7585">'+l.email+'</span>'):'')+'</td>'+
       '<td style="padding:11px 10px;font-size:13px;color:#41535f">'+(l.imovel_titulo||'<i style=color:#9bb0bd>—</i>')+'</td>'+
       '<td style="padding:11px 10px;font-size:13px;color:#41535f;max-width:220px">'+(l.mensagem?l.mensagem:'<i style=color:#9bb0bd>sem mensagem</i>')+'</td>'+
-      '<td style="padding:11px 10px"><select onchange="atualizarStatusLead(\''+l.id+'\',this.value)" style="border:1px solid #d6e4e8;border-radius:8px;padding:6px 8px;font-size:12px;color:'+cor+';font-weight:700">'+opts+'</select></td>'+
+      '<td style="padding:11px 10px"><select onchange="atualizarStatusLead(\''+l.id+'\',this.value)" style="border:1px solid #d6e4e8;border-radius:8px;padding:6px 8px;font-size:12px;color:'+cor+';font-weight:700" aria-label="Campo">'+opts+'</select></td>'+
       '<td style="padding:11px 10px;white-space:nowrap">'+
         (telLimpo?'<a href="'+wppLink+'" target="_blank" style="text-decoration:none;background:#25d366;color:#fff;padding:7px 12px;border-radius:100px;font-size:12px;font-weight:700;margin-right:6px">💬 WhatsApp</a>':'')+
         '<button onclick="removerLead(\''+l.id+'\')" class="btn bd2b bxs">🗑</button>'+
@@ -5577,13 +5577,13 @@ async function carregarCarrossel(){
     const cards=itens.map(function(it){
       const slot=it[0], label=it[1], foto=mapa[slot];
       const prev=foto
-        ? `<img src="${foto}" style="width:100%;height:120px;object-fit:cover;border-radius:8px 8px 0 0">`
+        ? `<img src="${foto}" style="width:100%;height:120px;object-fit:cover;border-radius:8px 8px 0 0" alt="Foto do Portal Meu Litoral">`
         : `<div style="width:100%;height:120px;background:linear-gradient(135deg,#0c4a6e,#0e8a99);border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px">Sem foto</div>`;
       return `<div style="background:#fff;border:1px solid var(--bd);border-radius:10px;overflow:hidden">
         ${prev}
         <div style="padding:9px 11px">
           <div style="font-size:12px;color:#0d3b54;font-weight:600;margin-bottom:8px;min-height:30px">${label}</div>
-          <input type="file" accept="image/*" id="cf-${slot}" style="display:none" onchange="salvarFotoCarrossel('${slot}',this)">
+          <input type="file" accept="image/*" id="cf-${slot}" style="display:none" onchange="salvarFotoCarrossel('${slot}',this)" aria-label="Cf ${Slot}">
           <div style="display:flex;gap:6px">
             <button class="btn bp bxs" style="flex:1;font-size:11px" onclick="document.getElementById('cf-${slot}').click()">${foto?'Trocar':'Adicionar'}</button>
             ${foto?`<button class="btn bd2b bxs" style="font-size:11px" onclick="removerFotoCarrossel('${slot}')">🗑</button>`:''}
@@ -5639,14 +5639,14 @@ async function carregarCapas(){
   body.innerHTML=CAPAS_DEFS.map(function(d){
     const foto=mapa[d.slug];
     const preview=foto
-      ? `<img src="${foto}" style="width:100%;height:150px;object-fit:cover;border-radius:10px 10px 0 0">`
+      ? `<img src="${foto}" style="width:100%;height:150px;object-fit:cover;border-radius:10px 10px 0 0" alt="Foto do Portal Meu Litoral">`
       : `<div style="width:100%;height:150px;background:linear-gradient(135deg,#0c4a6e,#0e8a99);border-radius:10px 10px 0 0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px">Sem foto (usa degradê)</div>`;
     return `<div style="background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(13,59,84,.06)">
       ${preview}
       <div style="padding:14px 16px">
         <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#0e8a99;font-weight:700">${d.tag}</div>
         <div style="font-family:'Fraunces',serif;font-size:15px;color:#0d3b54;font-weight:600;margin:3px 0 12px">${d.titulo}</div>
-        <input type="file" accept="image/*" id="capa-file-${d.slug}" style="display:none" onchange="salvarCapa('${d.slug}',this)">
+        <input type="file" accept="image/*" id="capa-file-${d.slug}" style="display:none" onchange="salvarCapa('${d.slug}',this)" aria-label="Capa File ${D.Slug}">
         <div style="display:flex;gap:8px">
           <button class="btn bp bxs" style="flex:1" onclick="document.getElementById('capa-file-${d.slug}').click()">${foto?'Trocar foto':'Adicionar foto'}</button>
           ${foto?`<button class="btn bd2b bxs" onclick="removerCapa('${d.slug}')">🗑</button>`:''}
@@ -5704,7 +5704,7 @@ async function buildUsuarios(){
     users.map(u=>`
       <div style="background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;display:flex;align-items:center;gap:12px">
         <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:20px">
-          ${u.foto?`<img src="${u.foto}" style="width:100%;height:100%;object-fit:cover">`:'👤'}
+          ${u.foto?`<img src="${u.foto}" style="width:100%;height:100%;object-fit:cover" alt="Foto do Portal Meu Litoral">`:'👤'}
         </div>
         <div style="flex:1;min-width:0">
           <div style="font-size:13px;font-weight:700;color:var(--tx)">${u.nome}</div>
@@ -5811,7 +5811,7 @@ function showMeuPerfil(){
   document.getElementById('perfil-email').value = prof.email||'';
   document.getElementById('perfil-pass').value = '';
   const fw = document.getElementById('perfil-foto-wrap');
-  if(fw) fw.innerHTML = prof.foto ? `<img src="${prof.foto}" style="width:100%;height:100%;object-fit:cover">` : '👤';
+  if(fw) fw.innerHTML = prof.foto ? `<img src="${prof.foto}" style="width:100%;height:100%;object-fit:cover" alt="Foto do Portal Meu Litoral">` : '👤';
   _perfilFotoData = null;
   oMo('perfil-mo');
 }
@@ -5823,7 +5823,7 @@ function perfilFotoUpload(inp){
   reader.onload = e => {
     _perfilFotoData = e.target.result;
     const fw = document.getElementById('perfil-foto-wrap');
-    if(fw) fw.innerHTML = `<img src="${_perfilFotoData}" style="width:100%;height:100%;object-fit:cover">`;
+    if(fw) fw.innerHTML = `<img src="${_perfilFotoData}" style="width:100%;height:100%;object-fit:cover" alt="Foto do Portal Meu Litoral">`;
   };
   reader.readAsDataURL(file);
 }
@@ -5934,7 +5934,7 @@ function buildAdmins(){
   grid.innerHTML = ADM_DATA.map(a => {
     const nCartas = CONT_DATA.filter(c=>c.adm_id===a.id).length;
     const logoHtml = a.logo
-      ? `<img src="${a.logo}" style="width:40px;height:40px;object-fit:contain;border-radius:6px;background:#fff;padding:2px;border:1px solid var(--bd)">`
+      ? `<img src="${a.logo}" style="width:40px;height:40px;object-fit:contain;border-radius:6px;background:#fff;padding:2px;border:1px solid var(--bd)" alt="Portal Meu Litoral">`
       : `<div style="width:40px;height:40px;border-radius:6px;background:${a.cor};display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800">${a.abrev||'?'}</div>`;
     return `<div style="background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;display:flex;align-items:center;gap:12px">
       ${logoHtml}
@@ -5989,7 +5989,7 @@ function admLogoUpload(inp){
   const reader = new FileReader();
   reader.onload = e => {
     _admLogoData = e.target.result;
-    document.getElementById('adm-logo-prev-wrap').innerHTML = `<img src="${_admLogoData}" style="max-height:60px;max-width:160px;object-fit:contain;border-radius:6px">`;
+    document.getElementById('adm-logo-prev-wrap').innerHTML = `<img src="${_admLogoData}" style="max-height:60px;max-width:160px;object-fit:contain;border-radius:6px" alt="Portal Meu Litoral">`;
   };
   reader.readAsDataURL(file);
 }
@@ -6005,7 +6005,7 @@ function eAdm(id){
   document.getElementById('adm-cor-prev').textContent = a.abrev||'ABR';
   document.getElementById('adm-mo-title').textContent = 'Editar: '+a.nome;
   if(a.logo){
-    document.getElementById('adm-logo-prev-wrap').innerHTML = `<img src="${a.logo}" style="max-height:60px;max-width:160px;object-fit:contain;border-radius:6px">`;
+    document.getElementById('adm-logo-prev-wrap').innerHTML = `<img src="${a.logo}" style="max-height:60px;max-width:160px;object-fit:contain;border-radius:6px" alt="Portal Meu Litoral">`;
     _admLogoData = a.logo;
   } else {
     document.getElementById('adm-logo-prev-wrap').innerHTML='<div style="font-size:32px;margin-bottom:6px">📷</div><div style="font-size:11px;color:var(--t3)">Clique para carregar logo</div>';
@@ -6356,7 +6356,7 @@ function renderContempladas(){
     +pagina.map(c=>{
       const adm=ADM_DATA.find(a=>a.id===c.adm_id)||{abrev:'?',cor:'#888',logo:null,nome:c.adm_id};
       const admIco = adm.logo
-        ? `<img src="${adm.logo}" style="width:24px;height:24px;object-fit:contain;border-radius:4px;background:#fff;padding:1px;border:1px solid var(--bd)">`
+        ? `<img src="${adm.logo}" style="width:24px;height:24px;object-fit:contain;border-radius:4px;background:#fff;padding:1px;border:1px solid var(--bd)" alt="Portal Meu Litoral">`
         : `<div style="width:24px;height:24px;border-radius:4px;background:${adm.cor};color:#fff;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center">${adm.abrev||'?'}</div>`;
       const wppMsg = encodeURIComponent('Olá! Tenho interesse na carta '+adm.nome+' cód '+c.cod+' de '+brl(c.credito)+' com entrada de '+brl(c.entrada)+'. Pode me dar mais informações?');
       return `<tr>
@@ -7075,7 +7075,7 @@ ${fotos.length?`<div class="galeria-full">${fotos.slice(0,3).map((f,ix)=>`<img s
       <a class="ftr-wpp" href="${wpp}" rel="nofollow">Falar no WhatsApp</a>
     </div>
     <div class="ftr-col"><div class="ftr-tit">Navegar</div>
-      <a href="/condominios">Condomínios</a><a href="/casas-em-condominio">Casas em Condomínio</a><a href="/terrenos-em-condominio">Terrenos em Condomínio</a><a href="/imoveis-de-luxo">Imóveis de Luxo</a><a href="/imoveis">Imóveis</a><a href="/lancamentos">Lançamentos</a><a href="/contemplado-imoveis">Crédito Contemplado</a><a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/contato">Contato</a>
+      <a href="/condominios">Condomínios</a><a href="/casas-em-condominio">Casas em Condomínio</a><a href="/terrenos-em-condominio">Terrenos em Condomínio</a><a href="/imoveis-de-luxo">Imóveis de Luxo</a><a href="/imoveis">Imóveis</a><a href="/lancamentos">Lançamentos</a><a href="/contemplado-imoveis/">Crédito Contemplado</a><a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/contato">Contato</a>
     </div>
     <div class="ftr-col"><div class="ftr-tit">Descobrir</div>
       <a href="/blog">Blog &amp; Notícias</a><a href="/o-que-fazer-em-xangri-la">Turismo no Litoral</a><a href="/politica-privacidade">Política de Privacidade</a>
@@ -7089,7 +7089,7 @@ ${fotos.length?`<div class="galeria-full">${fotos.slice(0,3).map((f,ix)=>`<img s
 <div class="lb" id="lb" onclick="if(event.target.id==='lb')fecharLB()">
   <button class="lb-x" onclick="fecharLB()">&times;</button>
   <button class="lb-nav lb-prev" onclick="navLB(-1)">&#8249;</button>
-  <img id="lb-img" src="" alt="">
+  <img id="lb-img" src="" alt="Foto ampliada">
   <button class="lb-nav lb-next" onclick="navLB(1)">&#8250;</button>
   <div class="lb-count" id="lb-count"></div>
 </div>
@@ -7304,7 +7304,7 @@ async function buildFotos(){
           </div>
           <div style="padding:10px 12px">
             <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:8px;line-height:1.3">${nome}</div>
-            <input type="file" accept="image/*,.heic,.heif,.webp" style="display:none" id="fs-${slug}" onchange="fotoSiteUpload('${slug}', this)">
+            <input type="file" accept="image/*,.heic,.heif,.webp" style="display:none" id="fs-${slug}" onchange="fotoSiteUpload('${slug}', this)" aria-label="Fs ${Slug}">
             <div style="display:flex;gap:6px">
               <button class="btn bs" style="flex:1;font-size:11px;padding:7px" onclick="document.getElementById('fs-${slug}').click()">${url?'Trocar':'Enviar'}</button>
               ${url?`<button class="btn" style="font-size:11px;padding:7px;background:#fee;color:#c00;border:1px solid #fcc" onclick="fotoSiteRemove('${slug}')">✕</button>`:''}
@@ -7825,8 +7825,8 @@ function renderTurPraias(){
         <div class="fg"><label class="fl">Número</label><input class="fi" value="${p.num||''}" oninput="turPraias[${i}].num=this.value" placeholder="01"></div>
         <div class="fg"><label class="fl">Localização</label><input class="fi" value="${p.loc||''}" oninput="turPraias[${i}].loc=this.value" placeholder="Xangri-Lá"></div>
       </div>
-      <div class="fg"><label class="fl">Nome da Praia</label><input class="fi" value="${p.nome||''}" oninput="turPraias[${i}].nome=this.value"></div>
-      <div class="fg"><label class="fl">Texto descritivo</label><textarea class="fta" rows="3" oninput="turPraias[${i}].texto=this.value">${p.texto||''}</textarea></div>
+      <div class="fg"><label class="fl">Nome da Praia</label><input class="fi" value="${p.nome||''}" oninput="turPraias[${i}].nome=this.value" aria-label="Campo"></div>
+      <div class="fg"><label class="fl">Texto descritivo</label><textarea class="fta" rows="3" oninput="turPraias[${i}].texto=this.value" aria-label="Campo">${p.texto||''}</textarea></div>
       <div class="fg"><label class="fl">Tags (separadas por vírgula)</label><input class="fi" value="${p.tags||''}" oninput="turPraias[${i}].tags=this.value" placeholder="🏄 Surf, 🍽 Gastronomia"></div>
     </div>`).join('');
 }
@@ -7838,8 +7838,8 @@ function renderTurFazer(){
   el.innerHTML=turFazer.map((f,i)=>`
     <div style="display:grid;grid-template-columns:60px 1fr 1fr auto;gap:8px;align-items:start;margin-bottom:8px">
       <div class="fg" style="margin:0"><label class="fl">Ícone</label><input class="fi" value="${f.ico||''}" oninput="turFazer[${i}].ico=this.value" placeholder="🏄"></div>
-      <div class="fg" style="margin:0"><label class="fl">Título</label><input class="fi" value="${f.tit||''}" oninput="turFazer[${i}].tit=this.value"></div>
-      <div class="fg" style="margin:0"><label class="fl">Descrição</label><input class="fi" value="${f.desc||''}" oninput="turFazer[${i}].desc=this.value"></div>
+      <div class="fg" style="margin:0"><label class="fl">Título</label><input class="fi" value="${f.tit||''}" oninput="turFazer[${i}].tit=this.value" aria-label="Campo"></div>
+      <div class="fg" style="margin:0"><label class="fl">Descrição</label><input class="fi" value="${f.desc||''}" oninput="turFazer[${i}].desc=this.value" aria-label="Campo"></div>
       <button class="btn bd2b bsm" style="margin-top:18px" onclick="rmTurFazer(${i})">✕</button>
     </div>`).join('');
 }
@@ -7857,7 +7857,7 @@ function renderTurFotos(){
   if(!turFotos.length){el.innerHTML='<div style="color:var(--t3);font-size:12px">Nenhuma foto</div>';return;}
   el.innerHTML=turFotos.map((f,i)=>`
     <div style="position:relative;border-radius:var(--r);overflow:hidden;border:2px solid var(--gn)">
-      <img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+      <img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block" alt="Foto do Portal Meu Litoral">
       ${i===0?'<div style="position:absolute;top:5px;left:5px;background:var(--go);color:#fff;font-size:9px;padding:2px 7px;border-radius:3px;font-weight:700">HERO</div>':''}
       <button onclick="rmTurFoto(${i})" style="position:absolute;top:5px;right:5px;background:rgba(214,48,49,.85);border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:13px;font-weight:700">✕</button>
     </div>`).join('');
@@ -8025,8 +8025,8 @@ function edLoad(){
   sv('ed-rod-copy', c.rodCopy); sv('ed-logo-main', c.logoMain); sv('ed-logo-sub', c.logoSub);
   // Images
   const imgs = c.images || {};
-  if(imgs.heroBg){ const e=document.getElementById('ed-hero-prev'); if(e){ e.innerHTML=`<img src="${imgs.heroBg}" style="width:100%;height:60px;object-fit:cover;border-radius:4px">`; } }
-  if(imgs.og){ const e=document.getElementById('ed-og-prev'); if(e){ e.innerHTML=`<img src="${imgs.og}" style="width:100%;height:50px;object-fit:cover;border-radius:4px">`; } }
+  if(imgs.heroBg){ const e=document.getElementById('ed-hero-prev'); if(e){ e.innerHTML=`<img src="${imgs.heroBg}" style="width:100%;height:60px;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`; } }
+  if(imgs.og){ const e=document.getElementById('ed-og-prev'); if(e){ e.innerHTML=`<img src="${imgs.og}" style="width:100%;height:50px;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`; } }
   edPreview();
   edColorPreview();
 }
@@ -8092,8 +8092,8 @@ function edImgUpload(input, key){
     if(!c.images) c.images={};
     c.images[key]=e.target.result;
     edSaveConfig(c);
-    if(key==='heroBg'){const el=document.getElementById('ed-hero-prev');if(el) el.innerHTML=`<img src="${e.target.result}" style="width:100%;height:60px;object-fit:cover;border-radius:4px">`;}
-    if(key==='og'){const el=document.getElementById('ed-og-prev');if(el) el.innerHTML=`<img src="${e.target.result}" style="width:100%;height:50px;object-fit:cover;border-radius:4px">`;}
+    if(key==='heroBg'){const el=document.getElementById('ed-hero-prev');if(el) el.innerHTML=`<img src="${e.target.result}" style="width:100%;height:60px;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`;}
+    if(key==='og'){const el=document.getElementById('ed-og-prev');if(el) el.innerHTML=`<img src="${e.target.result}" style="width:100%;height:50px;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`;}
     toast('Imagem salva!','success');
   };
   reader.readAsDataURL(file);
@@ -8889,7 +8889,7 @@ function rLeadsCampanha(){
         '</div>'+
         '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
           (wpp?'<a class="btn" style="text-decoration:none" href="https://wa.me/55'+wpp+'?text='+encodeURIComponent(msg)+'" target="_blank">💬 WhatsApp</a>':'')+
-          '<select class="in" style="width:auto;padding:8px 12px" onchange="lcStatus(\''+l.id+'\', this.value)">'+
+          '<select class="in" style="width:auto;padding:8px 12px" onchange="lcStatus(\''+l.id+'\', this.value)" aria-label="Campo">'+
             ['novo','contatado','qualificado','cliente','perdido'].map(s=>'<option value="'+s+'"'+(s===st?' selected':'')+'>'+s+'</option>').join('')+
           '</select>'+
         '</div>'+
@@ -9207,7 +9207,7 @@ function clMatchRow(im,cid){
   const titulo=im.titulo||im.codigo||(im.tipo||'Imóvel');
   const sub=[im.tipo,imCidade(im),imDorms(im)?imDorms(im)+' dorm':''].filter(Boolean).join(' · ');
   return `<div class="match-im">
-    ${foto?`<img class="match-im-thumb" src="${clEsc(foto)}" loading="lazy">`:'<div class="match-im-thumb"></div>'}
+    ${foto?`<img class="match-im-thumb" src="${clEsc(foto)}" loading="lazy" alt="Foto do Portal Meu Litoral">`:'<div class="match-im-thumb"></div>'}
     <div class="match-im-info"><div class="match-im-t">${clEsc(titulo)}</div><div class="match-im-s">${clEsc(sub)}${co?' · '+clEsc(co.nome):''}</div></div>
     <div class="match-im-p">${clBRL(imPreco(im)||null)}</div>
   </div>`;

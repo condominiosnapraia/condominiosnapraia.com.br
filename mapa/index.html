@@ -55,11 +55,11 @@
     <section class="map-shell" aria-label="Mapa e filtros de imóveis">
       <form class="filter-panel" id="filter-form" autocomplete="off">
         <div class="field search"><label for="filter-search">Buscar</label><input id="filter-search" type="search" placeholder="Condomínio, imóvel ou cidade"></div>
-        <div class="field"><label for="filter-city">Cidade</label><select id="filter-city"><option value="">Todas</option></select></div>
-        <div class="field"><label for="filter-kind">Exibir</label><select id="filter-kind"><option value="">Imóveis e condomínios</option><option value="condominio">Somente condomínios</option><option value="imovel">Somente imóveis</option></select></div>
-        <div class="field"><label for="filter-type">Tipo de imóvel</label><select id="filter-type"><option value="">Todos</option></select></div>
-        <div class="field condo-filter"><label for="filter-condo">Condomínio</label><select id="filter-condo"><option value="">Todos</option></select></div>
-        <div class="field"><label for="filter-location">Localização</label><select id="filter-location"><option value="">Todos</option><option value="mapa">Com localização no mapa</option><option value="pendente">Sem coordenada confirmada</option></select></div>
+        <div class="field"><label for="filter-city">Cidade</label><select id="filter-city" aria-label="Filter City"><option value="">Todas</option></select></div>
+        <div class="field"><label for="filter-kind">Exibir</label><select id="filter-kind" aria-label="Filter Kind"><option value="">Imóveis e condomínios</option><option value="condominio">Somente condomínios</option><option value="imovel">Somente imóveis</option></select></div>
+        <div class="field"><label for="filter-type">Tipo de imóvel</label><select id="filter-type" aria-label="Filter Type"><option value="">Todos</option></select></div>
+        <div class="field condo-filter"><label for="filter-condo">Condomínio</label><select id="filter-condo" aria-label="Filter Condo"><option value="">Todos</option></select></div>
+        <div class="field"><label for="filter-location">Localização</label><select id="filter-location" aria-label="Filter Location"><option value="">Todos</option><option value="mapa">Com localização no mapa</option><option value="pendente">Sem coordenada confirmada</option></select></div>
         <button class="filter-reset" id="filter-reset" type="button">Limpar filtros</button>
       </form>
       <div class="map-summary"><div><strong id="summary-total">Carregando…</strong> resultados encontrados · <span id="summary-mapped">—</span> no mapa</div><div class="summary-note">Marcadores exibem somente localizações confirmadas.</div></div>

@@ -1,10 +1,15 @@
-// Middleware escopado para /imovel e todos os seus subcaminhos.
-// Usa context.next() como previsto pelo Cloudflare Pages para middleware.
+// Middleware SSR para URLs amigáveis de imóveis no Cloudflare Pages.
 
 const SUPABASE_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SITE = 'https://condominiosnapraia.com.br';
 const OG_FALLBACK = `${SITE}/img/og-home.jpg`;
 const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+
+// Aliases públicos estáveis: não expõem quadra, lote ou código interno.
+const PUBLIC_SLUG_ALIASES = {
+  'XAN-018': 'lote-a-venda-monaco-yacht-club-xangri-la',
+  'XAN-019': 'lote-a-venda-monaco-yacht-club-xangri-la-2'
+};
 
 function isCrawler(ua = '') {
   return /facebookexternalhit|Facebot|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|Googlebot|bingbot|redditbot/i.test(ua);
@@ -15,6 +20,10 @@ function esc(s) {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function jsonSafe(value) {
+  return JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+}
+
 function fotoPublica(u) {
   if (!u) return '';
   const marker = '/storage/v1/object/public/';
@@ -22,22 +31,69 @@ function fotoPublica(u) {
   return i === -1 ? String(u) : `${SITE}/cdn-fotos/` + String(u).slice(i + marker.length);
 }
 
+function aliasParaRef(ref = '') {
+  const value = String(ref).trim().toLowerCase();
+  const hit = Object.entries(PUBLIC_SLUG_ALIASES).find(([, slug]) => slug === value);
+  return hit ? hit[0] : ref;
+}
+
+function slugPublico(im) {
+  const codigo = String(im?.codigo || '').toUpperCase();
+  return PUBLIC_SLUG_ALIASES[codigo] || im?.slug || im?.codigo || im?.id;
+}
+
 function descricaoPublica(texto) {
   return String(texto ?? '')
+    // Preserva expressões legítimas como “lote 583 m²”, mas remove identificadores internos.
     .replace(/\b(?:unidade|apt(?:o)?|apartamento)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
     .replace(/\btorre\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
-    .replace(/\b(?:quadra|lote|box)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
+    .replace(/\b(?:quadra|lote|box)\s*(?:n[ºo°.]?\s*)?(?!\d+(?:[.,]\d+)?\s*m(?:2|²)\b)[a-z0-9-]+/gi, '')
     .replace(/\bcasa\s*(?:n[ºo°.]?|número)\s*[a-z0-9-]+/gi, '')
+    .replace(/\b(?:xan|cap|maq)-\d{3}\b/gi, '')
     .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '')
     .replace(/\s+/g, ' ')
     .replace(/\s+([,.;])/g, '$1')
     .trim();
 }
 
+function cidadePublica(im) {
+  if (im?.cidade_end) return String(im.cidade_end).trim();
+  const text = String(im?.descricao || '');
+  const match = text.match(/(?:Xangri[- ]Lá|Capão da Canoa|Osório|Maquiné|Atlântida)/i);
+  return match ? match[0] : 'Litoral Norte Gaúcho';
+}
+
+function parseFotos(im) {
+  let fotos = im?.fotos_no_site || im?.fotos || [];
+  if (typeof fotos === 'string') {
+    try { fotos = JSON.parse(fotos); } catch (_) { fotos = [fotos]; }
+  }
+  return Array.isArray(fotos) ? fotos : [];
+}
+
+function fotoPrincipal(im) {
+  const fotos = parseFotos(im);
+  const first = fotos.find(Boolean);
+  return first ? fotoPublica(typeof first === 'string' ? first : first?.url) : OG_FALLBACK;
+}
+
+function precoNumerico(value) {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  const normalized = String(value ?? '').replace(/[^0-9,.-]/g, '').replace(/\./g, '').replace(',', '.');
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+}
+
+function precoPublico(value) {
+  const n = precoNumerico(value);
+  return n ? `R$ ${n.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}` : '';
+}
+
 async function buscarImovel(ref, key) {
   if (!ref || !key) return null;
-  const valor = encodeURIComponent(ref);
-  const query = `${SUPABASE_URL}/rest/v1/imoveis?or=(codigo.eq.${valor},slug.eq.${valor},id.eq.${valor})&select=slug,codigo,id,titulo,cidade_end,descricao,fotos_no_site,fotos&limit=1`;
+  const resolvedRef = aliasParaRef(ref);
+  const valor = encodeURIComponent(resolvedRef);
+  const query = `${SUPABASE_URL}/rest/v1/imoveis?or=(codigo.eq.${valor},slug.eq.${valor},id.eq.${valor})&select=id,slug,codigo,titulo,cond_id,tipo,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,cidade_end,descricao,fotos_no_site,fotos&limit=1`;
   try {
     const r = await fetch(query, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
     if (!r.ok) return null;
@@ -46,6 +102,77 @@ async function buscarImovel(ref, key) {
   } catch (_) {
     return null;
   }
+}
+
+function schemaImovel(im, canonicalUrl, title, description, image, city) {
+  const price = precoNumerico(im?.preco);
+  const offeredType = /apartamento/i.test(String(im?.tipo || '')) ? 'Apartment' : 'Residence';
+  const item = {
+    '@type': offeredType,
+    name: title,
+    description,
+    image: [image],
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: city,
+      addressRegion: 'RS',
+      addressCountry: 'BR'
+    }
+  };
+  if (Number(im?.quartos) > 0) item.numberOfBedrooms = Number(im.quartos);
+  if (Number(im?.banheiros) > 0) item.numberOfBathroomsTotal = Number(im.banheiros);
+  if (Number(im?.area || im?.area_privativa || im?.area_construida) > 0) {
+    item.floorSize = {
+      '@type': 'QuantitativeValue',
+      value: Number(im.area || im.area_privativa || im.area_construida),
+      unitCode: 'MTK'
+    };
+  }
+  const result = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    '@id': `${canonicalUrl}#listing`,
+    url: canonicalUrl,
+    name: title,
+    description,
+    image: [image],
+    itemOffered: item,
+    seller: {
+      '@type': 'RealEstateAgent',
+      name: 'Portal Meu Litoral',
+      url: `${SITE}/`
+    }
+  };
+  if (price) {
+    result.offers = {
+      '@type': 'Offer',
+      price,
+      priceCurrency: 'BRL',
+      availability: 'https://schema.org/InStock',
+      url: canonicalUrl
+    };
+  }
+  return result;
+}
+
+function ssrBlock(im, title, description, image, canonicalUrl, city) {
+  const price = precoPublico(im?.preco);
+  const facts = [
+    im?.tipo ? `<div><span>Tipo</span><strong>${esc(im.tipo)}</strong></div>` : '',
+    im?.quartos ? `<div><span>Quartos</span><strong>${esc(im.quartos)}</strong></div>` : '',
+    im?.suites ? `<div><span>Suítes</span><strong>${esc(im.suites)}</strong></div>` : '',
+    (im?.area || im?.area_privativa || im?.area_construida) ? `<div><span>Área</span><strong>${esc(im.area || im.area_privativa || im.area_construida)} m²</strong></div>` : ''
+  ].filter(Boolean).join('');
+  return `<article id="ssr-imovel" class="ip-ssr" data-ssr="true">
+    <nav class="crumb" aria-label="Breadcrumb"><a href="${SITE}/">Início</a> › <a href="${SITE}/imoveis/">Imóveis</a> › <span>${esc(city)}</span></nav>
+    <h1 class="ip-title">${esc(title)}</h1>
+    <p class="ip-ssr-location">${esc(city)} · Portal Meu Litoral</p>
+    <img class="ip-ssr-image" src="${esc(image)}" width="1200" height="800" loading="eager" fetchpriority="high" decoding="async" alt="${esc(title)}">
+    ${facts ? `<div class="ip-ssr-facts" aria-label="Características do imóvel">${facts}</div>` : ''}
+    ${price ? `<p class="ip-price"><span class="ip-price-lbl">Valor</span>${esc(price)}</p>` : ''}
+    <div class="ip-desc"><h2>Sobre este imóvel</h2><p>${esc(description)}</p></div>
+    <p class="ip-ssr-cta"><a href="${SITE}/contato/">Fale com um consultor</a></p>
+  </article>`;
 }
 
 export async function onRequest(context) {
@@ -62,37 +189,37 @@ export async function onRequest(context) {
   const im = await buscarImovel(ref, env?.SUPABASE_ANON_KEY || SB_ANON_FALLBACK);
   if (!im) return response;
 
-  const canonicalSlug = im.slug || im.codigo || im.id;
-  if (legacyRef && im.slug && legacyRef !== im.slug) {
-    return Response.redirect(`${SITE}/imovel/${encodeURIComponent(im.slug)}/`, 301);
+  const canonicalSlug = slugPublico(im);
+  if (legacyRef && legacyRef !== canonicalSlug) {
+    return Response.redirect(`${SITE}/imovel/${encodeURIComponent(canonicalSlug)}/`, 301);
   }
-  if (pathRef && im.slug && pathRef !== im.slug) {
-    return Response.redirect(`${SITE}/imovel/${encodeURIComponent(im.slug)}/`, 301);
+  if (pathRef && pathRef !== canonicalSlug) {
+    return Response.redirect(`${SITE}/imovel/${encodeURIComponent(canonicalSlug)}/`, 301);
   }
-  // Em páginas com slug, canonical e metadados precisam ser corretos para qualquer User-Agent.
-  // Para a URL legada sem slug, humanos seguem no HTML normal quando não houve redirect.
+
+  // URLs canônicas sempre recebem SSR; a URL legada só é mantida para humanos quando não há redirect.
   if (!pathRef && !isCrawler(request.headers.get('user-agent') || '')) return response;
 
-  const titulo = im.titulo || 'Imóvel à venda';
-  const cidade = im.cidade_end ? ` — ${im.cidade_end}` : '';
-  const ogTitle = `${titulo}${cidade}`;
-  const ogDesc = (descricaoPublica(im.descricao) || `${titulo} no Litoral Norte Gaúcho. Confira fotos, valor e detalhes.`).slice(0, 160);
-  let fotos = im.fotos_no_site || im.fotos || [];
-  if (typeof fotos === 'string') {
-    try { fotos = JSON.parse(fotos); } catch (_) { fotos = [fotos]; }
-  }
-  const ogImage = Array.isArray(fotos) && fotos.length ? fotoPublica(typeof fotos[0] === 'string' ? fotos[0] : fotos[0]?.url) : OG_FALLBACK;
+  const rawTitle = im.titulo || 'Imóvel à venda';
+  const title = descricaoPublica(rawTitle) || 'Imóvel à venda';
+  const city = cidadePublica(im);
+  const ogTitle = `${title}${city ? ` — ${city}` : ''}`;
+  const description = (descricaoPublica(im.descricao) || `${title} no Litoral Norte Gaúcho. Confira fotos, valor e detalhes.`).slice(0, 160);
+  const image = fotoPrincipal(im);
   const canonicalUrl = `${SITE}/imovel/${encodeURIComponent(canonicalSlug)}/`;
+  const schema = schemaImovel(im, canonicalUrl, title, description, image, city);
 
   const html = await response.text();
   const htmlTitle = `${esc(ogTitle)} | Condomínios na Praia`;
-  const htmlDesc = esc(ogDesc);
+  const htmlDesc = esc(description);
   const htmlUrl = esc(canonicalUrl);
-  const additions = `\n<meta property="og:image" content="${esc(ogImage)}">` +
+  const additions = `\n<meta property="og:image" content="${esc(image)}">` +
     `\n<meta property="og:image:width" content="1200">` +
     `\n<meta property="og:image:height" content="900">` +
-    `\n<meta name="twitter:image" content="${esc(ogImage)}">` +
-    '\n<meta name="twitter:card" content="summary_large_image">';
+    `\n<meta name="twitter:image" content="${esc(image)}">` +
+    '\n<meta name="twitter:card" content="summary_large_image">' +
+    '\n<style id="ip-ssr-style">.ip-ssr{padding:20px 0 48px}.ip-ssr-image{display:block;width:100%;height:auto;max-height:560px;object-fit:cover;border-radius:16px;margin:18px 0}.ip-ssr-location{color:#5b7585;font-size:14px}.ip-ssr-facts{display:flex;flex-wrap:wrap;gap:1px;background:rgba(31,181,196,.18);border:1px solid rgba(31,181,196,.18);border-radius:12px;overflow:hidden;margin:24px 0}.ip-ssr-facts div{background:#fff;padding:14px 18px;min-width:130px}.ip-ssr-facts span{display:block;color:#5b7585;font-size:10px;letter-spacing:.12em;text-transform:uppercase}.ip-ssr-facts strong{display:block;color:#0d3b54;margin-top:3px}.ip-ssr .ip-desc h2{font-family:Fraunces,serif;color:#0d3b54;margin:30px 0 8px}.ip-ssr .ip-desc p{color:#2e4654;line-height:1.75}.ip-ssr-cta a{display:inline-flex;background:#0d3b54;color:#fff;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600}</style>';
+  const content = ssrBlock(im, title, description, image, canonicalUrl, city);
   const transformed = html
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${htmlTitle}</title>`)
     .replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${htmlDesc}">`)
@@ -103,6 +230,8 @@ export async function onRequest(context) {
     .replace(/<meta\s+name=["']twitter:title["'][^>]*>/i, `<meta name="twitter:title" content="${esc(ogTitle)}">`)
     .replace(/<meta\s+name=["']twitter:description["'][^>]*>/i, `<meta name="twitter:description" content="${htmlDesc}">`)
     .replace(/<link\s+rel=["']canonical["'][^>]*>/i, `<link rel="canonical" href="${htmlUrl}">`)
+    .replace(/<div id="ip-content">/i, `<div id="ip-content">${content}`)
+    .replace(/<script type="application\/ld\+json" id="ld-imovel">\{\}<\/script>/i, `<script type="application/ld+json" id="ld-imovel">${jsonSafe(schema)}</script>`)
     .replace(/<\/head>/i, `${additions}\n</head>`);
   const headers = new Headers(response.headers);
   headers.delete('content-length');
