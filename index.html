@@ -522,9 +522,12 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 48 C110 96 230 100 350 46 C470 -2 590 4 720 50 C850 98 970 102 1090 44 C1200 -4 1325 2 1440 46 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E")!important;
 }
   .sec-onda{padding-top:58px!important}
+/* A onda de Capão começa dentro da própria seção para não invadir o card Cidade. */
+#cond-capao.sec-onda::before{top:0!important;height:42px!important}
 @media(max-width:768px){
   .sec-onda{padding-top:44px!important}
   .sec-onda::before{top:-48px!important;height:48px!important}
+  #cond-capao.sec-onda::before{top:0!important;height:32px!important}
 }
 </style>
 </head>
