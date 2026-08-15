@@ -119,6 +119,7 @@ footer{margin-top:36px;padding-top:24px;border-top:1px solid #e8e8e8}
 <meta name="twitter:title" content="Villaggio em Xangri-lá | Condomínios na Praia">
 <meta name="twitter:description" content="Villaggio: condomínio Fechado em Xangri-lá. Alto Padrão.">
 <meta name="twitter:image" content="https://condominiosnapraia.com.br/img/og-home.jpg">
+  <link rel="stylesheet" href="/css/portal-footer.css">
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -208,45 +209,57 @@ footer{margin-top:36px;padding-top:24px;border-top:1px solid #e8e8e8}
 </div>
 <p style="color:#33454f;line-height:1.7;font-size:15px;margin-top:22px">Explore outros <a href="/xangri-la/" style="color:#0e7490">condomínios em Xangri-lá</a> ou fale com a nossa equipe de corretores para agendar uma visita ao Villaggio.</p>
 </section>
-<footer>
-  <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
+<footer class="page-footer" aria-label="Rodapé Portal Meu Litoral">
+  <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"></path></svg></div>
   <div class="ftr-main">
     <div class="ftr-col ftr-col-brand">
-      <div class="ftr-logo"><img src="/img/logo-rodape.png" alt="Meu Litoral - O Portal do Litoral Gaúcho" class="ftr-logo-img" width="230" height="154" loading="lazy"></div>
+      <div class="ftr-logo ftr-brand-lockup" role="img" aria-label="Portal Meu Litoral — Viva o melhor do litoral">
+        <div class="hero-brand-kicker ftr-brand-kicker"><span class="hero-brand-line"></span><span>PORTAL</span><span class="hero-brand-line"></span></div>
+        <div class="hero-brand-name">Meu Litoral</div>
+        <div class="hero-brand-underline" aria-hidden="true"></div>
+        <div class="hero-brand-tagline">VIVA O MELHOR DO LITORAL</div>
+      </div>
       <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
-      <a class="ftr-wpp" href="https://wa.me/5551982868888"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
+      <a class="ftr-wpp" href="https://wa.me/5551982868888" target="_blank" rel="nofollow"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"></path></svg> Falar no WhatsApp</a>
     </div>
     <div class="ftr-col">
       <div class="ftr-tit">Navegar</div>
       <div class="ftr-links-grid">
-      <a href="/condominios/">Condomínios</a>
-      <a href="/imoveis/" onclick="showAllImov();return false">Imóveis</a>
-      <a href="/lancamentos/">Lançamentos</a>
-      <a href="/contemplado-imoveis/">Crédito Contemplado</a>
-      <a href="/financiamento-imobiliario/">Financiamento</a><a href="/seguro-fianca/">Seguro Fiança</a><a href="/refinanciamento-imobiliario/">Refinanciamento</a><a href="/exclusividade-imobiliaria/">Venda seu Imóvel</a><a href="/contato/">Contato</a><a href="/sobre/">Sobre</a><a href="/politica-privacidade/">Política de Privacidade</a><a href="/termos/">Termos de Uso</a>
-    </div>
+        <a href="/condominios/">Condomínios</a>
+        <a href="/imoveis/">Imóveis</a>
+        <a href="/lancamentos/">Lançamentos</a>
+        <a href="/contemplado-imoveis">Crédito Contemplado</a>
+        <a href="/financiamento-imobiliario/">Financiamento</a>
+        <a href="/seguro-fianca/">Seguro Fiança</a>
+        <a href="/refinanciamento-imobiliario/">Refinanciamento</a>
+        <a href="/exclusividade-imobiliaria/">Venda seu Imóvel</a>
+        <a href="/contato/">Contato</a>
+        <a href="/sobre/">Sobre</a>
+        <a href="/politica-privacidade/">Política de Privacidade</a>
+        <a href="/termos/">Termos de Uso</a>
+      </div>
     </div>
     <div class="ftr-col">
       <div class="ftr-tit">Descobrir</div>
       <div class="ftr-links-grid">
-      <a href="#guias-cidades" onclick="document.getElementById('guias-cidades').scrollIntoView({behavior:'smooth'});return false">Cidades</a>
-      <a href="/o-que-fazer-em-capao-da-canoa/" onclick="openTurismo();return false">Turismo no Litoral</a>
-      <a href="/turismo/" onclick="openTurismo();return false">Onde Ir</a>
-      <a href="/blog/" onclick="openBlog();return false">Blog &amp; Notícias</a>
-    </div>
+        <a href="/#guias-cidades">Cidades</a>
+        <a href="/turismo/">Turismo no Litoral</a>
+        <a href="/turismo/">Onde Ir</a>
+        <a href="/blog/">Blog &amp; Notícias</a>
+      </div>
     </div>
     <div class="ftr-col">
       <div class="ftr-tit">Cidades</div>
       <div class="ftr-links-grid">
-      <a href="/xangri-la/">Xangri-lá</a>
-      <a href="/capao-da-canoa/">Capão da Canoa</a>
-      <a href="/osorio/">Osório</a>
-      <a href="/maquine/">Maquiné</a>
-    </div>
+        <a href="/xangri-la/">Xangri-lá</a>
+        <a href="/capao-da-canoa/">Capão da Canoa</a>
+        <a href="/osorio/">Osório</a>
+        <a href="/maquine/">Maquiné</a>
+      </div>
     </div>
   </div>
   <div class="ftr-bottom">
-    <span>© 2025 Os melhores condomínios do litoral · Todos os direitos reservados</span>
+    <span>© 2025 Portal Meu Litoral · Todos os direitos reservados</span>
     <span class="ftr-bottom-r">Litoral Norte Gaúcho · RS</span>
   </div>
 </footer>
