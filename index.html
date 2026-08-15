@@ -161,6 +161,38 @@
 #sec-imoveis{background:var(--home-sage)!important}
 #sec-imoveis.sec-onda::before{background:var(--home-sand)!important}
 </style>
+<style id="home-information-architecture">
+.qr-institutional{max-width:900px;margin:0 auto 30px;text-align:center}
+.qr-institutional h2{font-family:'Fraunces',serif;font-size:clamp(24px,3.2vw,42px);font-weight:400;line-height:1.12;color:var(--home-ink);margin:0 0 10px}
+.qr-institutional h2 em{color:var(--home-gold);font-style:italic}
+.qr-institutional p{font-size:14px;color:#5b7585;line-height:1.6}
+#lch-sec-sec{background:linear-gradient(145deg,#eef3ec 0%,#f5f7f2 100%)!important}
+#lch-sec-sec.sec-onda::before{background:var(--home-sand)!important}
+#sec-imoveis{background:var(--home-mist)!important}
+#sec-imoveis.sec-onda::before{background:#eef3ec!important}
+#sec-apartamentos{background:#fffaf2!important}
+#sec-apartamentos.sec-onda::before{background:var(--home-mist)!important}
+#sec-fora-cond{background:var(--home-foam)!important}
+#sec-fora-cond.sec-onda::before{background:#fffaf2!important}
+#sec-terrenos{background:#fbfaf7!important}
+#sec-terrenos.sec-onda::before{background:var(--home-foam)!important}
+#sec-terrenos-fora{background:var(--home-mist)!important}
+#sec-terrenos-fora.sec-onda::before{background:#fbfaf7!important}
+#qfilter2{background:var(--home-sand)!important}
+#qfilter2.sec-onda::before{background:var(--home-mist)!important}
+#sec-condominios{background:#fffaf2!important}
+#sec-condominios.sec-onda::before{background:var(--home-sand)!important}
+@media (min-width:769px){
+  #qfilter2 .qfilter-inner{max-width:1320px}
+  #qfilter2 .qfilter-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  #qfilter2 .qfilter-card{aspect-ratio:1.55/1}
+}
+@media (max-width:768px){
+  .qr-institutional{margin-bottom:22px}
+  .qr-institutional h2{font-size:25px}
+  .qr-institutional p{font-size:12px}
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -215,13 +247,6 @@
     <div class="hero-brand-underline" aria-hidden="true"></div>
     <div class="hero-brand-tagline">VIVA O MELHOR DO LITORAL</div>
   </div>
-      <div class="hero-eyebrow">
-        <span class="hero-dot-gold"></span>
-        Litoral Norte Gaúcho
-        <span class="hero-dot-gold"></span>
-      </div>
-      <h1 class="hero-h1">A maior plataforma especializada em <em>condomínios do Litoral Norte Gaúcho</em></h1>
-      <p class="hero-desc">Condomínios de alto padrão e infraestrutura completa.</p>
     </div>
     
   </div>
@@ -240,6 +265,10 @@
   <!-- ══ NAVEGAÇÃO RÁPIDA ══ -->
   <section class="qr-sec">
     <div class="qr-inner">
+      <div class="qr-institutional">
+        <h2>A maior plataforma especializada em <em>condomínios do Litoral Norte Gaúcho</em></h2>
+        <p>Condomínios de alto padrão e infraestrutura completa.</p>
+      </div>
       <p class="eyebrow" style="justify-content:center">Navegação rápida</p>
       <h2 class="sectit">O que você <em>busca?</em></h2>
       <p class="cidades-sub">Escolha um caminho e vá direto ao ponto</p>
@@ -282,73 +311,6 @@
       </div>
     </div>
   </section>
-
-  <!-- ══ DESTAQUES CASAS & SOBRADOS ══ -->
-  <section class="dest-section dest-section-alt sec-onda" id="sec-imoveis">
-    <div class="dest-inner">
-      <div class="dest-header">
-        <div>
-          <p class="eyebrow">Imóveis Selecionados</p>
-          <h2 class="sectit">Casas & Sobrados à <em>Venda</em></h2>
-        </div>
-        <a class="dest-ver-btn" href="/imoveis/?tipo=Casa">Ver todas as casas →</a>
-      </div>
-      <div class="igrid" id="home-imov-grid" style="min-height:200px"></div>
-      <div class="dest-ver-all">
-        <a class="dest-btn-all dest-btn-alt" href="/imoveis/?tipo=Casa">
-          Ver todas casas e sobrados disponíveis
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ DESTAQUES CASAS FORA DE CONDOMÍNIO ══ -->
-  <section class="dest-section sec-onda" id="sec-fora-cond">
-    <div class="dest-inner">
-      <div class="dest-header">
-        <div>
-          <p class="eyebrow">Imóveis de rua</p>
-          <h2 class="sectit">Casas Fora de <em>Condomínio</em></h2>
-        </div>
-        <a class="dest-ver-btn" href="/imoveis/?fora=1">Ver todas →</a>
-      </div>
-      <div class="igrid" id="home-fora-grid" style="min-height:200px"></div>
-      <div class="dest-ver-all">
-        <a class="dest-btn-all dest-btn-alt" href="/imoveis/?fora=1">
-          Ver todas as casas fora de condomínio
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ ENCONTRE O SEU (cópia — entre Casas e Lançamentos) ══ -->
-  <section class="qfilter-sec sec-onda" id="qfilter2">
-  <div class="qfilter-inner">
-    <div class="qfilter-eyebrow">Encontre o seu</div>
-    <h2 class="qfilter-title">O que você está <em>procurando</em>?</h2>
-    <div class="qfilter-grid">
-      <a class="qfilter-card" href="/imoveis/?tipo=Casa">
-        <div class="qfilter-bg" data-foto-card="filtro-casas" style="background:linear-gradient(160deg,#0c4a6e,#0e8a99)"></div>
-        <div class="qfilter-body"><span class="qfilter-ico">🏡</span><span class="qfilter-lbl">Casas em condomínio</span><span class="qfilter-go">Ver casas →</span></div>
-      </a>
-      <a class="qfilter-card" href="/imoveis/?tipo=Terreno">
-        <div class="qfilter-bg" data-foto-card="filtro-lotes" style="background:linear-gradient(160deg,#0e7490,#1fb5c4)"></div>
-        <div class="qfilter-body"><span class="qfilter-ico">📐</span><span class="qfilter-lbl">Lotes em condomínios</span><span class="qfilter-go">Ver lotes →</span></div>
-      </a>
-      <a class="qfilter-card" href="/lancamentos/">
-        <div class="qfilter-bg" data-foto-card="filtro-lancamentos" style="background:linear-gradient(160deg,#0d3b54,#0e7490)"></div>
-        <div class="qfilter-body"><span class="qfilter-ico">🚀</span><span class="qfilter-lbl">Lançamentos</span><span class="qfilter-go">Ver lançamentos →</span></div>
-      </a>
-      <a class="qfilter-card" href="/condominios/">
-        <div class="qfilter-bg" data-foto-card="filtro-condominios" style="background:linear-gradient(160deg,#0891b2,#06b6d4)"></div>
-        <div class="qfilter-body"><span class="qfilter-ico">🏛️</span><span class="qfilter-lbl">Condomínios</span><span class="qfilter-go">Ver condomínios →</span></div>
-      </a>
-    </div>
-  </div>
-  </section>
-
   <!-- ══ LANÇAMENTOS (logo após o hero) ══ -->
   <section class="lch-sec sec-onda" id="lch-sec-sec">
     <div class="lch-inner">
@@ -411,51 +373,6 @@
             <div class="lch-link">Ver oportunidade →</div>
           </div>
         </a>
-        <a class="lch-card" href="/enseada-lagoa-dos-quadros-capao-da-canoa/">
-          <div class="lch-foto" data-lch="enseada"><span class="lch-tag">Lançamento</span>Foto em breve</div>
-          <div class="lch-body">
-            <div class="lch-city">Capão da Canoa</div>
-            <div class="lch-tit">Enseada Lagoa dos Quadros</div>
-            <div class="lch-res">Condomínio náutico de alto padrão da Wagnerpar em Capão da Canoa, com acesso exclusivo à Lagoa dos Quadros e garagens náuticas para lanchas e jet skis.</div>
-            <div class="lch-link">Ver oportunidade →</div>
-          </div>
-        </a>
-        <a class="lch-card" href="/cyano-private-resort-osorio/">
-          <div class="lch-foto" data-lch="cyano"><span class="lch-tag">Lançamento</span>Foto em breve</div>
-          <div class="lch-body">
-            <div class="lch-city">Osório</div>
-            <div class="lch-tit">Cyano Private Resort</div>
-            <div class="lch-res">Condomínio resort frente mar em Osório, com clube de 2.000m² à beira-mar, rooftop com piscina, lotes frente mar e estrutura esportiva de clube olímpico. 173 lotes.</div>
-            <div class="lch-link">Ver oportunidade →</div>
-          </div>
-        </a>
-        <a class="lch-card" href="/monaco-grand-marina-maquine/">
-          <div class="lch-foto" data-lch="monaco"><span class="lch-tag">Lançamento</span>Foto em breve</div>
-          <div class="lch-body">
-            <div class="lch-city">Maquiné</div>
-            <div class="lch-tit">Mônaco Grand Marina</div>
-            <div class="lch-res">Condomínio náutico de luxo em Maquiné, com canais navegáveis, marina privativa, píeres residenciais e 113.750m² de lagos. O mais exclusivo do Sul do Brasil.</div>
-            <div class="lch-link">Ver oportunidade →</div>
-          </div>
-        </a>
-        <a class="lch-card" href="/vientos-resort-xangri-la/">
-          <div class="lch-foto" data-lch="vientos"><span class="lch-tag">Lançamento</span>Foto em breve</div>
-          <div class="lch-body">
-            <div class="lch-city">Xangri-lá</div>
-            <div class="lch-tit">Vientos Resort</div>
-            <div class="lch-res">Condomínio resort de alto padrão em Xangri-lá, com praia artificial com ondas, piscina aquecida, rooftop, spa e infraestrutura completa de resort. 439 lotes exclusivos.</div>
-            <div class="lch-link">Ver oportunidade →</div>
-          </div>
-        </a>
-        <a class="lch-card" href="/condominio-alegro-curumim/">
-          <div class="lch-foto" data-lch="alegro"><span class="lch-tag">Lançamento</span>Foto em breve</div>
-          <div class="lch-body">
-            <div class="lch-city">Curumim · Capão da Canoa</div>
-            <div class="lch-tit">Condomínio Alegro</div>
-            <div class="lch-res">Condomínio fechado de alto padrão em Curumim, com piscina aquecida, segurança 24h, quadras e infraestrutura completa. Ideal para morar, veranear ou investir.</div>
-            <div class="lch-link">Ver oportunidade →</div>
-          </div>
-        </a>
       </div>
       <div class="lch-ver">
         <a class="lch-btn" href="/lancamentos/">
@@ -465,14 +382,70 @@
       </div>
     </div>
   </section>
-
+  <!-- ══ DESTAQUES CASAS & SOBRADOS ══ -->
+  <section class="dest-section dest-section-alt sec-onda" id="sec-imoveis">
+    <div class="dest-inner">
+      <div class="dest-header">
+        <div>
+          <p class="eyebrow">Imóveis Selecionados</p>
+          <h2 class="sectit">Casas & Sobrados em <em>Condomínio</em></h2>
+        </div>
+        <a class="dest-ver-btn" href="/imoveis/?tipo=Casa">Ver todas as casas →</a>
+      </div>
+      <div class="igrid" id="home-imov-grid" style="min-height:200px"></div>
+      <div class="dest-ver-all">
+        <a class="dest-btn-all dest-btn-alt" href="/imoveis/?tipo=Casa">
+          Ver todas casas e sobrados disponíveis
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- ══ APARTAMENTOS ══ -->
+  <section class="dest-section sec-onda" id="sec-apartamentos">
+    <div class="dest-inner">
+      <div class="dest-header">
+        <div>
+          <p class="eyebrow">Imóveis Selecionados</p>
+          <h2 class="sectit">Apartamentos à <em>Venda</em></h2>
+        </div>
+        <a class="dest-ver-btn" href="/imoveis/?tipo=Apartamento">Ver todos →</a>
+      </div>
+      <div class="igrid" id="home-apartamento-grid" style="min-height:200px"></div>
+      <div class="dest-ver-all">
+        <a class="dest-btn-all" href="/imoveis/?tipo=Apartamento">
+          Ver todos os apartamentos
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- ══ DESTAQUES CASAS FORA DE CONDOMÍNIO ══ -->
+  <section class="dest-section sec-onda" id="sec-fora-cond">
+    <div class="dest-inner">
+      <div class="dest-header">
+        <div>
+          <p class="eyebrow">Imóveis de rua</p>
+          <h2 class="sectit">Casas & Sobrados Fora de <em>Condomínio</em></h2>
+        </div>
+        <a class="dest-ver-btn" href="/imoveis/?fora=1">Ver todas →</a>
+      </div>
+      <div class="igrid" id="home-fora-grid" style="min-height:200px"></div>
+      <div class="dest-ver-all">
+        <a class="dest-btn-all dest-btn-alt" href="/imoveis/?fora=1">
+          Ver todas as casas fora de condomínio
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
   <!-- ══ DESTAQUES TERRENOS ══ -->
   <section class="dest-section sec-onda" id="sec-terrenos">
     <div class="dest-inner">
       <div class="dest-header">
         <div>
           <p class="eyebrow">Imóveis Selecionados</p>
-          <h2 class="sectit">Lotes à <em>Venda</em></h2>
+          <h2 class="sectit">Terrenos em <em>Condomínio</em></h2>
         </div>
         <a class="dest-ver-btn" href="/imoveis/?tipo=Terreno">Ver todos os lotes →</a>
       </div>
@@ -485,7 +458,58 @@
       </div>
     </div>
   </section>
-
+  <!-- ══ TERRENOS FORA DE CONDOMÍNIO ══ -->
+  <section class="dest-section sec-onda" id="sec-terrenos-fora">
+    <div class="dest-inner">
+      <div class="dest-header">
+        <div>
+          <p class="eyebrow">Imóveis de rua</p>
+          <h2 class="sectit">Terrenos Fora de <em>Condomínio</em></h2>
+        </div>
+        <a class="dest-ver-btn" href="/imoveis/?fora=1&amp;tipo=Terreno">Ver todos →</a>
+      </div>
+      <div class="igrid" id="home-terreno-fora-grid" style="min-height:200px"></div>
+      <div class="dest-ver-all">
+        <a class="dest-btn-all" href="/imoveis/?fora=1&amp;tipo=Terreno">
+          Ver todos os terrenos fora de condomínio
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- ══ O QUE VOCÊ PROCURA ══ -->
+  <section class="qfilter-sec sec-onda" id="qfilter2">
+  <div class="qfilter-inner">
+    <div class="qfilter-eyebrow">Encontre o seu</div>
+    <h2 class="qfilter-title">O que você está <em>procurando</em>?</h2>
+    <div class="qfilter-grid">
+      <a class="qfilter-card" href="/imoveis/?tipo=Casa">
+        <div class="qfilter-bg" data-foto-card="filtro-casas" style="background:linear-gradient(160deg,#0c4a6e,#0e8a99)"></div>
+        <div class="qfilter-body"><span class="qfilter-ico">🏡</span><span class="qfilter-lbl">Casas em condomínio</span><span class="qfilter-go">Ver casas →</span></div>
+      </a>
+      <a class="qfilter-card" href="/imoveis/?tipo=Terreno">
+        <div class="qfilter-bg" data-foto-card="filtro-lotes" style="background:linear-gradient(160deg,#0e7490,#1fb5c4)"></div>
+        <div class="qfilter-body"><span class="qfilter-ico">📐</span><span class="qfilter-lbl">Lotes em condomínios</span><span class="qfilter-go">Ver lotes →</span></div>
+      </a>
+      <a class="qfilter-card" href="/lancamentos/">
+        <div class="qfilter-bg" data-foto-card="filtro-lancamentos" style="background:linear-gradient(160deg,#0d3b54,#0e7490)"></div>
+        <div class="qfilter-body"><span class="qfilter-ico">🚀</span><span class="qfilter-lbl">Lançamentos</span><span class="qfilter-go">Ver lançamentos →</span></div>
+      </a>
+      <a class="qfilter-card" href="/condominios/">
+        <div class="qfilter-bg" data-foto-card="filtro-condominios" style="background:linear-gradient(160deg,#0891b2,#06b6d4)"></div>
+        <div class="qfilter-body"><span class="qfilter-ico">🏛️</span><span class="qfilter-lbl">Condomínios</span><span class="qfilter-go">Ver condomínios →</span></div>
+      </a>
+      <a class="qfilter-card" href="/imoveis/?fora=1">
+        <div class="qfilter-bg" data-foto-card="filtro-fora-condominio" style="background:linear-gradient(160deg,#8aa89a,#b8cbbd)"></div>
+        <div class="qfilter-body"><span class="qfilter-ico">🏡</span><span class="qfilter-lbl">Casas fora de condomínio</span><span class="qfilter-go">Ver casas →</span></div>
+      </a>
+      <a class="qfilter-card" href="/imoveis/?tipo=Apartamento">
+        <div class="qfilter-bg" data-foto-card="filtro-apartamentos" style="background:linear-gradient(160deg,#7da7b1,#b7d4d3)"></div>
+        <div class="qfilter-body"><span class="qfilter-ico">🏢</span><span class="qfilter-lbl">Apartamentos</span><span class="qfilter-go">Ver apartamentos →</span></div>
+      </a>
+    </div>
+  </div>
+  </section>
   <!-- ══ DESTAQUES CONDOMÍNIOS ══ -->
   <section class="dest-section sec-onda" id="sec-condominios">
     <div class="dest-inner">
@@ -505,7 +529,6 @@
       </div>
     </div>
   </section>
-
   <!-- ══ CABEÇALHO: Lagoa ou Mar? ══ -->
   <section class="viver-intro sec-onda" id="viver-intro-sec">
     <div class="viver-intro-inner">
@@ -2763,37 +2786,36 @@ function buildHomeDestaques(){
       }));
     }
 
-    // separa por tipo: terrenos de um lado, casas/sobrados de outro
-    const ehTerreno = i => (i.tipo||'').toLowerCase().indexOf('terreno')>=0;
-    const casas    = allImov.filter(i=>!ehTerreno(i));
-    const terrenos = allImov.filter(i=> ehTerreno(i));
+    // Categorias editoriais: sempre baseadas no tipo e no vínculo real do imóvel.
+    const tipoCategoria = i => {
+      const t=String(i.tipo||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      if(/apart|loft|kitnet|flat|studio/.test(t)) return 'apartamento';
+      if(/terreno|lote/.test(t)) return 'terreno';
+      return 'casa';
+    };
+    const ehFora = i => i.fora_condominio===true || i.foraCondominio===true;
+    const pickDestaques = (lista, ids, limite) => {
+      const escolhidos = Array.isArray(ids) && ids.length ? lista.filter(i=>ids.includes(i.id)) : [];
+      const resto = lista.filter(i=>!escolhidos.includes(i));
+      return escolhidos.concat(resto).slice(0,limite);
+    };
+    const renderHomeGrid = (id, lista, icon, texto) => {
+      const el=document.getElementById(id);
+      if(el) el.innerHTML=lista.length ? lista.map(buildImovCard).join('') : `<div class="empty" style="grid-column:1/-1"><div class="empty-ico">${icon}</div><p>${texto}</p></div>`;
+    };
+
+    const casasCondominio = allImov.filter(i=>!ehFora(i) && tipoCategoria(i)==='casa');
+    const apartamentos = allImov.filter(i=>!ehFora(i) && tipoCategoria(i)==='apartamento');
+    const terrenosCondominio = allImov.filter(i=>!ehFora(i) && tipoCategoria(i)==='terreno');
+    const casasFora = allImov.filter(i=>ehFora(i) && tipoCategoria(i)==='casa');
+    const terrenosFora = allImov.filter(i=>ehFora(i) && tipoCategoria(i)==='terreno');
     const destTerreno = _siteCache?.destTerreno||[];
 
-    let showImov=destImov.length
-      ? casas.filter(i=>destImov.includes(i.id)).slice(0,12)
-      : casas.slice(0,12);
-
-    let showTerreno=destTerreno.length
-      ? terrenos.filter(i=>destTerreno.includes(i.id)).slice(0,12)
-      : terrenos.slice(0,12);
-
-    const ig=document.getElementById('home-imov-grid');
-    if(ig) ig.innerHTML=showImov.length
-      ? showImov.map(buildImovCard).join('')
-      : '<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🏠</div><p>Cadastre casas no CRM para exibi-las aqui</p></div>';
-
-    const tg=document.getElementById('home-terreno-grid');
-    if(tg) tg.innerHTML=showTerreno.length
-      ? showTerreno.map(buildImovCard).join('')
-      : '<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🌳</div><p>Cadastre terrenos no CRM para exibi-los aqui</p></div>';
-
-    // ── CASAS FORA DE CONDOMÍNIO (12 cards) ──
-    const ehFora = i => (i.fora_condominio===true || i.foraCondominio===true);
-    const foraLista = allImov.filter(i=>ehFora(i) && !ehTerreno(i)).slice(0,12);
-    const fg=document.getElementById('home-fora-grid');
-    if(fg) fg.innerHTML=foraLista.length
-      ? foraLista.map(buildImovCard).join('')
-      : '<div class="empty" style="grid-column:1/-1"><div class="empty-ico">🏠</div><p>Cadastre casas fora de condomínio no CRM para exibi-las aqui</p></div>';
+    renderHomeGrid('home-imov-grid', pickDestaques(casasCondominio, destImov, 8), '🏠', 'Cadastre casas e sobrados em condomínio no CRM para exibi-los aqui');
+    renderHomeGrid('home-apartamento-grid', apartamentos.slice(0,8), '🏢', 'Nenhum apartamento publicado disponível no momento');
+    renderHomeGrid('home-fora-grid', casasFora.slice(0,8), '🏡', 'Cadastre casas e sobrados fora de condomínio no CRM para exibi-los aqui');
+    renderHomeGrid('home-terreno-grid', pickDestaques(terrenosCondominio, destTerreno, 6), '🌳', 'Cadastre terrenos em condomínio no CRM para exibi-los aqui');
+    renderHomeGrid('home-terreno-fora-grid', terrenosFora.slice(0,6), '📐', 'Cadastre terrenos fora de condomínio no CRM para exibi-los aqui');
 
     // Trigger fade animations
     if(typeof obs === 'function') obs();
