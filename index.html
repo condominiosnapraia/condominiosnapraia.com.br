@@ -398,6 +398,68 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 .viv-mar::before{background:#e9f0eb!important}
 .viv-cidade::before{background:#dcebf5!important}
 </style>
+<style id="home-wave-global-final">
+/* Sistema global final de transições: uma onda limpa, sem sombra, por seção. */
+.sec-onda{
+  position:relative!important;
+  overflow:visible!important;
+  border-top:0!important;
+  border-bottom:0!important;
+  padding-top:64px!important;
+}
+.sec-onda::before{
+  top:0!important;
+  height:34px!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  -webkit-filter:none!important;
+  background:var(--wave-from,#fbf5eb)!important;
+}
+.sec-onda>*{position:relative;z-index:2}
+.qr-sec{border-top:0!important;border-bottom:0!important}
+/* A superfície seguinte começa com a cor exata da superfície anterior. */
+#lch-sec-sec{background:#eef3ec!important}
+#lch-sec-sec.sec-onda::before{--wave-from:#fbf5eb;background:#fbf5eb!important}
+#sec-imoveis{background:#f3f8fa!important}
+#sec-imoveis.sec-onda::before{--wave-from:#eef3ec;background:#eef3ec!important}
+#sec-apartamentos{background:#fffaf2!important}
+#sec-apartamentos.sec-onda::before{--wave-from:#f3f8fa;background:#f3f8fa!important}
+#sec-fora-cond{background:#eef8f7!important}
+#sec-fora-cond.sec-onda::before{--wave-from:#fffaf2;background:#fffaf2!important}
+#sec-terrenos{background:#fbfaf7!important}
+#sec-terrenos.sec-onda::before{--wave-from:#eef8f7;background:#eef8f7!important}
+#sec-terrenos-fora{background:#f3f8fa!important}
+#sec-terrenos-fora.sec-onda::before{--wave-from:#fbfaf7;background:#fbfaf7!important}
+#qfilter2{background:#fbf5eb!important}
+#qfilter2.sec-onda::before{--wave-from:#f3f8fa;background:#f3f8fa!important}
+#sec-condominios{background:#eef3ec!important}
+#sec-condominios.sec-onda::before{--wave-from:#fbf5eb;background:#fbf5eb!important}
+#viver-intro-sec{background:#fffaf2!important}
+#viver-intro-sec.sec-onda::before{--wave-from:#eef3ec;background:#eef3ec!important}
+#cond-capao{background:#f1e7d5!important}
+#cond-capao.sec-onda::before{--wave-from:#fffaf2;background:#fffaf2!important}
+#cond-xangri{background:#f6f1e8!important}
+#cond-xangri.sec-onda::before{--wave-from:#f1e7d5;background:#f1e7d5!important}
+#cond-osorio{background:#f2fafb!important}
+#cond-osorio.sec-onda::before{--wave-from:#f6f1e8;background:#f6f1e8!important}
+#cond-maquine{background:#edf5f2!important}
+#cond-maquine.sec-onda::before{--wave-from:#f2fafb;background:#f2fafb!important}
+#qfilter{background:#f6f1e8!important}
+#qfilter.sec-onda::before{--wave-from:#edf5f2;background:#edf5f2!important}
+#pcred-sec-sec{background:#faf6ef!important}
+#pcred-sec-sec.sec-onda::before{--wave-from:#f6f1e8;background:#f6f1e8!important}
+#guias-cidades{background:#fff!important}
+#guias-cidades.sec-onda::before{--wave-from:#faf6ef;background:#faf6ef!important}
+#guias-decisao{background:#faf6ef!important}
+#guias-decisao.sec-onda::before{--wave-from:#fff;background:#fff!important}
+#sec-blog-preview{background:#fff!important}
+#sec-blog-preview.sec-onda::before{--wave-from:#faf6ef;background:#faf6ef!important}
+@media(max-width:600px){
+  .sec-onda{padding-top:44px!important}
+  .sec-onda::before{height:28px!important}
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
