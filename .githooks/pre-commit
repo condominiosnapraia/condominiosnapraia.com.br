@@ -13,3 +13,16 @@ REPORT="${TMPDIR:-/tmp}/sitemap-validation-report.json"
 python3 scripts/validate_sitemaps_precommit.py \
   --base-url "${SITEMAP_BASE_URL:-https://condominiosnapraia.com.br}" \
   --output "$REPORT"
+
+# O SSR depende da versão já publicada. Execute quando a produção estiver
+# sincronizada com o commit ou em uma auditoria pós-deploy:
+# RUN_PROPERTY_SSR_VALIDATION=1 git commit ...
+if [ "${RUN_PROPERTY_SSR_VALIDATION:-0}" = "1" ]; then
+  SSR_REPORT="${TMPDIR:-/tmp}/property-ssr-jsonld-report.json"
+  python3 scripts/validate_property_ssr_jsonld.py \
+    --base-url "${SITEMAP_BASE_URL:-https://condominiosnapraia.com.br}" \
+    --workers "${SSR_WORKERS:-6}" \
+    --timeout "${SSR_TIMEOUT:-60}" \
+    --retries "${SSR_RETRIES:-2}" \
+    --output "$SSR_REPORT"
+fi
