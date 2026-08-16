@@ -89,17 +89,36 @@ function precoPublico(value) {
   return n ? `R$ ${n.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}` : '';
 }
 
+async function fetchSupabaseComRetry(url, options, attempts = 2) {
+  let lastError = null;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    try {
+      const response = await fetch(url, options);
+      // 4xx é resposta definitiva; 5xx/429 podem ser transitórios em cold start.
+      if (response.ok || (response.status >= 400 && response.status < 500 && response.status !== 429)) return response;
+      if (attempt === attempts - 1) return response;
+      await new Promise(resolve => setTimeout(resolve, attempt === 0 ? 150 : 400));
+    } catch (error) {
+      lastError = error;
+      if (attempt < attempts - 1) await new Promise(resolve => setTimeout(resolve, attempt === 0 ? 150 : 400));
+    }
+  }
+  if (lastError) throw lastError;
+  return null;
+}
+
 async function buscarImovel(ref, key) {
   if (!ref || !key) return null;
   const resolvedRef = aliasParaRef(ref);
   const valor = encodeURIComponent(resolvedRef);
   const query = `${SUPABASE_URL}/rest/v1/imoveis?or=(codigo.eq.${valor},slug.eq.${valor},id.eq.${valor})&select=id,slug,codigo,titulo,cond_id,tipo,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,cidade_end,descricao,fotos_no_site,fotos&limit=1`;
   try {
-    const r = await fetch(query, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
-    if (!r.ok) return null;
+    const r = await fetchSupabaseComRetry(query, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+    if (!r || !r.ok) return null;
     const arr = await r.json();
     return Array.isArray(arr) ? arr[0] || null : null;
-  } catch (_) {
+  } catch (error) {
+    console.warn('Falha transitória ao buscar imóvel no Supabase:', String(error));
     return null;
   }
 }

@@ -721,7 +721,7 @@ details[open] .dec-faq-q:after{content:"−"}
   <div class="vpc-in">
     <div class="vpc-txt">
       <span class="vpc-badge">⭐ Venda Premium · Alta Performance</span>
-      <h3>Tem um imóvel para <em>vender</em>?</h3>
+      <h2>Tem um imóvel para <em>vender</em>?</h2>
       <p>Entre no nosso programa exclusivo de venda inteligente: avaliação estratégica, produção premium, marketing digital e inteligência artificial trabalhando para vender seu imóvel pelo melhor valor.</p>
     </div>
     <div class="vpc-side">
@@ -753,7 +753,7 @@ details[open] .dec-faq-q:after{content:"−"}
         <a href="/condominios/">Condomínios</a>
         <a href="/imoveis/">Imóveis</a>
         <a href="/lancamentos/">Lançamentos</a>
-        <a href="/contemplado-imoveis/">Crédito Contemplado</a>
+        <a href="/contemplado-imoveis">Crédito Contemplado</a>
         <a href="/financiamento-imobiliario/">Financiamento</a>
         <a href="/seguro-fianca/">Seguro Fiança</a>
         <a href="/refinanciamento-imobiliario/">Refinanciamento</a>
@@ -1172,9 +1172,9 @@ function render(im,cond){
           '<button class="ip-share-opt cp" onclick="copiarLinkImovel(this)">🔗 Copiar link</button>'+
         '</div>'+
         '<div class="ip-formwrap"><div class="ip-form-h">Ou deixe seus dados</div>'+
-          '<input class="ip-inp" id="ip-f-nome" placeholder="Seu nome" autocomplete="name">'+
-          '<input class="ip-inp" id="ip-f-tel" placeholder="Seu telefone / WhatsApp" inputmode="tel" autocomplete="tel">'+
-          '<textarea class="ip-inp ip-txt" id="ip-f-msg" placeholder="Mensagem (opcional) — ex: quero agendar uma visita" rows="2"></textarea>'+
+          '<input class="ip-inp" id="ip-f-nome" placeholder="Seu nome" autocomplete="name" aria-label="Seu nome">'+
+          '<input class="ip-inp" id="ip-f-tel" placeholder="Seu telefone / WhatsApp" inputmode="tel" autocomplete="tel" aria-label="Seu telefone / WhatsApp">'+
+          '<textarea class="ip-inp ip-txt" id="ip-f-msg" placeholder="Mensagem (opcional) — ex: quero agendar uma visita" rows="2" aria-label="Mensagem (opcional) — ex: quero agendar uma visita"></textarea>'+
           '<button class="ip-fbtn" id="ip-f-btn" onclick="enviarLead()">Quero mais informações</button>'+
           '<div class="ip-fok" id="ip-f-ok" style="display:none">✓ Pronto! Abrindo o WhatsApp com seus dados...</div>'+
         '</div>'+
@@ -1337,9 +1337,9 @@ init();
     <div class="lg-h">Veja todas as fotos deste imóvel</div>
     <div class="lg-sub">Cadastro rápido e gratuito. Depois disso, você libera as fotos completas de <strong>todos os imóveis</strong> do site.</div>
     <div class="lg-f">
-      <input class="lg-in" id="lg-nome" type="text" placeholder="Seu nome" autocomplete="name">
-      <input class="lg-in" id="lg-email" type="email" placeholder="Seu e-mail" autocomplete="email">
-      <input class="lg-in" id="lg-tel" type="tel" placeholder="Seu WhatsApp (com DDD)" autocomplete="tel">
+      <input class="lg-in" id="lg-nome" type="text" placeholder="Seu nome" autocomplete="name" aria-label="Seu nome">
+      <input class="lg-in" id="lg-email" type="email" placeholder="Seu e-mail" autocomplete="email" aria-label="Seu e mail">
+      <input class="lg-in" id="lg-tel" type="tel" placeholder="Seu WhatsApp (com DDD)" autocomplete="tel" aria-label="Seu WhatsApp (com DDD)">
       <button class="lg-btn" id="lg-btn" onclick="lgEnviar()">Liberar todas as fotos →</button>
     </div>
     <div class="lg-msg" id="lg-msg"></div>

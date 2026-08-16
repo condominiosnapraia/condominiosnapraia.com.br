@@ -549,7 +549,7 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
       <div class="login-sub" style="margin-bottom:20px">Enviaremos um link para seu e-mail</div>
       <div class="login-alert err" id="forgot-error"></div>
       <div class="login-alert ok" id="forgot-ok"></div>
-      <label class="login-label">E-mail cadastrado</label>
+      <label class="login-label" for="forgot-email">E-mail cadastrado</label>
       <input class="login-input" type="email" id="forgot-email" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')doForgot()">
       <button class="login-btn" id="forgot-btn" onclick="doForgot()">Enviar link de recuperação</button>
       <button class="login-btn-sec" onclick="showLoginView('lv-login')">← Voltar ao login</button>
@@ -561,15 +561,15 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
       <div class="login-sub" style="margin-bottom:20px">Aguarde aprovação do administrador</div>
       <div class="login-alert err" id="reg-error"></div>
       <div class="login-alert ok" id="reg-ok"></div>
-      <label class="login-label">Nome completo *</label>
+      <label class="login-label" for="reg-nome">Nome completo *</label>
       <input class="login-input" type="text" id="reg-nome" placeholder="Seu nome completo">
-      <label class="login-label">E-mail *</label>
+      <label class="login-label" for="reg-email">E-mail *</label>
       <input class="login-input" type="email" id="reg-email" placeholder="seu@email.com">
-      <label class="login-label">Telefone</label>
+      <label class="login-label" for="reg-tel">Telefone</label>
       <input class="login-input" type="tel" id="reg-tel" placeholder="(51) 99999-9999">
-      <label class="login-label">CRECI</label>
+      <label class="login-label" for="reg-creci">CRECI</label>
       <input class="login-input" type="text" id="reg-creci" placeholder="CRECI-RS 00000">
-      <label class="login-label">Senha *</label>
+      <label class="login-label" for="reg-pass">Senha *</label>
       <input class="login-input" type="password" id="reg-pass" placeholder="Mínimo 8 caracteres">
       <button class="login-btn" id="reg-btn" onclick="doRegister()">Solicitar acesso</button>
       <button class="login-btn-sec" onclick="showLoginView('lv-login')">← Voltar ao login</button>
@@ -590,9 +590,9 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
       <div class="login-sub" style="margin-bottom:20px">Digite sua nova senha</div>
       <div class="login-alert err" id="reset-error"></div>
       <div class="login-alert ok" id="reset-ok"></div>
-      <label class="login-label">Nova senha *</label>
+      <label class="login-label" for="reset-pass">Nova senha *</label>
       <input class="login-input" type="password" id="reset-pass" placeholder="Mínimo 8 caracteres" onkeydown="if(event.key==='Enter')document.getElementById('reset-pass2').focus()">
-      <label class="login-label">Confirmar senha *</label>
+      <label class="login-label" for="reset-pass2">Confirmar senha *</label>
       <input class="login-input" type="password" id="reset-pass2" placeholder="Repita a senha" onkeydown="if(event.key==='Enter')doResetPass()">
       <button class="login-btn" id="reset-btn" onclick="doResetPass()">Salvar nova senha</button>
     </div>
@@ -924,7 +924,7 @@ if(_savedToken && _savedUser){
   </div>
   <div class="tw">
     <div class="ttb" style="flex-wrap:wrap;gap:8px">
-      <input class="sr" id="c-srch" placeholder="🔍 Buscar nome, cidade, amenidade..." oninput="rCond()" style="min-width:220px;flex:1">
+      <input class="sr" id="c-srch" placeholder="🔍 Buscar nome, cidade, amenidade..." oninput="rCond()" style="min-width:220px;flex:1" aria-label="🔍 Buscar nome, cidade, amenidade...">
       <select class="fs" id="c-cid" onchange="rCond()" aria-label="C Cid">
         <option value="">Todas as cidades</option>
         <option>Xangri-lá</option><option>Capão da Canoa</option><option>Atlântida</option>
@@ -973,7 +973,7 @@ if(_savedToken && _savedUser){
   <div class="chips" id="i-chips"></div>
   <div class="tw" id="i-twrap">
     <div class="ttb">
-      <input class="sr" id="i-srch" placeholder="🔍 Buscar..." oninput="rImT()">
+      <input class="sr" id="i-srch" placeholder="🔍 Buscar..." oninput="rImT()" aria-label="🔍 Buscar...">
       <select class="fs" id="i-cf" onchange="rImT()" aria-label="I Cf"><option value="">Todos condomínios</option></select>
       <select class="fs" id="i-sf" onchange="rImT()" aria-label="I Sf">
         <option value="">Todos status</option><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option>
@@ -1000,7 +1000,7 @@ if(_savedToken && _savedUser){
   </div>
   <div class="tw">
     <div class="ttb">
-      <input class="sr" id="p-srch" placeholder="🔍 Buscar..." oninput="rProp()">
+      <input class="sr" id="p-srch" placeholder="🔍 Buscar..." oninput="rProp()" aria-label="🔍 Buscar...">
       <select class="fs" id="p-tf" onchange="rProp()" aria-label="P Tf">
         <option value="">PF e PJ</option><option value="PF">Pessoa Física</option><option value="PJ">Pessoa Jurídica</option>
       </select>
@@ -1169,15 +1169,15 @@ if(_savedToken && _savedUser){
         <input type="file" id="perfil-foto-inp" accept="image/*" style="display:none" onchange="perfilFotoUpload(this)" aria-label="Perfil Foto Inp">
         <div style="font-size:11px;color:var(--t3)">Clique para alterar foto</div>
       </div>
-      <div class="fg"><label class="fl">Nome completo *</label><input class="fi" id="perfil-nome" placeholder="Seu nome"></div>
+      <div class="fg"><label class="fl" for="perfil-nome">Nome completo *</label><input class="fi" id="perfil-nome" placeholder="Seu nome"></div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Telefone</label><input class="fi" id="perfil-tel" placeholder="(51) 99999-9999"></div>
-        <div class="fg"><label class="fl">CRECI</label><input class="fi" id="perfil-creci" placeholder="CRECI-RS 00000"></div>
+        <div class="fg"><label class="fl" for="perfil-tel">Telefone</label><input class="fi" id="perfil-tel" placeholder="(51) 99999-9999"></div>
+        <div class="fg"><label class="fl" for="perfil-creci">CRECI</label><input class="fi" id="perfil-creci" placeholder="CRECI-RS 00000"></div>
       </div>
-      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="perfil-email" disabled style="opacity:.6" aria-label="Perfil Email"></div>
+      <div class="fg"><label class="fl" for="perfil-email">E-mail</label><input class="fi" id="perfil-email" disabled style="opacity:.6" aria-label="Perfil Email"></div>
       <div style="border-top:1px solid var(--bd);padding-top:12px">
         <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:10px">🔑 Alterar Senha (opcional)</div>
-        <div class="fg"><label class="fl">Nova senha</label><input class="fi" type="password" id="perfil-pass" placeholder="Deixe em branco para manter"></div>
+        <div class="fg"><label class="fl" for="perfil-pass">Nova senha</label><input class="fi" type="password" id="perfil-pass" placeholder="Deixe em branco para manter"></div>
       </div>
     </div>
   </div>
@@ -1195,11 +1195,11 @@ if(_savedToken && _savedUser){
     </div>
     <div class="mb" style="display:flex;flex-direction:column;gap:12px">
       <input type="hidden" id="usu-id">
-      <div class="fg"><label class="fl">Nome</label><input class="fi" id="usu-nome" disabled style="opacity:.7" aria-label="Usu Nome"></div>
-      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="usu-email" disabled style="opacity:.7" aria-label="Usu Email"></div>
+      <div class="fg"><label class="fl" for="usu-nome">Nome</label><input class="fi" id="usu-nome" disabled style="opacity:.7" aria-label="Usu Nome"></div>
+      <div class="fg"><label class="fl" for="usu-email">E-mail</label><input class="fi" id="usu-email" disabled style="opacity:.7" aria-label="Usu Email"></div>
       <div class="fgg">
-        <div class="fg"><label class="fl">CRECI</label><input class="fi" id="usu-creci" disabled style="opacity:.7" aria-label="Usu Creci"></div>
-        <div class="fg"><label class="fl">Perfil</label>
+        <div class="fg"><label class="fl" for="usu-creci">CRECI</label><input class="fi" id="usu-creci" disabled style="opacity:.7" aria-label="Usu Creci"></div>
+        <div class="fg"><label class="fl" for="usu-role">Perfil</label>
           <select class="fse" id="usu-role" aria-label="Usu Role">
             <option value="visualizador">Visualizador</option>
             <option value="consultor">Consultor</option>
@@ -1207,7 +1207,7 @@ if(_savedToken && _savedUser){
           </select>
         </div>
       </div>
-      <div class="fg"><label class="fl">Status</label>
+      <div class="fg"><label class="fl" for="usu-ativo">Status</label>
         <select class="fse" id="usu-ativo" aria-label="Usu Ativo">
           <option value="1">✅ Ativo — pode acessar o CRM</option>
           <option value="0">🚫 Bloqueado — sem acesso</option>
@@ -1228,12 +1228,12 @@ if(_savedToken && _savedUser){
       </div>
     </div>
     <div class="mb" style="display:flex;flex-direction:column;gap:12px">
-      <div class="fg"><label class="fl">Nome completo *</label><input class="fi" id="nu-nome" placeholder="Nome do consultor"></div>
-      <div class="fg"><label class="fl">E-mail *</label><input class="fi" type="email" id="nu-email" placeholder="email@exemplo.com" autocomplete="off"></div>
-      <div class="fg"><label class="fl">Senha provisória *</label><input class="fi" type="text" id="nu-pass" placeholder="Mínimo 8 caracteres" autocomplete="off"></div>
+      <div class="fg"><label class="fl" for="nu-nome">Nome completo *</label><input class="fi" id="nu-nome" placeholder="Nome do consultor"></div>
+      <div class="fg"><label class="fl" for="nu-email">E-mail *</label><input class="fi" type="email" id="nu-email" placeholder="email@exemplo.com" autocomplete="off"></div>
+      <div class="fg"><label class="fl" for="nu-pass">Senha provisória *</label><input class="fi" type="text" id="nu-pass" placeholder="Mínimo 8 caracteres" autocomplete="off"></div>
       <div class="fgg">
-        <div class="fg"><label class="fl">CRECI (opcional)</label><input class="fi" id="nu-creci" placeholder="CRECI"></div>
-        <div class="fg"><label class="fl">Perfil</label>
+        <div class="fg"><label class="fl" for="nu-creci">CRECI (opcional)</label><input class="fi" id="nu-creci" placeholder="CRECI"></div>
+        <div class="fg"><label class="fl" for="nu-role">Perfil</label>
           <select class="fse" id="nu-role" aria-label="Nu Role">
             <option value="consultor">Consultor</option>
             <option value="visualizador">Visualizador</option>
@@ -1264,18 +1264,18 @@ if(_savedToken && _savedUser){
   <div class="card" style="margin-bottom:16px">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;align-items:end">
       <div>
-        <label class="lb">Buscar (nome/email/código)</label>
+        <label class="lb" for="lf-busca">Buscar (nome/email/código)</label>
         <input class="in" id="lf-busca" placeholder="Ex: joão, @gmail ou CNP-042" oninput="rLeadsFotos()">
       </div>
       <div>
-        <label class="lb">Tipo de imóvel visto</label>
+        <label class="lb" for="lf-tipo">Tipo de imóvel visto</label>
         <select class="in" id="lf-tipo" onchange="rLeadsFotos()" aria-label="Tipo">
           <option value="">Todos</option>
           <option>Casa</option><option>Terreno</option><option>Apartamento</option><option>Cobertura</option>
         </select>
       </div>
       <div>
-        <label class="lb">Suítes (mínimo)</label>
+        <label class="lb" for="lf-suites">Suítes (mínimo)</label>
         <select class="in" id="lf-suites" onchange="rLeadsFotos()" aria-label="Suites">
           <option value="">Qualquer</option>
           <option value="2">2+</option><option value="3">3+</option>
@@ -1283,7 +1283,7 @@ if(_savedToken && _savedUser){
         </select>
       </div>
       <div>
-        <label class="lb">Faixa de preço vista</label>
+        <label class="lb" for="lf-preco">Faixa de preço vista</label>
         <select class="in" id="lf-preco" onchange="rLeadsFotos()" aria-label="Preço">
           <option value="">Qualquer</option>
           <option value="0-500000">Até R$ 500 mil</option>
@@ -1294,7 +1294,7 @@ if(_savedToken && _savedUser){
         </select>
       </div>
       <div>
-        <label class="lb">Cidade vista</label>
+        <label class="lb" for="lf-cidade">Cidade vista</label>
         <select class="in" id="lf-cidade" onchange="rLeadsFotos()" aria-label="Cidade">
           <option value="">Todas</option>
           <option>Xangri-lá</option><option>Capão da Canoa</option>
@@ -1302,7 +1302,7 @@ if(_savedToken && _savedUser){
         </select>
       </div>
       <div>
-        <label class="lb">Status</label>
+        <label class="lb" for="lf-status">Status</label>
         <select class="in" id="lf-status" onchange="rLeadsFotos()" aria-label="Status">
           <option value="">Todos</option>
           <option value="nao">Não contatado</option>
@@ -1332,11 +1332,11 @@ if(_savedToken && _savedUser){
   <div class="card" style="margin-bottom:16px">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end">
       <div>
-        <label class="lb">Buscar</label>
+        <label class="lb" for="lc-busca">Buscar</label>
         <input class="in" id="lc-busca" placeholder="nome, email ou telefone" oninput="rLeadsCampanha()">
       </div>
       <div>
-        <label class="lb">Canal</label>
+        <label class="lb" for="lc-canal">Canal</label>
         <select class="in" id="lc-canal" onchange="rLeadsCampanha()" aria-label="Lc Canal">
           <option value="">Todos</option>
           <option value="google">Google</option>
@@ -1346,13 +1346,13 @@ if(_savedToken && _savedUser){
         </select>
       </div>
       <div>
-        <label class="lb">Campanha</label>
+        <label class="lb" for="lc-campanha">Campanha</label>
         <select class="in" id="lc-campanha" onchange="rLeadsCampanha()" aria-label="Lc Campanha">
           <option value="">Todas</option>
         </select>
       </div>
       <div>
-        <label class="lb">Status</label>
+        <label class="lb" for="lc-status">Status</label>
         <select class="in" id="lc-status" onchange="rLeadsCampanha()" aria-label="Lc Status">
           <option value="">Todos</option>
           <option value="novo">Novo</option>
@@ -1363,7 +1363,7 @@ if(_savedToken && _savedUser){
         </select>
       </div>
       <div>
-        <label class="lb">Prazo de compra</label>
+        <label class="lb" for="lc-prazo">Prazo de compra</label>
         <select class="in" id="lc-prazo" onchange="rLeadsCampanha()" aria-label="Lc Prazo">
           <option value="">Qualquer</option>
           <option>Imediatamente</option>
@@ -1402,13 +1402,13 @@ if(_savedToken && _savedUser){
     <div class="mb" style="display:flex;flex-direction:column;gap:14px">
       <input type="hidden" id="adm-id">
       <div class="fgg">
-        <div class="fg" style="flex:2"><label class="fl">Nome completo *</label><input class="fi" id="adm-nome" placeholder="Porto Seguro Consórcios"></div>
-        <div class="fg"><label class="fl">Abrev. (4 chars)</label><input class="fi" id="adm-abrev" maxlength="4" placeholder="POR" oninput="admPrevUpdate()"></div>
+        <div class="fg" style="flex:2"><label class="fl" for="adm-nome">Nome completo *</label><input class="fi" id="adm-nome" placeholder="Porto Seguro Consórcios"></div>
+        <div class="fg"><label class="fl" for="adm-abrev">Abrev. (4 chars)</label><input class="fi" id="adm-abrev" maxlength="4" placeholder="POR" oninput="admPrevUpdate()"></div>
       </div>
-      <div class="fg"><label class="fl">Cor da marca</label>
+      <div class="fg"><label class="fl" for="adm-cor">Cor da marca</label>
         <div style="display:flex;gap:8px;align-items:center">
           <input type="color" id="adm-cor" value="#1a3a4a" oninput="admCorFromPicker()" style="width:44px;height:34px;border:1px solid var(--bd);border-radius:6px;cursor:pointer;padding:2px" aria-label="Adm Cor">
-          <input class="fi" id="adm-cor-hex" placeholder="#1a3a4a" oninput="admCorFromHex()" style="flex:1;font-family:monospace">
+          <input class="fi" id="adm-cor-hex" placeholder="#1a3a4a" oninput="admCorFromHex()" style="flex:1;font-family:monospace" aria-label="#1a3a4a">
           <div id="adm-cor-prev" style="width:72px;height:34px;border-radius:6px;background:#1a3a4a;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800;font-family:monospace;flex-shrink:0">POR</div>
         </div>
       </div>
@@ -1437,7 +1437,7 @@ if(_savedToken && _savedUser){
   </div>
   <div class="tw">
     <div class="ttb" style="flex-wrap:wrap;gap:8px">
-      <input class="sr" id="cont-srch" placeholder="🔍 Código, administradora..." oninput="buildContempladas()" style="min-width:180px;flex:1">
+      <input class="sr" id="cont-srch" placeholder="🔍 Código, administradora..." oninput="buildContempladas()" style="min-width:180px;flex:1" aria-label="🔍 Código, administradora...">
       <select class="fs" id="cont-adm-f" onchange="buildContempladas()" aria-label="Cont Adm F"><option value="">Todas as adm.</option></select>
       <select class="fs" id="cont-val" onchange="buildContempladas()" aria-label="Cont Val">
         <option value="">Qualquer valor</option>
@@ -1474,27 +1474,27 @@ if(_savedToken && _savedUser){
         <div class="fg" style="flex:2"><label class="fl">Administradora *</label>
           <select class="fse" id="carta-adm-sel" aria-label="Carta Adm Sel"><option value="">Selecione...</option></select>
         </div>
-        <div class="fg"><label class="fl">Código</label><input class="fi" id="carta-cod" placeholder="CI-0001"></div>
+        <div class="fg"><label class="fl" for="carta-cod">Código</label><input class="fi" id="carta-cod" placeholder="CI-0001"></div>
       </div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Crédito (R$) *</label><input class="fi" type="text" inputmode="numeric" id="carta-credito" placeholder="Ex: R$ 200.000,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
-        <div class="fg"><label class="fl">Parcela (R$) *</label><input class="fi" type="text" inputmode="numeric" id="carta-parcela" placeholder="Ex: R$ 1.263,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
+        <div class="fg"><label class="fl" for="carta-credito">Crédito (R$) *</label><input class="fi" type="text" inputmode="numeric" id="carta-credito" placeholder="Ex: R$ 200.000,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
+        <div class="fg"><label class="fl" for="carta-parcela">Parcela (R$) *</label><input class="fi" type="text" inputmode="numeric" id="carta-parcela" placeholder="Ex: R$ 1.263,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
       </div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Prazo (meses)</label><input class="fi" type="number" id="carta-prazo" placeholder="180"></div>
-        <div class="fg"><label class="fl">Entrada (R$)</label><input class="fi" type="text" inputmode="numeric" id="carta-entrada" placeholder="Ex: R$ 92.000,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
+        <div class="fg"><label class="fl" for="carta-prazo">Prazo (meses)</label><input class="fi" type="number" id="carta-prazo" placeholder="180"></div>
+        <div class="fg"><label class="fl" for="carta-entrada">Entrada (R$)</label><input class="fi" type="text" inputmode="numeric" id="carta-entrada" placeholder="Ex: R$ 92.000,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
       </div>
       <div class="fgg">
-        <div class="fg"><label class="fl">% Entrada</label><input class="fi" type="number" step="0.01" id="carta-pct" placeholder="46.0"></div>
-        <div class="fg"><label class="fl">Saldo devedor (R$)</label><input class="fi" type="text" inputmode="numeric" id="carta-saldo" placeholder="Ex: R$ 108.000,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
+        <div class="fg"><label class="fl" for="carta-pct">% Entrada</label><input class="fi" type="number" step="0.01" id="carta-pct" placeholder="46.0"></div>
+        <div class="fg"><label class="fl" for="carta-saldo">Saldo devedor (R$)</label><input class="fi" type="text" inputmode="numeric" id="carta-saldo" placeholder="Ex: R$ 108.000,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
       </div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Transferência (R$)</label><input class="fi" type="text" inputmode="numeric" id="carta-transf" placeholder="Ex: R$ 1.100,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
-        <div class="fg"><label class="fl">Destaque</label>
+        <div class="fg"><label class="fl" for="carta-transf">Transferência (R$)</label><input class="fi" type="text" inputmode="numeric" id="carta-transf" placeholder="Ex: R$ 1.100,00" oninput="maskBRL(this)" onblur="maskBRL(this)"></div>
+        <div class="fg"><label class="fl" for="carta-dest">Destaque</label>
           <select class="fse" id="carta-dest" aria-label="Carta Dest"><option value="0">Não</option><option value="1">⭐ Sim</option></select>
         </div>
       </div>
-      <div class="fg"><label class="fl">Observação</label><textarea class="fta" id="carta-obs" rows="2" placeholder="Informações adicionais..."></textarea></div>
+      <div class="fg"><label class="fl" for="carta-obs">Observação</label><textarea class="fta" id="carta-obs" rows="2" placeholder="Informações adicionais..."></textarea></div>
     </div>
   </div>
 </div>
@@ -1532,12 +1532,12 @@ if(_savedToken && _savedUser){
     <div class="mo-h"><div class="mo-t" id="lanc-mo-title">Novo Lançamento</div><button class="mo-x" onclick="cMo('lanc-mo')">✕</button></div>
     <div class="mo-b">
       <input type="hidden" id="lanc-id">
-      <div class="fg"><label class="fl">Título do empreendimento *</label><input class="fi" id="lanc-titulo" placeholder="Ex: Condomínio Alegro"></div>
-      <div class="fg"><label class="fl">Cidade / Localização</label><input class="fi" id="lanc-cidade" placeholder="Ex: Curumim · Capão da Canoa"></div>
-      <div class="fg"><label class="fl">Resumo (aparece no card)</label><textarea class="fi" id="lanc-resumo" rows="3" placeholder="Breve descrição do empreendimento..."></textarea></div>
-      <div class="fg"><label class="fl">Etiqueta</label><input class="fi" id="lanc-tag" placeholder="Ex: Lançamento, Pré-lançamento, Oportunidade" value="Lançamento"></div>
-      <div class="fg"><label class="fl">Link da página (URL)</label><input class="fi" id="lanc-url" placeholder="Ex: /condominio-alegro-curumim"></div>
-      <div class="fg"><label class="fl">Foto de capa</label>
+      <div class="fg"><label class="fl" for="lanc-titulo">Título do empreendimento *</label><input class="fi" id="lanc-titulo" placeholder="Ex: Condomínio Alegro"></div>
+      <div class="fg"><label class="fl" for="lanc-cidade">Cidade / Localização</label><input class="fi" id="lanc-cidade" placeholder="Ex: Curumim · Capão da Canoa"></div>
+      <div class="fg"><label class="fl" for="lanc-resumo">Resumo (aparece no card)</label><textarea class="fi" id="lanc-resumo" rows="3" placeholder="Breve descrição do empreendimento..."></textarea></div>
+      <div class="fg"><label class="fl" for="lanc-tag">Etiqueta</label><input class="fi" id="lanc-tag" placeholder="Ex: Lançamento, Pré-lançamento, Oportunidade" value="Lançamento"></div>
+      <div class="fg"><label class="fl" for="lanc-url">Link da página (URL)</label><input class="fi" id="lanc-url" placeholder="Ex: /condominio-alegro-curumim"></div>
+      <div class="fg"><label class="fl" for="lanc-foto-inp">Foto de capa</label>
         <div class="fdrop" onclick="document.getElementById('lanc-foto-inp').click()" style="padding:14px;cursor:pointer">
           <input type="file" id="lanc-foto-inp" accept="image/*" style="display:none" onchange="lancFotoUpload(this)" aria-label="Lanc Foto Inp">
           <div id="lanc-foto-prev">📸 Clique para adicionar foto de capa</div>
@@ -1576,19 +1576,19 @@ if(_savedToken && _savedUser){
     </div>
     <div class="mb" style="display:flex;flex-direction:column;gap:14px">
       <input type="hidden" id="post-id">
-      <div class="fg"><label class="fl">Título do Artigo *</label><input class="fi" id="post-titulo" placeholder="Ex: Santorini: O primeiro bairro planejado de Xangri-lá"></div>
+      <div class="fg"><label class="fl" for="post-titulo">Título do Artigo *</label><input class="fi" id="post-titulo" placeholder="Ex: Santorini: O primeiro bairro planejado de Xangri-lá"></div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Categoria</label>
+        <div class="fg"><label class="fl" for="post-cat">Categoria</label>
           <select class="fse" id="post-cat" aria-label="Post Cat">
             <option>Notícias</option><option>Mercado Imobiliário</option><option>Turismo</option><option>Condomínios</option><option>Investimento</option><option>Dicas</option>
           </select>
         </div>
-        <div class="fg"><label class="fl">Data</label><input class="fi" type="date" id="post-data" aria-label="Post Data"></div>
-        <div class="fg"><label class="fl">Autor</label><input class="fi" id="post-autor" placeholder="Equipe Condomínios na Praia"></div>
+        <div class="fg"><label class="fl" for="post-data">Data</label><input class="fi" type="date" id="post-data" aria-label="Post Data"></div>
+        <div class="fg"><label class="fl" for="post-autor">Autor</label><input class="fi" id="post-autor" placeholder="Equipe Condomínios na Praia"></div>
       </div>
-      <div class="fg"><label class="fl">Resumo</label><textarea class="fta" id="post-resumo" rows="2" placeholder="Breve descrição do artigo..."></textarea></div>
+      <div class="fg"><label class="fl" for="post-resumo">Resumo</label><textarea class="fta" id="post-resumo" rows="2" placeholder="Breve descrição do artigo..."></textarea></div>
       <div class="fg">
-        <label class="fl">Foto de Capa</label>
+        <label class="fl" for="post-capa-inp">Foto de Capa</label>
         <div class="fdrop" onclick="document.getElementById('post-capa-inp').click()" style="padding:14px">
           <input type="file" id="post-capa-inp" accept="image/*" style="display:none" onchange="postCapaUpload(this)" aria-label="Post Capa Inp">
           <div id="post-capa-prev">📸 Clique para adicionar foto de capa</div>
@@ -1606,11 +1606,11 @@ if(_savedToken && _savedUser){
             <button class="btn bg bsm" onclick="postImgInsert()">📸 Foto</button>
             <input type="file" id="post-img-inp" accept="image/*" style="display:none" onchange="postImgUpload(this)" aria-label="Post Img Inp">
           </div>
-          <textarea class="fta" id="post-corpo" rows="14" placeholder="Escreva o conteúdo do artigo aqui...&#10;&#10;## Para título secundário use ## no início da linha&#10;### Para subtítulo use ###&#10;**negrito** e _itálico_" style="border:none;border-radius:0"></textarea>
+          <textarea class="fta" id="post-corpo" rows="14" placeholder="Escreva o conteúdo do artigo aqui...&#10;&#10;## Para título secundário use ## no início da linha&#10;### Para subtítulo use ###&#10;**negrito** e _itálico_" style="border:none;border-radius:0" aria-label="Escreva o conteúdo do artigo aqui...&amp;#10;&amp;#10;## Para título secundário use ## no início da linha&amp;#10;### Para subtítulo use ###&amp;#10;**negrito** e itálico"></textarea>
         </div>
       </div>
-      <div class="fg"><label class="fl">Tags (separadas por vírgula)</label><input class="fi" id="post-tags" placeholder="Xangri-lá, condomínio, bairro planejado"></div>
-      <div class="fg"><label class="fl">Status</label>
+      <div class="fg"><label class="fl">Tags (separadas por vírgula)</label><input class="fi" id="post-tags" placeholder="Xangri-lá, condomínio, bairro planejado" aria-label="Xangri lá, condomínio, bairro planejado"></div>
+      <div class="fg"><label class="fl" for="post-pub">Status</label>
         <select class="fse" id="post-pub" aria-label="Post Pub"><option value="0">◯ Rascunho — revisão humana</option><option value="1">✓ Publicado</option></select>
       </div>
     </div>
@@ -1658,22 +1658,22 @@ if(_savedToken && _savedUser){
     <div class="ed-grid">
       <div class="ed-form-col">
         <div class="ed-section">Título Principal</div>
-        <div class="fg"><label class="fl">Linha 1</label><input class="fi" id="ed-h1-l1" placeholder="Os Melhores" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">Linha 2 (em itálico dourado)</label><input class="fi" id="ed-h1-l2" placeholder="Condomínios" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">Linha 3</label><input class="fi" id="ed-h1-l3" placeholder="do Litoral" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-h1-l1">Linha 1</label><input class="fi" id="ed-h1-l1" placeholder="Os Melhores" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-h1-l2">Linha 2 (em itálico dourado)</label><input class="fi" id="ed-h1-l2" placeholder="Condomínios" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-h1-l3">Linha 3</label><input class="fi" id="ed-h1-l3" placeholder="do Litoral" oninput="edPreview()"></div>
         <div class="ed-section">Subtítulo / Descrição</div>
-        <div class="fg"><textarea class="fta" id="ed-desc" rows="2" placeholder="Condomínios de alto padrão em Xangri-lá..." oninput="edPreview()"></textarea></div>
+        <div class="fg"><textarea class="fta" id="ed-desc" rows="2" placeholder="Condomínios de alto padrão em Xangri-lá..." oninput="edPreview()" aria-label="Condomínios de alto padrão em Xangri lá..."></textarea></div>
         <div class="ed-section">Botões do Hero</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Botão Principal (texto)</label><input class="fi" id="ed-btn1" placeholder="Ver Condomínios" oninput="edPreview()"></div>
-          <div class="fg"><label class="fl">Botão Secundário (texto)</label><input class="fi" id="ed-btn2" placeholder="Falar via WhatsApp" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-btn1">Botão Principal (texto)</label><input class="fi" id="ed-btn1" placeholder="Ver Condomínios" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-btn2">Botão Secundário (texto)</label><input class="fi" id="ed-btn2" placeholder="Falar via WhatsApp" oninput="edPreview()"></div>
         </div>
         <div class="ed-section">Card de Busca Rápida</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Título do Card</label><input class="fi" id="ed-card-title" placeholder="Busca Rápida" oninput="edPreview()"></div>
-          <div class="fg"><label class="fl">Subtítulo do Card</label><input class="fi" id="ed-card-sub" placeholder="Encontre seu imóvel ideal" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-card-title">Título do Card</label><input class="fi" id="ed-card-title" placeholder="Busca Rápida" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-card-sub">Subtítulo do Card</label><input class="fi" id="ed-card-sub" placeholder="Encontre seu imóvel ideal" oninput="edPreview()"></div>
         </div>
-        <div class="fg"><label class="fl">Texto do Botão de Busca</label><input class="fi" id="ed-card-btn" placeholder="Buscar" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-card-btn">Texto do Botão de Busca</label><input class="fi" id="ed-card-btn" placeholder="Buscar" oninput="edPreview()"></div>
       </div>
       <div class="ed-preview-col">
         <div class="ed-preview-label">👁 Preview do Hero</div>
@@ -1694,18 +1694,18 @@ if(_savedToken && _savedUser){
     <div class="ed-grid">
       <div class="ed-form-col">
         <div class="ed-section">Dados de Contato</div>
-        <div class="fg"><label class="fl">Número WhatsApp (só números com DDD)</label><input class="fi" id="ed-wpp" placeholder="5551999442252" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">Telefone de Exibição</label><input class="fi" id="ed-tel-show" placeholder="(51) 99944-2252" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">E-mail</label><input class="fi" id="ed-email" placeholder="contato@condominiosnapraia.com.br" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-wpp">Número WhatsApp (só números com DDD)</label><input class="fi" id="ed-wpp" placeholder="5551999442252" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-tel-show">Telefone de Exibição</label><input class="fi" id="ed-tel-show" placeholder="(51) 99944-2252" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-email">E-mail</label><input class="fi" id="ed-email" placeholder="contato@condominiosnapraia.com.br" oninput="edPreview()"></div>
         <div class="ed-section">Endereço</div>
-        <div class="fg"><label class="fl">Logradouro e Número</label><input class="fi" id="ed-end1" placeholder="Av. Central, 242 Loja 07" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">Cidade / Estado</label><input class="fi" id="ed-end2" placeholder="Atlântida — Xangri-lá / RS" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-end1">Logradouro e Número</label><input class="fi" id="ed-end1" placeholder="Av. Central, 242 Loja 07" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-end2">Cidade / Estado</label><input class="fi" id="ed-end2" placeholder="Atlântida — Xangri-lá / RS" oninput="edPreview()"></div>
         <div class="ed-section">Horário de Atendimento</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Seg–Sáb</label><input class="fi" id="ed-hr1" placeholder="8h30–19h" oninput="edPreview()"></div>
-          <div class="fg"><label class="fl">Domingo</label><input class="fi" id="ed-hr2" placeholder="8h30–17h" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-hr1">Seg–Sáb</label><input class="fi" id="ed-hr1" placeholder="8h30–19h" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-hr2">Domingo</label><input class="fi" id="ed-hr2" placeholder="8h30–17h" oninput="edPreview()"></div>
         </div>
-        <div class="fg" style="margin-top:8px"><label class="fl">Texto CTA do Header</label><input class="fi" id="ed-nav-cta" placeholder="Consultor" oninput="edPreview()"></div>
+        <div class="fg" style="margin-top:8px"><label class="fl" for="ed-nav-cta">Texto CTA do Header</label><input class="fi" id="ed-nav-cta" placeholder="Consultor" oninput="edPreview()"></div>
       </div>
       <div class="ed-preview-col">
         <div class="ed-preview-label">👁 Preview do Contato</div>
@@ -1726,45 +1726,45 @@ if(_savedToken && _savedUser){
         <div class="ed-section">Paleta de Cores</div>
         <div class="ed-color-grid">
           <div class="ed-color-item">
-            <label class="fl">Cor Principal (Ocean)</label>
+            <label class="fl" for="ed-c-ocean">Cor Principal (Ocean)</label>
             <div style="display:flex;gap:8px;align-items:center">
               <input type="color" id="ed-c-ocean" value="#1a3a4a" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Ocean">
-              <input class="fi" id="ed-c-ocean-hex" value="#1a3a4a" placeholder="#1a3a4a" oninput="syncColorPicker('ed-c-ocean','ed-c-ocean-hex');edColorPreview()" style="font-family:monospace">
+              <input class="fi" id="ed-c-ocean-hex" value="#1a3a4a" placeholder="#1a3a4a" oninput="syncColorPicker('ed-c-ocean','ed-c-ocean-hex');edColorPreview()" style="font-family:monospace" aria-label="#1a3a4a">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Cor de Destaque (Gold)</label>
             <div style="display:flex;gap:8px;align-items:center">
               <input type="color" id="ed-c-gold" value="#b8935a" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Gold">
-              <input class="fi" id="ed-c-gold-hex" value="#b8935a" placeholder="#b8935a" oninput="syncColorPicker('ed-c-gold','ed-c-gold-hex');edColorPreview()" style="font-family:monospace">
+              <input class="fi" id="ed-c-gold-hex" value="#b8935a" placeholder="#b8935a" oninput="syncColorPicker('ed-c-gold','ed-c-gold-hex');edColorPreview()" style="font-family:monospace" aria-label="#b8935a">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Cor Gold Light</label>
             <div style="display:flex;gap:8px;align-items:center">
               <input type="color" id="ed-c-gl" value="#d4aa72" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Gl">
-              <input class="fi" id="ed-c-gl-hex" value="#d4aa72" placeholder="#d4aa72" oninput="syncColorPicker('ed-c-gl','ed-c-gl-hex');edColorPreview()" style="font-family:monospace">
+              <input class="fi" id="ed-c-gl-hex" value="#d4aa72" placeholder="#d4aa72" oninput="syncColorPicker('ed-c-gl','ed-c-gl-hex');edColorPreview()" style="font-family:monospace" aria-label="#d4aa72">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Fundo Geral (White)</label>
             <div style="display:flex;gap:8px;align-items:center">
               <input type="color" id="ed-c-bg" value="#fdfcfa" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Bg">
-              <input class="fi" id="ed-c-bg-hex" value="#fdfcfa" placeholder="#fdfcfa" oninput="syncColorPicker('ed-c-bg','ed-c-bg-hex');edColorPreview()" style="font-family:monospace">
+              <input class="fi" id="ed-c-bg-hex" value="#fdfcfa" placeholder="#fdfcfa" oninput="syncColorPicker('ed-c-bg','ed-c-bg-hex');edColorPreview()" style="font-family:monospace" aria-label="#fdfcfa">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Fundo Areia (Sand Light)</label>
             <div style="display:flex;gap:8px;align-items:center">
               <input type="color" id="ed-c-sl" value="#f5f0e8" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Sl">
-              <input class="fi" id="ed-c-sl-hex" value="#f5f0e8" placeholder="#f5f0e8" oninput="syncColorPicker('ed-c-sl','ed-c-sl-hex');edColorPreview()" style="font-family:monospace">
+              <input class="fi" id="ed-c-sl-hex" value="#f5f0e8" placeholder="#f5f0e8" oninput="syncColorPicker('ed-c-sl','ed-c-sl-hex');edColorPreview()" style="font-family:monospace" aria-label="#f5f0e8">
             </div>
           </div>
           <div class="ed-color-item">
             <label class="fl">Texto Principal</label>
             <div style="display:flex;gap:8px;align-items:center">
               <input type="color" id="ed-c-text" value="#1a1a1a" oninput="edColorPreview()" class="ed-color-input" aria-label="Ed C Text">
-              <input class="fi" id="ed-c-text-hex" value="#1a1a1a" placeholder="#1a1a1a" oninput="syncColorPicker('ed-c-text','ed-c-text-hex');edColorPreview()" style="font-family:monospace">
+              <input class="fi" id="ed-c-text-hex" value="#1a1a1a" placeholder="#1a1a1a" oninput="syncColorPicker('ed-c-text','ed-c-text-hex');edColorPreview()" style="font-family:monospace" aria-label="#1a1a1a">
             </div>
           </div>
         </div>
@@ -1802,16 +1802,16 @@ if(_savedToken && _savedUser){
     <div class="ed-grid">
       <div class="ed-form-col">
         <div class="ed-section">Seção Sobre Nós</div>
-        <div class="fg"><label class="fl">Título (palavra em itálico)</label><input class="fi" id="ed-sobre-tit" placeholder="Assessoria" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">Texto completo</label><textarea class="fta" id="ed-sobre-txt" rows="4" placeholder="A Condomínios na Praia é especializada em..." oninput="edPreview()"></textarea></div>
-        <div class="fg"><label class="fl">Texto do Botão</label><input class="fi" id="ed-sobre-btn" placeholder="Falar com Consultor" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl">Título (palavra em itálico)</label><input class="fi" id="ed-sobre-tit" placeholder="Assessoria" oninput="edPreview()" aria-label="Assessoria"></div>
+        <div class="fg"><label class="fl" for="ed-sobre-txt">Texto completo</label><textarea class="fta" id="ed-sobre-txt" rows="4" placeholder="A Condomínios na Praia é especializada em..." oninput="edPreview()"></textarea></div>
+        <div class="fg"><label class="fl" for="ed-sobre-btn">Texto do Botão</label><input class="fi" id="ed-sobre-btn" placeholder="Falar com Consultor" oninput="edPreview()"></div>
         <div class="ed-section">Estatísticas do Hero</div>
         <div class="fgg fgg3">
-          <div class="fg"><label class="fl">Stat 1 — Label</label><input class="fi" id="ed-stat1" placeholder="Condomínios" oninput="edPreview()"></div>
-          <div class="fg"><label class="fl">Stat 2 — Label</label><input class="fi" id="ed-stat2" placeholder="Imóveis" oninput="edPreview()"></div>
-          <div class="fg"><label class="fl">Stat 3 — Número fixo</label><input class="fi" id="ed-stat3" placeholder="3" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-stat1">Stat 1 — Label</label><input class="fi" id="ed-stat1" placeholder="Condomínios" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-stat2">Stat 2 — Label</label><input class="fi" id="ed-stat2" placeholder="Imóveis" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-stat3">Stat 3 — Número fixo</label><input class="fi" id="ed-stat3" placeholder="3" oninput="edPreview()"></div>
         </div>
-        <div class="fg"><label class="fl">Stat 3 — Label</label><input class="fi" id="ed-stat3l" placeholder="Cidades" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-stat3l">Stat 3 — Label</label><input class="fi" id="ed-stat3l" placeholder="Cidades" oninput="edPreview()"></div>
       </div>
       <div class="ed-preview-col">
         <div class="ed-preview-label">👁 Preview Sobre Nós</div>
@@ -1844,10 +1844,10 @@ if(_savedToken && _savedUser){
       <div class="ed-grid">
         <div class="ed-form-col">
           <div class="ed-section">Card de Turismo na Página Inicial</div>
-          <div class="fg"><label class="fl">Tag</label><input class="fi" id="ed-tur-tag" placeholder="🌊 Guia Completo" oninput="edPreview()"></div>
-          <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-tit" placeholder="Turismo em Xangri-Lá e Capão da Canoa" oninput="edPreview()"></div>
-          <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-tur-desc" rows="3" oninput="edPreview()" aria-label="Ed Tur Desc"></textarea></div>
-          <div class="fg"><label class="fl">Texto do Botão</label><input class="fi" id="ed-tur-cta" placeholder="Explorar o Guia" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-tur-tag">Tag</label><input class="fi" id="ed-tur-tag" placeholder="🌊 Guia Completo" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-tur-tit">Título</label><input class="fi" id="ed-tur-tit" placeholder="Turismo em Xangri-Lá e Capão da Canoa" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-tur-desc">Descrição</label><textarea class="fta" id="ed-tur-desc" rows="3" oninput="edPreview()" aria-label="Ed Tur Desc"></textarea></div>
+          <div class="fg"><label class="fl" for="ed-tur-cta">Texto do Botão</label><input class="fi" id="ed-tur-cta" placeholder="Explorar o Guia" oninput="edPreview()"></div>
         </div>
         <div class="ed-preview-col">
           <div class="ed-preview-label">👁 Preview</div>
@@ -1863,42 +1863,42 @@ if(_savedToken && _savedUser){
 
     <div class="tur-sub-panel" id="tsp-1">
       <div class="ed-section">Hero da Página de Turismo</div>
-      <div class="fg"><label class="fl">Tag de localização</label><input class="fi" id="ed-tur-hero-tag" placeholder="📍 Litoral Norte Gaúcho"></div>
-      <div class="fgg"><div class="fg"><label class="fl">Parte fixa do título</label><input class="fi" id="ed-tur-h1-pre" placeholder="Turismo em"></div><div class="fg"><label class="fl">Parte em itálico</label><input class="fi" id="ed-tur-h1" placeholder="Xangri-Lá"></div></div>
-      <div class="fg"><label class="fl">Subtítulo</label><textarea class="fta" id="ed-tur-sub" rows="3" aria-label="Ed Tur Sub"></textarea></div>
+      <div class="fg"><label class="fl" for="ed-tur-hero-tag">Tag de localização</label><input class="fi" id="ed-tur-hero-tag" placeholder="📍 Litoral Norte Gaúcho"></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-tur-h1-pre">Parte fixa do título</label><input class="fi" id="ed-tur-h1-pre" placeholder="Turismo em"></div><div class="fg"><label class="fl" for="ed-tur-h1">Parte em itálico</label><input class="fi" id="ed-tur-h1" placeholder="Xangri-Lá"></div></div>
+      <div class="fg"><label class="fl" for="ed-tur-sub">Subtítulo</label><textarea class="fta" id="ed-tur-sub" rows="3" aria-label="Ed Tur Sub"></textarea></div>
       <div class="ed-section">Chips de Navegação</div>
-      <div class="fgg"><div class="fg"><label class="fl">Chip 1</label><input class="fi" id="ed-tur-chip1" placeholder="🏖 Balneários"></div><div class="fg"><label class="fl">Chip 2</label><input class="fi" id="ed-tur-chip2" placeholder="📜 História"></div><div class="fg"><label class="fl">Chip 3</label><input class="fi" id="ed-tur-chip3" placeholder="🌊 Praias"></div><div class="fg"><label class="fl">Chip 4</label><input class="fi" id="ed-tur-chip4" placeholder="📊 Dados"></div><div class="fg"><label class="fl">Chip 5</label><input class="fi" id="ed-tur-chip5" placeholder="🏘 Imóveis"></div></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-tur-chip1">Chip 1</label><input class="fi" id="ed-tur-chip1" placeholder="🏖 Balneários"></div><div class="fg"><label class="fl" for="ed-tur-chip2">Chip 2</label><input class="fi" id="ed-tur-chip2" placeholder="📜 História"></div><div class="fg"><label class="fl" for="ed-tur-chip3">Chip 3</label><input class="fi" id="ed-tur-chip3" placeholder="🌊 Praias"></div><div class="fg"><label class="fl" for="ed-tur-chip4">Chip 4</label><input class="fi" id="ed-tur-chip4" placeholder="📊 Dados"></div><div class="fg"><label class="fl" for="ed-tur-chip5">Chip 5</label><input class="fi" id="ed-tur-chip5" placeholder="🏘 Imóveis"></div></div>
     </div>
 
     <div class="tur-sub-panel" id="tsp-2">
       <div class="ed-section">Seção Balneários</div>
-      <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-bal-tit" placeholder="Balneários de Xangri-Lá"></div>
-      <div class="fg"><label class="fl">Texto introdutório</label><textarea class="fta" id="ed-tur-bal-intro" rows="3" aria-label="Ed Tur Bal Intro"></textarea></div>
-      <div class="fg"><label class="fl">Texto complementar</label><textarea class="fta" id="ed-tur-bal-txt" rows="3" aria-label="Ed Tur Bal Txt"></textarea></div>
+      <div class="fg"><label class="fl" for="ed-tur-bal-tit">Título</label><input class="fi" id="ed-tur-bal-tit" placeholder="Balneários de Xangri-Lá"></div>
+      <div class="fg"><label class="fl" for="ed-tur-bal-intro">Texto introdutório</label><textarea class="fta" id="ed-tur-bal-intro" rows="3" aria-label="Ed Tur Bal Intro"></textarea></div>
+      <div class="fg"><label class="fl" for="ed-tur-bal-txt">Texto complementar</label><textarea class="fta" id="ed-tur-bal-txt" rows="3" aria-label="Ed Tur Bal Txt"></textarea></div>
       <div class="ed-section">Lista de Balneários (um por linha)</div>
-      <div class="fg"><textarea class="fta" id="ed-tur-bal-list" rows="12" placeholder="Arpoador&#10;Atlântida&#10;Centro&#10;Guará&#10;Marina&#10;Maristela&#10;Noiva do Mar&#10;Praia dos Coqueiros&#10;Rainha do Mar&#10;Remanso"></textarea></div>
+      <div class="fg"><textarea class="fta" id="ed-tur-bal-list" rows="12" placeholder="Arpoador&#10;Atlântida&#10;Centro&#10;Guará&#10;Marina&#10;Maristela&#10;Noiva do Mar&#10;Praia dos Coqueiros&#10;Rainha do Mar&#10;Remanso" aria-label="Arpoador&amp;#10;Atlântida&amp;#10;Centro&amp;#10;Guará&amp;#10;Marina&amp;#10;Maristela&amp;#10;Noiva do Mar&amp;#10;Praia dos Coqueiros&amp;#10;Rainha do Mar&amp;#10;Remanso"></textarea></div>
     </div>
 
     <div class="tur-sub-panel" id="tsp-3">
       <div class="ed-section">Seção História e Origem do Nome</div>
-      <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-hist-tit" placeholder="A história por trás do nome Xangri-Lá"></div>
-      <div class="fg"><label class="fl">Parágrafo 1</label><textarea class="fta" id="ed-tur-hist-p1" rows="4" aria-label="Ed Tur Hist P1"></textarea></div>
-      <div class="fg"><label class="fl">Parágrafo 2</label><textarea class="fta" id="ed-tur-hist-p2" rows="3" aria-label="Ed Tur Hist P2"></textarea></div>
+      <div class="fg"><label class="fl" for="ed-tur-hist-tit">Título</label><input class="fi" id="ed-tur-hist-tit" placeholder="A história por trás do nome Xangri-Lá"></div>
+      <div class="fg"><label class="fl" for="ed-tur-hist-p1">Parágrafo 1</label><textarea class="fta" id="ed-tur-hist-p1" rows="4" aria-label="Ed Tur Hist P1"></textarea></div>
+      <div class="fg"><label class="fl" for="ed-tur-hist-p2">Parágrafo 2</label><textarea class="fta" id="ed-tur-hist-p2" rows="3" aria-label="Ed Tur Hist P2"></textarea></div>
       <div class="ed-section">Etimologia</div>
-      <div class="fgg"><div class="fg"><label class="fl">Palavra 1</label><input class="fi" id="ed-tur-etym1" placeholder="Xangri"></div><div class="fg"><label class="fl">Significado 1</label><input class="fi" id="ed-tur-etym1d" placeholder="secreto"></div></div>
-      <div class="fgg"><div class="fg"><label class="fl">Palavra 2</label><input class="fi" id="ed-tur-etym2" placeholder="Lá"></div><div class="fg"><label class="fl">Significado 2</label><input class="fi" id="ed-tur-etym2d" placeholder="desfiladeiro"></div></div>
-      <div class="fg"><label class="fl">Nota final</label><input class="fi" id="ed-tur-hist-nota" placeholder="A pessoa nascida em Xangri-Lá é denominada xangrilense."></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-tur-etym1">Palavra 1</label><input class="fi" id="ed-tur-etym1" placeholder="Xangri"></div><div class="fg"><label class="fl" for="ed-tur-etym1d">Significado 1</label><input class="fi" id="ed-tur-etym1d" placeholder="secreto"></div></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-tur-etym2">Palavra 2</label><input class="fi" id="ed-tur-etym2" placeholder="Lá"></div><div class="fg"><label class="fl" for="ed-tur-etym2d">Significado 2</label><input class="fi" id="ed-tur-etym2d" placeholder="desfiladeiro"></div></div>
+      <div class="fg"><label class="fl" for="ed-tur-hist-nota">Nota final</label><input class="fi" id="ed-tur-hist-nota" placeholder="A pessoa nascida em Xangri-Lá é denominada xangrilense."></div>
       <div class="ed-section">Cards Laterais</div>
-      <div class="fgg"><div class="fg"><label class="fl">Card 1 — Ícone</label><input class="fi" id="ed-tur-card1-ico" placeholder="📖"></div><div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-card1-tit" placeholder='"Horizonte Perdido"' aria-label="Ed Tur Card1 Tit"></div><div class="fg"><label class="fl">Sub</label><input class="fi" id="ed-tur-card1-sub" placeholder="James Hilton, 1933"></div></div>
-      <div class="fg"><label class="fl">Card 1 — Descrição</label><textarea class="fta" id="ed-tur-card1-desc" rows="2" aria-label="Ed Tur Card1 Desc"></textarea></div>
-      <div class="fgg"><div class="fg"><label class="fl">Card 2 — Ícone</label><input class="fi" id="ed-tur-card2-ico" placeholder="🕊"></div><div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-card2-tit" placeholder="Lugar de paz e harmonia"></div><div class="fg"><label class="fl">Sub</label><input class="fi" id="ed-tur-card2-sub" placeholder="Significado original"></div></div>
-      <div class="fg"><label class="fl">Card 2 — Descrição</label><textarea class="fta" id="ed-tur-card2-desc" rows="2" aria-label="Ed Tur Card2 Desc"></textarea></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-tur-card1-ico">Card 1 — Ícone</label><input class="fi" id="ed-tur-card1-ico" placeholder="📖"></div><div class="fg"><label class="fl" for="ed-tur-card1-tit">Título</label><input class="fi" id="ed-tur-card1-tit" placeholder='"Horizonte Perdido"' aria-label="Ed Tur Card1 Tit"></div><div class="fg"><label class="fl" for="ed-tur-card1-sub">Sub</label><input class="fi" id="ed-tur-card1-sub" placeholder="James Hilton, 1933"></div></div>
+      <div class="fg"><label class="fl" for="ed-tur-card1-desc">Card 1 — Descrição</label><textarea class="fta" id="ed-tur-card1-desc" rows="2" aria-label="Ed Tur Card1 Desc"></textarea></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-tur-card2-ico">Card 2 — Ícone</label><input class="fi" id="ed-tur-card2-ico" placeholder="🕊"></div><div class="fg"><label class="fl" for="ed-tur-card2-tit">Título</label><input class="fi" id="ed-tur-card2-tit" placeholder="Lugar de paz e harmonia"></div><div class="fg"><label class="fl" for="ed-tur-card2-sub">Sub</label><input class="fi" id="ed-tur-card2-sub" placeholder="Significado original"></div></div>
+      <div class="fg"><label class="fl" for="ed-tur-card2-desc">Card 2 — Descrição</label><textarea class="fta" id="ed-tur-card2-desc" rows="2" aria-label="Ed Tur Card2 Desc"></textarea></div>
     </div>
 
     <div class="tur-sub-panel" id="tsp-4">
       <div class="ed-section">Seção Praias</div>
-      <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-praias-tit" placeholder="5 praias imperdíveis de Capão da Canoa e Xangri-Lá"></div>
-      <div class="fg"><label class="fl">Texto introdutório</label><textarea class="fta" id="ed-tur-praias-intro" rows="3" aria-label="Ed Tur Praias Intro"></textarea></div>
+      <div class="fg"><label class="fl" for="ed-tur-praias-tit">Título</label><input class="fi" id="ed-tur-praias-tit" placeholder="5 praias imperdíveis de Capão da Canoa e Xangri-Lá"></div>
+      <div class="fg"><label class="fl" for="ed-tur-praias-intro">Texto introdutório</label><textarea class="fta" id="ed-tur-praias-intro" rows="3" aria-label="Ed Tur Praias Intro"></textarea></div>
       <div class="ed-section">Praias (clique + para adicionar)</div>
       <div id="tur-praias-list"></div>
       <button class="btn bg bsm" onclick="addTurPraia()" style="margin-top:10px">+ Adicionar Praia</button>
@@ -1906,19 +1906,19 @@ if(_savedToken && _savedUser){
 
     <div class="tur-sub-panel" id="tsp-5">
       <div class="ed-section">Seção Desenvolvimento / Dados</div>
-      <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-dados-tit" placeholder="Qualidade de vida e desenvolvimento"></div>
-      <div class="fg"><label class="fl">Texto introdutório</label><textarea class="fta" id="ed-tur-dados-intro" rows="3" aria-label="Ed Tur Dados Intro"></textarea></div>
-      <div class="fg"><label class="fl">Fonte</label><input class="fi" id="ed-tur-dados-fonte" placeholder="Fonte: IBGE"></div>
+      <div class="fg"><label class="fl" for="ed-tur-dados-tit">Título</label><input class="fi" id="ed-tur-dados-tit" placeholder="Qualidade de vida e desenvolvimento"></div>
+      <div class="fg"><label class="fl" for="ed-tur-dados-intro">Texto introdutório</label><textarea class="fta" id="ed-tur-dados-intro" rows="3" aria-label="Ed Tur Dados Intro"></textarea></div>
+      <div class="fg"><label class="fl" for="ed-tur-dados-fonte">Fonte</label><input class="fi" id="ed-tur-dados-fonte" placeholder="Fonte: IBGE"></div>
       <div class="ed-section">Cards de Estatísticas</div>
-      <div class="fgg"><div class="fg"><label class="fl">Stat 1 — Número</label><input class="fi" id="ed-ts1-num" placeholder="7º"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts1-desc" rows="2" aria-label="Ed Ts1 Desc"></textarea></div></div>
-      <div class="fgg"><div class="fg"><label class="fl">Stat 2 — Número</label><input class="fi" id="ed-ts2-num" placeholder="3º"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts2-desc" rows="2" aria-label="Ed Ts2 Desc"></textarea></div></div>
-      <div class="fgg"><div class="fg"><label class="fl">Stat 3 — Número</label><input class="fi" id="ed-ts3-num" placeholder="23"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts3-desc" rows="2" aria-label="Ed Ts3 Desc"></textarea></div></div>
-      <div class="fgg"><div class="fg"><label class="fl">Stat 4 — Número</label><input class="fi" id="ed-ts4-num" placeholder="↑"></div><div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ed-ts4-desc" rows="2" aria-label="Ed Ts4 Desc"></textarea></div></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-ts1-num">Stat 1 — Número</label><input class="fi" id="ed-ts1-num" placeholder="7º"></div><div class="fg"><label class="fl" for="ed-ts1-desc">Descrição</label><textarea class="fta" id="ed-ts1-desc" rows="2" aria-label="Ed Ts1 Desc"></textarea></div></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-ts2-num">Stat 2 — Número</label><input class="fi" id="ed-ts2-num" placeholder="3º"></div><div class="fg"><label class="fl" for="ed-ts2-desc">Descrição</label><textarea class="fta" id="ed-ts2-desc" rows="2" aria-label="Ed Ts2 Desc"></textarea></div></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-ts3-num">Stat 3 — Número</label><input class="fi" id="ed-ts3-num" placeholder="23"></div><div class="fg"><label class="fl" for="ed-ts3-desc">Descrição</label><textarea class="fta" id="ed-ts3-desc" rows="2" aria-label="Ed Ts3 Desc"></textarea></div></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-ts4-num">Stat 4 — Número</label><input class="fi" id="ed-ts4-num" placeholder="↑"></div><div class="fg"><label class="fl" for="ed-ts4-desc">Descrição</label><textarea class="fta" id="ed-ts4-desc" rows="2" aria-label="Ed Ts4 Desc"></textarea></div></div>
     </div>
 
     <div class="tur-sub-panel" id="tsp-6">
       <div class="ed-section">Seção "O que fazer"</div>
-      <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-fazer-tit" placeholder="O que fazer em Capão da Canoa e Xangri-Lá"></div>
+      <div class="fg"><label class="fl" for="ed-tur-fazer-tit">Título</label><input class="fi" id="ed-tur-fazer-tit" placeholder="O que fazer em Capão da Canoa e Xangri-Lá"></div>
       <div class="ed-section">Atividades (ícone, título, descrição)</div>
       <div id="tur-fazer-list"></div>
       <button class="btn bg bsm" onclick="addTurFazer()" style="margin-top:10px">+ Adicionar Atividade</button>
@@ -1936,12 +1936,12 @@ if(_savedToken && _savedUser){
 
     <div class="tur-sub-panel" id="tsp-8">
       <div class="ed-section">CTA Final da Página de Turismo</div>
-      <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-cta-tit" placeholder="Quer investir ou morar em Xangri-Lá?"></div>
-      <div class="fg"><label class="fl">Subtítulo</label><textarea class="fta" id="ed-tur-cta-sub" rows="3" aria-label="Ed Tur Cta Sub"></textarea></div>
-      <div class="fgg"><div class="fg"><label class="fl">Botão WhatsApp</label><input class="fi" id="ed-tur-cta-btn1" placeholder="💬 Falar no WhatsApp"></div><div class="fg"><label class="fl">Botão Condomínios</label><input class="fi" id="ed-tur-cta-btn2" placeholder="Ver Condomínios →"></div></div>
+      <div class="fg"><label class="fl" for="ed-tur-cta-tit">Título</label><input class="fi" id="ed-tur-cta-tit" placeholder="Quer investir ou morar em Xangri-Lá?"></div>
+      <div class="fg"><label class="fl" for="ed-tur-cta-sub">Subtítulo</label><textarea class="fta" id="ed-tur-cta-sub" rows="3" aria-label="Ed Tur Cta Sub"></textarea></div>
+      <div class="fgg"><div class="fg"><label class="fl" for="ed-tur-cta-btn1">Botão WhatsApp</label><input class="fi" id="ed-tur-cta-btn1" placeholder="💬 Falar no WhatsApp"></div><div class="fg"><label class="fl" for="ed-tur-cta-btn2">Botão Condomínios</label><input class="fi" id="ed-tur-cta-btn2" placeholder="Ver Condomínios →"></div></div>
       <div class="ed-section">Seção Qualidade de Vida</div>
-      <div class="fg"><label class="fl">Título</label><input class="fi" id="ed-tur-qual-tit" placeholder="Invista no litoral gaúcho"></div>
-      <div class="fg"><label class="fl">Texto</label><textarea class="fta" id="ed-tur-qual-txt" rows="4" aria-label="Ed Tur Qual Txt"></textarea></div>
+      <div class="fg"><label class="fl" for="ed-tur-qual-tit">Título</label><input class="fi" id="ed-tur-qual-tit" placeholder="Invista no litoral gaúcho"></div>
+      <div class="fg"><label class="fl" for="ed-tur-qual-txt">Texto</label><textarea class="fta" id="ed-tur-qual-txt" rows="4" aria-label="Ed Tur Qual Txt"></textarea></div>
     </div>
 
   </div>
@@ -1951,14 +1951,14 @@ if(_savedToken && _savedUser){
     <div class="ed-grid">
       <div class="ed-form-col">
         <div class="ed-section">Rodapé</div>
-        <div class="fg"><label class="fl">Nome da Empresa</label><input class="fi" id="ed-rod-nome" placeholder="Condomínios na Praia" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">Tagline / Descrição</label><textarea class="fta" id="ed-rod-tag" rows="2" oninput="edPreview()" aria-label="Ed Rod Tag"></textarea></div>
-        <div class="fg"><label class="fl">Domínio exibido</label><input class="fi" id="ed-rod-dom" placeholder="www.condominiosnapraia.com.br" oninput="edPreview()"></div>
-        <div class="fg"><label class="fl">Copyright (ano)</label><input class="fi" id="ed-rod-copy" placeholder="© 2025 Condomínios na Praia. Todos os direitos reservados." oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-rod-nome">Nome da Empresa</label><input class="fi" id="ed-rod-nome" placeholder="Condomínios na Praia" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-rod-tag">Tagline / Descrição</label><textarea class="fta" id="ed-rod-tag" rows="2" oninput="edPreview()" aria-label="Ed Rod Tag"></textarea></div>
+        <div class="fg"><label class="fl" for="ed-rod-dom">Domínio exibido</label><input class="fi" id="ed-rod-dom" placeholder="www.condominiosnapraia.com.br" oninput="edPreview()"></div>
+        <div class="fg"><label class="fl" for="ed-rod-copy">Copyright (ano)</label><input class="fi" id="ed-rod-copy" placeholder="© 2025 Condomínios na Praia. Todos os direitos reservados." oninput="edPreview()"></div>
         <div class="ed-section">Logo (sub-texto)</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Nome Principal</label><input class="fi" id="ed-logo-main" placeholder="Condomínios na Praia" oninput="edPreview()"></div>
-          <div class="fg"><label class="fl">Sub-texto</label><input class="fi" id="ed-logo-sub" placeholder="Litoral Norte Gaúcho" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-logo-main">Nome Principal</label><input class="fi" id="ed-logo-main" placeholder="Condomínios na Praia" oninput="edPreview()"></div>
+          <div class="fg"><label class="fl" for="ed-logo-sub">Sub-texto</label><input class="fi" id="ed-logo-sub" placeholder="Litoral Norte Gaúcho" oninput="edPreview()"></div>
         </div>
       </div>
       <div class="ed-preview-col">
@@ -1983,28 +1983,28 @@ if(_savedToken && _savedUser){
       </div>
       <div class="fgg">
         <div class="fg">
-          <label class="fl">Texto principal</label>
+          <label class="fl" for="wm-text">Texto principal</label>
           <input class="fi" id="wm-text" value="Condomínios na Praia" oninput="wmPreview()" aria-label="Wm Text">
         </div>
         <div class="fg">
-          <label class="fl">Texto secundário (site)</label>
+          <label class="fl" for="wm-site">Texto secundário (site)</label>
           <input class="fi" id="wm-site" value="condominiosnapraia.com.br" oninput="wmPreview()" aria-label="Wm Site">
         </div>
       </div>
       <div class="fgg fgg3" style="margin-top:4px">
         <div class="fg">
-          <label class="fl">Opacidade (0.1 a 1.0)</label>
+          <label class="fl" for="wm-opacity">Opacidade (0.1 a 1.0)</label>
           <input class="fi" id="wm-opacity" type="number" value="0.3" min="0.1" max="1" step="0.05" oninput="wmPreview()" aria-label="Wm Opacity">
         </div>
         <div class="fg">
-          <label class="fl">Estilo</label>
+          <label class="fl" for="wm-repeat">Estilo</label>
           <select class="fse" id="wm-repeat" onchange="wmPreview()" aria-label="Wm Repeat">
             <option value="0" selected>Central + canto</option>
             <option value="1">Repetida em diagonal</option>
           </select>
         </div>
         <div class="fg">
-          <label class="fl">Cor do texto</label>
+          <label class="fl" for="wm-color">Cor do texto</label>
           <select class="fse" id="wm-color" onchange="wmPreview()" aria-label="Wm Color">
             <option value="white">Branco (para fotos escuras)</option>
             <option value="black">Preto (para fotos claras)</option>
@@ -2060,48 +2060,48 @@ if(_savedToken && _savedUser){
     <div class="ed-grid">
       <div class="ed-form-col">
         <div class="ed-section">Cabeçalho da Seção</div>
-        <div class="fg"><label class="fl">Badge (ex: 💳 Crédito Contemplado)</label><input class="fi" id="ct-ed-badge" oninput="ctPreview()" aria-label="Ct Ed Badge"></div>
-        <div class="fg"><label class="fl">Título (parte normal)</label><input class="fi" id="ct-ed-title" oninput="ctPreview()" aria-label="Ct Ed Title"></div>
-        <div class="fg"><label class="fl">Título (parte em destaque verde)</label><input class="fi" id="ct-ed-title-em" oninput="ctPreview()" aria-label="Ct Ed Title Em"></div>
-        <div class="fg"><label class="fl">Subtítulo</label><textarea class="fta" id="ct-ed-sub" rows="2" oninput="ctPreview()" aria-label="Ct Ed Sub"></textarea></div>
-        <div class="fg"><label class="fl">Link do botão principal</label><input class="fi" id="ct-ed-link" placeholder="https://rzncontempladas.manus.space/"></div>
-        <div class="fg"><label class="fl">Texto do botão</label><input class="fi" id="ct-ed-btn" oninput="ctPreview()" aria-label="Ct Ed Btn"></div>
+        <div class="fg"><label class="fl" for="ct-ed-badge">Badge (ex: 💳 Crédito Contemplado)</label><input class="fi" id="ct-ed-badge" oninput="ctPreview()" aria-label="Ct Ed Badge"></div>
+        <div class="fg"><label class="fl" for="ct-ed-title">Título (parte normal)</label><input class="fi" id="ct-ed-title" oninput="ctPreview()" aria-label="Ct Ed Title"></div>
+        <div class="fg"><label class="fl" for="ct-ed-title-em">Título (parte em destaque verde)</label><input class="fi" id="ct-ed-title-em" oninput="ctPreview()" aria-label="Ct Ed Title Em"></div>
+        <div class="fg"><label class="fl" for="ct-ed-sub">Subtítulo</label><textarea class="fta" id="ct-ed-sub" rows="2" oninput="ctPreview()" aria-label="Ct Ed Sub"></textarea></div>
+        <div class="fg"><label class="fl" for="ct-ed-link">Link do botão principal</label><input class="fi" id="ct-ed-link" placeholder="https://rzncontempladas.manus.space/"></div>
+        <div class="fg"><label class="fl" for="ct-ed-btn">Texto do botão</label><input class="fi" id="ct-ed-btn" oninput="ctPreview()" aria-label="Ct Ed Btn"></div>
 
         <div class="ed-section" style="margin-top:20px">Card 1</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Ícone</label><input class="fi" id="ct-ed-ico-1" style="font-size:20px" aria-label="Ct Ed Ico 1"></div>
-          <div class="fg"><label class="fl">Tipo</label><input class="fi" id="ct-ed-tipo-1" aria-label="Ct Ed Tipo 1"></div>
+          <div class="fg"><label class="fl" for="ct-ed-ico-1">Ícone</label><input class="fi" id="ct-ed-ico-1" style="font-size:20px" aria-label="Ct Ed Ico 1"></div>
+          <div class="fg"><label class="fl" for="ct-ed-tipo-1">Tipo</label><input class="fi" id="ct-ed-tipo-1" aria-label="Ct Ed Tipo 1"></div>
         </div>
-        <div class="fg"><label class="fl">Título</label><input class="fi" id="ct-ed-ctitle-1" aria-label="Ct Ed Ctitle 1"></div>
+        <div class="fg"><label class="fl" for="ct-ed-ctitle-1">Título</label><input class="fi" id="ct-ed-ctitle-1" aria-label="Ct Ed Ctitle 1"></div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Valor</label><input class="fi" id="ct-ed-val-1" placeholder="Até R$ 500 mil"></div>
-          <div class="fg"><label class="fl">Taxa</label><input class="fi" id="ct-ed-taxa-1" placeholder="a partir de 11% ao ano"></div>
+          <div class="fg"><label class="fl" for="ct-ed-val-1">Valor</label><input class="fi" id="ct-ed-val-1" placeholder="Até R$ 500 mil"></div>
+          <div class="fg"><label class="fl" for="ct-ed-taxa-1">Taxa</label><input class="fi" id="ct-ed-taxa-1" placeholder="a partir de 11% ao ano"></div>
         </div>
-        <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ct-ed-desc-1" rows="2" aria-label="Ct Ed Desc 1"></textarea></div>
+        <div class="fg"><label class="fl" for="ct-ed-desc-1">Descrição</label><textarea class="fta" id="ct-ed-desc-1" rows="2" aria-label="Ct Ed Desc 1"></textarea></div>
 
         <div class="ed-section" style="margin-top:20px">Card 2</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Ícone</label><input class="fi" id="ct-ed-ico-2" style="font-size:20px" aria-label="Ct Ed Ico 2"></div>
-          <div class="fg"><label class="fl">Tipo</label><input class="fi" id="ct-ed-tipo-2" aria-label="Ct Ed Tipo 2"></div>
+          <div class="fg"><label class="fl" for="ct-ed-ico-2">Ícone</label><input class="fi" id="ct-ed-ico-2" style="font-size:20px" aria-label="Ct Ed Ico 2"></div>
+          <div class="fg"><label class="fl" for="ct-ed-tipo-2">Tipo</label><input class="fi" id="ct-ed-tipo-2" aria-label="Ct Ed Tipo 2"></div>
         </div>
-        <div class="fg"><label class="fl">Título</label><input class="fi" id="ct-ed-ctitle-2" aria-label="Ct Ed Ctitle 2"></div>
+        <div class="fg"><label class="fl" for="ct-ed-ctitle-2">Título</label><input class="fi" id="ct-ed-ctitle-2" aria-label="Ct Ed Ctitle 2"></div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Valor</label><input class="fi" id="ct-ed-val-2" aria-label="Ct Ed Val 2"></div>
-          <div class="fg"><label class="fl">Taxa</label><input class="fi" id="ct-ed-taxa-2" aria-label="Ct Ed Taxa 2"></div>
+          <div class="fg"><label class="fl" for="ct-ed-val-2">Valor</label><input class="fi" id="ct-ed-val-2" aria-label="Ct Ed Val 2"></div>
+          <div class="fg"><label class="fl" for="ct-ed-taxa-2">Taxa</label><input class="fi" id="ct-ed-taxa-2" aria-label="Ct Ed Taxa 2"></div>
         </div>
-        <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ct-ed-desc-2" rows="2" aria-label="Ct Ed Desc 2"></textarea></div>
+        <div class="fg"><label class="fl" for="ct-ed-desc-2">Descrição</label><textarea class="fta" id="ct-ed-desc-2" rows="2" aria-label="Ct Ed Desc 2"></textarea></div>
 
         <div class="ed-section" style="margin-top:20px">Card 3</div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Ícone</label><input class="fi" id="ct-ed-ico-3" style="font-size:20px" aria-label="Ct Ed Ico 3"></div>
-          <div class="fg"><label class="fl">Tipo</label><input class="fi" id="ct-ed-tipo-3" aria-label="Ct Ed Tipo 3"></div>
+          <div class="fg"><label class="fl" for="ct-ed-ico-3">Ícone</label><input class="fi" id="ct-ed-ico-3" style="font-size:20px" aria-label="Ct Ed Ico 3"></div>
+          <div class="fg"><label class="fl" for="ct-ed-tipo-3">Tipo</label><input class="fi" id="ct-ed-tipo-3" aria-label="Ct Ed Tipo 3"></div>
         </div>
-        <div class="fg"><label class="fl">Título</label><input class="fi" id="ct-ed-ctitle-3" aria-label="Ct Ed Ctitle 3"></div>
+        <div class="fg"><label class="fl" for="ct-ed-ctitle-3">Título</label><input class="fi" id="ct-ed-ctitle-3" aria-label="Ct Ed Ctitle 3"></div>
         <div class="fgg">
-          <div class="fg"><label class="fl">Valor</label><input class="fi" id="ct-ed-val-3" aria-label="Ct Ed Val 3"></div>
-          <div class="fg"><label class="fl">Taxa</label><input class="fi" id="ct-ed-taxa-3" aria-label="Ct Ed Taxa 3"></div>
+          <div class="fg"><label class="fl" for="ct-ed-val-3">Valor</label><input class="fi" id="ct-ed-val-3" aria-label="Ct Ed Val 3"></div>
+          <div class="fg"><label class="fl" for="ct-ed-taxa-3">Taxa</label><input class="fi" id="ct-ed-taxa-3" aria-label="Ct Ed Taxa 3"></div>
         </div>
-        <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="ct-ed-desc-3" rows="2" aria-label="Ct Ed Desc 3"></textarea></div>
+        <div class="fg"><label class="fl" for="ct-ed-desc-3">Descrição</label><textarea class="fta" id="ct-ed-desc-3" rows="2" aria-label="Ct Ed Desc 3"></textarea></div>
 
         <div style="margin-top:20px">
           <button class="btn bs" onclick="ctSave()">💾 Salvar Contempladas</button>
@@ -2165,26 +2165,26 @@ if(_savedToken && _savedUser){
     <div class="cm-pane on" data-cmpane="geral">
       <div class="fsec">Informações Básicas</div>
       <div class="fgg">
-        <div class="fg fgf"><label class="fl">Nome *</label><input class="fi" id="cm-nome" placeholder="Ex: Santorini Bairro Planejado" oninput="cmSlugPreview()"></div>
-        <div class="fg"><label class="fl">Cidade *</label>
+        <div class="fg fgf"><label class="fl" for="cm-nome">Nome *</label><input class="fi" id="cm-nome" placeholder="Ex: Santorini Bairro Planejado" oninput="cmSlugPreview()"></div>
+        <div class="fg"><label class="fl" for="cm-cid">Cidade *</label>
           <select class="fse" id="cm-cid" onchange="cmSlugPreview()" aria-label="Cid"><option value="">Selecione...</option>
             <option>Xangri-lá</option><option>Capão da Canoa</option><option>Atlântida</option>
             <option>Curumim</option><option>Lagoa dos Quadros</option><option>Osório</option><option>Maquiné</option><option>Torres</option></select></div>
-        <div class="fg"><label class="fl">Bairro</label><input class="fi" id="cm-bairro" placeholder="Bairro / localização"></div>
-        <div class="fg"><label class="fl">URL (slug)</label><input class="fi" id="cm-slug" placeholder="gerado automaticamente" style="font-family:monospace;font-size:11px"></div>
-        <div class="fg fgf"><label class="fl">Descrição Curta</label><textarea class="fta" id="cm-desc" rows="2" placeholder="Resumo de 1-2 linhas (cards e prévia)..."></textarea></div>
+        <div class="fg"><label class="fl" for="cm-bairro">Bairro</label><input class="fi" id="cm-bairro" placeholder="Bairro / localização"></div>
+        <div class="fg"><label class="fl" for="cm-slug">URL (slug)</label><input class="fi" id="cm-slug" placeholder="gerado automaticamente" style="font-family:monospace;font-size:11px"></div>
+        <div class="fg fgf"><label class="fl" for="cm-desc">Descrição Curta</label><textarea class="fta" id="cm-desc" rows="2" placeholder="Resumo de 1-2 linhas (cards e prévia)..."></textarea></div>
       </div>
       <div class="fsec">Dados Técnicos</div>
       <div class="fgg fgg3">
-        <div class="fg"><label class="fl">Área Total m²</label><input class="fi" id="cm-area" type="number" placeholder="150000"></div>
-        <div class="fg"><label class="fl">Nº Lotes</label><input class="fi" id="cm-lotes" type="number" placeholder="320"></div>
-        <div class="fg"><label class="fl">Incorporadora</label><input class="fi" id="cm-inc" placeholder="Ex: Cyrela"></div>
-        <div class="fg"><label class="fl">Ano Entrega</label><input class="fi" id="cm-ano" type="number" placeholder="2024"></div>
-        <div class="fg"><label class="fl">Padrão</label>
+        <div class="fg"><label class="fl" for="cm-area">Área Total m²</label><input class="fi" id="cm-area" type="number" placeholder="150000"></div>
+        <div class="fg"><label class="fl" for="cm-lotes">Nº Lotes</label><input class="fi" id="cm-lotes" type="number" placeholder="320"></div>
+        <div class="fg"><label class="fl" for="cm-inc">Incorporadora</label><input class="fi" id="cm-inc" placeholder="Ex: Cyrela"></div>
+        <div class="fg"><label class="fl" for="cm-ano">Ano Entrega</label><input class="fi" id="cm-ano" type="number" placeholder="2024"></div>
+        <div class="fg"><label class="fl" for="cm-pad">Padrão</label>
           <select class="fse" id="cm-pad" aria-label="Pad"><option>Alto Padrão</option><option>Luxo</option><option>Super Luxo</option><option>Médio Padrão</option></select></div>
-        <div class="fg"><label class="fl">Tipo</label>
+        <div class="fg"><label class="fl" for="cm-tipo">Tipo</label>
           <select class="fse" id="cm-tipo" aria-label="Tipo"><option>Fechado</option><option>Bairro Planejado</option><option>Resort</option><option>Marina</option><option>Club</option></select></div>
-        <div class="fg"><label class="fl">Perfil (localização) *</label>
+        <div class="fg"><label class="fl" for="cm-perfil">Perfil (localização) *</label>
           <select class="fse" id="cm-perfil" aria-label="Perfil"><option value="">Selecione...</option><option value="mar">🌊 Beira-mar</option><option value="lagoa">🦢 Beira da lagoa</option><option value="cidade">🏙️ Cidade / Centro</option></select></div>
       </div>
     </div>
@@ -2193,25 +2193,25 @@ if(_savedToken && _savedUser){
     <div class="cm-pane" data-cmpane="local">
       <div class="fsec">Endereço e Mapa</div>
       <div class="fgg">
-        <div class="fg fgf"><label class="fl">Endereço</label><input class="fi" id="cm-end" placeholder="Rua, número, CEP"></div>
-        <div class="fg fgf"><label class="fl">Link Google Maps</label><input class="fi" id="cm-maps" placeholder="https://maps.google..."></div>
-        <div class="fg"><label class="fl">Latitude</label><input class="fi" id="cm-lat" type="number" step="0.0000001" placeholder="-29.7654321"></div>
-        <div class="fg"><label class="fl">Longitude</label><input class="fi" id="cm-lng" type="number" step="0.0000001" placeholder="-49.9876543"></div>
+        <div class="fg fgf"><label class="fl" for="cm-end">Endereço</label><input class="fi" id="cm-end" placeholder="Rua, número, CEP"></div>
+        <div class="fg fgf"><label class="fl" for="cm-maps">Link Google Maps</label><input class="fi" id="cm-maps" placeholder="https://maps.google..."></div>
+        <div class="fg"><label class="fl" for="cm-lat">Latitude</label><input class="fi" id="cm-lat" type="number" step="0.0000001" placeholder="-29.7654321"></div>
+        <div class="fg"><label class="fl" for="cm-lng">Longitude</label><input class="fi" id="cm-lng" type="number" step="0.0000001" placeholder="-49.9876543"></div>
       </div>
       <div class="gen-box">💡 As coordenadas (latitude/longitude) alimentam o Schema de localização (Residence) e melhoram o SEO local no Google Maps. Copie do Google Maps clicando com o botão direito no ponto exato.</div>
       <div class="fsec">Localização Detalhada (texto SEO)</div>
-      <div class="fg fgf"><label class="fl">Descrição da Localização</label>
+      <div class="fg fgf"><label class="fl" for="cm-local-det">Descrição da Localização</label>
         <textarea class="fta" id="cm-local-det" rows="4" placeholder="Descreva proximidade da praia, acessos, comércio, escolas, pontos de referência..."></textarea></div>
     </div>
 
     <!-- ════ ABA: INFRAESTRUTURA ════ -->
     <div class="cm-pane" data-cmpane="infra">
       <div class="fsec">Características / Amenidades</div>
-      <input type="text" class="fi" id="cm-am-search" placeholder="🔍 Buscar característica..." oninput="filterAmenidades(this.value)" style="margin-bottom:8px">
+      <input type="text" class="fi" id="cm-am-search" placeholder="🔍 Buscar característica..." oninput="filterAmenidades(this.value)" style="margin-bottom:8px" aria-label="🔍 Buscar característica...">
       <div id="cm-am-grid" class="am-grid"></div>
       <input type="hidden" id="cm-am">
       <div class="fsec" style="margin-top:18px">Infraestrutura Detalhada (texto SEO)</div>
-      <div class="fg fgf"><label class="fl">Descrição da Infraestrutura</label>
+      <div class="fg fgf"><label class="fl" for="cm-infra-det">Descrição da Infraestrutura</label>
         <textarea class="fta" id="cm-infra-det" rows="5" placeholder="Descreva piscinas, academia, quadras, salão de festas, segurança, áreas de lazer..."></textarea></div>
     </div>
 
@@ -2221,18 +2221,18 @@ if(_savedToken && _savedUser){
       <div class="gen-box">💡 Preencha para o Google encontrar e rankear este condomínio. Use os geradores automáticos como ponto de partida e edite à vontade.</div>
 
       <div class="fg fgf">
-        <label class="fl">Título SEO <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(máx. 60 caracteres)</span></label>
+        <label class="fl" for="cm-seo-titulo">Título SEO <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(máx. 60 caracteres)</span></label>
         <input class="fi" id="cm-seo-titulo" placeholder="Ex: Santorini em Xangri-lá | Condomínio de Luxo" maxlength="70" oninput="seoCount(this,'cm-seo-tc',60);seoPreview()">
         <div class="char-count"><span id="cm-seo-tc">0</span>/60</div>
       </div>
       <div class="fg fgf">
-        <label class="fl">Meta Descrição <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(máx. 160 caracteres)</span></label>
+        <label class="fl" for="cm-seo-desc">Meta Descrição <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(máx. 160 caracteres)</span></label>
         <textarea class="fta" id="cm-seo-desc" rows="2" placeholder="Ex: Condomínio fechado de alto padrão em Xangri-lá com piscina, spa e segurança 24h." maxlength="180" oninput="seoCount(this,'cm-seo-dc',160);seoPreview()"></textarea>
         <div class="char-count"><span id="cm-seo-dc">0</span>/160</div>
       </div>
 
       <!-- PREVIEW GOOGLE -->
-      <label class="fl">Prévia no Google</label>
+      <label class="fl" for="sp-url">Prévia no Google</label>
       <div class="seo-preview">
         <div class="sp-url" id="sp-url">condominiosnapraia.com.br › condominios › ...</div>
         <div class="sp-title" id="sp-title">Título SEO aparece aqui</div>
@@ -2241,17 +2241,17 @@ if(_savedToken && _savedUser){
 
       <div class="fgg">
         <div class="fg fgf"><label class="fl">Palavras-chave <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(vírgula)</span></label>
-          <input class="fi" id="cm-seo-kw" placeholder="condomínio Xangri-lá, imóveis litoral norte, alto padrão RS"></div>
-        <div class="fg fgf"><label class="fl">Chamada / Slogan</label>
+          <input class="fi" id="cm-seo-kw" placeholder="condomínio Xangri-lá, imóveis litoral norte, alto padrão RS" aria-label="Condomínio Xangri lá, imóveis litoral norte, alto padrão RS"></div>
+        <div class="fg fgf"><label class="fl" for="cm-seo-slogan">Chamada / Slogan</label>
           <input class="fi" id="cm-seo-slogan" placeholder="Viva o melhor do litoral com infraestrutura completa"></div>
-        <div class="fg fgf"><label class="fl">Canonical URL <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(opcional — gerado automaticamente)</span></label>
+        <div class="fg fgf"><label class="fl" for="cm-canonical">Canonical URL <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(opcional — gerado automaticamente)</span></label>
           <input class="fi" id="cm-canonical" placeholder="https://condominiosnapraia.com.br/condominios/..." style="font-family:monospace;font-size:11px"></div>
-        <div class="fg fgf"><label class="fl">OG Image <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(imagem de compartilhamento)</span></label>
+        <div class="fg fgf"><label class="fl" for="cm-og-image">OG Image <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(imagem de compartilhamento)</span></label>
           <input class="fi" id="cm-og-image" placeholder="URL da imagem (padrão: 1ª foto)" oninput="seoPreview()"></div>
       </div>
 
       <!-- PREVIEW OPEN GRAPH -->
-      <label class="fl">Prévia ao Compartilhar (WhatsApp/Facebook)</label>
+      <label class="fl" for="og-img">Prévia ao Compartilhar (WhatsApp/Facebook)</label>
       <div class="og-preview">
         <div class="og-img" id="og-img">Imagem de capa</div>
         <div class="og-body">
@@ -2268,19 +2268,19 @@ if(_savedToken && _savedUser){
       </div>
 
       <div class="fg fgf"><label class="fl">História do Condomínio</label>
-        <textarea class="fta" id="cm-historia" rows="4" placeholder="História e conceito do empreendimento..."></textarea></div>
-      <div class="fg fgf"><label class="fl">Mercado Imobiliário</label>
+        <textarea class="fta" id="cm-historia" rows="4" placeholder="História e conceito do empreendimento..." aria-label="História e conceito do empreendimento..."></textarea></div>
+      <div class="fg fgf"><label class="fl" for="cm-mercado">Mercado Imobiliário</label>
         <textarea class="fta" id="cm-mercado" rows="4" placeholder="Análise de mercado e valorização da região..."></textarea></div>
-      <div class="fg fgf"><label class="fl">Diferenciais Exclusivos</label>
+      <div class="fg fgf"><label class="fl" for="cm-diferenciais">Diferenciais Exclusivos</label>
         <textarea class="fta" id="cm-diferenciais" rows="4" placeholder="O que torna este condomínio único..."></textarea></div>
-      <div class="fg fgf"><label class="fl">Conteúdo SEO Extra</label>
+      <div class="fg fgf"><label class="fl" for="cm-seo-content">Conteúdo SEO Extra</label>
         <textarea class="fta" id="cm-seo-content" rows="3" placeholder="Texto adicional otimizado para buscadores..."></textarea></div>
 
       <div class="fsec" style="color:var(--go)">💰 Mercado Imobiliário (faixas)</div>
       <div class="fgg fgg3">
-        <div class="fg"><label class="fl">Faixa Preço Terrenos</label><input class="fi" id="cm-preco-terrenos" placeholder="R$ 300k – R$ 800k"></div>
-        <div class="fg"><label class="fl">Faixa Preço Casas</label><input class="fi" id="cm-preco-casas" placeholder="R$ 1,2M – R$ 5M"></div>
-        <div class="fg"><label class="fl">Valorização Anual</label><input class="fi" id="cm-valorizacao" placeholder="Ex: 12% ao ano"></div>
+        <div class="fg"><label class="fl" for="cm-preco-terrenos">Faixa Preço Terrenos</label><input class="fi" id="cm-preco-terrenos" placeholder="R$ 300k – R$ 800k"></div>
+        <div class="fg"><label class="fl" for="cm-preco-casas">Faixa Preço Casas</label><input class="fi" id="cm-preco-casas" placeholder="R$ 1,2M – R$ 5M"></div>
+        <div class="fg"><label class="fl" for="cm-valorizacao">Valorização Anual</label><input class="fi" id="cm-valorizacao" placeholder="Ex: 12% ao ano"></div>
       </div>
     </div>
 
@@ -2307,10 +2307,10 @@ if(_savedToken && _savedUser){
       <div class="fgrid" id="cfg"></div>
       <div class="fsec" style="margin-top:16px">Vídeo, Tour e Planta</div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Vídeo YouTube</label><input class="fi" id="cm-seo-video" placeholder="https://youtube.com/watch?v=..."></div>
-        <div class="fg"><label class="fl">Tour Virtual 360°</label><input class="fi" id="cm-seo-tour" placeholder="https://tour360.com/..."></div>
-        <div class="fg fgf"><label class="fl">Planta (PDF)</label><input class="fi" id="cm-planta" placeholder="URL do PDF da planta"></div>
-        <div class="fg fgf"><label class="fl">Site Oficial</label><input class="fi" id="cm-site" placeholder="https://..."></div>
+        <div class="fg"><label class="fl" for="cm-seo-video">Vídeo YouTube</label><input class="fi" id="cm-seo-video" placeholder="https://youtube.com/watch?v=..."></div>
+        <div class="fg"><label class="fl" for="cm-seo-tour">Tour Virtual 360°</label><input class="fi" id="cm-seo-tour" placeholder="https://tour360.com/..."></div>
+        <div class="fg fgf"><label class="fl" for="cm-planta">Planta (PDF)</label><input class="fi" id="cm-planta" placeholder="URL do PDF da planta"></div>
+        <div class="fg fgf"><label class="fl" for="cm-site">Site Oficial</label><input class="fi" id="cm-site" placeholder="https://..."></div>
       </div>
     </div>
 
@@ -2318,15 +2318,15 @@ if(_savedToken && _savedUser){
     <div class="cm-pane" data-cmpane="pub">
       <div class="fsec">Status &amp; Publicação</div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Publicar no Site</label>
+        <div class="fg"><label class="fl" for="cm-pub">Publicar no Site</label>
           <select class="fse" id="cm-pub" aria-label="Pub"><option value="1">Sim</option><option value="0">Não</option></select></div>
       </div>
       <div class="fsec" style="margin-top:16px">Linkagem Interna</div>
       <div class="gen-box">💡 Relacione este condomínio a outros e a artigos do blog para fortalecer os links internos e o SEO.</div>
-      <div class="fg fgf"><label class="fl">Condomínios Relacionados</label>
+      <div class="fg fgf"><label class="fl" for="cm-rel-cond">Condomínios Relacionados</label>
         <select class="fse" id="cm-rel-cond" multiple size="4" style="height:auto" aria-label="Rel Cond"></select>
         <div style="font-size:10px;color:var(--t3);margin-top:3px">Ctrl/Cmd + clique para selecionar vários</div></div>
-      <div class="fg fgf"><label class="fl">Artigos Relacionados (Blog)</label>
+      <div class="fg fgf"><label class="fl" for="cm-rel-art">Artigos Relacionados (Blog)</label>
         <select class="fse" id="cm-rel-art" multiple size="4" style="height:auto" aria-label="Rel Art"></select></div>
       <div class="fsec" style="margin-top:16px">Deploy</div>
       <div class="gen-box" id="cm-deploy-box">Ao salvar, o site é atualizado no Supabase. Para regenerar as páginas estáticas (SSG) imediatamente, dispare o Deploy Hook.
@@ -2368,25 +2368,25 @@ if(_savedToken && _savedUser){
     <div class="mb">
       <div class="fsec">Dados Básicos</div>
       <div class="fgg">
-        <div class="fg fgf"><label class="fl">Título / Chamada *</label><input class="fi" id="im-tit" placeholder="Ex: Casa 3 suítes vista mar — Viva o melhor do litoral"></div>
-        <div class="fg"><label class="fl">Finalidade *</label>
+        <div class="fg fgf"><label class="fl" for="im-tit">Título / Chamada *</label><input class="fi" id="im-tit" placeholder="Ex: Casa 3 suítes vista mar — Viva o melhor do litoral"></div>
+        <div class="fg"><label class="fl" for="im-final">Finalidade *</label>
           <select class="fse" id="im-final" aria-label="Final"><option value="venda">Venda</option><option value="locacao">Locação</option><option value="temporada">Temporada</option></select></div>
-        <div class="fg"><label class="fl">Categoria / Tipo *</label>
+        <div class="fg"><label class="fl" for="im-tipo">Categoria / Tipo *</label>
           <select class="fse" id="im-tipo" aria-label="Tipo"><option>Casa</option><option>Terreno</option><option>Apartamento</option><option>Cobertura</option><option>Chalé</option><option>Duplex</option><option>Kitnet</option><option>Galpão</option><option>Outro</option></select></div>
-        <div class="fg"><label class="fl">Código do Imóvel</label><input class="fi" id="im-codigo" placeholder="Gerado automaticamente (ex: XAN-001)" readonly style="background:#eef9fa;font-weight:700;color:#0d3b54"></div>
-        <div class="fg"><label class="fl">Referência Interna</label><input class="fi" id="im-ref" placeholder="Ex: COND-001, REF-2025"></div>
-        <div class="fg"><label class="fl">Status *</label>
+        <div class="fg"><label class="fl" for="im-codigo">Código do Imóvel</label><input class="fi" id="im-codigo" placeholder="Gerado automaticamente (ex: XAN-001)" readonly style="background:#eef9fa;font-weight:700;color:#0d3b54"></div>
+        <div class="fg"><label class="fl" for="im-ref">Referência Interna</label><input class="fi" id="im-ref" placeholder="Ex: COND-001, REF-2025"></div>
+        <div class="fg"><label class="fl" for="im-st">Status *</label>
           <select class="fse" id="im-st" aria-label="St"><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option></select></div>
       </div>
       <div class="fsec">Endereço</div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Condomínio *</label><select class="fse" id="im-cond" aria-label="Condomínio"><option value="">Selecione...</option></select></div>
-        <div class="fg"><label class="fl">Quadra *</label><input class="fi" id="im-quadra" placeholder="Ex: Quadra B"></div>
-        <div class="fg"><label class="fl">Lote *</label><input class="fi" id="im-lote" placeholder="Ex: Lote 42-A"></div>
-        <div class="fg"><label class="fl">CEP</label><input class="fi" id="im-cep" placeholder="95000-000"></div>
-        <div class="fg"><label class="fl">Cidade</label><input class="fi" id="im-cidade" placeholder="Xangri-lá"></div>
-        <div class="fg"><label class="fl">Bairro</label><input class="fi" id="im-bairro-end" placeholder="Bairro"></div>
-        <div class="fg"><label class="fl">Ponto de Referência</label><input class="fi" id="im-ref-local" placeholder="Ex: Próximo à praia central"></div>
+        <div class="fg"><label class="fl" for="im-cond">Condomínio *</label><select class="fse" id="im-cond" aria-label="Condomínio"><option value="">Selecione...</option></select></div>
+        <div class="fg"><label class="fl" for="im-quadra">Quadra *</label><input class="fi" id="im-quadra" placeholder="Ex: Quadra B"></div>
+        <div class="fg"><label class="fl" for="im-lote">Lote *</label><input class="fi" id="im-lote" placeholder="Ex: Lote 42-A"></div>
+        <div class="fg"><label class="fl" for="im-cep">CEP</label><input class="fi" id="im-cep" placeholder="95000-000"></div>
+        <div class="fg"><label class="fl" for="im-cidade">Cidade</label><input class="fi" id="im-cidade" placeholder="Xangri-lá"></div>
+        <div class="fg"><label class="fl" for="im-bairro-end">Bairro</label><input class="fi" id="im-bairro-end" placeholder="Bairro"></div>
+        <div class="fg"><label class="fl" for="im-ref-local">Ponto de Referência</label><input class="fi" id="im-ref-local" placeholder="Ex: Próximo à praia central"></div>
       </div>
     </div>
   </div>
@@ -2396,37 +2396,37 @@ if(_savedToken && _savedUser){
     <div class="mb">
       <div class="fsec">Detalhes</div>
       <div class="fgg fgg3">
-        <div class="fg"><label class="fl">Dormitórios</label><input class="fi" id="im-qtos" type="number" placeholder="0" min="0"></div>
-        <div class="fg"><label class="fl">Suítes</label><input class="fi" id="im-sui" type="number" placeholder="0" min="0"></div>
-        <div class="fg"><label class="fl">Banheiros</label><input class="fi" id="im-ban" type="number" placeholder="0" min="0"></div>
-        <div class="fg"><label class="fl">Lavabos</label><input class="fi" id="im-lavabos" type="number" placeholder="0" min="0"></div>
-        <div class="fg"><label class="fl">Livings / Salas</label><input class="fi" id="im-salas" type="number" placeholder="0" min="0"></div>
-        <div class="fg"><label class="fl">Vagas Garagem</label><input class="fi" id="im-vag" type="number" placeholder="0" min="0"></div>
-        <div class="fg"><label class="fl">Depósitos</label><input class="fi" id="im-dep" type="number" placeholder="0" min="0"></div>
+        <div class="fg"><label class="fl" for="im-qtos">Dormitórios</label><input class="fi" id="im-qtos" type="number" placeholder="0" min="0"></div>
+        <div class="fg"><label class="fl" for="im-sui">Suítes</label><input class="fi" id="im-sui" type="number" placeholder="0" min="0"></div>
+        <div class="fg"><label class="fl" for="im-ban">Banheiros</label><input class="fi" id="im-ban" type="number" placeholder="0" min="0"></div>
+        <div class="fg"><label class="fl" for="im-lavabos">Lavabos</label><input class="fi" id="im-lavabos" type="number" placeholder="0" min="0"></div>
+        <div class="fg"><label class="fl" for="im-salas">Livings / Salas</label><input class="fi" id="im-salas" type="number" placeholder="0" min="0"></div>
+        <div class="fg"><label class="fl" for="im-vag">Vagas Garagem</label><input class="fi" id="im-vag" type="number" placeholder="0" min="0"></div>
+        <div class="fg"><label class="fl" for="im-dep">Depósitos</label><input class="fi" id="im-dep" type="number" placeholder="0" min="0"></div>
       </div>
       <div style="margin:14px 0 10px;display:flex;gap:16px;flex-wrap:wrap">
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-decorado" style="accent-color:var(--ac)"> Decorado</label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-mobiliado" style="accent-color:var(--ac)"> Mobiliado</label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-semi" style="accent-color:var(--ac)"> Semi Mobiliado</label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-semimob" style="accent-color:var(--ac)"> Sem Mobília</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)" for="im-decorado"><input type="checkbox" id="im-decorado" style="accent-color:var(--ac)"> Decorado</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-mobiliado" style="accent-color:var(--ac)" aria-label="Im mobiliado"> Mobiliado</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-semi" style="accent-color:var(--ac)" aria-label="Im semi"> Semi Mobiliado</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-semimob" style="accent-color:var(--ac)" aria-label="Im semimob"> Sem Mobília</label>
       </div>
       <div class="fsec">Área</div>
       <div class="fgg fgg3">
-        <div class="fg"><label class="fl">Área Total m²</label><input class="fi" id="im-area" type="number" placeholder="350"></div>
-        <div class="fg"><label class="fl">Área Privativa m²</label><input class="fi" id="im-areap" type="number" placeholder="300"></div>
-        <div class="fg"><label class="fl">Área Construída m²</label><input class="fi" id="im-areac" type="number" placeholder="280"></div>
-        <div class="fg"><label class="fl">Metragem Terreno</label><input class="fi" id="im-terreno" placeholder="Ex: 25x30 ou 25x30x40"></div>
+        <div class="fg"><label class="fl">Área Total m²</label><input class="fi" id="im-area" type="number" placeholder="350" aria-label="350"></div>
+        <div class="fg"><label class="fl" for="im-areap">Área Privativa m²</label><input class="fi" id="im-areap" type="number" placeholder="300"></div>
+        <div class="fg"><label class="fl" for="im-areac">Área Construída m²</label><input class="fi" id="im-areac" type="number" placeholder="280"></div>
+        <div class="fg"><label class="fl" for="im-terreno">Metragem Terreno</label><input class="fi" id="im-terreno" placeholder="Ex: 25x30 ou 25x30x40"></div>
       </div>
       <div class="fsec">Construção</div>
       <div class="fgg fgg3">
-        <div class="fg"><label class="fl">Posição / Andar</label><input class="fi" id="im-and" placeholder="Ex: 3º andar, Térreo"></div>
-        <div class="fg"><label class="fl">Orientação Solar</label>
+        <div class="fg"><label class="fl" for="im-and">Posição / Andar</label><input class="fi" id="im-and" placeholder="Ex: 3º andar, Térreo"></div>
+        <div class="fg"><label class="fl" for="im-sol">Orientação Solar</label>
           <select class="fse" id="im-sol" aria-label="Sol"><option value="">—</option><option>Nascente</option><option>Poente</option><option>Norte</option><option>Sul</option><option>Frente ao Mar</option></select></div>
-        <div class="fg"><label class="fl">Vista</label>
+        <div class="fg"><label class="fl" for="im-vista">Vista</label>
           <select class="fse" id="im-vista" aria-label="Vista"><option value="">—</option><option>Vista para o Mar</option><option>Vista para Lagoa</option><option>Vista para a Piscina</option><option>Vista para Jardim</option><option>Sem Vista Especial</option></select></div>
-        <div class="fg"><label class="fl">Fachada</label><input class="fi" id="im-fachada" placeholder="Ex: Contemporânea, Clássica"></div>
-        <div class="fg"><label class="fl">Ano de Construção</label><input class="fi" id="im-ano-const" type="number" placeholder="2022"></div>
-        <div class="fg"><label class="fl">Total de Pavimentos</label><input class="fi" id="im-pavimentos" type="number" placeholder="2"></div>
+        <div class="fg"><label class="fl" for="im-fachada">Fachada</label><input class="fi" id="im-fachada" placeholder="Ex: Contemporânea, Clássica"></div>
+        <div class="fg"><label class="fl" for="im-ano-const">Ano de Construção</label><input class="fi" id="im-ano-const" type="number" placeholder="2022"></div>
+        <div class="fg"><label class="fl" for="im-pavimentos">Total de Pavimentos</label><input class="fi" id="im-pavimentos" type="number" placeholder="2"></div>
       </div>
     </div>
   </div>
@@ -2436,26 +2436,26 @@ if(_savedToken && _savedUser){
     <div class="mb">
       <div class="fsec">Taxas</div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Valor IPTU Anual R$</label><input class="fi" id="im-iptu" type="number" placeholder="4800"></div>
-        <div class="fg"><label class="fl">Valor Condomínio Mensal R$</label><input class="fi" id="im-ctx" type="number" placeholder="1200"></div>
+        <div class="fg"><label class="fl" for="im-iptu">Valor IPTU Anual R$</label><input class="fi" id="im-iptu" type="number" placeholder="4800"></div>
+        <div class="fg"><label class="fl" for="im-ctx">Valor Condomínio Mensal R$</label><input class="fi" id="im-ctx" type="number" placeholder="1200"></div>
       </div>
       <div class="fsec">Detalhes da Negociação — Venda</div>
       <div class="fgg fgg3">
-        <div class="fg"><label class="fl">Valor no Sistema R$ *</label><input class="fi" id="im-preco" type="number" placeholder="1500000"></div>
-        <div class="fg"><label class="fl">Valor no Site R$</label><input class="fi" id="im-pmin" type="number" placeholder="1350000"></div>
-        <div class="fg"><label class="fl">Comissão %</label><input class="fi" id="im-com" type="number" step="0.5" placeholder="5"></div>
-        <div class="fg"><label class="fl">Financia em até (x)</label><input class="fi" id="im-fin-parc" type="number" placeholder="360"></div>
-        <div class="fg"><label class="fl">Forma de Pagamento</label><input class="fi" id="im-pgto" placeholder="Ex: Pix, Financiamento, À vista"></div>
+        <div class="fg"><label class="fl" for="im-preco">Valor no Sistema R$ *</label><input class="fi" id="im-preco" type="number" placeholder="1500000"></div>
+        <div class="fg"><label class="fl" for="im-pmin">Valor no Site R$</label><input class="fi" id="im-pmin" type="number" placeholder="1350000"></div>
+        <div class="fg"><label class="fl" for="im-com">Comissão %</label><input class="fi" id="im-com" type="number" step="0.5" placeholder="5"></div>
+        <div class="fg"><label class="fl" for="im-fin-parc">Financia em até (x)</label><input class="fi" id="im-fin-parc" type="number" placeholder="360"></div>
+        <div class="fg"><label class="fl" for="im-pgto">Forma de Pagamento</label><input class="fi" id="im-pgto" placeholder="Ex: Pix, Financiamento, À vista"></div>
       </div>
       <div style="margin:14px 0 10px;display:flex;gap:16px;flex-wrap:wrap">
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-fin" style="accent-color:var(--ac)"> Aceita Financiamento</label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-perm" style="accent-color:var(--ac)"> Permuta</label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-excl" style="accent-color:var(--ac)"> Exclusividade</label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-destaque-chk" style="accent-color:var(--ac)"> ⭐ Destaque no Site</label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-placa" style="accent-color:var(--ac)"> Tem Placa</label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-promo" style="accent-color:var(--ac)"> Em Promoção</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)" for="im-fin"><input type="checkbox" id="im-fin" style="accent-color:var(--ac)"> Aceita Financiamento</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-perm" style="accent-color:var(--ac)" aria-label="Im perm"> Permuta</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-excl" style="accent-color:var(--ac)" aria-label="Im excl"> Exclusividade</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-destaque-chk" style="accent-color:var(--ac)" aria-label="Im destaque chk"> ⭐ Destaque no Site</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-placa" style="accent-color:var(--ac)" aria-label="Im placa"> Tem Placa</label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;color:var(--t2)"><input type="checkbox" id="im-promo" style="accent-color:var(--ac)" aria-label="Im promo"> Em Promoção</label>
       </div>
-      <div class="fg" style="margin-top:8px"><label class="fl">Observações da Negociação</label><textarea class="fta" id="im-obs" rows="3" placeholder="Detalhes internos sobre a negociação..."></textarea></div>
+      <div class="fg" style="margin-top:8px"><label class="fl">Observações da Negociação</label><textarea class="fta" id="im-obs" rows="3" placeholder="Detalhes internos sobre a negociação..." aria-label="Detalhes internos sobre a negociação..."></textarea></div>
     </div>
   </div>
 
@@ -2464,22 +2464,22 @@ if(_savedToken && _savedUser){
     <div class="mb">
       <div class="fsec">Administração</div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Proprietário *</label>
+        <div class="fg"><label class="fl" for="im-prop">Proprietário *</label>
           <div style="display:flex;gap:8px;align-items:center">
             <select class="fse" id="im-prop" style="flex:1" aria-label="Proprietário"><option value="">Selecione...</option></select>
             <button type="button" class="btn bp" onclick="novoPropDoImovel()" style="white-space:nowrap;padding:10px 14px" title="Cadastrar novo proprietário sem sair daqui">+ Novo</button>
           </div>
         </div>
-        <div class="fg"><label class="fl">Corretor Responsável</label><input class="fi" id="im-corretor" placeholder="Nome do corretor"></div>
-        <div class="fg"><label class="fl">Construtora</label><input class="fi" id="im-construtora" placeholder="Nome da construtora"></div>
-        <div class="fg"><label class="fl">Incorporadora</label><input class="fi" id="im-incorporadora" placeholder="Nome da incorporadora"></div>
-        <div class="fg"><label class="fl">Chaves</label><input class="fi" id="im-chaves" placeholder="Ex: Escritório, Com proprietário"></div>
-        <div class="fg"><label class="fl">Matrícula do Imóvel</label><input class="fi" id="im-mat" placeholder="Ex: 89.474"></div>
-        <div class="fg"><label class="fl">Código da Incorporação</label><input class="fi" id="im-cod-inc" placeholder="Ex: 01"></div>
-        <div class="fg"><label class="fl">Cartório</label><input class="fi" id="im-cart" placeholder="1º CRI Osório"></div>
-        <div class="fg"><label class="fl">Situação Documental</label>
+        <div class="fg"><label class="fl">Corretor Responsável</label><input class="fi" id="im-corretor" placeholder="Nome do corretor" aria-label="Nome do corretor"></div>
+        <div class="fg"><label class="fl" for="im-construtora">Construtora</label><input class="fi" id="im-construtora" placeholder="Nome da construtora"></div>
+        <div class="fg"><label class="fl" for="im-incorporadora">Incorporadora</label><input class="fi" id="im-incorporadora" placeholder="Nome da incorporadora"></div>
+        <div class="fg"><label class="fl" for="im-chaves">Chaves</label><input class="fi" id="im-chaves" placeholder="Ex: Escritório, Com proprietário"></div>
+        <div class="fg"><label class="fl" for="im-mat">Matrícula do Imóvel</label><input class="fi" id="im-mat" placeholder="Ex: 89.474"></div>
+        <div class="fg"><label class="fl" for="im-cod-inc">Código da Incorporação</label><input class="fi" id="im-cod-inc" placeholder="Ex: 01"></div>
+        <div class="fg"><label class="fl" for="im-cart">Cartório</label><input class="fi" id="im-cart" placeholder="1º CRI Osório"></div>
+        <div class="fg"><label class="fl" for="im-doc">Situação Documental</label>
           <select class="fse" id="im-doc" aria-label="Doc"><option>Regular</option><option>Em regularização</option><option>Pendente</option></select></div>
-        <div class="fg"><label class="fl">Habite-se</label>
+        <div class="fg"><label class="fl" for="im-hab">Habite-se</label>
           <select class="fse" id="im-hab" aria-label="Hab"><option>Possui</option><option>Em processo</option><option>Não possui</option></select></div>
       </div>
     </div>
@@ -2489,13 +2489,13 @@ if(_savedToken && _savedUser){
   <div class="imtab-panel" id="imp-4">
     <div class="mb">
       <div class="fsec">Descrição e Diferenciais</div>
-      <div class="fg"><label class="fl">Descrição Completa</label><textarea class="fta" id="im-desc" rows="5" placeholder="Descreva o imóvel detalhadamente. Destaque os pontos fortes, localização, acabamento..."></textarea></div>
-      <div class="fg" style="margin-top:12px"><label class="fl">Diferenciais (separados por vírgula)</label><input class="fi" id="im-dif" placeholder="Piscina privativa, vista mar, churrasqueira, deck molhado..."></div>
+      <div class="fg"><label class="fl" for="im-desc">Descrição Completa</label><textarea class="fta" id="im-desc" rows="5" placeholder="Descreva o imóvel detalhadamente. Destaque os pontos fortes, localização, acabamento..."></textarea></div>
+      <div class="fg" style="margin-top:12px"><label class="fl" for="im-dif">Diferenciais (separados por vírgula)</label><input class="fi" id="im-dif" placeholder="Piscina privativa, vista mar, churrasqueira, deck molhado..."></div>
       <div class="fsec" style="margin-top:16px">Publicação</div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Publicar no Site</label>
+        <div class="fg"><label class="fl" for="im-pub">Publicar no Site</label>
           <select class="fse" id="im-pub" aria-label="Pub"><option value="1">Sim</option><option value="0">Não</option></select></div>
-        <div class="fg"><label class="fl">Status Visibilidade</label>
+        <div class="fg"><label class="fl" for="im-destaque">Status Visibilidade</label>
           <select class="fse" id="im-destaque" aria-label="Destaque"><option value="0">Normal</option><option value="1">⭐ Destaque</option></select></div>
       </div>
     </div>
@@ -2527,27 +2527,27 @@ if(_savedToken && _savedUser){
       </div>
       <div class="fgg">
         <div class="fg fgf">
-          <label class="fl">Título SEO <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(aparece no Google — máx. 60 caracteres)</span></label>
+          <label class="fl" for="im-seo-titulo">Título SEO <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(aparece no Google — máx. 60 caracteres)</span></label>
           <input class="fi" id="im-seo-titulo" placeholder="Ex: Casa 3 suítes à venda no Santorini Xangri-lá" maxlength="60" oninput="seoCount(this,'im-seo-tc')">
           <div style="font-size:10px;color:var(--t3);text-align:right;margin-top:3px"><span id="im-seo-tc">0</span>/60 caracteres</div>
         </div>
         <div class="fg fgf">
-          <label class="fl">Meta Descrição <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(resumo no Google — máx. 160 caracteres)</span></label>
+          <label class="fl" for="im-seo-desc">Meta Descrição <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(resumo no Google — máx. 160 caracteres)</span></label>
           <textarea class="fta" id="im-seo-desc" rows="2" placeholder="Ex: Casa de 3 suítes com piscina privativa e vista mar no Condomínio Santorini em Xangri-lá. R$ 1.500.000." maxlength="160" oninput="seoCount(this,'im-seo-dc')"></textarea>
           <div style="font-size:10px;color:var(--t3);text-align:right;margin-top:3px"><span id="im-seo-dc">0</span>/160 caracteres</div>
         </div>
         <div class="fg fgf">
-          <label class="fl">Palavras-chave <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(separadas por vírgula)</span></label>
+          <label class="fl" for="im-seo-kw">Palavras-chave <span style="color:var(--t3);font-size:10px;text-transform:none;letter-spacing:0">(separadas por vírgula)</span></label>
           <input class="fi" id="im-seo-kw" placeholder="Ex: casa à venda Xangri-lá, imóvel litoral RS, 3 suítes condomínio fechado">
         </div>
         <div class="fg fgf">
-          <label class="fl">Chamada / Slogan</label>
+          <label class="fl" for="im-seo-slogan">Chamada / Slogan</label>
           <input class="fi" id="im-seo-slogan" placeholder="Ex: Oportunidade única à beira-mar com acabamento premium">
         </div>
       </div>
       <div class="fgg fgg3" style="margin-top:8px">
-        <div class="fg"><label class="fl">Tour Virtual 360°</label><input class="fi" id="im-seo-tour" placeholder="https://tour360.com/..."></div>
-        <div class="fg"><label class="fl">Vídeo YouTube</label><input class="fi" id="im-seo-video" placeholder="https://youtube.com/..."></div>
+        <div class="fg"><label class="fl" for="im-seo-tour">Tour Virtual 360°</label><input class="fi" id="im-seo-tour" placeholder="https://tour360.com/..."></div>
+        <div class="fg"><label class="fl" for="im-seo-video">Vídeo YouTube</label><input class="fi" id="im-seo-video" placeholder="https://youtube.com/..."></div>
       </div>
     </div>
   </div>
@@ -2566,24 +2566,24 @@ if(_savedToken && _savedUser){
     <input type="hidden" id="pm-id">
     <div class="fsec">Dados Pessoais</div>
     <div class="fgg">
-      <div class="fg fgf"><label class="fl">Nome / Razão Social *</label><input class="fi" id="pm-nome" placeholder="Nome completo"></div>
-      <div class="fg"><label class="fl">Tipo</label>
+      <div class="fg fgf"><label class="fl" for="pm-nome">Nome / Razão Social *</label><input class="fi" id="pm-nome" placeholder="Nome completo"></div>
+      <div class="fg"><label class="fl" for="pm-tipo">Tipo</label>
         <select class="fse" id="pm-tipo" onchange="tDL()" aria-label="Pm Tipo"><option value="PF">Pessoa Física</option><option value="PJ">Pessoa Jurídica</option></select></div>
-      <div class="fg"><label class="fl" id="pm-dl">CPF</label><input class="fi" id="pm-doc" placeholder="000.000.000-00"></div>
-      <div class="fg"><label class="fl">RG</label><input class="fi" id="pm-rg" placeholder="00.000.000-0"></div>
-      <div class="fg"><label class="fl">Estado Civil</label>
+      <div class="fg"><label class="fl" id="pm-dl" for="pm-dl">CPF</label><input class="fi" id="pm-doc" placeholder="000.000.000-00" aria-label="000.000.000 00"></div>
+      <div class="fg"><label class="fl" for="pm-rg">RG</label><input class="fi" id="pm-rg" placeholder="00.000.000-0"></div>
+      <div class="fg"><label class="fl" for="pm-ec">Estado Civil</label>
         <select class="fse" id="pm-ec" aria-label="Pm Ec"><option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option><option>Viúvo(a)</option><option>União Estável</option></select></div>
-      <div class="fg"><label class="fl">Profissão</label><input class="fi" id="pm-prof" placeholder="Ex: Empresário"></div>
+      <div class="fg"><label class="fl" for="pm-prof">Profissão</label><input class="fi" id="pm-prof" placeholder="Ex: Empresário"></div>
     </div>
     <div class="fsec">Contato</div>
     <div class="fgg">
-      <div class="fg"><label class="fl">Telefone *</label><input class="fi" id="pm-tel" placeholder="(51) 99999-9999"></div>
-      <div class="fg"><label class="fl">WhatsApp</label><input class="fi" id="pm-wpp" placeholder="(51) 99999-9999"></div>
-      <div class="fg"><label class="fl">E-mail *</label><input class="fi" id="pm-email" type="email" placeholder="email@exemplo.com"></div>
-      <div class="fg"><label class="fl">E-mail 2</label><input class="fi" id="pm-email2" type="email" placeholder="Secundário"></div>
+      <div class="fg"><label class="fl" for="pm-tel">Telefone *</label><input class="fi" id="pm-tel" placeholder="(51) 99999-9999"></div>
+      <div class="fg"><label class="fl" for="pm-wpp">WhatsApp</label><input class="fi" id="pm-wpp" placeholder="(51) 99999-9999"></div>
+      <div class="fg"><label class="fl" for="pm-email">E-mail *</label><input class="fi" id="pm-email" type="email" placeholder="email@exemplo.com"></div>
+      <div class="fg"><label class="fl" for="pm-email2">E-mail 2</label><input class="fi" id="pm-email2" type="email" placeholder="Secundário"></div>
     </div>
     <div class="fsec">Observações</div>
-    <div class="fg"><textarea class="fta" id="pm-obs" rows="3" placeholder="Preferências, observações..."></textarea></div>
+    <div class="fg"><textarea class="fta" id="pm-obs" rows="3" placeholder="Preferências, observações..." aria-label="Preferências, observações..."></textarea></div>
   </div>
   <div class="mf">
     <button class="btn bg" onclick="cMo('prop-mo')">Cancelar</button>
@@ -2598,18 +2598,18 @@ if(_savedToken && _savedUser){
   <div class="mb">
     <input type="hidden" id="nm-id">
     <div class="fgg">
-      <div class="fg fgf"><label class="fl">Cliente / Interessado *</label><input class="fi" id="nm-cli" placeholder="Nome do potencial comprador"></div>
-      <div class="fg"><label class="fl">Imóvel *</label><select class="fse" id="nm-imov" aria-label="Nm Imov"><option value="">Selecione...</option></select></div>
-      <div class="fg"><label class="fl">Etapa</label>
+      <div class="fg fgf"><label class="fl" for="nm-cli">Cliente / Interessado *</label><input class="fi" id="nm-cli" placeholder="Nome do potencial comprador"></div>
+      <div class="fg"><label class="fl" for="nm-imov">Imóvel *</label><select class="fse" id="nm-imov" aria-label="Nm Imov"><option value="">Selecione...</option></select></div>
+      <div class="fg"><label class="fl" for="nm-et">Etapa</label>
         <select class="fse" id="nm-et" aria-label="Nm Et">
           <option value="lead">Lead</option><option value="contato">Em Contato</option>
           <option value="visita">Visita</option><option value="proposta">Proposta</option>
           <option value="fechado">Fechado ✓</option><option value="perdido">Perdido ✗</option>
         </select></div>
-      <div class="fg"><label class="fl">Valor Ofertado R$</label><input class="fi" id="nm-val" type="number" placeholder="1400000"></div>
-      <div class="fg"><label class="fl">Telefone</label><input class="fi" id="nm-tel" placeholder="(51) 99999-9999"></div>
-      <div class="fg"><label class="fl">E-mail</label><input class="fi" id="nm-email" type="email" placeholder="cliente@email.com"></div>
-      <div class="fg fgf"><label class="fl">Observações</label><textarea class="fta" id="nm-obs" rows="3" placeholder="Detalhes..."></textarea></div>
+      <div class="fg"><label class="fl" for="nm-val">Valor Ofertado R$</label><input class="fi" id="nm-val" type="number" placeholder="1400000"></div>
+      <div class="fg"><label class="fl" for="nm-tel">Telefone</label><input class="fi" id="nm-tel" placeholder="(51) 99999-9999"></div>
+      <div class="fg"><label class="fl" for="nm-email">E-mail</label><input class="fi" id="nm-email" type="email" placeholder="cliente@email.com"></div>
+      <div class="fg fgf"><label class="fl" for="nm-obs">Observações</label><textarea class="fta" id="nm-obs" rows="3" placeholder="Detalhes..."></textarea></div>
     </div>
   </div>
   <div class="mf">
@@ -2625,16 +2625,16 @@ if(_savedToken && _savedUser){
   <div class="mb">
     <input type="hidden" id="em-id">
     <div class="fgg">
-      <div class="fg fgf"><label class="fl">Título *</label><input class="fi" id="em-tit" placeholder="Ex: Visita Santorini Lote 12"></div>
-      <div class="fg"><label class="fl">Tipo</label>
+      <div class="fg fgf"><label class="fl" for="em-tit">Título *</label><input class="fi" id="em-tit" placeholder="Ex: Visita Santorini Lote 12"></div>
+      <div class="fg"><label class="fl" for="em-tipo">Tipo</label>
         <select class="fse" id="em-tipo" aria-label="Em Tipo">
           <option value="visita">🏠 Visita</option><option value="followup">📞 Follow-up</option>
           <option value="reuniao">🤝 Reunião</option><option value="ligacao">📱 Ligação</option></select></div>
-      <div class="fg"><label class="fl">Data *</label><input class="fi" id="em-data" type="date" aria-label="Em Data"></div>
-      <div class="fg"><label class="fl">Horário</label><input class="fi" id="em-hora" type="time" value="09:00" aria-label="Em Hora"></div>
-      <div class="fg"><label class="fl">Cliente</label><input class="fi" id="em-cli" placeholder="Nome do cliente"></div>
-      <div class="fg"><label class="fl">Imóvel</label><select class="fse" id="em-imov" aria-label="Em Imov"><option value="">Nenhum</option></select></div>
-      <div class="fg fgf"><label class="fl">Observações</label><textarea class="fta" id="em-obs" rows="2" placeholder="Detalhes..."></textarea></div>
+      <div class="fg"><label class="fl" for="em-data">Data *</label><input class="fi" id="em-data" type="date" aria-label="Em Data"></div>
+      <div class="fg"><label class="fl" for="em-hora">Horário</label><input class="fi" id="em-hora" type="time" value="09:00" aria-label="Em Hora"></div>
+      <div class="fg"><label class="fl" for="em-cli">Cliente</label><input class="fi" id="em-cli" placeholder="Nome do cliente"></div>
+      <div class="fg"><label class="fl" for="em-imov">Imóvel</label><select class="fse" id="em-imov" aria-label="Em Imov"><option value="">Nenhum</option></select></div>
+      <div class="fg fgf"><label class="fl" for="em-obs">Observações</label><textarea class="fta" id="em-obs" rows="2" placeholder="Detalhes..."></textarea></div>
     </div>
   </div>
   <div class="mf">
@@ -2650,13 +2650,13 @@ if(_savedToken && _savedUser){
   <div class="mb">
     <input type="hidden" id="hm-pid">
     <div class="fgg">
-      <div class="fg"><label class="fl">Tipo</label>
+      <div class="fg"><label class="fl" for="hm-tipo">Tipo</label>
         <select class="fse" id="hm-tipo" aria-label="Hm Tipo">
           <option>📞 Ligação</option><option>💬 WhatsApp</option><option>📧 E-mail</option>
           <option>🏠 Visita</option><option>🤝 Reunião</option><option>📝 Outro</option>
         </select></div>
-      <div class="fg"><label class="fl">Data</label><input class="fi" id="hm-data" type="date" aria-label="Hm Data"></div>
-      <div class="fg fgf"><label class="fl">Anotação *</label><textarea class="fta" id="hm-nota" rows="4" placeholder="O que foi tratado..."></textarea></div>
+      <div class="fg"><label class="fl" for="hm-data">Data</label><input class="fi" id="hm-data" type="date" aria-label="Hm Data"></div>
+      <div class="fg fgf"><label class="fl" for="hm-nota">Anotação *</label><textarea class="fta" id="hm-nota" rows="4" placeholder="O que foi tratado..."></textarea></div>
     </div>
   </div>
   <div class="mf">
@@ -3193,8 +3193,8 @@ function renderFAQ(pairs){
   list.innerHTML=_cmFaq.map((f,i)=>`
     <div class="faq-row" data-i="${i}">
       <button type="button" class="faq-del" onclick="delFAQ(${i})">✕ remover</button>
-      <input class="faq-q" value="${(f.q||'').replace(/"/g,'&quot;')}" placeholder="Pergunta" oninput="updFAQ(${i},'q',this.value)">
-      <textarea class="faq-a" rows="2" placeholder="Resposta" oninput="updFAQ(${i},'a',this.value)">${f.a||''}</textarea>
+      <input class="faq-q" value="${(f.q||'').replace(/"/g,'&quot;')}" placeholder="Pergunta" oninput="updFAQ(${i},'q',this.value)" aria-label="Pergunta">
+      <textarea class="faq-a" rows="2" placeholder="Resposta" oninput="updFAQ(${i},'a',this.value)" aria-label="Resposta">${f.a||''}</textarea>
     </div>`).join('');
   syncFAQ();
 }
@@ -6556,7 +6556,7 @@ ${fotos.length?`<div class="galeria-full">${fotos.slice(0,3).map((f,ix)=>`<img s
       <a class="ftr-wpp" href="${wpp}" rel="nofollow">Falar no WhatsApp</a>
     </div>
     <div class="ftr-col"><div class="ftr-tit">Navegar</div>
-      <a href="/condominios">Condomínios</a><a href="/casas-em-condominio">Casas em Condomínio</a><a href="/terrenos-em-condominio">Terrenos em Condomínio</a><a href="/imoveis-de-luxo">Imóveis de Luxo</a><a href="/imoveis">Imóveis</a><a href="/lancamentos">Lançamentos</a><a href="/contemplado-imoveis/">Crédito Contemplado</a><a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/contato">Contato</a>
+      <a href="/condominios">Condomínios</a><a href="/casas-em-condominio">Casas em Condomínio</a><a href="/terrenos-em-condominio">Terrenos em Condomínio</a><a href="/imoveis-de-luxo">Imóveis de Luxo</a><a href="/imoveis">Imóveis</a><a href="/lancamentos">Lançamentos</a><a href="/contemplado-imoveis">Crédito Contemplado</a><a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/contato">Contato</a>
     </div>
     <div class="ftr-col"><div class="ftr-tit">Descobrir</div>
       <a href="/blog">Blog &amp; Notícias</a><a href="/o-que-fazer-em-xangri-la">Turismo no Litoral</a><a href="/politica-privacidade">Política de Privacidade</a>
@@ -7301,12 +7301,12 @@ function renderTurPraias(){
         <button class="btn bd2b bsm" onclick="rmTurPraia(${i})">✕ Remover</button>
       </div>
       <div class="fgg">
-        <div class="fg"><label class="fl">Número</label><input class="fi" value="${p.num||''}" oninput="turPraias[${i}].num=this.value" placeholder="01"></div>
-        <div class="fg"><label class="fl">Localização</label><input class="fi" value="${p.loc||''}" oninput="turPraias[${i}].loc=this.value" placeholder="Xangri-Lá"></div>
+        <div class="fg"><label class="fl">Número</label><input class="fi" value="${p.num||''}" oninput="turPraias[${i}].num=this.value" placeholder="01" aria-label="01"></div>
+        <div class="fg"><label class="fl">Localização</label><input class="fi" value="${p.loc||''}" oninput="turPraias[${i}].loc=this.value" placeholder="Xangri-Lá" aria-label="Xangri Lá"></div>
       </div>
       <div class="fg"><label class="fl">Nome da Praia</label><input class="fi" value="${p.nome||''}" oninput="turPraias[${i}].nome=this.value" aria-label="Campo"></div>
       <div class="fg"><label class="fl">Texto descritivo</label><textarea class="fta" rows="3" oninput="turPraias[${i}].texto=this.value" aria-label="Campo">${p.texto||''}</textarea></div>
-      <div class="fg"><label class="fl">Tags (separadas por vírgula)</label><input class="fi" value="${p.tags||''}" oninput="turPraias[${i}].tags=this.value" placeholder="🏄 Surf, 🍽 Gastronomia"></div>
+      <div class="fg"><label class="fl">Tags (separadas por vírgula)</label><input class="fi" value="${p.tags||''}" oninput="turPraias[${i}].tags=this.value" placeholder="🏄 Surf, 🍽 Gastronomia" aria-label="🏄 Surf, 🍽 Gastronomia"></div>
     </div>`).join('');
 }
 function addTurPraia(){ turPraias.push({num:String(turPraias.length+1).padStart(2,'0'),loc:'',nome:'',texto:'',tags:''}); renderTurPraias(); }
@@ -7316,7 +7316,7 @@ function renderTurFazer(){
   const el=document.getElementById('tur-fazer-list');if(!el)return;
   el.innerHTML=turFazer.map((f,i)=>`
     <div style="display:grid;grid-template-columns:60px 1fr 1fr auto;gap:8px;align-items:start;margin-bottom:8px">
-      <div class="fg" style="margin:0"><label class="fl">Ícone</label><input class="fi" value="${f.ico||''}" oninput="turFazer[${i}].ico=this.value" placeholder="🏄"></div>
+      <div class="fg" style="margin:0"><label class="fl">Ícone</label><input class="fi" value="${f.ico||''}" oninput="turFazer[${i}].ico=this.value" placeholder="🏄" aria-label="🏄"></div>
       <div class="fg" style="margin:0"><label class="fl">Título</label><input class="fi" value="${f.tit||''}" oninput="turFazer[${i}].tit=this.value" aria-label="Campo"></div>
       <div class="fg" style="margin:0"><label class="fl">Descrição</label><input class="fi" value="${f.desc||''}" oninput="turFazer[${i}].desc=this.value" aria-label="Campo"></div>
       <button class="btn bd2b bsm" style="margin-top:18px" onclick="rmTurFazer(${i})">✕</button>
