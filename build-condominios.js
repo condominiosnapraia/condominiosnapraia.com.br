@@ -114,7 +114,7 @@ footer{margin-top:36px;padding-top:24px;border-top:1px solid #e8e8e8}
 
 const HEADER_COMPLETO = `<header class="desk-header" id="desk-header">
   <div class="desk-header-inner">
-    <a class="dh-logo" href="/" aria-label="Condomínios na Praia — início"></a>
+    <a class="dh-logo" href="/" aria-label="Portal Meu Litoral — início"></a>
     <nav class="dh-nav">
       <a href="/" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
       <a href="/imoveis">Imóveis</a>

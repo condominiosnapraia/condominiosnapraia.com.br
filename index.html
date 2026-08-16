@@ -128,12 +128,13 @@
 
 </style>
 
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "RealEstateAgent", "@id": "https://condominiosnapraia.com.br/#organizacao", "name": "Condomínios na Praia", "alternateName": "Condomínios na Praia", "description": "Especialista em condomínios fechados e imóveis de alto padrão no Litoral Norte Gaúcho. Casas e terrenos em Xangri-lá, Capão da Canoa, Osório e Maquiné.", "url": "https://condominiosnapraia.com.br", "logo": "https://condominiosnapraia.com.br/img/og-home-social.jpg", "image": "https://condominiosnapraia.com.br/img/og-home-social.jpg", "telephone": "+5551982868888", "email": "napraiacondominios@gmail.com", "priceRange": "$$$", "address": {"@type": "PostalAddress", "streetAddress": "Av. Central 248, Loja 07, Atlântida", "addressLocality": "Xangri-lá", "addressRegion": "RS", "postalCode": "95588-000", "addressCountry": "BR"}, "geo": {"@type": "GeoCoordinates", "latitude": -29.8106, "longitude": -50.0442}, "areaServed": [{"@type": "City", "name": "Xangri-lá"}, {"@type": "City", "name": "Capão da Canoa"}, {"@type": "City", "name": "Osório"}, {"@type": "City", "name": "Maquiné"}], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "09:00", "closes": "18:00"}], "founder": {"@type": "Person", "name": "Condomínios na Praia", "jobTitle": "Imobiliária", "identifier": "CRECI-RS 72.386"}, "knowsAbout": ["Condomínios fechados", "Imóveis de alto padrão", "Terrenos em condomínio", "Casas frente-mar", "Investimento imobiliário no litoral"], "sameAs": [], "contactPoint": {"@type": "ContactPoint", "telephone": "+5551982868888", "contactType": "sales", "availableLanguage": "Portuguese"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "RealEstateAgent", "@id": "https://condominiosnapraia.com.br/#organizacao", "name": "Portal Meu Litoral", "alternateName": "Condomínios na Praia", "description": "Especialista em condomínios fechados e imóveis de alto padrão no Litoral Norte Gaúcho. Casas e terrenos em Xangri-lá, Capão da Canoa, Osório e Maquiné.", "url": "https://condominiosnapraia.com.br", "logo": "https://condominiosnapraia.com.br/img/og-home-social.jpg", "image": "https://condominiosnapraia.com.br/img/og-home-social.jpg", "telephone": "+5551982868888", "email": "napraiacondominios@gmail.com", "priceRange": "$$$", "address": {"@type": "PostalAddress", "streetAddress": "Av. Central 248, Loja 07, Atlântida", "addressLocality": "Xangri-lá", "addressRegion": "RS", "postalCode": "95588-000", "addressCountry": "BR"}, "geo": {"@type": "GeoCoordinates", "latitude": -29.8106, "longitude": -50.0442}, "areaServed": [{"@type": "City", "name": "Xangri-lá"}, {"@type": "City", "name": "Capão da Canoa"}, {"@type": "City", "name": "Osório"}, {"@type": "City", "name": "Maquiné"}], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "09:00", "closes": "18:00"}], "founder": {"@type": "Person", "name": "Portal Meu Litoral", "jobTitle": "Imobiliária", "identifier": "CRECI-RS 72.386"}, "knowsAbout": ["Condomínios fechados", "Imóveis de alto padrão", "Terrenos em condomínio", "Casas frente-mar", "Investimento imobiliário no litoral"], "sameAs": [], "contactPoint": {"@type": "ContactPoint", "telephone": "+5551982868888", "contactType": "sales", "availableLanguage": "Portuguese"}}</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Condomínios na Praia",
+  "name": "Portal Meu Litoral",
+  "alternateName": "Condomínios na Praia",
   "url": "https://condominiosnapraia.com.br",
   "potentialAction": {
     "@type": "SearchAction",
@@ -446,7 +447,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <body>
 <header class="desk-header" id="desk-header">
   <div class="desk-header-inner">
-    <a class="dh-logo" href="/" aria-label="Condomínios na Praia — início"></a>
+    <a class="dh-logo" href="/" aria-label="Portal Meu Litoral — início"></a>
     <nav class="dh-nav">
       <a href="/" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
       <a href="/imoveis/">Imóveis</a>
@@ -1783,7 +1784,7 @@ function openTurismo(scroll){
   ['mob-c','mob-i','mob-t'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('active')});
   const mt=document.getElementById('mob-t');if(mt)mt.classList.add('active');
   if(scroll!==false)window.scrollTo(0,0);
-  document.title='Turismo em Xangri-Lá | Condomínios na Praia';
+  document.title='Turismo em Xangri-Lá | Portal Meu Litoral';
   try{location.hash='turismo';}catch(e){}
   let md=document.querySelector('meta[name="description"]');
   if(md)md.content='Conheça os balneários, história, praias e atrativos de Xangri-Lá e Capão da Canoa. Guia completo do litoral norte gaúcho.';
@@ -2088,12 +2089,12 @@ function buildDetail(c){
   const disp=imoveis.filter(i=>i.status==='Disponível');
 
   // ── SEO DINÂMICO ──
-  document.title=`${c.nome} — Condomínio em ${loc} | Condomínios na Praia`;
+  document.title=`${c.nome} — Condomínio em ${loc} | Portal Meu Litoral`;
 
   // Meta description
   let metaDesc=document.querySelector('meta[name="description"]');
   if(!metaDesc){metaDesc=document.createElement('meta');metaDesc.name='description';document.head.appendChild(metaDesc);}
-  metaDesc.content=`${c.nome}: condomínio ${c.tipo||'fechado'} em ${loc}. ${c.padrao||'Alto Padrão'}. ${disp.length} imóveis disponíveis. ${(c.amenidades||[]).slice(0,4).join(', ')}. Condomínios na Praia.`;
+  metaDesc.content=`${c.nome}: condomínio ${c.tipo||'fechado'} em ${loc}. ${c.padrao||'Alto Padrão'}. ${disp.length} imóveis disponíveis. ${(c.amenidades||[]).slice(0,4).join(', ')}. Portal Meu Litoral.`;
 
   // Meta keywords
   let metaKw=document.querySelector('meta[name="keywords"]');
@@ -2102,7 +2103,7 @@ function buildDetail(c){
 
   // Open Graph (Facebook/WhatsApp preview)
   const ogTags={
-    'og:title':`${c.nome} — ${loc} | Condomínios na Praia`,
+    'og:title':`${c.nome} — ${loc} | Portal Meu Litoral`,
     'og:description':metaDesc.content,
     'og:image':fotos[0]||'',
     'og:type':'website',
@@ -2120,8 +2121,9 @@ function buildDetail(c){
   schema.textContent=JSON.stringify({
     '@context':'https://schema.org',
     '@type':'RealEstateAgent',
-    'name':'Condomínios na Praia',
-    'url':'https://www.condominiosnapraia.com.br',
+    'name':'Portal Meu Litoral',
+    'alternateName':'Condomínios na Praia',
+    'url':'https://condominiosnapraia.com.br',
     'address':{'@type':'PostalAddress','addressLocality':loc,'addressRegion':'RS','addressCountry':'BR'},
     'offers': disp.slice(0,5).map(im=>({'@type':'Offer','name':im.titulo,'price':im.preco,'priceCurrency':'BRL','availability':'https://schema.org/InStock'})),
     'description':metaDesc.content,
