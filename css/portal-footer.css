@@ -4,9 +4,14 @@ footer .ftr-main {
   margin: 0 auto;
   padding: 56px 44px 36px;
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr;
-  gap: 40px;
+  grid-template-columns: minmax(280px, 1.45fr) repeat(3, minmax(0, 1fr));
+  gap: 48px;
+  align-items: start;
 }
+footer .ftr-col { min-width: 0; text-align: left; }
+footer .ftr-col:not(:first-child),
+footer .ftr-col:not(:first-child) a,
+footer .ftr-col:not(:first-child) .ftr-tit { text-align: left; }
 footer .ftr-main > .ftr-col:first-child {
   max-width: 340px;
 }
@@ -112,6 +117,13 @@ footer .ftr-links-grid a {
     margin-left: auto;
     margin-right: auto;
   }
+  footer .ftr-col:not(:first-child),
+  footer .ftr-col:not(:first-child) a,
+  footer .ftr-col:not(:first-child) .ftr-tit { text-align: left !important; }
+  footer .ftr-links-grid { grid-template-columns: 1fr; gap: 4px; }
+}
+@media (min-width: 901px) {
+  footer .ftr-main > .ftr-col:not(:first-child) { padding-top: 4px; }
 }
 
 
