@@ -8,6 +8,11 @@ ROOT = Path(__file__).resolve().parents[1]
 CSS_HREF = '/css/condominio-pdf-map.css'
 
 MAPS = {
+    'lagoa-do-passo-xangri-la': ('Lagoa do Passo', 'lagoa-do-passo'),
+    'atlantida-lagos-park-xangri-la': ('Atlântida Lagos Park', 'atlantida-lagos-park'),
+    'las-dunas-xangri-la': ('Las Dunas', 'las-dunas'),
+    'pacific-residence-xangri-la': ('Pacific Residence', 'pacific-residence'),
+    'la-plage-xangri-la': ('La Plage', 'la-plage'),
     'ocean-side-xangri-la': ('Ocean Side', 'oceanside'),
     'one-atlantida-houses-xangri-la': ('One Atlântida Houses', 'one'),
     'playa-vista-xangri-la': ('Playa Vista', 'playavista'),

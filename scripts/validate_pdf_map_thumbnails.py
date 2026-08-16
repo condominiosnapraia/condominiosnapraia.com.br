@@ -4,6 +4,11 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 MAPS = {
+    'lagoa-do-passo-xangri-la': 'lagoa-do-passo',
+    'atlantida-lagos-park-xangri-la': 'atlantida-lagos-park',
+    'las-dunas-xangri-la': 'las-dunas',
+    'pacific-residence-xangri-la': 'pacific-residence',
+    'la-plage-xangri-la': 'la-plage',
     'ocean-side-xangri-la': 'oceanside',
     'one-atlantida-houses-xangri-la': 'one',
     'playa-vista-xangri-la': 'playavista',
