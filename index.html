@@ -12,13 +12,16 @@
   gtag('config', 'G-25TRZRKFLK');
   gtag('config', 'AW-16759565872');
   window.addEventListener('load', function(){
+    var carregado=false;
     var carregarGtag=function(){
-      if(document.querySelector('script[data-cnp-gtag]')) return;
+      if(carregado||document.querySelector('script[data-cnp-gtag]')) return;
+      carregado=true;
       var s=document.createElement('script'); s.async=true; s.src='https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK'; s.dataset.cnpGtag='1';
       document.head.appendChild(s);
+      ['pointerdown','touchstart','keydown','scroll'].forEach(function(evt){window.removeEventListener(evt,carregarGtag,{passive:true});});
     };
-    if('requestIdleCallback' in window) requestIdleCallback(carregarGtag,{timeout:2500});
-    else setTimeout(carregarGtag,2500);
+    ['pointerdown','touchstart','keydown','scroll'].forEach(function(evt){window.addEventListener(evt,carregarGtag,{passive:true,once:true});});
+    setTimeout(carregarGtag,8000);
   });
   // rastrear cliques no WhatsApp como evento (para medir conversões)
   document.addEventListener('click', function(e){
