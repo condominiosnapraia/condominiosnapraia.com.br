@@ -15,6 +15,7 @@ import argparse
 import concurrent.futures
 import json
 import sys
+import time
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 from html import unescape
@@ -82,7 +83,7 @@ def load_sitemap(url: str, session: requests.Session) -> tuple[str, list[str]]:
     return tag, locs
 
 
-def check_url(item: tuple[str, str], timeout: int) -> UrlCheck:
+def check_url(item: tuple[str, str], timeout: int, retries: int) -> UrlCheck:
     sitemap, url = item
     result = UrlCheck(sitemap=sitemap, url=url)
     parsed = urlparse(url)
@@ -96,31 +97,49 @@ def check_url(item: tuple[str, str], timeout: int) -> UrlCheck:
         result.error = "URL de página sem barra final"
         return result
 
-    try:
-        response = requests.get(
-            url,
-            allow_redirects=False,
-            timeout=timeout,
-            headers={"User-Agent": "CondominiosNaPraia-SitemapValidator/1.0"},
-        )
-        result.status = response.status_code
-        result.content_type = response.headers.get("content-type", "")
-        if response.status_code != 200:
-            result.error = f"HTTP {response.status_code}; Location={response.headers.get('location', '')}"
+    response = None
+    last_error = None
+    for attempt in range(retries + 1):
+        try:
+            response = requests.get(
+                url,
+                allow_redirects=False,
+                timeout=timeout,
+                headers={
+                    "User-Agent": "CondominiosNaPraia-SitemapValidator/1.1",
+                    "Connection": "close",
+                },
+            )
+            # 429 e 5xx podem ser transitórios; 3xx/4xx restantes são definitivos.
+            if response.status_code == 200 or (response.status_code < 500 and response.status_code != 429):
+                break
+            last_error = f"HTTP transitório {response.status_code}"
+        except requests.RequestException as exc:
+            last_error = str(exc)
+            response = None
+        if attempt < retries:
+            time.sleep(min(2 ** attempt, 4))
+
+    if response is None:
+        result.error = f"erro de rede após {retries + 1} tentativas: {last_error}"
+        return result
+
+    result.status = response.status_code
+    result.content_type = response.headers.get("content-type", "")
+    if response.status_code != 200:
+        result.error = f"HTTP {response.status_code}; Location={response.headers.get('location', '')}"
+        return result
+    if is_page_url(url) and "html" in result.content_type.lower():
+        soup = BeautifulSoup(response.text, "html.parser")
+        node = soup.find("link", rel=lambda value: value and "canonical" in value)
+        if not node or not node.get("href"):
+            result.error = "canonical ausente"
             return result
-        if is_page_url(url) and "html" in result.content_type.lower():
-            soup = BeautifulSoup(response.text, "html.parser")
-            node = soup.find("link", rel=lambda value: value and "canonical" in value)
-            if not node or not node.get("href"):
-                result.error = "canonical ausente"
-                return result
-            result.canonical = node["href"].strip()
-            if canonicalize(result.canonical) != canonicalize(url):
-                result.error = f"canonical divergente: {result.canonical}"
-        elif is_page_url(url):
-            result.error = f"Content-Type não HTML: {result.content_type}"
-    except requests.RequestException as exc:
-        result.error = f"erro de rede: {exc}"
+        result.canonical = node["href"].strip()
+        if canonicalize(result.canonical) != canonicalize(url):
+            result.error = f"canonical divergente: {result.canonical}"
+    elif is_page_url(url):
+        result.error = f"Content-Type não HTML: {result.content_type}"
     return result
 
 
@@ -130,6 +149,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sitemap", action="append", dest="sitemaps")
     parser.add_argument("--workers", type=int, default=12)
     parser.add_argument("--timeout", type=int, default=25)
+    parser.add_argument("--retries", type=int, default=2, help="Tentativas extras para timeout, 429 e 5xx")
     parser.add_argument("--limit", type=int, default=0, help="Limita URLs por execução; 0 = todas")
     parser.add_argument("--output", default="sitemap-validation-report.json")
     return parser.parse_args()
@@ -165,7 +185,7 @@ def main() -> int:
 
     checks: list[UrlCheck] = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
-        futures = [pool.submit(check_url, item, args.timeout) for item in all_items]
+        futures = [pool.submit(check_url, item, args.timeout, args.retries) for item in all_items]
         for future in concurrent.futures.as_completed(futures):
             checks.append(future.result())
     checks.sort(key=lambda item: item.url)

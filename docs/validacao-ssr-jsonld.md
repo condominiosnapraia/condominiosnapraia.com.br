@@ -32,10 +32,11 @@ python3 scripts/validate_sitemaps_precommit.py \
   --base-url https://condominiosnapraia.com.br \
   --workers 6 \
   --timeout 60 \
+  --retries 2 \
   --output /tmp/sitemap-validation-report.json
 ```
 
-Ele confirma que as URLs dos sitemaps respondem HTTP 200, não redirecionam, usam canonical coerente, não estão duplicadas e não apresentam falhas HTTP.
+Ele confirma que as URLs dos sitemaps respondem HTTP 200, não redirecionam, usam canonical coerente, não estão duplicadas e não apresentam falhas HTTP. Timeouts, conexões encerradas, respostas 429 e erros 5xx recebem tentativas adicionais com backoff curto; respostas 3xx, 4xx definitivas e canonicals divergentes continuam falhando imediatamente.
 
 ## Hook de pré-commit
 
