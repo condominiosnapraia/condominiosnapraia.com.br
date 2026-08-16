@@ -25,6 +25,12 @@
 /*.js
   Cache-Control: public, max-age=31536000, immutable
 
+# PDFs de mapas: visualização inline, sem sugestão de download e sem indexação direta.
+/*.pdf
+  Content-Disposition: inline
+  X-Content-Type-Options: nosniff
+  X-Robots-Tag: noindex, noarchive
+
 # As páginas HTML NÃO devem ter cache longo (senão o site "trava" numa
 # versão antiga). Elas revalidam sempre, mas continuam rápidas.
 /*.html
