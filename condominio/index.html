@@ -365,7 +365,7 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 }
 @media(max-width:380px){.ftr-links-grid{grid-template-columns:1fr 1fr;gap:2px 12px}}
 /* === Card Venda Premium (captação de proprietários) === */
-.vpc{max-width:1080px;margin:0 auto;padding:0 22px}
+.vpc{max-width:none;width:100%;margin:0;padding:52px 40px;box-sizing:border-box}.vpc-in{max-width:1180px;margin:0 auto}
 .vpc-in{background:linear-gradient(135deg,#0d3b54,#0e8a99);border-radius:24px;padding:40px 38px;color:#fff;position:relative;overflow:hidden;display:flex;align-items:center;gap:36px;box-shadow:0 20px 50px rgba(13,59,84,.2)}
 .vpc-in::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 15%,rgba(224,179,77,.18),transparent 55%);pointer-events:none}
 .vpc-txt{flex:1;min-width:0;position:relative;z-index:1}
@@ -377,7 +377,7 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 .vpc-btn{display:inline-flex;align-items:center;gap:9px;background:#e0b34d;color:#0d3b54;font-weight:700;font-size:15px;padding:15px 28px;border-radius:100px;text-decoration:none;box-shadow:0 12px 30px rgba(224,179,77,.3);transition:transform .2s;white-space:nowrap}
 .vpc-btn:hover{transform:translateY(-3px)}
 .vpc-sub{font-size:12px;opacity:.7;margin-top:10px}
-@media(max-width:760px){.vpc-in{flex-direction:column;text-align:center;gap:22px;padding:34px 24px}.vpc-txt p{margin:0 auto}.vpc-btn{width:100%;box-sizing:border-box;justify-content:center}}
+@media(max-width:760px){.vpc{padding:36px 20px}.vpc-in{flex-direction:column;text-align:center;gap:22px;padding:34px 24px}.vpc-txt p{margin:0 auto}.vpc-btn{width:100%;box-sizing:border-box;justify-content:center}}
 
 
 /* cards dos imóveis do condomínio */
@@ -576,6 +576,8 @@ body{padding-top:56px}
   .cond-gallery-modal-close{top:-2px;right:0}
   .cond-gallery-modal-caption{bottom:-4px;max-width:calc(100% - 96px);overflow:hidden;text-overflow:ellipsis}
 }
+.cond-intro-wrap{max-width:1180px;padding:0 40px}.cond-intro{max-width:920px;margin:0 auto;padding:34px 0 10px;font-size:17px;line-height:1.85;color:var(--text-muted)}
+.cond-implantacao-section{background:var(--sand);padding:54px 0}.cond-implantacao-card{max-width:1180px;margin:0 auto;background:#fff;border:1px solid rgba(31,181,196,.18);border-radius:22px;padding:28px;display:grid;grid-template-columns:minmax(260px,.8fr) minmax(0,1.2fr);gap:28px;align-items:center;box-shadow:0 12px 34px rgba(13,59,84,.08)}.cond-implantacao-copy h2{font-family:'Fraunces',serif;color:var(--ocean);font-size:clamp(24px,3vw,34px);margin:6px 0 10px}.cond-implantacao-copy p:last-child{color:var(--text-muted);line-height:1.65;font-size:14px}.cond-implantacao-thumb{position:relative;display:block;border-radius:16px;overflow:hidden;background:#e8edf0;min-height:220px;text-decoration:none}.cond-implantacao-thumb img{display:block;width:100%;height:100%;min-height:220px;max-height:520px;object-fit:contain;background:#f5f6f4}.cond-implantacao-thumb span{position:absolute;left:16px;right:16px;bottom:14px;text-align:center;background:rgba(13,59,84,.86);color:#fff;border-radius:999px;padding:9px 14px;font-size:12px;font-weight:600}.cond-mercado-section{padding:58px 0}.cond-quick-section{padding:42px 20px 58px;background:#fff}.cond-quick-inner{max-width:1180px;margin:0 auto}.cond-quick-inner h2{font-family:'Fraunces',serif;color:var(--ocean);font-size:clamp(24px,3vw,34px);margin:6px 0 18px}.cond-quick-links{display:flex;flex-wrap:wrap;gap:10px}.cond-quick-links a{color:var(--ocean);border:1px solid rgba(31,181,196,.2);border-radius:999px;padding:10px 15px;text-decoration:none;font-size:13px;background:#fbf8f1}.cond-quick-links a:hover{background:var(--sl);border-color:var(--om)}.cond-mercado-inner{max-width:900px;margin:0 auto}.cond-mercado-inner h2{font-family:'Fraunces',serif;color:var(--ocean);font-size:clamp(24px,3vw,34px);margin-bottom:14px}.cond-mercado-inner p{color:var(--text-muted);line-height:1.8;font-size:15px;margin-bottom:12px}@media(max-width:760px){.cond-intro-wrap{padding:0 20px}.cond-intro{padding:28px 0 6px;font-size:15px}.cond-implantacao-section{padding:38px 0}.cond-implantacao-card{margin:0 20px;padding:20px;display:block}.cond-implantacao-thumb{margin-top:20px}.cond-mercado-section{padding:42px 20px}.cond-quick-section{padding:34px 20px 44px}.cond-quick-links{display:grid;grid-template-columns:1fr;gap:8px}.cond-quick-links a{display:block;text-align:center}}
 </style>
 <script type="application/ld+json" id="ld-cond">{}</script>
   <link rel="stylesheet" href="/css/condominio-map.css">
@@ -584,7 +586,7 @@ body{padding-top:56px}
 <body>
 <header class="desk-header" id="desk-header">
   <div class="desk-header-inner">
-    <a class="dh-logo" href="/" aria-label="Condomínios na Praia — início"></a>
+    <a class="dh-logo" href="/" aria-label="Portal Meu Litoral — início"></a>
     <nav class="dh-nav">
       <a href="/" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
       <a href="/imoveis/">Imóveis</a>
@@ -631,7 +633,9 @@ body{padding-top:56px}
 </div>
 
 <!-- MAIN CONTENT -->
-<div class="content">
+  <div class="content cond-intro-wrap"><p class="cond-desc cond-intro" id="cond-desc">Carregando informações...</p></div>
+
+  <div class="content">
 
   <!-- INFO + SIDE CARD -->
   <div class="info-section">
@@ -667,8 +671,6 @@ body{padding-top:56px}
         <div class="cond-video-title">Vídeo do Condomínio</div>
         <div class="cond-video-frame" id="cond-video-frame"></div>
       </div>
-
-      <p class="cond-desc" id="cond-desc" style="margin-top:20px">Carregando informações...</p>
 
       <!-- Conteúdo rico gerado pelo CRM (história, infra, localização, mercado, diferenciais) -->
       <div id="cond-conteudo-rico" class="cond-rich"></div>
@@ -813,6 +815,33 @@ body{padding-top:56px}
   </div>
 </div>
 
+<!-- MAPA DE IMPLANTAÇÃO — miniatura WebP e PDF sob demanda -->
+<section class="cond-implantacao-section" id="cond-implantacao-section" style="display:none" aria-labelledby="cond-implantacao-title">
+  <div class="content">
+    <div class="cond-implantacao-card">
+      <div class="cond-implantacao-copy">
+        <p class="cond-eyebrow">Implantação</p>
+        <h2 id="cond-implantacao-title">Mapa de implantação</h2>
+        <p id="cond-implantacao-desc">Consulte a disposição dos lotes e das áreas de lazer do empreendimento.</p>
+      </div>
+      <a id="cond-implantacao-link" class="cond-implantacao-thumb" href="#" target="_blank" rel="noopener" aria-label="Abrir mapa de implantação em PDF">
+        <img id="cond-implantacao-img" src="" alt="Miniatura do mapa de implantação do condomínio" width="1280" height="900" loading="lazy" decoding="async">
+        <span>Toque para abrir o PDF em alta resolução ↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="cond-mercado-section" id="cond-mercado-wrap" style="display:none" aria-labelledby="cond-mercado-title">
+  <div class="cond-mercado-inner">
+    <p class="cond-eyebrow">Perspectiva regional</p>
+    <h2 id="cond-mercado-title">Mercado e Valorização</h2>
+    <div id="cond-mercado-content"></div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
 <!-- FOOTER -->
 <hr class="section-divider">
 
@@ -837,6 +866,20 @@ body{padding-top:56px}
       <a class="vpc-btn" href="/exclusividade-imobiliaria/">Quero uma Avaliação Gratuita →</a>
       <div class="vpc-sub">Sem compromisso · CRECI-RS 72.386</div>
     </div>
+  </div>
+</section>
+
+<section class="cond-quick-section" aria-labelledby="cond-quick-title">
+  <div class="cond-quick-inner">
+    <p class="cond-eyebrow">Explore o litoral</p>
+    <h2 id="cond-quick-title">Links rápidos dos condomínios</h2>
+    <nav class="cond-quick-links" aria-label="Links rápidos dos condomínios">
+      <a href="/condominios/">Todos os condomínios</a>
+      <a href="/xangri-la/">Condomínios em Xangri-lá</a>
+      <a href="/capao-da-canoa/">Condomínios em Capão da Canoa</a>
+      <a href="/osorio/">Condomínios em Osório</a>
+      <a href="/maquine/">Condomínios em Maquiné</a>
+    </nav>
   </div>
 </section>
 
@@ -1102,7 +1145,7 @@ async function init() {
   }
 
   // SEO
-  document.title = cond.nome + ' — Condomínios na Praia';
+  document.title = cond.nome + ' — Portal Meu Litoral';
   const metaDesc = document.querySelector('meta[name="description"]');
   const descSeo = dynPublicString(cond.descricao || cond.nome || '').slice(0,155);
   if (metaDesc) metaDesc.content = descSeo;
@@ -1116,7 +1159,7 @@ async function init() {
   const setAttr = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
   setAttr('cond-canonical', 'href', condUrlAbs);
   setAttr('cond-og-url', 'content', condUrlAbs);
-  setAttr('cond-og-title', 'content', cond.nome + ' — Condomínios na Praia');
+  setAttr('cond-og-title', 'content', cond.nome + ' — Portal Meu Litoral');
   setAttr('cond-og-desc', 'content', descSeo);
   // foto de capa para a prévia (WhatsApp/Facebook)
   (function(){
@@ -1166,14 +1209,13 @@ async function init() {
     [cond.bairro, cond.localizacao || cond.cidade].filter(Boolean).join(', ');
   document.getElementById('cond-desc').textContent = dynPublicString(cond.descricao || '');
 
-  // Conteúdo editorial sem duplicar as seções dedicadas de infraestrutura e localização.
+  // Conteúdo editorial: Sobre e Diferenciais ficam após vídeo; Mercado tem seção própria depois do mapa de implantação.
   (function(){
     var alvo = document.getElementById('cond-conteudo-rico');
     if(!alvo) return;
     function paragrafos(txt){ return dynPublicParagraphs(txt); }
     var blocos = [
       { t:'Sobre o Condomínio', v: cond.historia_condominio },
-      { t:'Mercado e Valorização', v: cond.mercado_imobiliario }
     ];
     var html = '';
     blocos.forEach(function(b){
@@ -1202,6 +1244,31 @@ async function init() {
 
   // Mapa: exato somente quando latitude e longitude estão confirmadas no cadastro.
   buildCondMap(cond);
+
+  function buildImplantacao(c){
+    const key = String(c.slug || c.id || '').toLowerCase();
+    const mapas = {
+      'condominio-alegro-curumim':'alegro','aura-garden-place-xangri-la':'aura','bravia-marina-beach-club-maquine':'bravia','cyano-private-resort-osorio':'cyano','enseada-lagoa-dos-quadros-capao-da-canoa':'enseada','la-marina-reserva-maquine':'lamarina','mirador-playa-arenas-curumim':'mirador','monaco-grand-marina-maquine':'monaco','origem-natureza-habitada-xangri-la':'origem','vientos-resort-xangri-la':'vientos','vivendas-da-marina-capao-da-canoa':'vivendas'
+    };
+    const prefix = mapas[key];
+    const sec = document.getElementById('cond-implantacao-section');
+    const img = document.getElementById('cond-implantacao-img');
+    const link = document.getElementById('cond-implantacao-link');
+    if(!prefix || !sec || !img || !link) return;
+    const base = '/img/mapas/'+prefix+'-mapa';
+    img.src = base+'.webp';
+    img.alt = 'Miniatura do mapa de implantação do '+(c.nome || 'condomínio');
+    link.href = '/'+prefix+'-mapa-implantacao.pdf';
+    sec.style.display = '';
+  }
+  function buildMercado(c){
+    const wrap = document.getElementById('cond-mercado-wrap');
+    const content = document.getElementById('cond-mercado-content');
+    const text = dynPublicParagraphs(c.mercado_imobiliario || '');
+    if(wrap && content && text){ content.innerHTML = text; wrap.style.display = ''; }
+  }
+  buildImplantacao(cond);
+  buildMercado(cond);
 
   // Badges
   const badges = [];
@@ -1640,7 +1707,7 @@ function submitForm() {
   const faixa     = document.getElementById('f-faixa').value;
   const msg       = document.getElementById('f-msg').value;
   const wppMsg = encodeURIComponent(
-    `Olá! Venho do site Condomínios na Praia.\n\n` +
+    `Olá! Venho do Portal Meu Litoral.\n\n` +
     `*Condomínio:* ${cond ? cond.nome : ''}\n` +
     `*Nome:* ${nome}\n*Telefone:* ${tel}\n` +
     (interesse ? `*Interesse:* ${interesse}\n` : '') +
