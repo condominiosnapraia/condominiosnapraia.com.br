@@ -724,26 +724,40 @@ async function sbAuth(path, body){
   return r.json();
 }
 
-// ── Renovação automática do token (evita "JWT expired" que derrubava o CRM) ──
+// ── Renovação automática do token ──
+// O refresh token do Supabase pode sofrer rotação. O lock evita duas
+// renovações simultâneas (timer + requisição da IA), que invalidariam uma à outra.
 let _renovTimer = null;
+let _renovPromise = null;
 async function renovarToken(){
+  if(_renovPromise) return _renovPromise;
   const rt = sessionStorage.getItem('cnp_crm_refresh');
   if(!rt) return false;
-  try{
-    const data = await sbAuth('/token?grant_type=refresh_token', {refresh_token: rt});
-    if(data && data.access_token){
-      sessionStorage.setItem('cnp_crm_token', data.access_token);
-      if(data.refresh_token) sessionStorage.setItem('cnp_crm_refresh', data.refresh_token);
-      agendarRenovacao();
-      return true;
+  _renovPromise = (async()=>{
+    try{
+      const data = await sbAuth('/token?grant_type=refresh_token', {refresh_token: rt});
+      if(data && data.access_token){
+        sessionStorage.setItem('cnp_crm_token', data.access_token);
+        // Sempre guardar o novo refresh token quando a rotação o devolver.
+        if(data.refresh_token) sessionStorage.setItem('cnp_crm_refresh', data.refresh_token);
+        agendarRenovacao();
+        return true;
+      }
+      console.warn('renovarToken: resposta sem access_token', data?.error || data?.msg || 'desconhecida');
+      return false;
+    }catch(e){
+      console.error('renovarToken:', e);
+      return false;
+    }finally{
+      _renovPromise = null;
     }
-  }catch(e){ console.error('renovarToken:', e); }
-  return false;
+  })();
+  return _renovPromise;
 }
 function agendarRenovacao(){
-  // renova a cada 50 minutos (o token costuma durar 60)
+  // Renova antes da expiração habitual de 60 minutos.
   if(_renovTimer) clearTimeout(_renovTimer);
-  _renovTimer = setTimeout(renovarToken, 50*60*1000);
+  _renovTimer = setTimeout(()=>{ renovarToken().catch(()=>false); }, 45*60*1000);
 }
 
 async function doLogin(){
@@ -9495,7 +9509,8 @@ async function iaFetchComSessao(url, options){
   if(tokenAtual) baseHeaders.authorization='Bearer '+tokenAtual;
   opts.headers=baseHeaders;
   let response=await fetch(url,opts);
-  if(response.status===401 || response.status===403){
+  // Uma única renovação coordenada atende também chamadas concorrentes do CRM.
+  if((response.status===401 || response.status===403) && tokenAtual){
     const renovado=await renovarToken();
     if(renovado){
       const novoToken=sessionStorage.getItem('cnp_crm_token');
