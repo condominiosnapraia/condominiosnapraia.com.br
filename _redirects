@@ -1,4 +1,10 @@
 # Redirects estáticos gerados a partir de public.imoveis (codigo -> slug).
+# Correção de privacidade: URLs legadas minúsculas não podem expor quadra/lote.
+/imovel-xan-018 /imovel/lote-a-venda-monaco-yacht-club-xangri-la/ 301
+/imovel-xan-018/ /imovel/lote-a-venda-monaco-yacht-club-xangri-la/ 301
+/imovel-xan-019 /imovel/lote-a-venda-monaco-yacht-club-xangri-la-2/ 301
+/imovel-xan-019/ /imovel/lote-a-venda-monaco-yacht-club-xangri-la-2/ 301
+
 # Query strings não entram aqui: o Cloudflare Pages _redirects não suporta parâmetros.
 /atlantida /condominios/ 301
 /LINK_DE_AVALIACAO /contato/ 301
