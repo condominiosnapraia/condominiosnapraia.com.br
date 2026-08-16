@@ -1561,17 +1561,14 @@ function fotoTag(raw, alt, options = {}) {
 const HOME_COND_SELECT = [
   'id','slug','nome','cidade','bairro','descricao','padrao','tipo','amenidades',
   'fotos','fotos_no_site','ativo','latitude','longitude','area_total_m2','lotes',
-  'incorporadora','ano','endereco','maps','perfil','seo_data','seo_title',
-  'seo_description','seo_keywords','seo_content','canonical_url','og_image',
-  'faq_json','historia_condominio','infraestrutura_detalhada',
-  'localizacao_detalhada','mercado_imobiliario','diferenciais','valorizacao_anual'
+  'incorporadora','ano','endereco','maps'
 ].join(',');
 
 const HOME_IMOV_SELECT = [
   'id','slug','codigo','titulo','cond_id','fora_condominio','status','publicar',
   'finalidade','tipo','preco','quartos','suites','banheiros','vagas','area',
   'area_privativa','area_construida','terreno','cidade_end','bairro_end',
-  'cond_taxa','descricao','diferenciais','seo_data','fotos','fotos_no_site','created_at'
+  'fotos','fotos_no_site','created_at'
 ].join(',');
 
 let _extrasPromise = null;
