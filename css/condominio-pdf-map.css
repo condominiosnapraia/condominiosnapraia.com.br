@@ -1,0 +1,11 @@
+.pdf-map-section{margin:30px 0;padding:26px 0;border-top:1px solid rgba(217,168,63,.28)}
+.pdf-map-section .pdf-map-kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#b4862c;font-weight:700;margin-bottom:8px}
+.pdf-map-section h2{font-family:'Fraunces',serif;color:#0d3b54;font-size:clamp(21px,2.4vw,29px);margin:0 0 8px}
+.pdf-map-section .pdf-map-lead{color:#536873;line-height:1.65;margin:0 0 18px;max-width:760px}
+.pdf-map-card{position:relative;display:block;overflow:hidden;border:1px solid #e5ded3;border-radius:16px;background:#f4f6f3;box-shadow:0 6px 20px rgba(13,59,84,.08);text-decoration:none}
+.pdf-map-card img{display:block;width:100%;height:auto;max-height:560px;object-fit:contain}
+.pdf-map-card span{position:absolute;left:16px;right:16px;bottom:14px;text-align:center;background:rgba(13,59,84,.88);color:#fff;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:700;line-height:1.3}
+.pdf-map-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.pdf-map-action{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:11px 18px;background:#0c4a6e;color:#fff;text-decoration:none;font-size:13px;font-weight:700}
+.pdf-map-action:hover{background:#083750}
+@media(max-width:760px){.pdf-map-section{margin:22px 0;padding:22px 0}.pdf-map-card img{min-height:220px;object-fit:contain}.pdf-map-card span{left:10px;right:10px;bottom:10px;padding:9px 11px;font-size:11px}.pdf-map-action{width:100%}}
