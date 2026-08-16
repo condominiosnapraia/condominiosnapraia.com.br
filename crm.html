@@ -9471,6 +9471,28 @@ let iaFotosBase64 = [];
 function abrirCadastroIA(){ go('cadastro-ia',document.querySelector('[data-p=imoveis]')); }
 function iaPanelInit(){
   const s=document.getElementById('ia-gerar-status'); if(s) s.textContent='A prévia será criada sem publicar o imóvel.';
+  const campo=document.getElementById('ia-imovel-texto');
+  const salvo=sessionStorage.getItem('cnp_ia_draft_text')||'';
+  if(campo && !campo.value && salvo) campo.value=salvo;
+}
+
+// A prévia de IA usa uma Pages Function que exige JWT válido. Reaproveita o
+// refresh token do CRM quando o access token expirou, sem apagar o rascunho.
+async function iaFetchComSessao(url, options){
+  const opts={...(options||{})};
+  const baseHeaders={...(opts.headers||{})};
+  const tokenAtual=sessionStorage.getItem('cnp_crm_token');
+  if(tokenAtual) baseHeaders.authorization='Bearer '+tokenAtual;
+  opts.headers=baseHeaders;
+  let response=await fetch(url,opts);
+  if(response.status===401 || response.status===403){
+    const renovado=await renovarToken();
+    if(renovado){
+      const novoToken=sessionStorage.getItem('cnp_crm_token');
+      response=await fetch(url,{...opts,headers:{...baseHeaders,authorization:'Bearer '+novoToken}});
+    }
+  }
+  return response;
 }
 function iaSelecionarFotos(files){
   const lista=[...(files||[])].slice(0,20);
@@ -9497,12 +9519,17 @@ async function iaGerarPreview(){
   const btn=document.getElementById('ia-gerar-btn'), status=document.getElementById('ia-gerar-status');
   const source=(document.getElementById('ia-imovel-texto')?.value||'').trim();
   if(source.length<20){if(status)status.textContent='Informe pelo menos 20 caracteres sobre o imóvel.';return;}
+  // Preserva o texto caso seja necessário renovar a sessão ou o usuário recarregue a tela.
+  sessionStorage.setItem('cnp_ia_draft_text',source);
   if(btn){btn.disabled=true;btn.textContent='Gerando…';} if(status)status.textContent='A IA está organizando os dados. Aguarde…';
   try{
-    const token=sessionStorage.getItem('cnp_crm_token');
-    const r=await fetch('/ia-imovel',{method:'POST',headers:{'content-type':'application/json',...(token?{authorization:'Bearer '+token}:{})},body:JSON.stringify({text:source,context:{condominios:(DB.co||[]).map(c=>({id:c.id,nome:c.nome,cidade:c.cidade})).slice(0,500)}})});
-    const data=await r.json(); if(!r.ok)throw new Error(data.error||'Não foi possível gerar a prévia.');
-    iaPreview=data.preview; document.getElementById('ia-preview-card').style.display='block'; document.getElementById('ia-preview-body').innerHTML=iaPreviewHtml(iaPreview); if(status)status.textContent='Prévia pronta. Revise os dados antes de aprovar.';
+    const r=await iaFetchComSessao('/ia-imovel',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text:source,context:{condominios:(DB.co||[]).map(c=>({id:c.id,nome:c.nome,cidade:c.cidade})).slice(0,500)}})});
+    const data=await r.json();
+    if(!r.ok){
+      if(r.status===401 || r.status===403) throw new Error('Sua sessão expirou. O texto foi preservado; entre novamente no CRM e clique em Gerar prévia.');
+      throw new Error(data.error||'Não foi possível gerar a prévia.');
+    }
+    iaPreview=data.preview; document.getElementById('ia-preview-card').style.display='block'; document.getElementById('ia-preview-body').innerHTML=iaPreviewHtml(iaPreview); sessionStorage.removeItem('cnp_ia_draft_text'); if(status)status.textContent='Prévia pronta. Revise os dados antes de aprovar.';
   }catch(e){if(status)status.textContent=e.message||'Erro ao gerar prévia.';}
   finally{if(btn){btn.disabled=false;btn.textContent='Gerar prévia';}}
 }
