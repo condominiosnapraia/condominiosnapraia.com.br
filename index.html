@@ -846,54 +846,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   </section>
 
 
-  <!-- ══ CONDOMÍNIOS DESTAQUE POR CIDADE ══ -->
-  <section class="cdest-sec sec-onda" id="cond-capao">
-    <div class="cdest-inner">
-      <p class="eyebrow" style="justify-content:center">Em destaque</p>
-      <h2 class="sectit sectit-stacked"><span class="sectit-main">Condomínios</span> <span class="sectit-sub">De Capão da Canoa</span></h2>
-      <p class="cidades-sub">Empreendimentos selecionados na maior cidade do litoral</p>
-      <div class="cdest-grid" id="cdest-capao"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
-      <div style="text-align:center;margin-top:26px">
-        <a class="cdest-btn" href="/condominios/?cidade=Cap%C3%A3o%20da%20Canoa">Ver todos os condomínios de Capão da Canoa →</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="cdest-sec sec-onda" id="cond-xangri">
-    <div class="cdest-inner">
-      <p class="eyebrow" style="justify-content:center">Em destaque</p>
-      <h2 class="sectit sectit-stacked"><span class="sectit-main">Condomínios</span> <span class="sectit-sub">De Xangri-lá</span></h2>
-      <p class="cidades-sub">Os empreendimentos mais procurados da capital dos condomínios</p>
-      <div class="cdest-grid" id="cdest-xangri"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
-      <div style="text-align:center;margin-top:26px">
-        <a class="cdest-btn" href="/condominios/?cidade=Xangri-l%C3%A1">Ver todos os condomínios de Xangri-lá →</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="cdest-sec sec-onda" id="cond-osorio">
-    <div class="cdest-inner">
-      <p class="eyebrow" style="justify-content:center">Em destaque</p>
-      <h2 class="sectit sectit-stacked"><span class="sectit-main">Condomínios</span> <span class="sectit-sub">De Osório</span></h2>
-      <p class="cidades-sub">Empreendimentos na porta de entrada do litoral</p>
-      <div class="cdest-grid" id="cdest-osorio"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
-      <div style="text-align:center;margin-top:26px">
-        <a class="cdest-btn" href="/condominios/?cidade=Os%C3%B3rio">Ver todos os condomínios de Osório →</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="cdest-sec sec-onda" id="cond-maquine">
-    <div class="cdest-inner">
-      <p class="eyebrow" style="justify-content:center">Em destaque</p>
-      <h2 class="sectit sectit-stacked"><span class="sectit-main">Condomínios</span> <span class="sectit-sub">De Maquiné</span></h2>
-      <p class="cidades-sub">Empreendimentos no vale verde do litoral</p>
-      <div class="cdest-grid" id="cdest-maquine"><div class="empty"><div class="empty-ico">🏘️</div><p>Carregando condomínios...</p></div></div>
-      <div style="text-align:center;margin-top:26px">
-        <a class="cdest-btn" href="/condominios/?cidade=Maquin%C3%A9">Ver todos os condomínios de Maquiné →</a>
-      </div>
-    </div>
-  </section>
+  <!-- As listas municipais foram removidas da homepage; o visitante acessa a página completa por cidade em /condominios/. -->
 
   
 
@@ -1995,38 +1948,10 @@ function sfcBuscar(){
 
 function showAllImov(){ location.href='/imoveis'; }
 
-// ── CONDOMÍNIOS DESTAQUE POR CIDADE (home) ──
-
-function renderDestaquesCidade(){
-  getDataResolved().then(all=>{
-    try{
-      console.log('[destaques cidade] condomínios recebidos:', (all||[]).length);
-      var cidades = [...new Set((all||[]).map(function(c){ return c.localizacao || c.cidade || '(sem cidade)'; }))];
-      console.log('[destaques cidade] cidades encontradas no banco:', cidades);
-    }catch(_){}
-    let dCapao=[], dXangri=[];
-    try{ dCapao=(_siteCache&&_siteCache.destCapao)||[]; }catch(e){}
-    try{ dXangri=(_siteCache&&_siteCache.destXangri)||[]; }catch(e){}
-    function pick(cidade, destIds){
-      const doCity=all.filter(c=>c.ativo!==false && (c.localizacao===cidade||c.cidade===cidade));
-      // primeiro os marcados como destaque (na ordem marcada), depois completa com os demais
-      const dest=destIds.map(id=>doCity.find(c=>c.id===id)).filter(Boolean);
-      const resto=doCity.filter(c=>!destIds.includes(c.id));
-      return dest.concat(resto).slice(0,4);
-    }
-    [['Capão da Canoa','cdest-capao',dCapao],['Xangri-lá','cdest-xangri',dXangri],['Osório','cdest-osorio',[]],['Maquiné','cdest-maquine',[]]].forEach(function(par){
-      const grid=document.getElementById(par[1]); if(!grid) return;
-      const lista=pick(par[0], par[2]);
-      if(!lista.length){
-        // se não houver condomínio da cidade, esconde a seção inteira
-        const sec=grid.closest('.cdest-sec'); if(sec) sec.style.display='none';
-        return;
-      }
-      grid.innerHTML=lista.map(c=>buildCondCard(c)).join('');
-      if(window.iniciarCarrosseisCards)iniciarCarrosseisCards();
-    });
-  }).catch(function(e){ console.error('[destaques cidade] ERRO — os cards não vão carregar:', e); });
-}
+// ── CONDOMÍNIOS EM DESTAQUE (home) ──
+// As antigas listas por cidade não fazem mais parte da homepage.
+// Mantemos a função como no-op para compatibilidade com chamadas legadas do fluxo de inicialização.
+function renderDestaquesCidade(){}
 function mfnActive(id){
   document.querySelectorAll('.mob-footer-btn').forEach(b=>b.classList.remove('active'));
   const el=document.getElementById(id);
