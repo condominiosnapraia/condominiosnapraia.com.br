@@ -1,0 +1,38 @@
+/* Proteção de conteúdo: bloqueio casual, sem interferir em campos e navegação. */
+.conteudo-protegido img,
+.conteudo-protegido picture,
+.conteudo-protegido video,
+.conteudo-protegido canvas,
+.conteudo-protegido .pdf-frame,
+.conteudo-protegido .pdf-mobile,
+.conteudo-protegido .map-embed {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.conteudo-protegido .pdf-actions,
+.conteudo-protegido a[href$=".pdf"],
+.conteudo-protegido a[href*=".pdf?"] {
+  display: none !important;
+}
+.conteudo-protegido .pdf-frame::after,
+.conteudo-protegido .pdf-mobile::after,
+.conteudo-protegido .map-embed::after {
+  content: "Portal Meu Litoral · conteúdo protegido";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 5;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(-22deg);
+  color: rgba(255,255,255,.22);
+  font: 700 clamp(16px, 2.4vw, 26px)/1.2 Outfit, sans-serif;
+  letter-spacing: .08em;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0,0,0,.18);
+}
+.conteudo-protegido .map-embed,
+.conteudo-protegido .pdf-frame,
+.conteudo-protegido .pdf-mobile { position: relative; }
+@media print {
+  .conteudo-protegido body { display: none !important; }
+}
