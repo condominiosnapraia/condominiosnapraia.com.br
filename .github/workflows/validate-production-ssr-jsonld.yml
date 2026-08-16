@@ -1,0 +1,90 @@
+name: Validar produção — SSR e JSON-LD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Limite de URLs; use 0 para auditar o sitemap inteiro"
+        required: false
+        default: "0"
+  schedule:
+    - cron: "17 8 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-production-ssr-jsonld
+  cancel-in-progress: true
+
+env:
+  SITE_BASE_URL: https://condominiosnapraia.com.br
+  URL_LIMIT: ${{ github.event.inputs.limit || '0' }}
+
+jobs:
+  validate-production:
+    name: SSR, JSON-LD e sitemap
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Aguardar propagação do Cloudflare Pages
+        if: github.event_name == 'push'
+        run: sleep 90
+
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Instalar dependências gratuitas
+        run: python -m pip install --disable-pip-version-check --no-input requests beautifulsoup4
+
+      - name: Validar sitemaps e canonicals
+        id: sitemap
+        continue-on-error: true
+        run: |
+          python3 scripts/validate_sitemaps_precommit.py \
+            --base-url "$SITE_BASE_URL" \
+            --workers 6 \
+            --timeout 60 \
+            --output sitemap-validation-report.json
+
+      - name: Validar SSR, JSON-LD e privacidade
+        id: ssr
+        continue-on-error: true
+        run: |
+          python3 scripts/validate_property_ssr_jsonld.py \
+            --base-url "$SITE_BASE_URL" \
+            --workers 6 \
+            --timeout 60 \
+            --retries 2 \
+            --limit "$URL_LIMIT" \
+            --output property-ssr-jsonld-report.json
+
+      - name: Publicar relatórios como artefatos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorios-ssr-jsonld-${{ github.run_number }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            sitemap-validation-report.json
+            property-ssr-jsonld-report.json
+
+      - name: Falhar se alguma validação falhou
+        if: always()
+        run: |
+          if [ "${{ steps.sitemap.outcome }}" != "success" ] || [ "${{ steps.ssr.outcome }}" != "success" ]; then
+            echo "Uma ou mais validações falharam. Consulte os artefatos desta execução."
+            exit 1
+          fi
+          echo "Todas as validações de produção foram aprovadas."
