@@ -9478,6 +9478,16 @@ function iaPanelInit(){
 
 // A prévia de IA usa uma Pages Function que exige JWT válido. Reaproveita o
 // refresh token do CRM quando o access token expirou, sem apagar o rascunho.
+function iaForcarLogin(source){
+  if(source) sessionStorage.setItem('cnp_ia_draft_text',source);
+  sessionStorage.removeItem('cnp_crm_token');
+  sessionStorage.removeItem('cnp_crm_refresh');
+  const tela=document.getElementById('login-screen');
+  if(tela) tela.style.display='flex';
+  showLoginView('lv-login');
+  loginAlert('login-warn','Sua sessão expirou. Entre novamente para continuar; o texto do imóvel foi preservado.','');
+  setTimeout(()=>document.getElementById('login-user')?.focus(),100);
+}
 async function iaFetchComSessao(url, options){
   const opts={...(options||{})};
   const baseHeaders={...(opts.headers||{})};
@@ -9526,7 +9536,10 @@ async function iaGerarPreview(){
     const r=await iaFetchComSessao('/ia-imovel',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text:source,context:{condominios:(DB.co||[]).map(c=>({id:c.id,nome:c.nome,cidade:c.cidade})).slice(0,500)}})});
     const data=await r.json();
     if(!r.ok){
-      if(r.status===401 || r.status===403) throw new Error('Sua sessão expirou. O texto foi preservado; entre novamente no CRM e clique em Gerar prévia.');
+      if(r.status===401 || r.status===403){
+        iaForcarLogin(source);
+        return;
+      }
       throw new Error(data.error||'Não foi possível gerar a prévia.');
     }
     iaPreview=data.preview; document.getElementById('ia-preview-card').style.display='block'; document.getElementById('ia-preview-body').innerHTML=iaPreviewHtml(iaPreview); sessionStorage.removeItem('cnp_ia_draft_text'); if(status)status.textContent='Prévia pronta. Revise os dados antes de aprovar.';
