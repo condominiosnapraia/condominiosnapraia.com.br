@@ -95,7 +95,7 @@ footer{background:linear-gradient(160deg,#0c4a6e,#0e7490);color:#dbeef2;margin-t
 
 const HEADER_HTML = `<header class="desk-header">
   <div class="desk-header-inner">
-    <a class="dh-logo" href="/" aria-label="Condomínios na Praia — início"><img src="/img/logo-rodape.png" alt="Meu Litoral - O Portal do Litoral Gaúcho"></a>
+    <a class="dh-logo" href="/" aria-label="Portal Meu Litoral — início"><img src="/img/logo-rodape.png" alt="Meu Litoral - O Portal do Litoral Gaúcho"></a>
     <nav class="dh-nav">
       <a href="/">Início</a>
       <a href="/imoveis">Imóveis</a>
@@ -132,7 +132,7 @@ const FOOTER_HTML = `<footer>
     </div></div>
   </div>
   <div class="ftr-bottom">
-    <span>© 2025 Condomínios na Praia · CRECI-RS 72.386 · Todos os direitos reservados</span>
+    <span>© 2025 Portal Meu Litoral · CRECI-RS 72.386 · Todos os direitos reservados</span>
     <span>Litoral Norte Gaúcho · RS</span>
   </div>
 </footer>
@@ -266,7 +266,7 @@ function paginaListagem(artigos){
   // itemList schema para o Google entender a listagem
   const itemList = {
     "@context":"https://schema.org","@type":"Blog",
-    "name":"Blog | Condomínios na Praia",
+    "name":"Blog | Portal Meu Litoral",
     "url":`${SITE}/blog`,
     "blogPost": artigos.map(a=>({
       "@type":"BlogPosting","headline":a.titulo,
@@ -281,15 +281,15 @@ function paginaListagem(artigos){
 <html lang="pt-BR">
 <head>
 ${HEAD_COMUM}
-<title>Blog | Condomínios na Praia</title>
+<title>Blog | Portal Meu Litoral</title>
 <meta name="description" content="Artigos e novidades sobre imóveis e condomínios no Litoral Norte Gaúcho.">
 <link rel="canonical" href="${SITE}/blog">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Blog | Condomínios na Praia">
+<meta property="og:title" content="Blog | Portal Meu Litoral">
 <meta property="og:description" content="Artigos sobre imóveis no Litoral Norte Gaúcho.">
 <meta property="og:url" content="${SITE}/blog">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Blog | Condomínios na Praia">
+<meta name="twitter:title" content="Blog | Portal Meu Litoral">
 <meta name="twitter:description" content="Artigos e novidades sobre imóveis e condomínios no Litoral Norte Gaúcho.">
 <script type="application/ld+json">${JSON.stringify(itemList)}</script>
 <style>
@@ -341,7 +341,7 @@ function paginaArtigo(a, anterior, proximo){
     "@context":"https://schema.org","@type":"BlogPosting","headline":a.titulo,"url":pageUrl,
     "mainEntityOfPage":{"@type":"WebPage","@id":pageUrl},
     "author":{"@type":"Organization","name":a.autor},
-    "publisher":{"@type":"Organization","name":"Condomínios na Praia",
+    "publisher":{"@type":"Organization","name":"Portal Meu Litoral","alternateName":"Condomínios na Praia",
       "logo":{"@type":"ImageObject","url":SITE+"/img/logo-rodape.png"}}
   };
   if(a.resumo) schema.description=a.resumo;
@@ -362,7 +362,7 @@ function paginaArtigo(a, anterior, proximo){
 <html lang="pt-BR">
 <head>
 ${HEAD_COMUM}
-<title>${esc(a.titulo)} | Condomínios na Praia</title>
+<title>${esc(a.titulo)} | Portal Meu Litoral</title>
 <meta name="description" content="${esc(a.resumo)}">
 <link rel="canonical" href="${pageUrl}">
 <meta property="og:type" content="article">
