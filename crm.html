@@ -5331,9 +5331,21 @@ async function salvarLanc(){
   }catch(e){ toast('Erro ao salvar: '+e.message,'error'); }
 }
 async function dLanc(id){
-  if(!confirm('Excluir este lançamento?')) return;
-  try{ await sb.delete('lancamentos',id); toast('Lançamento excluído','success'); buildLancamentos(); }
-  catch(e){ toast('Erro ao excluir: '+e.message,'error'); }
+  const registro=(_lancCache||[]).find(function(item){ return String(item.id)===String(id); });
+  const nome=registro&&registro.titulo?registro.titulo:'este lançamento';
+  const cidade=registro&&registro.cidade?(' — '+registro.cidade):'';
+  const primeiraConfirmacao=confirm('ATENÇÃO: você está prestes a excluir permanentemente:\n\n'+nome+cidade+'\n\nEsta ação não pode ser desfeita. Deseja continuar?');
+  if(!primeiraConfirmacao) return;
+  const palavra=prompt('Para confirmar a exclusão, digite exatamente EXCLUIR.\n\nSe você clicou por engano, use Cancelar.');
+  if(String(palavra||'').trim().toUpperCase()!=='EXCLUIR'){
+    toast('Exclusão cancelada. Nenhum dado foi alterado.','info');
+    return;
+  }
+  try{
+    await sb.delete('lancamentos',id);
+    toast('Lançamento excluído','success');
+    buildLancamentos();
+  }catch(e){ toast('Erro ao excluir: '+e.message,'error'); }
 }
 
 // Remove lançamentos duplicados do banco (mesma URL), mantendo só o mais recente de cada.
