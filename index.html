@@ -1586,6 +1586,8 @@ function agendarConfigHome(){
       _siteCache.destCond=cfg.destaques_cond||[]; _siteCache.destImov=cfg.destaques_imov||[]; _siteCache.destTerreno=cfg.destaques_terreno||[];
       _siteCache.destCapao=cfg.destaques_capao||[]; _siteCache.destXangri=cfg.destaques_xangri||[];
       _siteCache.siteCfg=cfg.site_config||{}; _siteCache.turismoCfg=cfg.turismo_config||{}; window._fotosSiteMap=cfg.fotos_site||null;
+      // As capas chegam em modo adiado; reaplica as fotos depois que o mapa estiver disponível.
+      try{if(window.ativarFotosCards)window.ativarFotosCards();}catch(e){}
       try{if(_siteCache.siteCfg&&Object.keys(_siteCache.siteCfg).length&&typeof applySiteConfigObj==='function')applySiteConfigObj(_siteCache.siteCfg);}catch(e){}
       try{if(_siteCache.turismoCfg&&_siteCache.turismoCfg.turismo&&typeof applyTurismoConfig==='function')applyTurismoConfig(_siteCache.turismoCfg.turismo);}catch(e){}
       try{buildHomeDestaques();renderDestaquesCidade();}catch(e){}
