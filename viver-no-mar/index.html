@@ -735,7 +735,7 @@ async function carregar(){
     const fotos=(c.fotos_no_site||c.fotos||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));
     const img=fotos.length?('<div class="vv-ccard-img" style="background-image:url('+fotos[0]+')"><span class="vv-ccard-badge">'+cidade+'</span></div>')
       :('<div class="vv-ccard-img">&#127968;<span class="vv-ccard-badge">'+cidade+'</span></div>');
-    const url='/condominio?id='+encodeURIComponent(c.slug||c.id);
+    const url='/condominio/?id='+encodeURIComponent(c.slug||c.id);
     const desc=(c.descricao||'').slice(0,110)+((c.descricao||'').length>110?'...':'');
     return '<a class="vv-ccard" href="'+url+'">'+img+
       '<div class="vv-ccard-body"><div class="vv-ccard-city">'+cidade+'</div>'+

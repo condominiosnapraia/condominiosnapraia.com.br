@@ -3060,7 +3060,7 @@ function resolveCond(all,key){
 window.addEventListener('hashchange',()=>{
   if(_navegando) return; // ignora mudanças causadas pela própria limpeza da URL
   const h=location.hash;
-  if(h.startsWith('#cond/')){ location.replace('/condominio?id='+encodeURIComponent(h.replace('#cond/',''))); }
+  if(h.startsWith('#cond/')){ location.replace('/condominio/?id='+encodeURIComponent(h.replace('#cond/',''))); }
   else if(h.startsWith('#imovel/')){ location.replace('/imovel?id='+encodeURIComponent(h.replace('#imovel/',''))); }
   else if(h==='#turismo'){openTurismo();}
   else if(h==='#imoveis'||h==='#todos-imoveis'){ location.replace('/imoveis'); }
@@ -3170,7 +3170,7 @@ function sfcBuscar(){
   } else {
     // condomínios: se escolheu um no dropdown, abre a página dele direto
     if(sel && window._condSlugMap && window._condSlugMap[sel]){
-      window.location = '/condominio?id=' + encodeURIComponent(window._condSlugMap[sel]);
+      window.location = '/condominio/?id=' + encodeURIComponent(window._condSlugMap[sel]);
       return;
     }
     window.location = '/condominios';
@@ -4077,7 +4077,7 @@ function buildCondCard(c){
     imgH=`<div class="ci-grad ${GI[loc]||'g-ot'}">${GE[loc]||'🏠'}</div>`;
   }
   const imd=(c.imoveis||[]).filter(i=>i.status==='Disponível');
-  const condUrl=c.slug?('/condominio?id='+encodeURIComponent(c.slug)):('/condominio?id='+encodeURIComponent(c.id));
+  const condUrl=c.slug?('/condominio/?id='+encodeURIComponent(c.slug)):('/condominio/?id='+encodeURIComponent(c.id));
   return`<a class="ccard vis" href="${condUrl}" style="text-decoration:none;color:inherit;display:block">
     <div class="ci">${imgH}<div class="cbadge">${loc}</div>${imd.length?`<div class="cibadge">${imd.length} imóvel${imd.length>1?'is':''}</div>`:''}</div>
     <div class="cbody">
@@ -4887,7 +4887,7 @@ async function renderContempladasCards(targetId){
   try{
     await fetchSiteData();
     const h=location.hash;
-    if(h.startsWith('#cond/')){ location.replace('/condominio?id='+encodeURIComponent(h.replace('#cond/',''))); return; }
+    if(h.startsWith('#cond/')){ location.replace('/condominio/?id='+encodeURIComponent(h.replace('#cond/',''))); return; }
     if(h.startsWith('#imovel/')){ location.replace('/imovel?id='+encodeURIComponent(h.replace('#imovel/',''))); return; }
     if(h==='#turismo'){openTurismo();return;}
     // rotas antigas (hash) → agora existem páginas dedicadas: redireciona
