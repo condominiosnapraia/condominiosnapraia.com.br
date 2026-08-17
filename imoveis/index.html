@@ -353,6 +353,8 @@ body{padding-top:56px}
 /* ── botão/ação de busca cor de praia (turquesa) ── */
 .il-clear{background:linear-gradient(135deg,var(--ol),var(--om)) !important;border:none !important;color:#fff !important;font-weight:700 !important;font-size:13px !important;cursor:pointer;text-decoration:none !important;align-self:flex-end;padding:11px 22px !important;border-radius:100px !important;box-shadow:0 6px 18px rgba(31,181,196,.35);transition:transform .2s,box-shadow .2s}
 .il-clear:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(31,181,196,.45)}
+.il-curated-note{display:flex;align-items:center;gap:10px;margin:-8px 0 22px;padding:12px 15px;border:1px solid #d9a83f;border-radius:12px;background:#fffaf0;color:#0d3b54;font-size:13px;line-height:1.45}.il-curated-note[hidden]{display:none!important}.il-curated-note strong{color:#8a641e}.il-curated-note button{margin-left:auto;border:0;background:transparent;color:#0e7490;text-decoration:underline;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}@media(max-width:560px){.il-curated-note{display:block}.il-curated-note button{display:block;margin:8px 0 0}}
+
 </style>
 <style>
 .rf-hero{background:linear-gradient(150deg,#0c4a6e,#0891b2);color:#fff;padding:56px 22px 44px;text-align:center;border-radius:0 0 30px 30px;margin-bottom:36px}
@@ -625,6 +627,7 @@ details[open] .dec-faq-q:after{content:"−"}
       <button type="button" id="btn-mapa" class="il-vt" onclick="setView('mapa')" aria-pressed="false">🗺️ Mapa</button>
     </div>
   </div>
+  <div class="il-curated-note" id="il-curated-note" hidden role="status"><span aria-hidden="true">◆</span><span><strong>Seleção de mansões:</strong> casas e sobrados em condomínio com valor a partir de R$ 5 milhões.</span><button type="button" onclick="limpar()">Remover seleção</button></div>
   <div class="il-layout" id="il-layout">
     <div class="il-grid" id="il-grid">
       <div class="il-loading"><div class="sp"></div>Carregando imóveis...</div>
@@ -725,7 +728,7 @@ const CAT_IMOV_SELECT='id,slug,codigo,titulo,cond_id,fora_condominio,status,publ
 async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
 function brl(v){if(v==null||v==='')return 'Sob consulta';const n=Number(v);if(isNaN(n))return String(v);return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});}
 function fotos(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
-let TODOS=[], CONDS={};
+let TODOS=[], CONDS={}, MANSOES_MODE=false;
 
 async function carregar(){
   const conds=await sbGet('condominios','?select=id,nome,cidade,latitude,longitude');
@@ -745,10 +748,14 @@ async function carregar(){
   ['Casa','Sobrado','Lote','Terreno','Apartamento'].forEach(t=>ft.innerHTML+='<option value="'+t+'">'+t+'</option>');
   // ler query params (?cidade=&tipo=&fora=1&cond=em)
   const q=new URLSearchParams(location.search);
+  MANSOES_MODE=q.get('mansoes')==='1';
+  const curated=document.getElementById('il-curated-note');
+  if(curated){curated.hidden=!MANSOES_MODE;curated.style.display=MANSOES_MODE?'':'none';}
   if(q.get('cidade'))fc.value=q.get('cidade');
   if(q.get('tipo'))ft.value=q.get('tipo');
   const fcond=document.getElementById('f-cond');
-  if(q.get('fora')==='1'||q.get('cond')==='fora')fcond.value='fora';
+  if(MANSOES_MODE)fcond.value='em';
+  else if(q.get('fora')==='1'||q.get('cond')==='fora')fcond.value='fora';
   else if(q.get('cond')==='em')fcond.value='em';
   aplicar();
 }
@@ -763,6 +770,10 @@ function aplicar(){
   const lista=TODOS.filter(i=>{
     const icid=(CONDS[i.cond_id]||{}).cidade||i.cidade||'';
     if(cid&&icid!==cid)return false;
+    if(MANSOES_MODE){
+      if(!['Casa','Casa Térrea','Sobrado'].includes(i.tipo))return false;
+      if(Number(i.preco||0)<5000000)return false;
+    }
     // em / fora de condomínio
     if(cond==='fora' && !isFora(i)) return false;
     if(cond==='em'   &&  isFora(i)) return false;
@@ -779,7 +790,7 @@ function aplicar(){
   });
   render(lista);
 }
-function limpar(){['f-cidade','f-cond','f-tipo','f-quartos','f-preco'].forEach(id=>document.getElementById(id).value='');aplicar();}
+function limpar(){MANSOES_MODE=false;const curated=document.getElementById('il-curated-note');if(curated){curated.hidden=true;curated.style.display='none';}try{history.replaceState({},'',location.pathname);}catch(e){}['f-cidade','f-cond','f-tipo','f-quartos','f-preco'].forEach(id=>document.getElementById(id).value='');aplicar();}
 
 // Miniatura otimizada via transformação de imagem do Supabase (plano pago).
 // Aponta direto para o endpoint render/image (redimensiona + WebP automático).
