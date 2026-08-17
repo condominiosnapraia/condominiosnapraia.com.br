@@ -633,7 +633,6 @@ details[open] .dec-faq-q:after{content:"−"}
 <a href="/monaco-grand-marina-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Mônaco Grand Marina</a>
 <a href="/nautilus-marina-clube-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Nautilus Marina Clube</a>
 <a href="/nova-xangrila-bairro-planejado-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Nova Xangri´Lá - Bairro Planejado</a>
-<a href="/ocean-side-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Ocean Side</a>
 <a href="/one-atlantida-houses-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">One Atlântida Houses</a>
 <a href="/origem-natureza-habitada-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Origem Natureza Habitada Xangri La</a>
 <a href="/oxy-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Oxy</a>
@@ -642,7 +641,6 @@ details[open] .dec-faq-q:after{content:"−"}
 <a href="/playa-vista-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Playa Vista</a>
 <a href="/pleno-quatro-estacoes-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Pleno - Quatro Estações</a>
 <a href="/porto-coronado-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Porto Coronado</a>
-<a href="/pulse-resort-experience-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Pulse Resort Experience</a>
 <a href="/quintas-do-lago-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Quintas do Lago</a>
 <a href="/raro-arquitetura-brasileira-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Raro Arquitetura Brasileira</a>
 <a href="/riviera-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Riviera</a>
@@ -674,6 +672,7 @@ details[open] .dec-faq-q:after{content:"−"}
 <a href="/dubai-resort-residencial-capao-da-canoa/" style="font-size:13px;color:#0e7490;text-decoration:none">Dubai Resort Residencial</a>
 <a href="/enseada-lagoa-dos-quadros-capao-da-canoa/" style="font-size:13px;color:#0e7490;text-decoration:none">Enseada Lagoa Dos Quadros Capao Da Canoa</a>
 <a href="/harmony-capao-da-canoa/" style="font-size:13px;color:#0e7490;text-decoration:none">Harmony</a>
+<a href="/pulse-resort-experience-xangri-la/" style="font-size:13px;color:#0e7490;text-decoration:none">Pulse Resort Experience</a>
 <a href="/mirador-playa-arenas-capao-da-canoa/" style="font-size:13px;color:#0e7490;text-decoration:none">Mirador Playa Arenas</a>
 <a href="/murano-capao-da-canoa/" style="font-size:13px;color:#0e7490;text-decoration:none">Murano</a>
 <a href="/occhi-marina-club-capao-da-canoa/" style="font-size:13px;color:#0e7490;text-decoration:none">Occhi Marina Club</a>
@@ -780,15 +779,18 @@ function fotos(a){return (a||[]).map(fotoPublica).filter(Boolean);}
 const PERFIL_LBL={mar:'Beira-mar',lagoa:'Beira da lagoa',cidade:'Cidade'};
 function norm(v){return String(v==null?'':v).normalize('NFD').replace(/\p{Diacritic}/gu,'').trim().toLowerCase();}
 function selectLoose(id,value){var el=document.getElementById(id);if(!el||!value)return;var want=norm(value);var opt=Array.from(el.options).find(function(o){return norm(o.value)===want;});if(opt)el.value=opt.value;}
+const PUBLIC_EXCLUDED_CONDO_SLUGS=new Set(['ocean-side-xangri-la','tirol']);
+function publicCondoSlug(c){return String(c&& (c.slug||c.id) || '').trim().toLowerCase();}
+function publicCondoCity(c){return publicCondoSlug(c)==='pulse-resort-experience-xangri-la'?'Capão da Canoa':(c.cidade||c.localizacao||'');}
 const STATIC_CONDO_SLUGS=new Set(['aura-garden-place-xangri-la','cyano-private-resort-osorio','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','condominio-maquine-la-marina','condominio-xangri-la-villas-resort','sunset-xangri-la','marina-de-xangri-la','marina-park','xangri-la-marina']);
 let TODOS=[];
 
 async function carregar(){
   var conds=await sbGet('condominios','?ativo=eq.true&select='+encodeURIComponent(CAT_COND_SELECT)+'&order=nome.asc&limit=200');
-  TODOS=Array.isArray(conds)?conds:[];
+  TODOS=(Array.isArray(conds)?conds:[]).filter(function(c){return !PUBLIC_EXCLUDED_CONDO_SLUGS.has(publicCondoSlug(c));});
   var cidades=new Set(), tipos=new Set();
   TODOS.forEach(function(c){
-    var cid=c.cidade||c.localizacao; if(cid)cidades.add(cid);
+    var cid=publicCondoCity(c); if(cid)cidades.add(cid);
     if(c.tipo)tipos.add(c.tipo);
   });
   var fc=document.getElementById('f-cidade'); Array.from(cidades).sort().forEach(function(c){fc.innerHTML+='<option value="'+esc(c)+'">'+esc(c)+'</option>';});
@@ -821,7 +823,7 @@ function aplicar(){
   syncQuery();
   var lista=TODOS.filter(function(c){
     if(nome&&(c.nome||'').toLowerCase().indexOf(nome)<0)return false;
-    if(cid&&norm(c.cidade||c.localizacao)!==norm(cid))return false;
+    if(cid&&norm(publicCondoCity(c))!==norm(cid))return false;
     if(perf&&c.perfil!==perf)return false;
     if(tp&&c.tipo!==tp)return false;
     return true;
@@ -836,7 +838,7 @@ function render(lista){
   cnt.innerHTML='<b>'+lista.length+'</b> '+(lista.length===1?'condominio encontrado':'condominios encontrados');
   if(!lista.length){grid.innerHTML='<div class="cl-empty"><div class="em">&#128269;</div><p>Nenhum condominio encontrado com esses filtros.<br>Tente ampliar a busca ou fale conosco.</p></div>';return;}
   grid.innerHTML=lista.map(function(c){
-    var cidade=c.cidade||c.localizacao||'';
+    var cidade=publicCondoCity(c);
     var f=fotos(c.fotos_no_site||c.fotos);
     var img=f.length?'<img src="'+esc(f[0])+'" alt="'+esc(c.nome||'Condomínio')+'" loading="lazy">':'&#127963;';
     var perfilBadge=c.perfil&&PERFIL_LBL[c.perfil]?'<span class="cl-badge perfil">'+esc(PERFIL_LBL[c.perfil])+'</span>':'';

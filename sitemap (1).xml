@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://condominiosnapraia.com.br/</loc>
-    <lastmod>2026-07-25</lastmod>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
     <loc>https://condominiosnapraia.com.br/contemplado-imoveis</loc>
     <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -321,11 +316,6 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/sunset-xangri-la</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
     <loc>https://condominiosnapraia.com.br/capao-ilhas-resort-capao-da-canoa</loc>
     <lastmod>2026-07-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -511,7 +501,6 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://condominiosnapraia.com.br/ocean-side-xangri-la</loc>
     <lastmod>2026-07-12</lastmod>
     <changefreq>weekly</changefreq>
   </url>

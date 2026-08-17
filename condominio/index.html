@@ -1135,6 +1135,11 @@ let galFotos = [];
 let galTouchStartX = 0;
 
 async function init() {
+  const EXCLUDED_PUBLIC_SLUGS = new Set(['ocean-side-xangri-la', 'tirol']);
+  if (EXCLUDED_PUBLIC_SLUGS.has(String(condId).toLowerCase()) && location.pathname === '/condominio/') {
+    location.replace('/condominios/');
+    return;
+  }
   const STATIC_REDIRECTS = {
     'condominio-maquine-la-marina': '/condominio-maquine-la-marina/',
     'condominio-xangri-la-villas-resort': '/condominio-xangri-la-villas-resort/',
