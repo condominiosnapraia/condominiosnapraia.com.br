@@ -1135,6 +1135,15 @@ let galFotos = [];
 let galTouchStartX = 0;
 
 async function init() {
+  const STATIC_REDIRECTS = {
+    'condominio-maquine-la-marina': '/condominio-maquine-la-marina/',
+    'condominio-xangri-la-villas-resort': '/condominio-xangri-la-villas-resort/',
+    'sunset-xangri-la': '/sunset-xangri-la/'
+  };
+  if (STATIC_REDIRECTS[condId] && location.pathname === '/condominio/') {
+    location.replace(STATIC_REDIRECTS[condId]);
+    return;
+  }
   const all = await getData();
   // aceita id por campo 'id' ou 'slug' (mais amigável para URLs)
   cond = all.find(c => String(c.id) === String(condId) || c.slug === condId);
