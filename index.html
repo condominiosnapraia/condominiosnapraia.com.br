@@ -3638,11 +3638,19 @@ async function renderContempladasCards(targetId){
     (document.getElementById('pt-c')||{style:{},classList:{add(){},remove(){}}}).classList.add('on');
     (document.getElementById('pt-i')||{style:{},classList:{add(){},remove(){}}}).classList.remove('on');
     const _ptt=document.getElementById('pt-t'); if(_ptt) _ptt.classList.remove('on');
-    buildHomeDestaques();
-    rCond(); buildCities(); updateHeroStats(); renderDestaquesCidade();
-    if(typeof sfcPreencherLista==="function") sfcPreencherLista();
-    if(typeof initTodosCarrosseis==="function") initTodosCarrosseis();
-    deferHomeBelowFold();
+    const renderHomeBelowFold=()=>{
+      buildHomeDestaques();
+      rCond(); buildCities(); updateHeroStats(); renderDestaquesCidade();
+      if(typeof sfcPreencherLista==='function') sfcPreencherLista();
+      if(typeof initTodosCarrosseis==='function') initTodosCarrosseis();
+      deferHomeBelowFold();
+    };
+    // A primeira tela já está no HTML; monte os grids pesados no primeiro período ocioso.
+    if('requestIdleCallback' in window){
+      requestIdleCallback(renderHomeBelowFold,{timeout:900});
+    }else{
+      setTimeout(renderHomeBelowFold,0);
+    }
   }catch(e){
     console.error('Init error:', e);
     (document.getElementById('c-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML='<div class="empty"><div class="empty-ico">⚠️</div><p>Erro ao carregar dados. Verifique a conexão.</p></div>';
@@ -3886,7 +3894,32 @@ async function renderContempladasCards(targetId){
 </div>
 </nav>
 <div data-origem="home" data-sub="Deixe seu contato e receba uma seleção personalizada de imóveis e lançamentos — sem compromisso." data-tabela="leads_campanha" data-titulo="Encontre seu imóvel no Litoral Norte" id="lead-card"></div>
-<script defer="" src="/js/lead-card.js"></script>
+<script>
+(function(){
+  var mount=document.getElementById('lead-card');
+  if(!mount) return;
+  var loaded=false;
+  function loadLeadCard(){
+    if(loaded) return;
+    loaded=true;
+    var s=document.createElement('script');
+    s.src='/js/lead-card.js';
+    s.async=true;
+    document.body.appendChild(s);
+  }
+  if('IntersectionObserver' in window){
+    var observer=new IntersectionObserver(function(entries){
+      if(entries.some(function(entry){return entry.isIntersecting;})){
+        observer.disconnect();
+        loadLeadCard();
+      }
+    },{rootMargin:'700px 0px'});
+    observer.observe(mount);
+  }else{
+    setTimeout(loadLeadCard,2500);
+  }
+})();
+</script>
 <!-- ══ PESQUISAS MAIS POPULARES (links rápidos p/ SEO) ══ -->
 <section class="popsearch">
 <div class="popsearch-inner">
