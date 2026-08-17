@@ -1080,49 +1080,76 @@ function dynPublicParagraphs(value) {
 
 const DYN_COND_SELECT = [
   'id','slug','nome','cidade','bairro','endereco','descricao','padrao','tipo',
-  'amenidades','fotos','fotos_no_site','ano','area_total_m2',
-  'lotes','incorporadora','diferenciais','historia_condominio',
-  'infraestrutura_detalhada','localizacao_detalhada','mercado_imobiliario',
-  'seo_data','video_youtube','latitude','longitude'
+  'amenidades','fotos_no_site','ano','area_total_m2','lotes','incorporadora',
+  'diferenciais','historia_condominio','infraestrutura_detalhada',
+  'localizacao_detalhada','mercado_imobiliario','seo_data','video_youtube',
+  'latitude','longitude'
 ].join(',');
-
+const DYN_COND_LEGACY_PHOTO_SELECT = 'id,fotos';
+const DYN_IMOV_COUNT_SELECT = 'id,cond_id,status,publicar';
 const DYN_IMOV_SELECT = [
   'id','slug','codigo','titulo','cond_id','status','publicar','tipo','preco',
   'quartos','suites','banheiros','vagas','area','area_privativa','area_construida','cidade_end',
-  'descricao','diferenciais','fotos','fotos_no_site','financiamento','permuta',
-  'iptu','cond_taxa','seo_data'
+  'descricao','diferenciais','fotos_no_site','financiamento','permuta','iptu','cond_taxa','seo_data'
 ].join(',');
 
+async function fetchCondImoveis(condId, HDR) {
+  if (!condId) return [];
+  try {
+    const response = await fetch(
+      SUPABASE_URL + '/rest/v1/imoveis?cond_id=eq.' + encodeURIComponent(condId) +
+      '&status=neq.Vendido&publicar=eq.true&select=' + encodeURIComponent(DYN_IMOV_SELECT) +
+      '&limit=60&order=created_at.desc', HDR
+    );
+    const rows = response.ok ? await response.json() : [];
+    return Array.isArray(rows) ? rows : [];
+  } catch (_) { return []; }
+}
 
-// Busca os condomínios: 1º tenta o Supabase (indexável), com fallback ao localStorage.
+// O primeiro carregamento traz apenas o condomínio e um contador mínimo de imóveis.
+// A selecção completa dos cards só acontece quando a secção de imóveis se aproxima.
 async function getData() {
   const HDR = { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } };
+  const ref = String(new URLSearchParams(location.search).get('id') || '').trim();
   try {
-    // busca os condomínios E os imóveis em paralelo
-    const [rc, ri] = await Promise.all([
-      fetch(SUPABASE_URL + '/rest/v1/condominios?select=' + encodeURIComponent(DYN_COND_SELECT), HDR),
-      fetch(SUPABASE_URL + '/rest/v1/imoveis?select=' + encodeURIComponent(DYN_IMOV_SELECT) + '&status=neq.Vendido&publicar=eq.true&limit=500', HDR)
-    ]);
+    if (ref) {
+      const encoded = encodeURIComponent(ref);
+      const response = await fetch(
+        SUPABASE_URL + '/rest/v1/condominios?or=(id.eq.' + encoded + ',slug.eq.' + encoded +
+        ')&select=' + encodeURIComponent(DYN_COND_SELECT) + '&limit=1', HDR
+      );
+      let rows = response.ok ? await response.json() : [];
+      if (!Array.isArray(rows)) rows = [];
+      const condo = rows[0];
+      if (condo) {
+        if ((!Array.isArray(condo.fotos_no_site) || !condo.fotos_no_site.length) && condo.id) {
+          try {
+            const legacy = await fetch(
+              SUPABASE_URL + '/rest/v1/condominios?id=eq.' + encodeURIComponent(condo.id) +
+              '&select=' + encodeURIComponent(DYN_COND_LEGACY_PHOTO_SELECT) + '&limit=1', HDR
+            );
+            const legacyRows = legacy.ok ? await legacy.json() : [];
+            if (legacyRows[0] && legacyRows[0].fotos) {
+              let photos = legacyRows[0].fotos;
+              if (typeof photos === 'string') { try { photos = JSON.parse(photos); } catch (_) { photos = [photos]; } }
+              condo.fotos_no_site = Array.isArray(photos) ? photos : [photos];
+            }
+          } catch (_) {}
+        }
+        try {
+          const countResponse = await fetch(
+            SUPABASE_URL + '/rest/v1/imoveis?cond_id=eq.' + encodeURIComponent(condo.id) +
+            '&status=neq.Vendido&publicar=eq.true&select=' + encodeURIComponent(DYN_IMOV_COUNT_SELECT) +
+            '&limit=60', HDR
+          );
+          const countRows = countResponse.ok ? await countResponse.json() : [];
+          condo.imoveis = Array.isArray(countRows) ? countRows : [];
+        } catch (_) { condo.imoveis = []; }
+        return [condo];
+      }
+    }
+  } catch (_) { /* segue para o fallback */ }
 
-    let condos = rc.ok ? await rc.json() : [];
-    let imoveis = ri.ok ? await ri.json() : [];
-    if (!Array.isArray(condos)) condos = [];
-    if (!Array.isArray(imoveis)) imoveis = [];
-
-    // anexa os imóveis de cada condomínio (só os publicados)
-    const porCond = {};
-    imoveis.forEach(im => {
-      if (im.publicar === false) return;           // não publicado: ignora
-      const cid = im.cond_id;
-      if (!cid) return;                            // sem condomínio: ignora
-      (porCond[cid] = porCond[cid] || []).push(im);
-    });
-    condos.forEach(c => { c.imoveis = porCond[c.id] || []; });
-
-    if (condos.length) return condos;
-  } catch (e) { /* segue para o fallback */ }
-
-  // fallback: localStorage
   try { return JSON.parse(localStorage.getItem('cnp_condominios') || '[]'); } catch { return []; }
 }
 
@@ -1421,8 +1448,16 @@ async function init() {
   buildGallery(condFotosPublicas());
   initCondGalleryTouch();
 
-  // Imoveis
-  buildImoveis(cond.imoveis || []);
+  // O contador usa a consulta mínima inicial; os cards e fotos continuam adiados.
+  const initialDisp = Array.isArray(cond.imoveis)
+    ? cond.imoveis.filter(i => i.publicar !== false && (i.status === 'Disponível' || i.status === 'Negociando')).length
+    : 0;
+  const initialNum = document.getElementById('imoveis-count-num');
+  const initialSub = document.getElementById('imoveis-count-sub');
+  if (initialNum) initialNum.textContent = initialDisp;
+  if (initialSub) initialSub.textContent = initialDisp === 0 ? 'Nenhum imóvel disponível no momento' : `${initialDisp} imóvel${initialDisp === 1 ? '' : 'is'} disponível${initialDisp === 1 ? '' : 'is'} para venda`;
+  // Os cards só são consultados e montados quando a secção se aproxima da viewport.
+  scheduleCondImoveis(cond.id);
 
 }
 
@@ -1637,6 +1672,30 @@ function urlPublicaImovelCond(im) {
   const suffix = slugifyPublicCond(im.codigo || '');
   const slug = suffix && !base.endsWith(suffix) ? base + '-' + suffix : base;
   return '/imovel/' + encodeURIComponent(slug || im.id) + '/';
+}
+
+function scheduleCondImoveis(condId) {
+  const section = document.getElementById('imoveis-section');
+  if (!section || !condId) return;
+  let started = false;
+  const run = async () => {
+    if (started) return;
+    started = true;
+    const HDR = { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } };
+    const imoveis = await fetchCondImoveis(condId, HDR);
+    buildImoveis(imoveis);
+  };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        io.disconnect();
+        run();
+      }
+    }, { rootMargin: '450px 0px' });
+    io.observe(section);
+  } else {
+    setTimeout(run, 1800);
+  }
 }
 
 function buildImoveis(imoveis) {
