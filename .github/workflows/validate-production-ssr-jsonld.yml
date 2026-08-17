@@ -33,7 +33,7 @@ jobs:
     steps:
       - name: Aguardar propagação do Cloudflare Pages
         if: github.event_name == 'push'
-        run: sleep 90
+        run: sleep 240
 
       - name: Baixar o repositório
         uses: actions/checkout@v4

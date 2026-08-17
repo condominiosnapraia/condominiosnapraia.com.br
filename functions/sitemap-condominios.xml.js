@@ -5,7 +5,14 @@
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const SITE = 'https://condominiosnapraia.com.br';
-const EXCLUDED_PUBLIC_SLUGS = new Set(['ocean-side-xangri-la', 'tirol', 'sunset-xangri-la']);
+const EXCLUDED_PUBLIC_SLUGS = new Set([
+    'ocean-side-xangri-la',
+    'tirol',
+    'sunset-xangri-la',
+    // Páginas estáticas canónicas já publicadas no sitemap principal.
+    'vivendas-da-marina-osorio',
+    'prime-beach-capao-da-canoa'
+  ]);
 
 function esc(s) {
   return String(s || '')
