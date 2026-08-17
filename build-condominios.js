@@ -110,6 +110,16 @@ footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60
 .ftr-links-grid{grid-template-columns:1fr 1fr;gap:2px 12px}
 footer{margin-top:36px;padding-top:24px;border-top:1px solid #e8e8e8}
 .ftr-wave{height:36px}
+/* Onda de transição do rodapé — componente único e contido */
+footer.page-footer,
+footer:not(.cond-footer){position:relative;isolation:isolate;overflow:visible}
+footer.page-footer>.ftr-wave,
+footer:not(.cond-footer)>.ftr-wave{position:absolute;z-index:0;top:0;left:0;right:0;height:56px;line-height:0;transform:translateY(-99%);pointer-events:none;overflow:hidden}
+footer.page-footer>.ftr-wave svg,
+footer:not(.cond-footer)>.ftr-wave svg{display:block;width:100%;height:100%}
+footer.page-footer>.ftr-main,footer.page-footer>.ftr-bottom,
+footer:not(.cond-footer)>.ftr-main,footer:not(.cond-footer)>.ftr-bottom{position:relative;z-index:1}
+@media(max-width:768px){footer.page-footer>.ftr-wave,footer:not(.cond-footer)>.ftr-wave{height:34px}}
 `;
 
 const HEADER_COMPLETO = `<header class="desk-header" id="desk-header">
