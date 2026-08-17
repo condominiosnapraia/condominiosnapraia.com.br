@@ -1466,6 +1466,18 @@ function fotoTag(raw, alt, options = {}) {
   return `<img class="${escapeAttr(className)}" src="${escapeAttr(src)}"${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority} alt="${escapeAttr(alt)}">`;
 }
 
+const HOME_COND_SELECT_MIN = [
+  'id','slug','nome','cidade','descricao','amenidades','fotos_no_site','ativo'
+].join(',');
+
+const HOME_IMOV_SELECT_MIN = [
+  'id','slug','codigo','titulo','cond_id','fora_condominio','status','publicar',
+  'tipo','preco','quartos','suites','banheiros','vagas','area','area_privativa',
+  'area_construida','terreno','cidade_end','bairro_end','fotos_no_site'
+].join(',');
+
+// A seleção completa fica reservada para hashes legados de detalhe, que ainda usam
+// localização, metadados e campos de infraestrutura no mesmo documento.
 const HOME_COND_SELECT = [
   'id','slug','nome','cidade','bairro','descricao','padrao','tipo','amenidades',
   'fotos','fotos_no_site','ativo','latitude','longitude','area_total_m2','lotes',
@@ -1523,12 +1535,31 @@ async function fetchSiteData(){
   const now = Date.now();
   if(_siteCache && (now - _siteCacheTs) < SITE_CACHE_TTL) return _siteCache;
   try{
-    // OTIMIZADO: 3 requisições em vez de 8 (todas as configs vêm juntas)
-    const CHAVES = ['destaques_cond','destaques_imov','destaques_terreno','destaques_capao','destaques_xangri','site_config','turismo_config','fotos_site'];
-    // TUDO em paralelo numa única leva (o navegador dispara todas juntas)
+    // A homepage usa uma seleção mínima; hashes de detalhe mantêm compatibilidade
+    // com o conjunto completo de metadados e infraestrutura.
+    const hashLegado = /^#(cond|imovel)\//.test(location.hash||'');
+    const condSelect = hashLegado ? HOME_COND_SELECT : HOME_COND_SELECT_MIN;
+    const imovSelect = hashLegado ? HOME_IMOV_SELECT : HOME_IMOV_SELECT_MIN;
+    const [condominiosRaw, imoveisRaw] = await Promise.all([
+      sbSite.get('condominios', `?ativo=eq.true&select=${encodeURIComponent(condSelect)}&order=nome.asc`),
+      sbSite.get('imoveis', `?status=eq.Disponível&publicar=eq.true&select=${encodeURIComponent(imovSelect)}&order=created_at.asc`)
+    ]);
+    // Registros antigos que ainda não têm fotos_no_site recebem apenas o campo
+    // legado em uma segunda consulta enxuta; no cadastro atual essa leva é zero.
+    async function hidratarFotosLegadas(rows, table){
+      if(hashLegado || !Array.isArray(rows) || !rows.length) return rows;
+      const ids=rows.filter(row=>!row.fotos_no_site && row.id).map(row=>String(row.id));
+      if(!ids.length) return rows;
+      try{
+        const fallback=await sbSite.get(table, `?id=in.(${ids.join(',')})&select=id,fotos`);
+        const mapa={};
+        (Array.isArray(fallback)?fallback:[]).forEach(row=>{mapa[row.id]=row.fotos;});
+        return rows.map(row=>row.fotos_no_site?row:{...row,fotos_no_site:mapa[row.id]||null});
+      }catch(_){ return rows; }
+    }
     const [condominios, imoveis] = await Promise.all([
-      sbSite.get('condominios', `?ativo=eq.true&select=${encodeURIComponent(HOME_COND_SELECT)}&order=nome.asc`),
-      sbSite.get('imoveis', `?status=eq.Disponível&publicar=eq.true&select=${encodeURIComponent(HOME_IMOV_SELECT)}&order=created_at.asc`)
+      hidratarFotosLegadas(condominiosRaw,'condominios'),
+      hidratarFotosLegadas(imoveisRaw,'imoveis')
     ]);
     const cfgsRaw = [];
     const carrosselFotos = [];
