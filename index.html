@@ -433,6 +433,11 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #guias-decisao.sec-onda::before{--wave-from:#fff}
 #sec-blog-preview{background:#fff!important}
 #sec-blog-preview.sec-onda::before{--wave-from:#faf6ef}
+#sec-terrenos-fora .igrid .empty{max-width:560px;margin:0 auto;padding:30px 24px;border:1px dashed rgba(31,181,196,.38);border-radius:18px;background:rgba(255,255,255,.72);color:var(--tm,#6c7d84);text-align:center}
+#sec-terrenos-fora .igrid .empty .empty-ico{font-size:30px;margin-bottom:10px}
+#decisao-grid>.guia-card:last-child{grid-column:2 / span 1}
+#sec-blog-preview{overflow:hidden!important}
+@media(max-width:768px){#decisao-grid>.guia-card:last-child{grid-column:auto}}
 @media(max-width:768px){
   .sec-onda{padding-top:48px!important}
   .sec-onda::before{top:0!important;height:48px!important}
@@ -1017,13 +1022,13 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <p class="eyebrow">Notícias &amp; Conteúdo</p>
 <h2 class="sectit sectit-stacked"><span class="sectit-main">Últimas</span> <span class="sectit-sub">Do blog</span></h2>
 </div>
-<a class="dest-ver-btn" href="#" onclick="event.preventDefault();openBlog()">Ver mais notícias →</a>
+<a class="dest-ver-btn" href="/blog/" onclick="event.preventDefault();openBlog()">Ver mais notícias →</a>
 </div>
 <div class="blog-preview-grid is-carrossel" id="home-blog-grid">
 <div class="empty"><div class="empty-ico">📰</div><p>Carregando artigos...</p></div>
 </div>
 <div class="dest-ver-all">
-<a class="dest-btn-all dest-btn-alt" href="#" onclick="event.preventDefault();openBlog()">
+<a class="dest-btn-all dest-btn-alt" href="/blog/" onclick="event.preventDefault();openBlog()">
           Ver mais notícias
           <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
 </a>
@@ -2996,7 +3001,7 @@ function buildHomeDestaques(){
     renderHomeGrid('home-apartamento-grid', apartamentos.slice(0,8), '🏢', 'Nenhum apartamento publicado disponível no momento');
     renderHomeGrid('home-fora-grid', casasFora.slice(0,8), '🏡', 'Cadastre casas e sobrados fora de condomínio no CRM para exibi-los aqui');
     renderHomeGrid('home-terreno-grid', pickDestaques(terrenosCondominio, destTerreno, 6), '🌳', 'Cadastre terrenos em condomínio no CRM para exibi-los aqui');
-    renderHomeGrid('home-terreno-fora-grid', terrenosFora.slice(0,6), '📐', 'Cadastre terrenos fora de condomínio no CRM para exibi-los aqui');
+    renderHomeGrid('home-terreno-fora-grid', terrenosFora.slice(0,6), '📐', 'Ainda não há terrenos fora de condomínio publicados.');
 
     // Trigger fade animations
     if(typeof obs === 'function') obs();
