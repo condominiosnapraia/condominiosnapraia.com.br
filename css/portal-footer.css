@@ -193,3 +193,44 @@ footer .ftr-wpp:hover {
   box-shadow: 0 6px 16px rgba(13,75,98,.14);
   transform: translateY(-1px);
 }
+
+
+/* Onda de transição do rodapé — componente único e contido */
+footer.page-footer,
+footer:not(.cond-footer) {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+}
+footer.page-footer > .ftr-wave,
+footer:not(.cond-footer) > .ftr-wave {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  line-height: 0;
+  transform: translateY(-99%);
+  pointer-events: none;
+  overflow: hidden;
+}
+footer.page-footer > .ftr-wave svg,
+footer:not(.cond-footer) > .ftr-wave svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+footer.page-footer > .ftr-main,
+footer.page-footer > .ftr-bottom,
+footer:not(.cond-footer) > .ftr-main,
+footer:not(.cond-footer) > .ftr-bottom {
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  footer.page-footer > .ftr-wave,
+  footer:not(.cond-footer) > .ftr-wave {
+    height: 34px;
+  }
+}
