@@ -109,3 +109,21 @@ A seção `sec-blog-preview` está populada com artigos reais, títulos, categor
 As capas dos artigos publicadas são imagens de marca/fallback em alguns cards, não necessariamente fotografias editoriais. Não há imagem quebrada visível no blog.
 
 Evidência: `/home/ubuntu/screenshots/condominiosnapraia_b_2026-08-17_15-23-46_9921.webp`.
+
+## Validação pós-PR #44
+
+A produção entregou os marcadores do PR #44 no HTML. A captura mobile carregou corretamente a hero, a marca Meu Litoral e o início da navegação rápida em 390 px. A captura desktop feita diretamente com a âncora `#guias-decisao` ficou branca, portanto não foi considerada evidência visual válida; a âncora não deve ser usada para concluir o teste desktop. A validação HTML e as capturas anteriores em desktop continuam sendo as evidências principais.
+
+## Captura desktop final válida
+
+A captura direta pelo navegador confirmou o resultado do PR #44: quatro cards de decisão na primeira linha e o quinto card centralizado na segunda, sem deslocamento horizontal nem invasão da seção seguinte. O blog começa com os cards alinhados e o CTA de notícias permanece visível.
+
+Evidência: `/home/ubuntu/screenshots/condominiosnapraia_b_2026-08-17_15-32-48_5931.webp`.
+
+## Pendências adicionais — auditoria mobile e componentes internos
+
+A estrutura publicada mantém 17 seções e 39 blocos de regras responsivas em `max-width/min-width` de 600/768 px. A captura mobile de 390 px confirma hero, marca, onda inferior e navegação rápida sem corte lateral.
+
+O DOM publicado confirmou cinco cards no grid de apartamentos e nenhum card real no grid de terrenos fora de condomínio. O estado vazio agora exibe `Ainda não há terrenos fora de condomínio publicados.` no código local, aguardando o próximo deploy.
+
+Os quatro `href="#"` restantes são componentes internos ocultos ou preenchidos em runtime: mapa do detalhe (`d-maps-link`), WhatsApp após envio (`f-wpp-ok`), WhatsApp do sheet mobile (`ms-wpp`) e WhatsApp do modal de imóvel (`im-wpp`). Foram substituídos localmente por fallbacks seguros para Google Maps ou WhatsApp, mantendo a sobrescrita dinâmica dos dados reais.
