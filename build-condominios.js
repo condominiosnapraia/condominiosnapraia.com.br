@@ -219,6 +219,42 @@ const slugPublicoImovel = im => {
   return suffix && !base.endsWith(suffix) ? `${base}-${suffix}` : (base || slugifyPublico(im?.id));
 };
 
+// Assets de implantação confirmados e associados manualmente a cada condomínio.
+// Las Olas e Marítimo permanecem fora até os PDFs serem fornecidos.
+const MAPAS_IMPLANTACAO = Object.freeze({
+  'acqualina-beach-xangri-la':'1-Acqualina.webp',
+  'carmel-xangri-la':'4-Carmel.webp',
+  'bosques-de-atlantida-atlantida':'3-Bosques.webp',
+  'condado-de-capao-capao-da-canoa':'7-CondadodeCapao.webp',
+  'celebration-xangri-la':'6-Celebration.webp',
+  'costa-serena-capao-da-canoa':'8-CostaSerena.webp',
+  'dubai-resort-residencial-capao-da-canoa':'9-Dubai.webp',
+  'green-village-golf-club-xangri-la':'11-GreenVillage.webp',
+  'enseada-lagoa-dos-quadros-capao-da-canoa':'10-Enseada.webp',
+  'atlantida-ilhas-park-xangri-la':'12-IlhasPark.webp',
+  'capao-ilhas-resort-capao-da-canoa':'13-IlhasResort.webp',
+  'atlantico-villas-club-xangri-la':'2-AtlânticoVillasClub.webp',
+  'vientos-resort-xangri-la':'45-VientosResort.webp',
+  'sense-xangri-la-xangri-la':'54-Sense.webp',
+  'condominio-xangri-la-villas-resort':'35-Villasresort.webp',
+  'sunset-xangri-la':'53-Sunset.webp',
+  'royal-lake-xangri-la':'48-RoyalLake.webp',
+  'origem-natureza-habitada-xangri-la':'42-Origem.webp',
+  'lotus-atlantida-xangri-la':'36-Lotus.webp',
+  'condominio-capao-da-canoa-viz-home-lake':'37-Viz.webp',
+  'la-marina-reserva-maquine':'40-LaMarina.webp',
+  'occhi-marina-club-capao-da-canoa':'41-Occhimarina.webp',
+  'zen-concept-resort-xangri-la':'43-Zenmelnik.webp',
+  'wave-home-resort-xangri-la':'44-Wave.webp',
+  'verano-xangri-la':'46-Verano.webp',
+  'amana-atlantida-atlantida':'47-AmanáAtlântida.webp',
+  'isla-xangri-la':'49-Isla.webp',
+  'blue-xangri-la-xangri-la':'52-Blue.webp',
+  'duo-nautic-life-club-xangri-la':'51-Duo.webp',
+  'vivendas-da-marina-osorio':'39-Vivendasdamarina.webp',
+  'prime-beach-capao-da-canoa':'50-PrimeBeach.webp',
+});
+
 // monta os parágrafos a partir de um campo de texto (quebra em \n\n)
 const paras = txt => String(txt || '')
   .split(/\n{2,}|\r\n\r\n/).map(p => p.trim()).filter(Boolean)
@@ -288,6 +324,15 @@ function blocoConteudo(cond, imoveis) {
   if (cond.localizacao_detalhada) {
     partes.push(`<h2 style="font-family:'Fraunces',serif;font-size:20px;color:#0d3b54;margin:26px 0 10px">Localização</h2>`);
     partes.push(paras(cond.localizacao_detalhada));
+  }
+
+  // Mapa de implantação — somente quando existe asset confirmado para este slug.
+  const condSlug = slugifyPublico(cond.slug || [cond.nome, cidade].filter(Boolean).join('-'));
+  const mapaFile = MAPAS_IMPLANTACAO[condSlug];
+  if (mapaFile) {
+    const mapaUrl = '/img/mapas-condominios/' + encodeURIComponent(mapaFile);
+    const mapaAlt = `Mapa de implantação do ${nome} em ${cidade}`;
+    partes.push(`<section class="cond-map-pdf" data-map-pdf-source="${esc(mapaFile)}" aria-labelledby="cond-map-pdf-title-${esc(condSlug)}" style="max-width:1000px;margin:28px auto;padding:0 24px"><div style="border:1px solid rgba(31,181,196,.18);border-radius:14px;background:#fff;overflow:hidden"><div style="padding:18px 20px 12px"><div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#0e8a99">Material do empreendimento</div><h2 id="cond-map-pdf-title-${esc(condSlug)}" style="font-family:Fraunces,serif;font-size:22px;color:#0d3b54;margin:4px 0 6px">${esc(nome)} — implantação</h2><p style="font-size:13px;color:#5b7585;margin:0">${esc(mapaAlt)}. A imagem é ilustrativa e não substitui a confirmação documental de quadra, lote ou coordenadas.</p></div><a href="${esc(mapaUrl)}" target="_blank" rel="noopener" style="display:block;background:#f7f9fa"><img src="${esc(mapaUrl)}" alt="${esc(mapaAlt)}" loading="lazy" decoding="async" width="1600" height="1132" style="display:block;width:100%;height:auto;max-height:620px;object-fit:contain" /></a></div></section>`);
   }
 
   // Mercado imobiliário
