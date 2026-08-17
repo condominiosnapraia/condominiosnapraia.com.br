@@ -1411,8 +1411,8 @@ async function init() {
   const wppUrl = `https://wa.me/${WPP_NUM}?text=${wppMsg}`;
   var _wb = document.getElementById('wpp-btn'); if (_wb) _wb.href = wppUrl;
   var _quick = document.getElementById('cond-quick-wa'); if (_quick) _quick.href = wppUrl;
-  document.getElementById('wpp-float').href = wppUrl;
-  document.getElementById('wpp-success').href = wppUrl;
+  var _float = document.getElementById('wpp-float'); if (_float) _float.href = wppUrl;
+  var _success = document.getElementById('wpp-success'); if (_success) _success.href = wppUrl;
 
   // Galeria editorial: a primeira foto é a capa e as demais ficam em Infraestrutura.
   const refreshCondGallery = () => {
