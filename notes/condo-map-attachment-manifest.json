@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "acqualina-beach-xangri-la",
+    "status": "already-present",
+    "file": "1-Acqualina.webp"
+  },
+  {
+    "slug": "carmel-xangri-la",
+    "status": "already-present",
+    "file": "4-Carmel.webp"
+  },
+  {
+    "slug": "bosques-de-atlantida-atlantida",
+    "status": "already-present",
+    "file": "3-Bosques.webp"
+  },
+  {
+    "slug": "condado-de-capao-capao-da-canoa",
+    "status": "already-present",
+    "file": "7-CondadodeCapao.webp"
+  },
+  {
+    "slug": "celebration-xangri-la",
+    "status": "already-present",
+    "file": "6-Celebration.webp"
+  },
+  {
+    "slug": "costa-serena-capao-da-canoa",
+    "status": "already-present",
+    "file": "8-CostaSerena.webp"
+  },
+  {
+    "slug": "dubai-resort-residencial-capao-da-canoa",
+    "status": "already-present",
+    "file": "9-Dubai.webp"
+  },
+  {
+    "slug": "green-village-golf-club-xangri-la",
+    "status": "already-present",
+    "file": "11-GreenVillage.webp"
+  },
+  {
+    "slug": "enseada-lagoa-dos-quadros-capao-da-canoa",
+    "status": "already-present",
+    "file": "10-Enseada.webp"
+  },
+  {
+    "slug": "atlantida-ilhas-park-xangri-la",
+    "status": "already-present",
+    "file": "12-IlhasPark.webp"
+  },
+  {
+    "slug": "capao-ilhas-resort-capao-da-canoa",
+    "status": "already-present",
+    "file": "13-IlhasResort.webp"
+  },
+  {
+    "slug": "atlantico-villas-club-xangri-la",
+    "status": "already-present",
+    "file": "2-AtlânticoVillasClub.webp"
+  },
+  {
+    "slug": "vientos-resort-xangri-la",
+    "status": "inserted",
+    "file": "45-VientosResort.webp"
+  },
+  {
+    "slug": "sense-xangri-la-xangri-la",
+    "status": "inserted",
+    "file": "54-Sense.webp"
+  },
+  {
+    "slug": "condominio-xangri-la-villas-resort",
+    "status": "inserted",
+    "file": "35-Villasresort.webp"
+  },
+  {
+    "slug": "sunset-xangri-la",
+    "status": "inserted",
+    "file": "53-Sunset.webp"
+  },
+  {
+    "slug": "royal-lake-xangri-la",
+    "status": "inserted",
+    "file": "48-RoyalLake.webp"
+  },
+  {
+    "slug": "origem-natureza-habitada-xangri-la",
+    "status": "inserted",
+    "file": "42-Origem.webp"
+  }
+]
