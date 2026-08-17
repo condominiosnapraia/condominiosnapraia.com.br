@@ -438,6 +438,19 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   .sec-onda::before{top:-48px!important;height:48px!important}
   .hero-wave-svg{height:46px!important}
 }
+/* Divisores das três escolhas de moradia: uma única onda, com a cor da seção anterior. */
+#viver-lagoa,#viver-mar,#viver-cidade{max-width:none!important;width:100%!important}
+#viver-lagoa{background:#eef8f5!important}
+#viver-mar{background:#eef7fb!important}
+#viver-cidade{background:#fffaf0!important}
+#viver-lagoa.sec-onda::before{--wave-from:#fffaf2}
+#viver-mar.sec-onda::before{--wave-from:#eef8f5}
+#viver-cidade.sec-onda::before{--wave-from:#eef7fb}
+#viver-lagoa.sec-onda,#viver-mar.sec-onda,#viver-cidade.sec-onda{padding-left:max(22px,calc((100vw - 1180px)/2 + 22px))!important;padding-right:max(22px,calc((100vw - 1180px)/2 + 22px))!important}
+@media(max-width:768px){
+  #viver-lagoa.sec-onda,#viver-mar.sec-onda,#viver-cidade.sec-onda{padding:44px 16px 16px!important}
+  #viver-lagoa.sec-onda::before,#viver-mar.sec-onda::before,#viver-cidade.sec-onda::before{top:-48px!important;height:48px!important}
+}
 </style>
   <link rel="stylesheet" href="/css/protecao-conteudo.css">
   <script src="/js/protecao-conteudo.js" defer></script>
@@ -786,7 +799,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 </div>
 </section>
 <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: LAGOA DOS QUADROS ══ -->
-<section class="viv-sec viv-editorial-card viv-lagoa" id="viver-lagoa">
+<section class="viv-sec viv-editorial-card viv-lagoa sec-onda" id="viver-lagoa">
 <div class="viv-photo" data-slot="lagoa-1">
 <div class="viv-photo-ph"></div>
 <div class="viv-photo-grad"></div>
@@ -802,7 +815,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 </div>
 </section>
 <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: MAR ══ -->
-<section class="viv-sec viv-editorial-card viv-mar" id="viver-mar">
+<section class="viv-sec viv-editorial-card viv-mar sec-onda" id="viver-mar">
 <div class="viv-photo" data-slot="mar-1">
 <div class="viv-photo-ph"></div>
 <div class="viv-photo-grad"></div>
@@ -818,7 +831,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 </div>
 </section>
 <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: CIDADE (meio-termo) ══ -->
-<section class="viv-sec viv-editorial-card viv-cidade" id="viver-cidade">
+<section class="viv-sec viv-editorial-card viv-cidade sec-onda" id="viver-cidade">
 <div class="viv-photo" data-slot="cidade-1">
 <div class="viv-photo-ph"></div>
 <div class="viv-photo-grad"></div>
