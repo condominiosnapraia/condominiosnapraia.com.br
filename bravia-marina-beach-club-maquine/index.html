@@ -1095,7 +1095,7 @@ let galTouchStartX = 0;
 
 function renderStaticCond(){
   // SEO
-  document.title = window.STATIC_TITLE || (cond.nome + ' — Condomínios na Praia');
+  document.title = document.title || (cond.nome + ' — Condomínios na Praia');
   const metaDesc = document.querySelector('meta[name="description"]');
   const descSeo = (metaDesc && metaDesc.content) || dynPublicString(cond.descricao || cond.nome || '').slice(0,155);
   if (metaDesc) metaDesc.content = descSeo;
