@@ -1455,7 +1455,7 @@ async function init() {
   const initialNum = document.getElementById('imoveis-count-num');
   const initialSub = document.getElementById('imoveis-count-sub');
   if (initialNum) initialNum.textContent = initialDisp;
-  if (initialSub) initialSub.textContent = initialDisp === 0 ? 'Nenhum imóvel disponível no momento' : `${initialDisp} imóvel${initialDisp === 1 ? '' : 'is'} disponível${initialDisp === 1 ? '' : 'is'} para venda`;
+  if (initialSub) initialSub.textContent = initialDisp === 0 ? 'Nenhum imóvel disponível no momento' : initialDisp === 1 ? '1 imóvel disponível para venda' : `${initialDisp} imóveis disponíveis para venda`;
   // Os cards só são consultados e montados quando a secção se aproxima da viewport.
   scheduleCondImoveis(cond.id);
 
