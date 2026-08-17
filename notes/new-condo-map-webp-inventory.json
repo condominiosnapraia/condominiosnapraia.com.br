@@ -1,0 +1,94 @@
+[
+  {
+    "source": "36-Lotus.pdf",
+    "output": "36-Lotus.webp",
+    "width": 1600,
+    "height": 1132,
+    "bytes": 92846
+  },
+  {
+    "source": "37-Viz.pdf",
+    "output": "37-Viz.webp",
+    "width": 1600,
+    "height": 2265,
+    "bytes": 157276
+  },
+  {
+    "source": "39-Vivendasdamarina.pdf",
+    "output": "39-Vivendasdamarina.webp",
+    "width": 1600,
+    "height": 1131,
+    "bytes": 231380
+  },
+  {
+    "source": "40-LaMarina.pdf",
+    "output": "40-LaMarina.webp",
+    "width": 1600,
+    "height": 264,
+    "bytes": 33804
+  },
+  {
+    "source": "41-Occhimarina.pdf",
+    "output": "41-Occhimarina.webp",
+    "width": 1600,
+    "height": 412,
+    "bytes": 66128
+  },
+  {
+    "source": "43-Zenmelnik.pdf",
+    "output": "43-Zenmelnik.webp",
+    "width": 1600,
+    "height": 887,
+    "bytes": 132792
+  },
+  {
+    "source": "44-Wave.pdf",
+    "output": "44-Wave.webp",
+    "width": 1600,
+    "height": 1130,
+    "bytes": 136884
+  },
+  {
+    "source": "46-Verano.pdf",
+    "output": "46-Verano.webp",
+    "width": 1600,
+    "height": 1130,
+    "bytes": 267622
+  },
+  {
+    "source": "47-AmanáAtlântida.pdf",
+    "output": "47-AmanáAtlântida.webp",
+    "width": 1600,
+    "height": 700,
+    "bytes": 59664
+  },
+  {
+    "source": "49-Isla.pdf",
+    "output": "49-Isla.webp",
+    "width": 1600,
+    "height": 1179,
+    "bytes": 267426
+  },
+  {
+    "source": "50-PrimeBeach.pdf",
+    "output": "50-PrimeBeach.webp",
+    "width": 1600,
+    "height": 1131,
+    "bytes": 176770
+  },
+  {
+    "source": "52-Blue.pdf",
+    "output": "52-Blue.webp",
+    "width": 1600,
+    "height": 960,
+    "bytes": 124816
+  },
+  {
+    "source": "51-Duo.webp",
+    "output": "51-Duo.webp",
+    "width": 1600,
+    "height": 549,
+    "bytes": 157430,
+    "provided_webp": true
+  }
+]
