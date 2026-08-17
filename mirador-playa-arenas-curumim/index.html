@@ -1104,7 +1104,7 @@ function renderStaticCond(){
   const SLUGS_ESTATICOS = ['aura-garden-place-xangri-la','cyano-private-resort-osorio','monaco-grand-marina-maquine','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','condominio-maquine-la-marina','condominio-xangri-la-villas-resort','sunset-xangri-la','marina-de-xangri-la','marina-park','xangri-la-marina'];
   const slugAtual = (cond.slug || cond.id || '').toString();
   const condUrlAbs = SLUGS_ESTATICOS.indexOf(slugAtual) !== -1
-    ? 'https://condominiosnapraia.com.br/' + slugAtual + '/'
+    ? 'https://condominiosnapraia.com.br/' + slugAtual + '/' + '/'
     : 'https://condominiosnapraia.com.br/condominio/?id=' + encodeURIComponent(slugAtual);
   const setAttr = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
   setAttr('cond-canonical', 'href', condUrlAbs);
@@ -1320,7 +1320,7 @@ async function init() {
   const SLUGS_ESTATICOS = ['aura-garden-place-xangri-la','cyano-private-resort-osorio','monaco-grand-marina-maquine','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','condominio-maquine-la-marina','condominio-xangri-la-villas-resort','sunset-xangri-la','marina-de-xangri-la','marina-park','xangri-la-marina'];
   const slugAtual = (cond.slug || cond.id || '').toString();
   const condUrlAbs = SLUGS_ESTATICOS.indexOf(slugAtual) !== -1
-    ? 'https://condominiosnapraia.com.br/' + slugAtual
+    ? 'https://condominiosnapraia.com.br/' + slugAtual + '/'
     : 'https://condominiosnapraia.com.br/condominio/?id=' + encodeURIComponent(slugAtual);
   const setAttr = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
   setAttr('cond-canonical', 'href', condUrlAbs);
