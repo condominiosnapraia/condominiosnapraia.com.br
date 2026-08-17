@@ -965,6 +965,32 @@ function dynFotoTag(raw, alt, options = {}) {
   return `<img${classAttr} src="${dynEsc(src)}"${responsive} width="${width}" height="${height}" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${eager ? ' fetchpriority="high"' : ''}${styleAttr} alt="${dynEsc(alt)}">`;
 }
 
+function dynFotoValor(item) {
+  if (item && typeof item === 'object') return String(item.url || item.src || item.path || '').trim();
+  return String(item || '').trim();
+}
+
+function dynFotoLista(value) {
+  if (value == null || value === '') return [];
+  if (typeof value === 'string') {
+    const text = value.trim();
+    if (!text) return [];
+    try {
+      const parsed = JSON.parse(text);
+      if (parsed !== value) return dynFotoLista(parsed);
+    } catch (_) {}
+    return [text];
+  }
+  if (Array.isArray(value)) return value.flatMap(item => dynFotoLista(item));
+  if (typeof value === 'object') {
+    const nested = value.items || value.urls || value.photos || value.fotos;
+    if (nested) return dynFotoLista(nested);
+    const url = dynFotoValor(value);
+    return url ? [url] : [];
+  }
+  return [];
+}
+
 function dynPublicString(value) {
   return String(value || '')
     .replace(/\b(?:unidade|apt(?:o)?|apartamento)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
@@ -1014,7 +1040,20 @@ async function fetchCondImoveis(condId, HDR) {
       '&limit=60&order=created_at.desc', HDR
     );
     const rows = response.ok ? await response.json() : [];
-    return Array.isArray(rows) ? rows : [];
+    if (!Array.isArray(rows)) return [];
+    const missingIds = rows.filter(row => !dynFotoLista(row.fotos_no_site).length && row.id).map(row => row.id);
+    if (missingIds.length) {
+      try {
+        const legacyUrl = SUPABASE_URL + '/rest/v1/imoveis?id=in.(' + missingIds.map(id => encodeURIComponent(id)).join(',') + ')&select=id,fotos';
+        const legacyResponse = await fetch(legacyUrl, HDR);
+        const legacyRows = legacyResponse.ok ? await legacyResponse.json() : [];
+        const legacyById = new Map((Array.isArray(legacyRows) ? legacyRows : []).map(row => [row.id, row.fotos]));
+        rows.forEach(row => {
+          if (!dynFotoLista(row.fotos_no_site).length && legacyById.has(row.id)) row.fotos_no_site = legacyById.get(row.id);
+        });
+      } catch (_) {}
+    }
+    return rows.map(row => ({ ...row, fotos_no_site: dynFotoLista(row.fotos_no_site || row.fotos) }));
   } catch (_) { return []; }
 }
 
@@ -1034,7 +1073,7 @@ async function getData() {
       if (!Array.isArray(rows)) rows = [];
       const condo = rows[0];
       if (condo) {
-        if ((!Array.isArray(condo.fotos_no_site) || !condo.fotos_no_site.length) && condo.id) {
+        if (!dynFotoLista(condo.fotos_no_site).length && condo.id) {
           try {
             const legacy = await fetch(
               SUPABASE_URL + '/rest/v1/condominios?id=eq.' + encodeURIComponent(condo.id) +
@@ -1044,7 +1083,7 @@ async function getData() {
             if (legacyRows[0] && legacyRows[0].fotos) {
               let photos = legacyRows[0].fotos;
               if (typeof photos === 'string') { try { photos = JSON.parse(photos); } catch (_) { photos = [photos]; } }
-              condo.fotos_no_site = Array.isArray(photos) ? photos : [photos];
+              condo.fotos_no_site = dynFotoLista(photos);
             }
           } catch (_) {}
         }
@@ -1376,7 +1415,13 @@ async function init() {
   document.getElementById('wpp-success').href = wppUrl;
 
   // Galeria editorial: a primeira foto é a capa e as demais ficam em Infraestrutura.
-  buildGallery(condFotosPublicas());
+  const refreshCondGallery = () => {
+    const fotos = condFotosPublicas();
+    if (fotos.length) buildGallery(fotos);
+  };
+  refreshCondGallery();
+  requestAnimationFrame(refreshCondGallery);
+  setTimeout(refreshCondGallery, 0);
   initCondGalleryTouch();
 
   // O contador usa a consulta mínima inicial; os cards e fotos continuam adiados.
@@ -1436,11 +1481,7 @@ function buildCondMap(condominio) {
 function condFotosPublicas() {
   const fontes = [cond && cond.fotos_no_site, cond && cond.fotos];
   for (const fonte of fontes) {
-    const lista = Array.isArray(fonte) ? fonte : (fonte ? [fonte] : []);
-    const validas = lista.map(item => {
-      if (item && typeof item === 'object') return item.url || item.src || item.path || '';
-      return String(item || '').trim();
-    }).filter(Boolean);
+    const validas = dynFotoLista(fonte).map(dynFotoValor).filter(Boolean);
     if (validas.length) return validas;
   }
   return [];
@@ -1454,7 +1495,7 @@ function buildGallery(fotos) {
   const count = document.getElementById('gallery-section-count');
   if (!no || !cover || !section || !grid) return;
 
-  galFotos = Array.isArray(fotos) ? fotos.filter(Boolean) : [];
+  galFotos = dynFotoLista(fotos);
   galIdx = 0;
   no.style.display = galFotos.length ? 'none' : 'flex';
   cover.style.display = galFotos.length ? 'block' : 'none';
@@ -1609,9 +1650,11 @@ function scheduleCondImoveis(condId) {
   const section = document.getElementById('imoveis-section');
   if (!section || !condId) return;
   let started = false;
+  let fallbackTimer = null;
   const run = async () => {
     if (started) return;
     started = true;
+    if (fallbackTimer) clearTimeout(fallbackTimer);
     const HDR = { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } };
     const imoveis = await fetchCondImoveis(condId, HDR);
     buildImoveis(imoveis);
@@ -1624,8 +1667,10 @@ function scheduleCondImoveis(condId) {
       }
     }, { rootMargin: '450px 0px' });
     io.observe(section);
+    // Fallback para browsers que não disparam o observer após uma rolagem programática.
+    fallbackTimer = setTimeout(run, 1600);
   } else {
-    setTimeout(run, 1800);
+    fallbackTimer = setTimeout(run, 1600);
   }
 }
 
@@ -1650,8 +1695,8 @@ function buildImoveis(imoveis) {
 
   document.getElementById('imoveis-grid').innerHTML = disp.map(im => {
     const statusCls = im.status === 'Disponível' ? 'disp' : 'neg';
-    const _fts = im.fotos_no_site || im.fotos || [];
-    const _f0 = Array.isArray(_fts) ? _fts.find(f => typeof f === 'string' && f.indexOf('http') === 0) : null;
+    const _fts = dynFotoLista(im.fotos_no_site || im.fotos);
+    const _f0 = _fts.find(f => dynFotoPublica(f));
     const foto = _f0 ? dynFotoTag(_f0, `${im.titulo || 'Imóvel'} — ${cond.nome || ''}`, {sizes:'(max-width: 700px) 90vw, 360px', width:640, height:440}) : '🏠';
     const specs = [];
     if (im.area)    specs.push(`<span class="ic-spec"><span class="ic-spec-ico">📐</span>${m2(im.area)}</span>`);
