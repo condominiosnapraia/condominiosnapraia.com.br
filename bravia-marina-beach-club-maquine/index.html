@@ -640,6 +640,7 @@ img,video,iframe,svg{max-width:100%}
 }
 </style>  <link rel="stylesheet" href="/css/protecao-conteudo.css">
   <script src="/js/protecao-conteudo.js" defer></script>
+<!-- PORTAL SSR PILOT V1 -->
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -664,17 +665,13 @@ img,video,iframe,svg{max-width:100%}
 <!-- HERO COM FOTO ÚNICA -->
 <div class="hero-wrap">
 <div class="hero-gallery" id="hero-gallery">
-<div class="gallery-no-photo" id="gallery-no-photo">
-<span>🏘</span>
-<p>Fotos em breve</p>
-</div>
-<div class="hero-cover" id="hero-cover" style="display:none"></div>
+<div class="gallery-no-photo" id="gallery-no-photo" style="display:none"><span>🏘</span><p>Fotos em breve</p></div><div class="hero-cover" id="hero-cover" style="display:block"><img class="hero-cover-image" src="/cdn-fotos/fotos/bravia__1-1781619246318.jpg" width="1600" height="900" loading="eager" decoding="async" fetchpriority="high" alt="Brávia Marina &amp; Beach Club — foto de capa"></div>
 <div class="cond-hero-copy">
-<div class="cond-eyebrow" id="cond-cidade">Carregando...</div>
-<h1 class="cond-title" id="cond-title">—</h1>
-<div class="cond-location" id="cond-location"><span>📍</span><span id="cond-location-text">—</span></div>
+<div class="cond-eyebrow" id="cond-cidade">Maquiné</div>
+<h1 class="cond-title" id="cond-title">Brávia Marina &amp; Beach <em>Club</em></h1>
+<div class="cond-location" id="cond-location"><span>📍</span><span id="cond-location-text">Maquiné</span></div>
 <div class="cond-hero-badge-row">
-<div class="cond-badges" id="cond-badges"></div>
+<div class="cond-badges" id="cond-badges"><span class="badge highlight">Alto padrão</span><span class="badge ">Condomínio náutico</span></div>
 <div class="cond-hero-share">
 <button aria-label="Compartilhar este condomínio" class="cd-share" onclick="compartilharCond()" type="button"><svg aria-hidden="true" fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" x2="15.4" y1="10.5" y2="6.5"></line><line x1="8.6" x2="15.4" y1="13.5" y2="17.5"></line></svg><span>Compartilhar</span></button>
 <div class="cd-share-menu" id="cd-share-menu">
@@ -692,49 +689,22 @@ img,video,iframe,svg{max-width:100%}
 <!-- INFO + SIDE CARD -->
 <div class="info-section">
 <div class="info-main">
-<div class="dados-grid" id="dados-grid"></div>
-<div id="amenidades-wrap" style="display:none">
-<div class="amenidades-title">Infraestrutura e Amenidades</div>
-<div class="amenidades-list" id="amenidades-list"></div>
-<div class="cond-infra-detalhada" id="cond-infra-detalhada" style="display:none"></div>
-</div>
+<div class="dados-grid" id="dados-grid"><div class="dado"><div class="dado-label">Nº de Lotes</div><div class="dado-val">451</div></div><div class="dado"><div class="dado-label">Disponíveis</div><div class="dado-val">0</div></div></div>
+<div id="amenidades-wrap"><div class="amenidades-title">Infraestrutura e Amenidades</div><div class="amenidades-list" id="amenidades-list"><div class="amenidade">Marina exclusiva</div><div class="amenidade">Canais navegáveis</div><div class="amenidade">Praia artificial 10.000m²</div><div class="amenidade">Clube social em ilha natural</div><div class="amenidade">Beach club em Xangri-lá</div><div class="amenidade">Restaurante Casa Lugano</div><div class="amenidade">SPA e academia 300m²</div><div class="amenidade">Heliponto e vertiporto</div><div class="amenidade">Acesso ao Rio Tramandaí</div></div><div class="cond-infra-detalhada" id="cond-infra-detalhada" ><p>O coração do Brávia é a marina privativa , com acesso direto ao Rio Tramandaí. São 240 lotes com acesso ao rio , permitindo atracar a embarcação praticamente em casa. Para os amantes da náutica, é a realização de um sonho: navegar, pescar e explorar o rio com total privacidade e segurança. Uma praia artificial de 10.000m² com tecnologia Crystal Clear traz água cristalina e areia para dentro do condomínio. Soma-se a isso o beach club exclusivo em Xangri-lá — um diferencial raro, que estende a experiência de lazer à beira-mar. O clube em ilha natural e a infraestrutura de lazer completam a proposta resort: piscinas, espaços gourmet, áreas esportivas e de convivência, tudo integrado à paisagem natural do rio e da mata.</p></div></div>
 <!-- Galeria de infraestrutura: aparece imediatamente após as amenidades -->
-<section aria-labelledby="cond-gallery-title" class="cond-gallery-section" id="cond-gallery-section" style="display:none">
-<div class="cond-gallery-head">
-<div>
-<div class="cond-eyebrow">Imagens do condomínio</div>
-<h2 class="cond-gallery-title" id="cond-gallery-title">Galeria de infraestrutura <span id="gallery-section-count"></span></h2>
-</div>
-<div class="cond-gallery-note">Conheça os espaços e a atmosfera do empreendimento.</div>
-</div>
-<div class="cond-gallery-viewport">
-<button aria-label="Foto anterior" class="cond-gallery-arrow prev" onclick="condGalleryNav(-1)" type="button">‹</button>
-<div aria-live="polite" class="cond-gallery-grid" id="cond-gallery-grid"></div>
-<button aria-label="Próxima foto" class="cond-gallery-arrow next" onclick="condGalleryNav(1)" type="button">›</button>
-</div>
-<div aria-live="polite" class="cond-gallery-position" id="cond-gallery-position"></div>
+<section aria-labelledby="cond-gallery-title" class="cond-gallery-section" id="cond-gallery-section">
+<div class="cond-gallery-head"><div><div class="cond-eyebrow">Imagens do condomínio</div><h2 class="cond-gallery-title" id="cond-gallery-title">Galeria de infraestrutura <span id="gallery-section-count">(6 fotos)</span></h2></div><div class="cond-gallery-note">Conheça os espaços e a atmosfera do empreendimento.</div></div>
+<div class="cond-gallery-viewport"><button aria-label="Foto anterior" class="cond-gallery-arrow prev" onclick="condGalleryNav(-1)" type="button">‹</button><div aria-live="polite" class="cond-gallery-grid" id="cond-gallery-grid"><figure class="cond-gallery-item" tabindex="0" role="button" aria-label="Abrir foto 1 de 6" onclick="condGalleryOpen(0)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();condGalleryOpen(0)}"><img class="cond-gallery-image" src="/cdn-fotos/fotos/bravia__7-1783359867425.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Brávia Marina &amp; Beach Club — infraestrutura foto 1"><span class="cond-gallery-index" aria-hidden="true">1 / 6</span></figure><figure class="cond-gallery-item" tabindex="0" role="button" aria-label="Abrir foto 2 de 6" onclick="condGalleryOpen(1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();condGalleryOpen(1)}"><img class="cond-gallery-image" src="/cdn-fotos/fotos/bravia__2-1783359876367.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Brávia Marina &amp; Beach Club — infraestrutura foto 2"><span class="cond-gallery-index" aria-hidden="true">2 / 6</span></figure><figure class="cond-gallery-item" tabindex="0" role="button" aria-label="Abrir foto 3 de 6" onclick="condGalleryOpen(2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();condGalleryOpen(2)}"><img class="cond-gallery-image" src="/cdn-fotos/fotos/bravia__3-1783359884536.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Brávia Marina &amp; Beach Club — infraestrutura foto 3"><span class="cond-gallery-index" aria-hidden="true">3 / 6</span></figure><figure class="cond-gallery-item" tabindex="0" role="button" aria-label="Abrir foto 4 de 6" onclick="condGalleryOpen(3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();condGalleryOpen(3)}"><img class="cond-gallery-image" src="/cdn-fotos/fotos/bravia__4-1783359889587.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Brávia Marina &amp; Beach Club — infraestrutura foto 4"><span class="cond-gallery-index" aria-hidden="true">4 / 6</span></figure><figure class="cond-gallery-item" tabindex="0" role="button" aria-label="Abrir foto 5 de 6" onclick="condGalleryOpen(4)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();condGalleryOpen(4)}"><img class="cond-gallery-image" src="/cdn-fotos/fotos/bravia__5-1783359896275.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Brávia Marina &amp; Beach Club — infraestrutura foto 5"><span class="cond-gallery-index" aria-hidden="true">5 / 6</span></figure><figure class="cond-gallery-item" tabindex="0" role="button" aria-label="Abrir foto 6 de 6" onclick="condGalleryOpen(5)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();condGalleryOpen(5)}"><img class="cond-gallery-image" src="/cdn-fotos/fotos/bravia__6-1783359903234.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Brávia Marina &amp; Beach Club — infraestrutura foto 6"><span class="cond-gallery-index" aria-hidden="true">6 / 6</span></figure></div><button aria-label="Próxima foto" class="cond-gallery-arrow next" onclick="condGalleryNav(1)" type="button">›</button></div><div aria-live="polite" class="cond-gallery-position" id="cond-gallery-position"></div>
 </section>
 <div class="cond-video" id="cond-video-wrap" style="display:none">
 <div class="cond-video-title">Vídeo do Condomínio</div>
 <div class="cond-video-frame" id="cond-video-frame"></div>
 </div>
-<p class="cond-desc" id="cond-desc" style="margin-top:20px">Carregando informações...</p>
+<p class="cond-desc" id="cond-desc" style="margin-top:20px">Condomínio náutico e resort de alto padrão em Maquiné, Litoral Norte do RS, às margens do Rio Tramandaí. Com 451 lotes (240 com acesso direto ao rio), marina exclusiva, concierge náutico, canais naturais navegáveis, praia artificial de 10.000m², clube social em ilha natural, beach club em Xangri-lá, restaurante Casa Lugano, SPA, academia de 300m², complexo esportivo completo (beach tennis, tênis, padel e pickleball cobertos), heliponto e vertiporto.</p>
 <!-- Conteúdo rico gerado pelo CRM (história, infra, localização, mercado, diferenciais) -->
-<div class="cond-rich" id="cond-conteudo-rico"></div>
+<div class="cond-rich" id="cond-conteudo-rico"><h2>Sobre o Condomínio</h2><p>Condomínio náutico e resort de alto padrão em Maquiné, Litoral Norte do RS, às margens do Rio Tramandaí. Com 451 lotes (240 com acesso direto ao rio), marina exclusiva, concierge náutico, canais naturais navegáveis, praia artificial de 10.000m², clube social em ilha natural, beach club em Xangri-lá, restaurante Casa Lugano, SPA, academia de 300m², complexo esportivo completo (beach tennis, tênis, padel e pickleball cobertos), heliponto e vertiporto.</p><h2>Mercado e Valorização</h2><p>O Brávia Marina &amp; Beach Club é um condomínio localizado em Maquiné, no Litoral Norte Gaúcho. Condomínio náutico e resort de alto padrão em Maquiné, Litoral Norte do RS, às margens do Rio Tramandaí. Com 451 lotes (240 com acesso direto ao rio), marina exclusiva, concierge náutico, canais naturais navegáveis, praia artificial de 10.000m², clube social em ilha natural, beach club em Xangri-lá, restaurante Casa Lugano, SPA, academia de 300m², complexo esportivo completo (beach tennis, tênis, padel e pickleball cobertos), heliponto e vertiporto. Se você procura um imóvel em Maquiné com a segurança e a estrutura de um condomínio fechado, o Brávia Marina &amp; Beach Club é uma excelente opção para morar ou investir na região.</p><h2>Diferenciais</h2><div class="dif-list"><span>Marina e Vida Náutica</span><span>Praia Artificial e Beach Club</span><span>Clube e Lazer Completo</span></div></div>
 <!-- Mapa: aparece depois da galeria de infraestrutura -->
-<section aria-labelledby="cond-mapa-title" class="cond-mapa-section" id="cond-mapa-section" style="display:none">
-<div class="cond-mapa-head">
-<div>
-<h2 class="cond-mapa-title" id="cond-mapa-title">Onde fica este condomínio?</h2>
-<p class="cond-mapa-subtitle" id="cond-mapa-subtitle"></p>
-</div>
-<a class="cond-mapa-open" href="#" id="cond-mapa-open" rel="noopener nofollow" target="_blank">Abrir no Google Maps ↗</a>
-</div>
-<div class="cond-mapa-frame" id="cond-mapa-frame">
-<iframe allowfullscreen="" id="cond-mapa-iframe" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa de localização do condomínio"></iframe>
-<div class="cond-mapa-notice" id="cond-mapa-notice" style="display:none"></div>
-</div>
-</section>
+<section class="cond-implantacao-section" id="cond-implantacao-section"><div class="cond-implantacao-inner"><p class="eyebrow">IMPLANTAÇÃO</p><h2>Mapa de implantação</h2><p class="cond-implantacao-lead">Veja a planta do empreendimento com a disposição dos lotes e das áreas de lazer.</p><button class="cond-implantacao-open" type="button"><img src="/img/mapas/bravia-mapa.jpg" alt="Mapa de implantação de Brávia Marina &amp; Beach Club" loading="lazy"><span>Toque na imagem para ampliar</span></button></div></section><section aria-labelledby="cond-mapa-title" class="cond-mapa-section" id="cond-mapa-section"><div class="cond-mapa-head"><div><h2 class="cond-mapa-title" id="cond-mapa-title">Onde fica este condomínio?</h2><p class="cond-mapa-subtitle" id="cond-mapa-subtitle">Maquiné</p></div><a class="cond-mapa-open" href="https://www.google.com/maps/search/?api=1&amp;query=-29.68,-50.2" id="cond-mapa-open" rel="noopener nofollow" target="_blank">Abrir no Google Maps ↗</a></div><div class="cond-mapa-frame" id="cond-mapa-frame"><iframe allowfullscreen="" id="cond-mapa-iframe" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=-29.68,-50.2&amp;z=15&amp;output=embed" title="Mapa de localização do condomínio"></iframe></div></section>
 </div>
 </div>
 </div><!-- /content -->
@@ -861,7 +831,7 @@ img,video,iframe,svg{max-width:100%}
 <div class="faq-head">
 <h2 class="faq-title">Perguntas Frequentes</h2>
 </div>
-<div class="faq-list" id="faq-list"></div>
+<div class="faq-list" id="faq-list"><details class="faq-item"><summary class="faq-q">Onde fica o Brávia Marina &amp; Beach Club?</summary><div class="faq-a">O Brávia Marina &amp; Beach Club fica em Maquiné, no Litoral Norte do Rio Grande do Sul.</div></details><details class="faq-item"><summary class="faq-q">O condomínio tem marina?</summary><div class="faq-a">Sim, o Brávia conta com marina privativa e acesso direto ao Rio Tramandaí. São 240 lotes com acesso ao rio, ideais para quem tem embarcação.</div></details><details class="faq-item"><summary class="faq-q">O que é a praia artificial?</summary><div class="faq-a">É uma praia de 10.000m² com tecnologia Crystal Clear, que traz água cristalina e areia para dentro do condomínio, criando uma experiência de praia exclusiva.</div></details><details class="faq-item"><summary class="faq-q">Quais os valores e condições?</summary><div class="faq-a">Os valores e as condições de lançamento são enviados pelo nosso consultor. Preencha o formulário ou fale no WhatsApp para receber a tabela atualizada do Brávia Marina &amp; Beach Club.</div></details><details class="faq-item"><summary class="faq-q">Tem financiamento?</summary><div class="faq-a">Sim, há diferentes condições de pagamento e financiamento. Nosso consultor apresenta a melhor alternativa para o seu perfil.</div></details><details class="faq-item"><summary class="faq-q">Como agendar uma visita?</summary><div class="faq-a">Basta falar com nossa equipe pelo WhatsApp. Agendamos a visita ao empreendimento no melhor horário para você.</div></details></div>
 </div>
 </div>
 <section class="vpc" style="padding-top:52px;padding-bottom:52px">
@@ -1044,10 +1014,10 @@ function dynFotoTag(raw, alt, options = {}) {
 
 function dynPublicString(value) {
   return String(value || '')
-    .replace(/\b(?:unidade|apt(?:o)?|apartamento)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
-    .replace(/\btorre\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
-    .replace(/\b(?:quadra|lote|box)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
-    .replace(/\bcasa\s*(?:n[ºo°.]?|número)\s*[a-z0-9-]+/gi, '')
+    .replace(/\b(?:unidade|apt(?:o)?|apartamento)\s+(?:n[ºo°.]?\s*)?[a-z0-9-]+\b/gi, '')
+    .replace(/\btorre\s+(?:n[ºo°.]?\s*)?[a-z0-9-]+\b/gi, '')
+    .replace(/\b(?:quadra|lote|box)\s+(?:n[ºo°.]?\s*)?[a-z0-9-]+\b/gi, '')
+    .replace(/\bcasa\s+(?:n[ºo°.]?|número)\s*[a-z0-9-]+\b/gi, '')
     .replace(/^[\s·|,;:/-]+|[\s·|,;:/-]+$/g, '')
     .replace(/[ \t]{2,}/g, ' ')
     .trim();
@@ -1127,7 +1097,7 @@ function renderStaticCond(){
   // SEO
   document.title = window.STATIC_TITLE || (cond.nome + ' — Condomínios na Praia');
   const metaDesc = document.querySelector('meta[name="description"]');
-  const descSeo = dynPublicString(cond.descricao || cond.nome || '').slice(0,155);
+  const descSeo = (metaDesc && metaDesc.content) || dynPublicString(cond.descricao || cond.nome || '').slice(0,155);
   if (metaDesc) metaDesc.content = descSeo;
   // canonical + Open Graph dinâmicos (cada condomínio com sua URL única)
   // Se o condomínio tem página estática premium própria, o canonical aponta para ela (evita duplicação no Google)
@@ -1341,7 +1311,7 @@ async function init() {
   }
 
   // SEO
-  document.title = cond.nome + ' — Condomínios na Praia';
+  document.title = window.STATIC_TITLE || (cond.nome + ' — Condomínios na Praia');
   const metaDesc = document.querySelector('meta[name="description"]');
   const descSeo = dynPublicString(cond.descricao || cond.nome || '').slice(0,155);
   if (metaDesc) metaDesc.content = descSeo;
