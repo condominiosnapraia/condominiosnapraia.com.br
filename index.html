@@ -2863,6 +2863,10 @@ async function carregarFotosCarrossel(){
     if(!fotos.length){ console.warn('[fotos carrossel] lista VAZIA — a tabela os_carrossel_home não tem fotos?'); }
     const mapa={};
     fotos.forEach(f=>{ if(f.slot && f.foto_url) mapa[f.slot]=f.foto_url; });
+    // Capas editoriais definidas para a homepage; têm prioridade sobre o CRM.
+    mapa['lagoa-1']='/img/home-lagoa-capa.webp';
+    mapa['mar-1']='/img/home-mar-capa.webp';
+    mapa['cidade-1']='/img/home-cidade-capa.webp';
     document.querySelectorAll('.carr-slide[data-slot], .carr-single[data-slot]').forEach(sl=>{
       const url=mapa[sl.getAttribute('data-slot')];
       if(url){
