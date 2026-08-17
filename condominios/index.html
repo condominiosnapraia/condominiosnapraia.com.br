@@ -766,9 +766,21 @@ details[open] .dec-faq-q:after{content:"−"}
 const SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
 const CAT_COND_SELECT='id,slug,nome,cidade,bairro,perfil,tipo,descricao,amenidades,fotos_no_site,ativo';
+const STORAGE_PUBLIC=SB_URL+'/storage/v1/object/public/';
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
+function fotoPublica(raw){
+  var v=String(raw||'').trim();
+  if(!v)return '';
+  if(v.startsWith('/cdn-fotos/')||v.startsWith('data:')||v.startsWith('blob:'))return v;
+  if(v.startsWith(STORAGE_PUBLIC))return '/cdn-fotos/'+v.slice(STORAGE_PUBLIC.length).replace(/^\/+/, '');
+  return v;
+}
 async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
-function fotos(a){return (a||[]).filter(function(f){return f&&(String(f).startsWith('http')||String(f).startsWith('data:'));});}
+function fotos(a){return (a||[]).map(fotoPublica).filter(Boolean);}
 const PERFIL_LBL={mar:'Beira-mar',lagoa:'Beira da lagoa',cidade:'Cidade'};
+function norm(v){return String(v==null?'':v).normalize('NFD').replace(/\p{Diacritic}/gu,'').trim().toLowerCase();}
+function selectLoose(id,value){var el=document.getElementById(id);if(!el||!value)return;var want=norm(value);var opt=Array.from(el.options).find(function(o){return norm(o.value)===want;});if(opt)el.value=opt.value;}
+const STATIC_CONDO_SLUGS=new Set(['aura-garden-place-xangri-la','cyano-private-resort-osorio','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','condominio-maquine-la-marina','condominio-xangri-la-villas-resort','sunset-xangri-la','marina-de-xangri-la','marina-park','xangri-la-marina']);
 let TODOS=[];
 
 async function carregar(){
@@ -779,8 +791,8 @@ async function carregar(){
     var cid=c.cidade||c.localizacao; if(cid)cidades.add(cid);
     if(c.tipo)tipos.add(c.tipo);
   });
-  var fc=document.getElementById('f-cidade'); Array.from(cidades).sort().forEach(function(c){fc.innerHTML+='<option value="'+c+'">'+c+'</option>';});
-  var ft=document.getElementById('f-tipo'); Array.from(tipos).sort().forEach(function(t){ft.innerHTML+='<option value="'+t+'">'+t+'</option>';});
+  var fc=document.getElementById('f-cidade'); Array.from(cidades).sort().forEach(function(c){fc.innerHTML+='<option value="'+esc(c)+'">'+esc(c)+'</option>';});
+  var ft=document.getElementById('f-tipo'); Array.from(tipos).sort().forEach(function(t){ft.innerHTML+='<option value="'+esc(t)+'">'+esc(t)+'</option>';});
   // lista de nomes de condomínios (ordem alfabética) para o campo de busca por nome
   var dl=document.getElementById('lista-condominios');
   if(dl){
@@ -788,20 +800,28 @@ async function carregar(){
     dl.innerHTML=nomes.map(function(n){return '<option value="'+n.replace(/"/g,'&quot;')+'">';}).join('');
   }
   var q=new URLSearchParams(location.search);
-  if(q.get('cidade'))fc.value=q.get('cidade');
-  if(q.get('perfil'))document.getElementById('f-perfil').value=q.get('perfil');
-  if(q.get('tipo'))ft.value=q.get('tipo');
+  if(q.get('cidade'))selectLoose('f-cidade',q.get('cidade'));
+  if(q.get('perfil'))selectLoose('f-perfil',q.get('perfil'));
+  if(q.get('tipo'))selectLoose('f-tipo',q.get('tipo'));
   aplicar();
 }
 
+function syncQuery(){
+  var q=new URLSearchParams();
+  var cid=document.getElementById('f-cidade').value, perf=document.getElementById('f-perfil').value, tp=document.getElementById('f-tipo').value;
+  if(cid)q.set('cidade',cid); if(perf)q.set('perfil',perf); if(tp)q.set('tipo',tp);
+  var next=location.pathname+(q.toString()?'?'+q.toString():'');
+  history.replaceState(null,'',next);
+}
 function aplicar(){
   var nome=(document.getElementById('f-nome')?document.getElementById('f-nome').value:'').trim().toLowerCase();
   var cid=document.getElementById('f-cidade').value;
   var perf=document.getElementById('f-perfil').value;
   var tp=document.getElementById('f-tipo').value;
+  syncQuery();
   var lista=TODOS.filter(function(c){
     if(nome&&(c.nome||'').toLowerCase().indexOf(nome)<0)return false;
-    if(cid&&(c.cidade||c.localizacao)!==cid)return false;
+    if(cid&&norm(c.cidade||c.localizacao)!==norm(cid))return false;
     if(perf&&c.perfil!==perf)return false;
     if(tp&&c.tipo!==tp)return false;
     return true;
@@ -818,22 +838,23 @@ function render(lista){
   grid.innerHTML=lista.map(function(c){
     var cidade=c.cidade||c.localizacao||'';
     var f=fotos(c.fotos_no_site||c.fotos);
-    var img=f.length?'<img src="'+f[0]+'" alt="'+(c.nome||'')+'" loading="lazy">':'&#127963;';
-    var perfilBadge=c.perfil&&PERFIL_LBL[c.perfil]?'<span class="cl-badge perfil">'+PERFIL_LBL[c.perfil]+'</span>':'';
+    var img=f.length?'<img src="'+esc(f[0])+'" alt="'+esc(c.nome||'Condomínio')+'" loading="lazy">':'&#127963;';
+    var perfilBadge=c.perfil&&PERFIL_LBL[c.perfil]?'<span class="cl-badge perfil">'+esc(PERFIL_LBL[c.perfil])+'</span>':'';
     var amen=(c.amenidades||[]).slice(0,3);
-    var amenHtml=amen.length?'<div class="cl-card-amen">'+amen.map(function(a){return '<span class="cl-card-tag">'+a+'</span>';}).join('')+'</div>':'';
-    var desc=(c.descricao||'').slice(0,100)+((c.descricao||'').length>100?'...':'');
-    var url='/condominio?id='+encodeURIComponent(c.slug||c.id);
+    var amenHtml=amen.length?'<div class="cl-card-amen">'+amen.map(function(a){return '<span class="cl-card-tag">'+esc(a)+'</span>';}).join('')+'</div>':'';
+    var desc=esc((c.descricao||'').slice(0,100)+((c.descricao||'').length>100?'...':''));
+    var slug=String(c.slug||c.id||'');
+    var url=STATIC_CONDO_SLUGS.has(slug)?'/'+encodeURIComponent(slug)+'/':'/condominio/?id='+encodeURIComponent(slug);
     return '<a class="cl-card" href="'+url+'">'+
       '<div class="cl-card-img">'+img+
-        (cidade?'<span class="cl-badge">'+cidade+'</span>':'')+perfilBadge+
+        (cidade?'<span class="cl-badge">'+esc(cidade)+'</span>':'')+perfilBadge+
       '</div>'+
       '<div class="cl-card-b">'+
-        '<div class="cl-card-city">'+cidade+'</div>'+
-        '<div class="cl-card-t">'+(c.nome||'&mdash;')+'</div>'+
+        '<div class="cl-card-city">'+esc(cidade)+'</div>'+
+        '<div class="cl-card-t">'+esc(c.nome||'Condomínio')+'</div>'+
         (desc?'<div class="cl-card-desc">'+desc+'</div>':'')+
         amenHtml+
-        '<div class="cl-card-link">Ver condominio &rarr;</div>'+
+        '<div class="cl-card-link">Ver condomínio &rarr;</div>'+
       '</div></a>';
   }).join('');
 }
