@@ -1126,6 +1126,17 @@ async function getData() {
   try { return JSON.parse(localStorage.getItem('cnp_condominios') || '[]'); } catch { return []; }
 }
 
+function slugifyPublicCond(value) {
+  return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-');
+}
+function urlPublicaCondominio(c) {
+  if (!c) return '/condominios/';
+  const stored = String(c.slug || '').trim().replace(/^\/+|\/+$/g, '').replace(/^-+|-+$/g, '');
+  const slug = stored || slugifyPublicCond([c.nome, c.localizacao || c.cidade].filter(Boolean).join('-')) || c.id;
+  return '/' + encodeURIComponent(slug) + '/';
+}
+
 const params = new URLSearchParams(location.search);
 const condId = params.get('id');
 let cond = null;
@@ -1166,7 +1177,7 @@ async function init() {
   // canonical + Open Graph dinâmicos (cada condomínio com sua URL única)
   // Se o condomínio tem página estática premium própria, o canonical aponta para ela (evita duplicação no Google)
   const SLUGS_ESTATICOS = ['aura-garden-place-xangri-la','cyano-private-resort-osorio','monaco-grand-marina-maquine','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','condominio-maquine-la-marina','condominio-xangri-la-villas-resort','sunset-xangri-la','marina-de-xangri-la','marina-park','xangri-la-marina'];
-  const slugAtual = (cond.slug || cond.id || '').toString();
+  const slugAtual = (cond.slug || slugifyPublicCond([cond.nome, cond.localizacao || cond.cidade].filter(Boolean).join('-')) || cond.id || '').toString();
   const condUrlAbs = SLUGS_ESTATICOS.indexOf(slugAtual) !== -1
     ? 'https://condominiosnapraia.com.br/' + slugAtual + '/'
     : 'https://condominiosnapraia.com.br/condominio/?id=' + encodeURIComponent(slugAtual);
@@ -1587,6 +1598,16 @@ window.addEventListener('resize', () => {
 });
 
 // ── IMÓVEIS ──
+function urlPublicaImovelCond(im) {
+  if (!im) return '/imoveis/';
+  const stored = String(im.slug || '').trim().replace(/^\/+|\/+$/g, '').replace(/^-+|-+$/g, '');
+  if (stored) return '/imovel/' + encodeURIComponent(stored) + '/';
+  const base = slugifyPublicCond(im.titulo || im.tipo || 'imovel');
+  const suffix = slugifyPublicCond(im.codigo || '');
+  const slug = suffix && !base.endsWith(suffix) ? base + '-' + suffix : base;
+  return '/imovel/' + encodeURIComponent(slug || im.id) + '/';
+}
+
 function buildImoveis(imoveis) {
   const disp = imoveis.filter(i => i.publicar !== false && (i.status === 'Disponível' || i.status === 'Negociando'));
   const count = disp.length;
@@ -1618,7 +1639,7 @@ function buildImoveis(imoveis) {
     if (im.vagas)   specs.push(`<span class="ic-spec"><span class="ic-spec-ico">🚗</span>${im.vagas} vagas</span>`);
     const difs = dynPublicArray(im.diferenciais).slice(0, 3).map(d => `<span class="ic-dif">${dynEsc(d)}</span>`).join('');
     return `
-      <a class="imovel-card" href="/imovel?id=${encodeURIComponent(im.codigo || im.slug || im.id)}" style="text-decoration:none;color:inherit;display:block">
+      <a class="imovel-card" href="${urlPublicaImovelCond(im)}" style="text-decoration:none;color:inherit;display:block">
         <div class="ic-img">
           ${foto}
           <div class="ic-status ${statusCls}">${im.status}</div>
@@ -1785,14 +1806,13 @@ async function carregarImoveisDoCondominio(condominio){
 
   grid.innerHTML = lista.map(function(im){
     var foto = _fotoImovel(im);
-    var ref  = im.codigo || im.slug || im.id;
     var specs = [];
     if(im.area)    specs.push(im.area + ' m²');
     if(im.quartos) specs.push(im.quartos + ' quartos');
     if(im.suites)  specs.push(im.suites + ' suítes');
     if(im.vagas)   specs.push(im.vagas + ' vagas');
 
-    return '<a class="ci-card" href="/imovel?id=' + encodeURIComponent(ref) + '">' +
+    return '<a class="ci-card" href="' + urlPublicaImovelCond(im) + '">' +
       '<div class="ci-foto">' +
         (foto
           ? dynFotoTag(foto, (im.titulo || 'Imóvel') + ' no ' + (condominio.nome||''), {sizes:'(max-width: 700px) 90vw, 360px', width:640, height:440})
@@ -1813,9 +1833,7 @@ async function carregarImoveisDoCondominio(condominio){
 /* ═══ COMPARTILHAR O CONDOMÍNIO (com prévia de foto) ═══ */
 function urlCompartilharCond(){
   if(cond){
-    var ref = cond.slug || cond.id;
-    // a URL /condominio/SLUG passa pela Function que gera a prévia com foto
-    return 'https://condominiosnapraia.com.br/' + encodeURIComponent(ref);
+    return 'https://condominiosnapraia.com.br' + urlPublicaCondominio(cond);
   }
   return location.href;
 }

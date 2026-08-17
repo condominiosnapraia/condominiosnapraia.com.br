@@ -18,10 +18,12 @@ export async function onRequest(context){
   try{
     const enc = encodeURIComponent(ref);
     const HDR = { headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON } };
-    let r = await fetch(`${SB_URL}/rest/v1/condominios?or=(slug.eq.${enc},id.eq.${enc})&select=slug,id&limit=1`, HDR);
+    let r = await fetch(`${SB_URL}/rest/v1/condominios?or=(slug.eq.${enc},id.eq.${enc})&select=slug,id,nome,cidade&limit=1`, HDR);
     const arr = r.ok ? await r.json() : [];
-    if (Array.isArray(arr) && arr.length && arr[0].slug){
-      slug = arr[0].slug;
+    if (Array.isArray(arr) && arr.length){
+      const row = arr[0];
+      slug = row.slug || String(row.nome || 'condominio') + '-' + String(row.cidade || '').replace(/\s+/g, '-');
+      slug = slug.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     }
   }catch(e){ /* mantem ref como esta */ }
 

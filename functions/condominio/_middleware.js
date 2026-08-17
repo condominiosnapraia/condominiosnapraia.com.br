@@ -19,6 +19,21 @@ function fotoPublica(value) {
   return index === -1 ? text : `${SITE}/cdn-fotos/${text.slice(index + marker.length)}`;
 }
 
+function slugifyPublic(value) {
+  return String(value || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-+/g, '-');
+}
+
+function slugPublico(cond) {
+  const stored = String(cond?.slug || '').trim().replace(/^\/+|\/+$/g, '').replace(/^-+|-+$/g, '');
+  if (stored) return stored;
+  return slugifyPublic([cond?.nome, cond?.cidade].filter(Boolean).join('-')) || String(cond?.id || 'condominio');
+}
+
 function descricaoPublica(value) {
   return String(value ?? '')
     .replace(/\b(?:unidade|apt(?:o)?|apartamento)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
@@ -71,7 +86,7 @@ export async function onRequest(context) {
   const cond = await buscarCondominio(ref, env?.SUPABASE_ANON_KEY || SB_ANON_FALLBACK);
   if (!cond) return response;
 
-  const slug = cond.slug || cond.id || ref;
+  const slug = slugPublico(cond);
   const canonicalUrl = `${SITE}/condominio/?id=${encodeURIComponent(slug)}`;
   const title = `${cond.nome || 'Condomínio'} — Condomínios na Praia`;
   const description = (descricaoPublica(cond.descricao) || `Conheça o condomínio ${cond.nome || ''} no Litoral Norte Gaúcho e veja infraestrutura, localização e imóveis disponíveis.`)

@@ -3098,7 +3098,18 @@ function cmTab(name){
 // ── SLUGIFY (igual ao do banco/build) ──
 function cnpSlugify(s){
   return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-    .toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+    .toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-+|-+$/g,'');
+}
+function cnpSlugImovel(im){
+  const stored=String(im&&im.slug||'').trim().replace(/^\/+|\/+$/g,'').replace(/^-+|-+$/g,'');
+  if(stored) return stored;
+  const base=cnpSlugify(im&& (im.titulo||im.tipo) || 'imovel');
+  const suffix=cnpSlugify(im&&im.codigo || '');
+  if(suffix && !base.endsWith(suffix)) return base+'-'+suffix;
+  return base || cnpSlugify(im&&im.id || 'imovel');
+}
+function cnpSlugCondominio(c){
+  return cnpSlugify([c&&c.nome,c&&(c.cidade||c.localizacao)].filter(Boolean).join('-')) || cnpSlugify(c&&c.id || 'condominio');
 }
 function cmSlugPreview(){
   const nome=document.getElementById('cm-nome').value;
@@ -3324,6 +3335,7 @@ async function savCond(){
   const eid=document.getElementById('cm-id').value,id=eid||(sl(nome)+'-'+uid().slice(0,4));
   const btn=document.querySelector('#cond-mo .btn.bp');if(btn){btn.disabled=true;btn.textContent='Salvando...';}
   try{
+    const slugCondominio = cnpSlugify(document.getElementById('cm-slug').value || nome+'-'+cidade) || cnpSlugCondominio({nome,cidade});
     // Upload de fotos novas para Supabase Storage
     const fotosUrls = await uploadFotos(cF, cFS, 'cond', id, ['condominio',cidade,nome].join(' '));
     const o={
@@ -3347,7 +3359,7 @@ async function savCond(){
       ativo:document.getElementById('cm-pub').value==='1',
       seo_data:{titulo:document.getElementById('cm-seo-titulo').value,desc:document.getElementById('cm-seo-desc').value,keywords:document.getElementById('cm-seo-kw').value,slogan:document.getElementById('cm-seo-slogan').value,tour:document.getElementById('cm-seo-tour').value,video:document.getElementById('cm-seo-video').value},
       // ── CMS: novos campos SEO/conteúdo/mídia/local ──
-      slug: document.getElementById('cm-slug').value || cnpSlugify(nome+'-'+cidade),
+      slug: slugCondominio,
       seo_title: document.getElementById('cm-seo-titulo').value,
       seo_description: document.getElementById('cm-seo-desc').value,
       seo_keywords: document.getElementById('cm-seo-kw').value,
@@ -3667,8 +3679,9 @@ async function savImov(){
   const btn=document.querySelector('#imov-mo .btn.bp');if(btn){btn.disabled=true;btn.textContent='Salvando...';}
   try{
     const _condSeo=(DB.co||[]).find(c=>c.id===condId)||{}; const fotosUrls = await uploadFotos(iF, iFS, 'imov', id, ['imovel',_condSeo.cidade,_condSeo.nome,titulo].filter(Boolean).join(' '));
-    const o={
-      id,titulo,cond_id:condId,ref:gv('im-ref'),codigo:codigoImovel,
+      const slugImovel=cnpSlugImovel({titulo,tipo:gv('im-tipo'),codigo:codigoImovel});
+      const o={
+      id,titulo,cond_id:condId,ref:gv('im-ref'),codigo:codigoImovel,slug:slugImovel,
       lote:gv('im-lote'),quadra:gv('im-quadra'),cep:gv('im-cep'),cidade_end:gv('im-cidade'),bairro_end:gv('im-bairro-end'),ref_local:gv('im-ref-local'),
       finalidade:gv('im-final'),tipo:gv('im-tipo'),status:gv('im-st'),
       publicar:gv('im-pub')==='1',destaque:gv('im-destaque')==='1'||gc('im-destaque-chk'),
@@ -6109,8 +6122,8 @@ async function gerarPaginasCondominios(){
   const zip=new JSZip();
 
   conds.forEach(c=>{
-    const slug=c.slug||String(c.id);
     const cidade=c.localizacao||c.cidade||'Litoral Norte';
+    const slug=c.slug||cnpSlugCondominio({...c,cidade});
     const url=`${BASE}/condominio/${slug}`;
     const titulo=`${c.nome} em ${cidade} | Condomínios na Praia`;
     const desc=esc((c.descricao||`${c.nome}: condomínio ${c.tipo||'fechado'} em ${cidade}. ${c.padrao||'Alto padrão'}.`).slice(0,155));
@@ -6237,9 +6250,8 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
 </nav>
 </body>
 </html>`;
-    // grava na RAIZ (/slug) — mesma rota das paginas ja publicadas e dos links do site.
-    // (/condominio/slug pertence a Function de preview social e nao serve pagina.)
-    zip.file(`${slug}/index.html`, html);
+    // grava na rota canónica /imovel/<slug>/, usada pelo middleware SSR e pelos cards públicos.
+    zip.file(`imovel/${slug}/index.html`, html);
   });
 
   const blob=await zip.generateAsync({type:'blob'});
@@ -6250,8 +6262,8 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
 }
 
 
-// ── GERADOR DE PAGINAS SEO DE IMOVEIS ──
-// Cria uma pagina estatica por imovel publicado, em /imovel-<codigo-ou-slug>/index.html.
+  // ── GERADOR DE PAGINAS SEO DE IMOVEIS ──
+// Cria uma pagina estatica por imovel publicado, em /imovel/<slug>/index.html.
 // Motivo: as fichas de imovel so existiam atras do JavaScript, invisiveis para o Google.
 // A pagina traz titulo, preco, caracteristicas, fotos com alt, schema e link para o condominio.
 async function gerarPaginasImoveis(){
@@ -6341,9 +6353,8 @@ async function gerarPaginasImoveis(){
     const cond = im.cond_id ? mapaCond[im.cond_id] : null;
     const condNome = cond ? cond.nome : (im.condominio||'');
     const cidade = (cond && (cond.localizacao||cond.cidade)) || im.cidade || 'Litoral Norte';
-    const ref = im.codigo || im.slug || im.id;
-    const slug = 'imovel-' + slugify(ref);
-    const url = BASE + '/' + slug;
+    const slug = cnpSlugImovel(im);
+    const url = BASE + '/imovel/' + slug + '/';
     const tipo = im.tipo || 'Imovel';
     const preco = moeda(im.preco);
 
@@ -6370,12 +6381,11 @@ async function gerarPaginasImoveis(){
       const sc = s.cond_id?mapaCond[s.cond_id]:null;
       const scNome = sc?sc.nome:(s.condominio||'');
       const scCidade = (sc&&(sc.localizacao||sc.cidade))||s.cidade||'';
-      const sref = s.codigo||s.slug||s.id;
-      const sslug = 'imovel-'+slugify(sref);
+      const sslug = cnpSlugImovel(s);
       const sfoto = ((s.fotos_no_site&&s.fotos_no_site.length?s.fotos_no_site:(s.fotos||[])).filter(f=>typeof f==='string'&&f.indexOf('http')===0))[0];
       const spreco = moeda(s.preco);
       const sbits=[]; if(s.suites)sbits.push(s.suites+' suítes'); else if(s.quartos)sbits.push(s.quartos+' dorm.'); if(s.area)sbits.push(s.area+'m²');
-      return `<a class="sim-card" href="/${sslug}">${sfoto?`<div class="sim-img"><img src="${esc(sfoto)}" alt="${esc((s.tipo||'Imóvel')+(scNome?' no '+scNome:''))}" loading="lazy"></div>`:'<div class="sim-img sim-noimg">🏠</div>'}<div class="sim-b"><div class="sim-eyebrow">${esc(scCidade)}</div><div class="sim-nome">${esc(s.titulo||((s.tipo||'Imóvel')+(scNome?' no '+scNome:'')))}</div>${sbits.length?`<div class="sim-bits">${esc(sbits.join(' · '))}</div>`:''}<div class="sim-preco">${spreco||'Sob consulta'}</div></div></a>`;
+      return `<a class="sim-card" href="/imovel/${sslug}/">${sfoto?`<div class="sim-img"><img src="${esc(sfoto)}" alt="${esc((s.tipo||'Imóvel')+(scNome?' no '+scNome:''))}" loading="lazy"></div>`:'<div class="sim-img sim-noimg">🏠</div>'}<div class="sim-b"><div class="sim-eyebrow">${esc(scCidade)}</div><div class="sim-nome">${esc(s.titulo||((s.tipo||'Imóvel')+(scNome?' no '+scNome:'')))}</div>${sbits.length?`<div class="sim-bits">${esc(sbits.join(' · '))}</div>`:''}<div class="sim-preco">${spreco||'Sob consulta'}</div></div></a>`;
     }).join('')}</div></div>` : '';
 
     const specs=[];
@@ -6631,19 +6641,18 @@ async function gerarSitemap(){
     // as paginas de condominio ficam na RAIZ (/slug), geradas pelo botao "Gerar Paginas SEO".
     // (/condominio?id= nao e pagina indexavel — era so o preview social.)
     condUrls=(conds||[]).map(c=>({
-      loc:BASE+'/'+encodeURIComponent(c.slug||c.id),
+      loc:BASE+'/'+encodeURIComponent(c.slug||cnpSlugCondominio(c))+'/',
       lastmod:(c.updated_at||'').slice(0,10)
     }));
   }catch(e){ toast('Aviso: não consegui buscar condomínios — '+e.message,'error'); }
   const hoje=new Date().toISOString().slice(0,10);
   let xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-  // imoveis publicados: mesma regra de slug do gerador de paginas (imovel-<codigo>)
+  // imóveis publicados: mesma regra de slug do gerador de páginas (/imovel/<slug>/)
   let imovUrls=[];
   try{
-    const _slugify=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-    const ims=await sb.get('imoveis','?select=id,codigo,slug,status,publicar,updated_at&limit=2000');
+    const ims=await sb.get('imoveis','?select=id,codigo,slug,titulo,tipo,status,publicar,updated_at&limit=2000');
     imovUrls=(ims||[]).filter(im=> im && im.publicar!==false && im.status!=='Vendido')
-      .map(im=>({ loc:BASE+'/imovel-'+_slugify(im.codigo||im.slug||im.id), lastmod:(im.updated_at||'').slice(0,10) }));
+      .map(im=>({ loc:BASE+'/imovel/'+cnpSlugImovel(im)+'/', lastmod:(im.updated_at||'').slice(0,10) }));
   }catch(e){ imovUrls=[]; }
 
   estaticas.forEach(u=>{ xml+=`  <url>\n    <loc>${BASE}${u}</loc>\n    <lastmod>${hoje}</lastmod>\n    <changefreq>monthly</changefreq>\n  </url>\n`; });

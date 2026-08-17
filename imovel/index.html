@@ -986,7 +986,16 @@ function refImovel(){
 function brl(v){if(v==null||v==='')return 'Sob consulta';const n=Number(v);if(isNaN(n))return String(v);return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});}
 function m2(v){return v?(v+' m²'):'—';}
 function fotosValidas(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
-function urlPublicaImovel(im){const ref=im&& (im.slug||im.codigo||im.id);return ref?('/imovel/'+encodeURIComponent(ref)+'/'):'/imovel/';}
+function slugifyPublicImovel(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').replace(/-+/g,'-');}
+function urlPublicaImovel(im){
+  if(!im) return '/imovel/';
+  var stored=String(im.slug||'').trim().replace(/^\/+|\/+$/g,'');
+  if(stored) return '/imovel/'+encodeURIComponent(stored)+'/';
+  var base=slugifyPublicImovel(im.titulo||im.tipo||'imovel');
+  var suffix=slugifyPublicImovel(im.codigo||'');
+  var slug=suffix && base.slice(-suffix.length)!==suffix ? base+'-'+suffix : base;
+  return '/imovel/'+encodeURIComponent(slug||im.id)+'/';
+}
 function descricaoPublica(texto){return String(texto||'').replace(/\b(?:unidade|apt(?:o)?|apartamento)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi,'').replace(/\btorre\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi,'').replace(/\b(?:quadra|lote|box)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi,'').replace(/\bcasa\s*(?:n[ºo°.]?|número)\s*[a-z0-9-]+/gi,'').replace(/\r\n?/g,'\n').split('\n').map(function(l){return l.replace(/[ \t]{2,}/g,' ').replace(/[ \t]+([,.;])/g,'$1').trim();}).join('\n').replace(/\n{3,}/g,'\n\n').trim();}
 function diferenciaisPublicos(value){var arr=Array.isArray(value)?value:String(value||'').split(/[;\n]|,(?=\s*[A-ZÀ-Ú])/);return arr.map(function(v){return descricaoPublica(v).replace(/^[\s·|,;:/-]+|[\s·|,;:/-]+$/g,'').trim();}).filter(function(v){return v && !/^(quadra|lote|torre|unidade|box|apartamento|casa)\b/i.test(v);});}
 
@@ -1169,7 +1178,6 @@ function render(im,cond){
 
     // CANONICAL correto para este imóvel
     var can=document.querySelector('link[rel="canonical"]');
-    var ref = im.slug || im.id;
     if(can) can.setAttribute('href','https://condominiosnapraia.com.br'+urlPublicaImovel(im));
 
     // ═══ SCHEMA.ORG — dados estruturados (o Google entende que é um imóvel à venda) ═══

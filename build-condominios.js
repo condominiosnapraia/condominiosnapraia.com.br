@@ -208,6 +208,17 @@ const tituloPublico = value => String(value || 'Imóvel')
   .replace(/^\s*[-–—,:·|]+\s*|\s*[-–—,:·|]+\s*$/g, '')
   .trim() || 'Imóvel no condomínio';
 
+const slugifyPublico = value => String(value || '')
+  .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-');
+const slugPublicoImovel = im => {
+  const stored = String(im?.slug || '').trim().replace(/^\/+|\/+$/g, '').replace(/^-+|-+$/g, '');
+  if (stored) return stored;
+  const base = slugifyPublico(im?.titulo || im?.tipo || 'imovel');
+  const suffix = slugifyPublico(im?.codigo || '');
+  return suffix && !base.endsWith(suffix) ? `${base}-${suffix}` : (base || slugifyPublico(im?.id));
+};
+
 // monta os parágrafos a partir de um campo de texto (quebra em \n\n)
 const paras = txt => String(txt || '')
   .split(/\n{2,}|\r\n\r\n/).map(p => p.trim()).filter(Boolean)
@@ -308,8 +319,8 @@ function blocoConteudo(cond, imoveis) {
       const tit = tituloPublico(im.titulo || im.nome || (im.tipo ? im.tipo + ' em ' + nome : 'Imóvel'));
       const preco = fmtPreco(im.preco || im.valor);
       const foto = fotoUrl((Array.isArray(im.fotos) ? im.fotos[0] : im.foto) || '');
-      const slugImovel = im.slug ? String(im.slug).replace(/^\/+|\/+$/g, '') : '';
-      const href = slugImovel ? '/imovel/' + slugImovel + '/' : (im.id ? '/imovel/?id=' + encodeURIComponent(im.id) : '#');
+      const slugImovel = slugPublicoImovel(im);
+      const href = slugImovel ? '/imovel/' + encodeURIComponent(slugImovel) + '/' : '#';
       partes.push(`<a href="${esc(href)}" style="display:block;border:1px solid #e5ded3;border-radius:12px;overflow:hidden;text-decoration:none;background:#fff">`);
       if (foto) partes.push(fotoTag(foto, `${tit} — ${cidade}`, {sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 260px', width:640, height:384}));
       partes.push(`<div style="padding:12px 14px"><div style="font-size:14px;color:#0d3b54;font-weight:600;line-height:1.35">${esc(tit)}</div>${preco ? `<div style="font-family:'Fraunces',serif;font-size:17px;color:#0c4a6e;margin-top:6px">${esc(preco)}</div>` : ''}</div>`);

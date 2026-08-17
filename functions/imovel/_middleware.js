@@ -37,9 +37,25 @@ function aliasParaRef(ref = '') {
   return hit ? hit[0] : ref;
 }
 
+function slugifyPublic(value) {
+  return String(value || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-+/g, '-');
+}
+
 function slugPublico(im) {
   const codigo = String(im?.codigo || '').toUpperCase();
-  return PUBLIC_SLUG_ALIASES[codigo] || im?.slug || im?.codigo || im?.id;
+  if (PUBLIC_SLUG_ALIASES[codigo]) return PUBLIC_SLUG_ALIASES[codigo];
+  if (String(im?.slug || '').trim()) return String(im.slug).trim().replace(/^\/+|\/+$/g, '').replace(/^-+|-+$/g, '');
+  const titulo = descricaoPublica(im?.titulo || im?.tipo || 'Imóvel');
+  const base = slugifyPublic(titulo || im?.tipo || 'imovel');
+  const suffix = slugifyPublic(codigo);
+  if (suffix && !base.endsWith(suffix)) return `${base}-${suffix}`;
+  return base || slugifyPublic(im?.id) || im?.id;
 }
 
 function descricaoPublica(texto) {
@@ -111,7 +127,10 @@ async function buscarImovel(ref, key) {
   if (!ref || !key) return null;
   const resolvedRef = aliasParaRef(ref);
   const valor = encodeURIComponent(resolvedRef);
-  const query = `${SUPABASE_URL}/rest/v1/imoveis?or=(codigo.eq.${valor},slug.eq.${valor},id.eq.${valor})&select=id,slug,codigo,titulo,cond_id,tipo,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,cidade_end,descricao,fotos_no_site,fotos&limit=1`;
+  const codeSuffix = (String(resolvedRef).match(/(?:^|-)([A-Z]{2,5}-\d{3})$/i)?.[1] || '').toUpperCase();
+  const codeFilter = codeSuffix && codeSuffix.toLowerCase() !== String(resolvedRef).toLowerCase()
+    ? `,codigo.eq.${encodeURIComponent(codeSuffix)}` : '';
+  const query = `${SUPABASE_URL}/rest/v1/imoveis?or=(codigo.eq.${valor},slug.eq.${valor},id.eq.${valor}${codeFilter})&select=id,slug,codigo,titulo,cond_id,tipo,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,cidade_end,descricao,fotos_no_site,fotos&limit=1`;
   try {
     const r = await fetchSupabaseComRetry(query, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
     if (!r || !r.ok) return null;
