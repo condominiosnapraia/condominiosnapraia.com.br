@@ -1,0 +1,236 @@
+[
+  {
+    "source": "1-Acqualina.png",
+    "output": "1-Acqualina.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 214306
+  },
+  {
+    "source": "10-Enseada.png",
+    "output": "10-Enseada.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 274748
+  },
+  {
+    "source": "11-GreenVillage.png",
+    "output": "11-GreenVillage.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 135044
+  },
+  {
+    "source": "12-IlhasPark.png",
+    "output": "12-IlhasPark.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 78856
+  },
+  {
+    "source": "13-IlhasResort.png",
+    "output": "13-IlhasResort.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 106184
+  },
+  {
+    "source": "2-AtlânticoVillasClub.png",
+    "output": "2-AtlânticoVillasClub.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 254246
+  },
+  {
+    "source": "3-Bosques.png",
+    "output": "3-Bosques.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 132956
+  },
+  {
+    "source": "35-Villasresort.png",
+    "output": "35-Villasresort.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 360400
+  },
+  {
+    "source": "4-Carmel.png",
+    "output": "4-Carmel.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 137656
+  },
+  {
+    "source": "42-Origem.png",
+    "output": "42-Origem.webp",
+    "original_px": [
+      2400,
+      1350
+    ],
+    "webp_px": [
+      1600,
+      900
+    ],
+    "bytes": 238818
+  },
+  {
+    "source": "45-VientosResort.png",
+    "output": "45-VientosResort.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 187772
+  },
+  {
+    "source": "48-RoyalLake.png",
+    "output": "48-RoyalLake.webp",
+    "original_px": [
+      4300,
+      2362
+    ],
+    "webp_px": [
+      1600,
+      879
+    ],
+    "bytes": 130510
+  },
+  {
+    "source": "53-Sunset.png",
+    "output": "53-Sunset.webp",
+    "original_px": [
+      6378,
+      4252
+    ],
+    "webp_px": [
+      1600,
+      1067
+    ],
+    "bytes": 49526
+  },
+  {
+    "source": "54-Sense.png",
+    "output": "54-Sense.webp",
+    "original_px": [
+      2055,
+      1474
+    ],
+    "webp_px": [
+      1600,
+      1148
+    ],
+    "bytes": 235604
+  },
+  {
+    "source": "6-Celebration.png",
+    "output": "6-Celebration.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 198292
+  },
+  {
+    "source": "7-CondadodeCapao.png",
+    "output": "7-CondadodeCapao.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 199136
+  },
+  {
+    "source": "8-CostaSerena.png",
+    "output": "8-CostaSerena.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 292940
+  },
+  {
+    "source": "9-Dubai.png",
+    "output": "9-Dubai.webp",
+    "original_px": [
+      1984,
+      1404
+    ],
+    "webp_px": [
+      1600,
+      1132
+    ],
+    "bytes": 101618
+  }
+]
