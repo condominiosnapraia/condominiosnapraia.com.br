@@ -845,12 +845,15 @@ details[open] .dec-faq-q:after{content:"−"}
     s.async=true;
     document.head.appendChild(s);
   }
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(entries){
-      if(entries.some(function(e){return e.isIntersecting;})){io.disconnect();load();}
-    },{rootMargin:'700px 0px'});
-    io.observe(target);
-  }else{setTimeout(load,2500);}
+  function arm(){
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(entries){
+        if(entries.some(function(e){return e.isIntersecting;})){io.disconnect();load();}
+      },{rootMargin:'700px 0px'});
+      io.observe(target);
+    }else{setTimeout(load,2500);}
+  }
+  window.addEventListener('imovel:ready',arm,{once:true});
 })();
 </script>
 <footer class="page-footer" aria-label="Rodapé Portal Meu Litoral">
@@ -1083,6 +1086,8 @@ async function init(){
     try{const legacy=await sbGet('condominios','?id=eq.'+encodeURIComponent(cond.id)+'&select=id,fotos&limit=1');if(legacy[0])cond.fotos_no_site=legacy[0].fotos||[];}catch(e){}
   }
   render(im,cond);
+  document.documentElement.setAttribute('data-imovel-ready','true');
+  try{window.dispatchEvent(new Event('imovel:ready'));}catch(e){}
   agendarSimilares(im,cond);
 }
 
