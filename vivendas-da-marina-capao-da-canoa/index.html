@@ -1090,7 +1090,7 @@ function renderStaticCond(){
   if (metaDesc) metaDesc.content = descSeo;
   // canonical + Open Graph dinâmicos (cada condomínio com sua URL única)
   // Se o condomínio tem página estática premium própria, o canonical aponta para ela (evita duplicação no Google)
-  const SLUGS_ESTATICOS = ['aura-garden-place-xangri-la','cyano-private-resort-osorio','monaco-grand-marina-maquine','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','marina-de-xangri-la','marina-park','xangri-la-marina'];
+  const SLUGS_ESTATICOS = ['aura-garden-place-xangri-la','cyano-private-resort-osorio','monaco-grand-marina-maquine','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','condominio-maquine-la-marina','condominio-xangri-la-villas-resort','sunset-xangri-la','marina-de-xangri-la','marina-park','xangri-la-marina'];
   const slugAtual = (cond.slug || cond.id || '').toString();
   const condUrlAbs = SLUGS_ESTATICOS.indexOf(slugAtual) !== -1
     ? 'https://condominiosnapraia.com.br/' + slugAtual + '/'
@@ -1306,7 +1306,7 @@ async function init() {
   if (metaDesc) metaDesc.content = descSeo;
   // canonical + Open Graph dinâmicos (cada condomínio com sua URL única)
   // Se o condomínio tem página estática premium própria, o canonical aponta para ela (evita duplicação no Google)
-  const SLUGS_ESTATICOS = ['aura-garden-place-xangri-la','cyano-private-resort-osorio','monaco-grand-marina-maquine','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','marina-de-xangri-la','marina-park','xangri-la-marina'];
+  const SLUGS_ESTATICOS = ['aura-garden-place-xangri-la','cyano-private-resort-osorio','monaco-grand-marina-maquine','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','condominio-maquine-la-marina','condominio-xangri-la-villas-resort','sunset-xangri-la','marina-de-xangri-la','marina-park','xangri-la-marina'];
   const slugAtual = (cond.slug || cond.id || '').toString();
   const condUrlAbs = SLUGS_ESTATICOS.indexOf(slugAtual) !== -1
     ? 'https://condominiosnapraia.com.br/' + slugAtual
