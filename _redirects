@@ -1252,3 +1252,7 @@
 /imovel-xan-205/ /imovel/04-suites-a-venda-no-condominio-amana-atlantida-beira-lago-xan-205/ 301
 /imovel-cap-003 /imovel/casa-a-venda-no-terrasul-arroio-teixeira-3-suites-cap-003/ 301
 /imovel-cap-003/ /imovel/casa-a-venda-no-terrasul-arroio-teixeira-3-suites-cap-003/ 301
+
+# Consolidação SEO: a variante com hífen extra do Villas Resort não é canónica.
+/condominio-xangri-la-villas-resort- /condominio-xangri-la-villas-resort/ 301
+/condominio-xangri-la-villas-resort-/ /condominio-xangri-la-villas-resort/ 301
