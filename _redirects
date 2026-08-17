@@ -6,6 +6,9 @@
 /imovel-xan-019/ /imovel/lote-a-venda-monaco-yacht-club-xangri-la-2/ 301
 
 # Query strings não entram aqui: o Cloudflare Pages _redirects não suporta parâmetros.
+# Empreendimentos não confirmados pelo proprietário não permanecem indexáveis no portal.
+/ocean-side-xangri-la /condominios/ 301
+/ocean-side-xangri-la/ /condominios/ 301
 /atlantida /condominios/ 301
 /LINK_DE_AVALIACAO /contato/ 301
 /imovel-XAN-096 /imovel/lote-beira-lago-a-venda-no-condominio-isla-xangri-la-xan-096/ 301
