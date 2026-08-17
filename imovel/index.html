@@ -1083,6 +1083,14 @@ async function init(){
     if(Array.isArray(imv)&&imv.length) break;
     try{ imv = await sbGet('imoveis','?'+field+'=eq.'+_ref+'&select='+encodeURIComponent(DYN_IMOV_SELECT)+'&limit=1'); }catch(e){ imv=[]; }
   }
+  // Slugs descritivos novos terminam com o código interno; ele é o último fallback
+  // para registros criados antes de o campo `slug` ser persistido no CRM.
+  if((!Array.isArray(imv)||!imv.length) && !/^[A-Z]{2,5}-\d{3}$/i.test(id)){
+    const codeMatch=String(id).match(/(?:^|-)([A-Z]{2,5}-\d{3})$/i);
+    if(codeMatch){
+      try{ imv=await sbGet('imoveis','?codigo=eq.'+encodeURIComponent(codeMatch[1].toUpperCase())+'&select='+encodeURIComponent(DYN_IMOV_SELECT)+'&limit=1'); }catch(e){ imv=[]; }
+    }
+  }
   if(!Array.isArray(imv)||!imv.length){cont.innerHTML=notFound();return;}
   const im=imv[0];
   // Registros antigos sem fotos_no_site recebem somente o array legado sob demanda.
