@@ -1271,19 +1271,50 @@ async function init() {
   buildCondMap(cond);
 
   function buildImplantacao(c){
-    const key = String(c.slug || c.id || '').toLowerCase();
+    const key = String(c.slug || c.id || '').trim().toLowerCase().replace(/^-+|-+$/g,'');
     const mapas = {
-      'condominio-alegro-curumim':'alegro','aura-garden-place-xangri-la':'aura','bravia-marina-beach-club-maquine':'bravia','cyano-private-resort-osorio':'cyano','enseada-lagoa-dos-quadros-capao-da-canoa':'enseada','la-marina-reserva-maquine':'lamarina','mirador-playa-arenas-curumim':'mirador','monaco-grand-marina-maquine':'monaco','origem-natureza-habitada-xangri-la':'origem','vientos-resort-xangri-la':'vientos','vivendas-da-marina-capao-da-canoa':'vivendas'
+      'acqualina-beach-xangri-la':'1-Acqualina.webp',
+      'carmel-xangri-la':'4-Carmel.webp',
+      'bosques-de-atlantida-atlantida':'3-Bosques.webp',
+      'condado-de-capao-capao-da-canoa':'7-CondadodeCapao.webp',
+      'celebration-xangri-la':'6-Celebration.webp',
+      'costa-serena-capao-da-canoa':'8-CostaSerena.webp',
+      'dubai-resort-residencial-capao-da-canoa':'9-Dubai.webp',
+      'green-village-golf-club-xangri-la':'11-GreenVillage.webp',
+      'enseada-lagoa-dos-quadros-capao-da-canoa':'10-Enseada.webp',
+      'atlantida-ilhas-park-xangri-la':'12-IlhasPark.webp',
+      'capao-ilhas-resort-capao-da-canoa':'13-IlhasResort.webp',
+      'atlantico-villas-club-xangri-la':'2-AtlânticoVillasClub.webp',
+      'vientos-resort-xangri-la':'45-VientosResort.webp',
+      'sense-xangri-la-xangri-la':'54-Sense.webp',
+      'condominio-xangri-la-villas-resort':'35-Villasresort.webp',
+      'sunset-xangri-la':'53-Sunset.webp',
+      'royal-lake-xangri-la':'48-RoyalLake.webp',
+      'origem-natureza-habitada-xangri-la':'42-Origem.webp',
+      'lotus-atlantida-xangri-la':'36-Lotus.webp',
+      'condominio-capao-da-canoa-viz-home-lake':'37-Viz.webp',
+      'la-marina-reserva-maquine':'40-LaMarina.webp',
+      'occhi-marina-club-capao-da-canoa':'41-Occhimarina.webp',
+      'zen-concept-resort-xangri-la':'43-Zenmelnik.webp',
+      'wave-home-resort-xangri-la':'44-Wave.webp',
+      'verano-xangri-la':'46-Verano.webp',
+      'amana-atlantida-atlantida':'47-AmanáAtlântida.webp',
+      'isla-xangri-la':'49-Isla.webp',
+      'blue-xangri-la-xangri-la':'52-Blue.webp',
+      'duo-nautic-life-club-xangri-la':'51-Duo.webp',
+      'vivendas-da-marina-osorio':'39-Vivendasdamarina.webp',
+      'prime-beach-capao-da-canoa':'50-PrimeBeach.webp'
     };
-    const prefix = mapas[key];
+    const filename = mapas[key];
     const sec = document.getElementById('cond-implantacao-section');
     const img = document.getElementById('cond-implantacao-img');
     const link = document.getElementById('cond-implantacao-link');
-    if(!prefix || !sec || !img || !link) return;
-    const base = '/img/mapas/'+prefix+'-mapa';
-    img.src = base+'.webp';
+    if(!filename || !sec || !img || !link) return;
+    const asset = '/img/mapas-condominios/' + encodeURIComponent(filename).replace(/%2F/g,'/');
+    img.src = asset;
     img.alt = 'Miniatura do mapa de implantação do '+(c.nome || 'condomínio');
-    link.href = '/'+prefix+'-mapa-implantacao.pdf';
+    link.href = asset;
+    link.setAttribute('aria-label','Abrir mapa de implantação de '+(c.nome || 'condomínio'));
     sec.style.display = '';
   }
   function buildMercado(c){
