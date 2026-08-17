@@ -371,15 +371,15 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 /* Um único sistema de divisórias: a onda recebe a cor da seção anterior. */
 .sec-onda{
   position:relative!important;
-  overflow:visible!important;
+  overflow:hidden!important;
   margin-top:0!important;
-  padding-top:58px!important;
+  padding-top:72px!important;
   border:0!important;
 }
 .sec-onda::before{
   content:""!important;
   position:absolute!important;
-  top:-72px!important;
+  top:0!important;
   left:0!important;
   right:0!important;
   height:72px!important;
@@ -390,12 +390,12 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   filter:none!important;
   -webkit-filter:none!important;
   background:var(--wave-from,#fbf5eb)!important;
-  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 48 C110 96 230 100 350 46 C470 -2 590 4 720 50 C850 98 970 102 1090 44 C1200 -4 1325 2 1440 46 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%!important;
-  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 48 C110 96 230 100 350 46 C470 -2 590 4 720 50 C850 98 970 102 1090 44 C1200 -4 1325 2 1440 46 L1440 100 L0 100 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%!important;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 H1440 V46 C1325 2 1200 -4 1090 44 C970 102 850 98 720 50 C590 4 470 -2 350 46 C230 100 110 96 0 48 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%!important;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 H1440 V46 C1325 2 1200 -4 1090 44 C970 102 850 98 720 50 C590 4 470 -2 350 46 C230 100 110 96 0 48 Z' fill='black'/%3E%3C/svg%3E") no-repeat center/100% 100%!important;
 }
 .sec-onda>*{position:relative;z-index:2}
 .hero-wave-svg{filter:none!important;-webkit-filter:none!important;height:64px!important}
-.viv-sec{position:relative!important;overflow:visible!important;margin-top:0!important}
+.viv-sec{position:relative!important;overflow:hidden!important;margin-top:0!important}
 .viv-sec::before{content:none!important;display:none!important}
 #lch-sec-sec{background:#eef3ec!important}
 #lch-sec-sec.sec-onda::before{--wave-from:#fbf5eb}
@@ -434,8 +434,8 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #sec-blog-preview{background:#fff!important}
 #sec-blog-preview.sec-onda::before{--wave-from:#faf6ef}
 @media(max-width:768px){
-  .sec-onda{padding-top:44px!important}
-  .sec-onda::before{top:-48px!important;height:48px!important}
+  .sec-onda{padding-top:48px!important}
+  .sec-onda::before{top:0!important;height:48px!important}
   .hero-wave-svg{height:46px!important}
 }
 /* Divisores das três escolhas de moradia: uma única onda, com a cor da seção anterior. */
@@ -448,8 +448,8 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #viver-cidade.sec-onda::before{--wave-from:#eef7fb}
 #viver-lagoa.sec-onda,#viver-mar.sec-onda,#viver-cidade.sec-onda{padding-left:max(22px,calc((100vw - 1180px)/2 + 22px))!important;padding-right:max(22px,calc((100vw - 1180px)/2 + 22px))!important}
 @media(max-width:768px){
-  #viver-lagoa.sec-onda,#viver-mar.sec-onda,#viver-cidade.sec-onda{padding:44px 16px 16px!important}
-  #viver-lagoa.sec-onda::before,#viver-mar.sec-onda::before,#viver-cidade.sec-onda::before{top:-48px!important;height:48px!important}
+  #viver-lagoa.sec-onda,#viver-mar.sec-onda,#viver-cidade.sec-onda{padding:48px 16px 16px!important}
+  #viver-lagoa.sec-onda::before,#viver-mar.sec-onda::before,#viver-cidade.sec-onda::before{top:0!important;height:48px!important}
 }
 </style>
   <link rel="stylesheet" href="/css/protecao-conteudo.css">
@@ -801,7 +801,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: LAGOA DOS QUADROS ══ -->
 <section class="viv-sec viv-editorial-card viv-lagoa sec-onda" id="viver-lagoa">
 <div class="viv-photo" data-slot="lagoa-1">
-<div class="viv-photo-ph"></div>
+<div class="viv-photo-ph" style="background-image:url('/img/home-lagoa-capa.webp')" role="img" aria-label="Paisagem da Lagoa dos Quadros"></div>
 <div class="viv-photo-grad"></div>
 <div class="viv-photo-head">
 <div class="viv-eyebrow">Viver na Lagoa</div>
@@ -817,7 +817,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: MAR ══ -->
 <section class="viv-sec viv-editorial-card viv-mar sec-onda" id="viver-mar">
 <div class="viv-photo" data-slot="mar-1">
-<div class="viv-photo-ph"></div>
+<div class="viv-photo-ph" style="background-image:url('/img/home-mar-capa.webp')" role="img" aria-label="Paisagem do litoral norte gaúcho"></div>
 <div class="viv-photo-grad"></div>
 <div class="viv-photo-head">
 <div class="viv-eyebrow">Viver na Praia</div>
@@ -833,7 +833,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: CIDADE (meio-termo) ══ -->
 <section class="viv-sec viv-editorial-card viv-cidade sec-onda" id="viver-cidade">
 <div class="viv-photo" data-slot="cidade-1">
-<div class="viv-photo-ph"></div>
+<div class="viv-photo-ph" style="background-image:url('/img/home-cidade-capa.webp')" role="img" aria-label="Paisagem urbana do litoral norte gaúcho"></div>
 <div class="viv-photo-grad"></div>
 <div class="viv-photo-head">
 <div class="viv-eyebrow">Viver na Cidade</div>
@@ -2865,21 +2865,16 @@ function initCarrossel(el){
 function initTodosCarrosseis(){
   document.querySelectorAll('.carr[data-carr]').forEach(initCarrossel);
 }
-// Carrega as fotos dos carrosséis (gerenciadas pelo CRM, tabela os_carrossel_home)
+// Carrega as fotos dos carrosséis (gerenciadas pelo CRM, tabela os_carrossel_home).
+// As três capas editoriais locais são aplicadas antes de qualquer consulta remota,
+// para que a primeira pintura não dependa do Supabase.
 async function carregarFotosCarrossel(){
-  try{
-    await carregarDadosExtras();
-    const fotos = window._carrosselFotos || [];
-    // diagnóstico: veja no Console (F12) o que o banco devolveu
-    try{ console.log('[fotos carrossel] recebido do banco:', fotos); }catch(_){}
-    if(!Array.isArray(fotos)){ console.warn('[fotos carrossel] resposta NÃO é lista:', fotos); return; }
-    if(!fotos.length){ console.warn('[fotos carrossel] lista VAZIA — a tabela os_carrossel_home não tem fotos?'); }
-    const mapa={};
-    fotos.forEach(f=>{ if(f.slot && f.foto_url) mapa[f.slot]=f.foto_url; });
-    // Capas editoriais definidas para a homepage; têm prioridade sobre o CRM.
-    mapa['lagoa-1']='/img/home-lagoa-capa.webp';
-    mapa['mar-1']='/img/home-mar-capa.webp';
-    mapa['cidade-1']='/img/home-cidade-capa.webp';
+  const mapa={
+    'lagoa-1':'/img/home-lagoa-capa.webp',
+    'mar-1':'/img/home-mar-capa.webp',
+    'cidade-1':'/img/home-cidade-capa.webp'
+  };
+  const aplicarFotos=()=>{
     document.querySelectorAll('.carr-slide[data-slot], .carr-single[data-slot]').forEach(sl=>{
       const url=mapa[sl.getAttribute('data-slot')];
       if(url){
@@ -2889,17 +2884,31 @@ async function carregarFotosCarrossel(){
         if(ph) ph.outerHTML='<img src="'+url+'" alt="'+capTxt+'" loading="lazy">';
       }
     });
-    // Seções imersivas Lagoa/Mar: aplica a foto como fundo (background)
     document.querySelectorAll('.imm-bg[data-slot]').forEach(el=>{
       const url=mapa[el.getAttribute('data-slot')];
-      if(url){ el.style.backgroundImage="url('"+url+"')"; }
+      if(url) el.style.backgroundImage="url('"+url+"')";
     });
-    // Seções Lagoa/Mar (imagem em cima + texto embaixo): aplica foto ao .viv-photo-ph
     document.querySelectorAll('.viv-photo[data-slot]').forEach(el=>{
       const url=mapa[el.getAttribute('data-slot')];
-      if(url){ const ph=el.querySelector('.viv-photo-ph'); if(ph) ph.style.backgroundImage="url('"+url+"')"; }
+      if(url){
+        const ph=el.querySelector('.viv-photo-ph');
+        if(ph) ph.style.backgroundImage="url('"+url+"')";
+      }
     });
-  }catch(e){ /* silencioso: mantém os placeholders */ }
+  };
+  aplicarFotos();
+  try{
+    await carregarDadosExtras();
+    const fotos=window._carrosselFotos||[];
+    if(Array.isArray(fotos)) fotos.forEach(f=>{
+      // Somente slots não editoriais podem ser substituídos pelo CRM.
+      if(f.slot && f.foto_url && !mapa[f.slot]) mapa[f.slot]=f.foto_url;
+    });
+    aplicarFotos();
+  }catch(e){
+    // As capas locais já foram aplicadas; a falha remota não pode apagá-las.
+    try{ console.warn('[fotos carrossel] fallback local ativo',e); }catch(_){}
+  }
 }
 
 // Carrega as fotos de capa dos cards de decisão (gerenciadas pelo CRM)
