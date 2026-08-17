@@ -405,6 +405,8 @@ function blocoConteudo(cond, imoveis) {
 function preencherPagina(filerel, cond, imoveis) {
   const file = path.join(process.cwd(), filerel);
   let h = fs.readFileSync(file, 'utf8');
+  const faviconLinks = '<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">';
+  if (h.toLowerCase().indexOf('favicon') === -1) h = h.replace('</head>', faviconLinks + '\n</head>');
   const bloco = blocoConteudo(cond, imoveis);
 
   // remove bloco antigo (idempotência) — tanto o full quanto o texto-seo simples
