@@ -31,7 +31,21 @@
   X-Content-Type-Options: nosniff
   X-Robots-Tag: noindex, noarchive
 
-# As páginas HTML NÃO devem ter cache longo (senão o site "trava" numa
-# versão antiga). Elas revalidam sempre, mas continuam rápidas.
+# As páginas HTML não devem ter cache longo no navegador, mas as cinco rotas
+# estáticas auditadas podem ser servidas pela borda por alguns minutos. Isto
+# reduz TTFB sem congelar conteúdo por longos períodos; novos deploys do Pages
+# continuam a invalidar a versão publicada.
+/
+  Cache-Control: public, max-age=60, s-maxage=600, stale-while-revalidate=86400
+/capao-da-canoa-arroio-teixeira/
+  Cache-Control: public, max-age=60, s-maxage=600, stale-while-revalidate=86400
+/comprar-na-planta-ou-pronto/
+  Cache-Control: public, max-age=60, s-maxage=600, stale-while-revalidate=86400
+/condominio-maquine-la-marina/
+  Cache-Control: public, max-age=60, s-maxage=600, stale-while-revalidate=86400
+/osorio/
+  Cache-Control: public, max-age=60, s-maxage=600, stale-while-revalidate=86400
+
+# Outras páginas HTML continuam a revalidar sempre.
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
