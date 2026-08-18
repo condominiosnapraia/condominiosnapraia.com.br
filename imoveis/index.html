@@ -527,6 +527,7 @@ details[open] .dec-faq-q:after{content:"−"}
 .il-card-img{aspect-ratio:4/3;background:linear-gradient(135deg,var(--ocean),var(--om));display:flex;align-items:center;justify-content:center;font-size:40px;color:rgba(255,255,255,.5);position:relative;overflow:hidden}
 .il-card-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .il-badge{position:absolute;top:12px;left:12px;background:rgba(12,74,110,.88);color:#fff;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:4px 11px;border-radius:100px}
+.il-badge.bairro{background:rgba(255,255,255,.94);color:#0d3b54;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.04em}
 .il-badge.status{right:12px;left:auto;background:rgba(10,125,50,.9)}
 .il-badge.cod{top:auto;bottom:12px;left:12px;background:rgba(12,74,110,.92);letter-spacing:.06em}
 .il-card-b{padding:16px 16px 18px;flex:1;display:flex;flex-direction:column}
@@ -727,6 +728,7 @@ const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
 const CAT_IMOV_SELECT='id,slug,codigo,titulo,cond_id,fora_condominio,status,publicar,tipo,preco,quartos,suites,vagas,area,area_privativa,area_construida,cidade_end,bairro_end,fotos_no_site';
 async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
 function brl(v){if(v==null||v==='')return 'Sob consulta';const n=Number(v);if(isNaN(n))return String(v);return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});}
+function escHtml(v){return String(v??'').replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];});}
 function fotos(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
 let TODOS=[], CONDS={}, MANSOES_MODE=false;
 
@@ -826,6 +828,8 @@ function render(lista){
   grid.innerHTML=lista.map(i=>{
     const cond=CONDS[i.cond_id]||{};
     const cidade=cond.cidade||i.cidade||'';
+    const isFora=i.fora_condominio===true||i.foraCondominio===true;
+    const bairroFora=isFora?String(i.bairro_end||'').trim():'';
     const f=fotos(i.fotos_no_site||i.fotos);
     const img=f.length?'<img src="'+thumb(f[0],500)+'" srcset="'+thumb(f[0],500)+' 1x, '+thumb(f[0],900)+' 2x" alt="'+(i.titulo||'')+'" loading="lazy" width="400" height="300">':'🏠';
     // so entram os campos preenchidos; area privativa aparece quando existe
@@ -840,7 +844,7 @@ function render(lista){
     if(i.vagas)specs.push('🚗 '+i.vagas+(i.vagas==1?' vaga':' vagas'));
     return '<a class="il-card" href="'+urlImovel(i)+'">'+
       '<div class="il-card-img">'+img+
-        (cidade?'<span class="il-badge">'+cidade+'</span>':'')+
+        (bairroFora?'<span class="il-badge bairro">📍 '+escHtml(bairroFora)+'</span>':(cidade?'<span class="il-badge">'+cidade+'</span>':''))+
         (i.status==='Disponível'?'<span class="il-badge status">Disponível</span>':'')+
         (i.codigo?'<span class="il-badge cod">'+i.codigo+'</span>':'')+
       '</div>'+
