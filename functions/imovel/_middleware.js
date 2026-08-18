@@ -248,7 +248,10 @@ export async function onRequest(context) {
   const schema = schemaImovel(im, canonicalUrl, title, description, image, city);
 
   const html = await response.text();
-  const htmlTitle = `${esc(ogTitle)} | Condomínios na Praia`;
+  // O title da aba deve ser compacto; mantemos o título editorial completo no H1/OG/JSON-LD.
+  const compactTitle = title.replace(/\bNO CONDOMÍNIO\b/gi, 'NO').replace(/\s{2,}/g, ' ').trim();
+  const hasCityInTitle = city && compactTitle.toLocaleLowerCase('pt-BR').includes(city.toLocaleLowerCase('pt-BR'));
+  const htmlTitle = `${esc(compactTitle)}${city && !hasCityInTitle ? ` | ${esc(city)}` : ''} | Meu Litoral`;
   const htmlDesc = esc(description);
   const htmlUrl = esc(canonicalUrl);
   const additions = `\n<meta property="og:image" content="${esc(image)}">` +
