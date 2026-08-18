@@ -1010,8 +1010,9 @@ window.addEventListener('resize',function(){if(typeof gi!=='undefined')ipDesliza
 (function(){var g=null,x0=0;
 document.addEventListener('touchstart',function(e){g=e.target.closest('.ip-gal');if(g)x0=e.touches[0].clientX;},{passive:true});
 document.addEventListener('touchend',function(e){if(!g)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)galNav(dx>0?-1:1);g=null;},{passive:true});})();
-function galShow(n){if(!GAL.length)return;gi=(n+GAL.length)%GAL.length;ipDesliza();document.querySelectorAll('.ip-dot').forEach(function(d,i){d.classList.toggle('on',i===gi);});document.getElementById('ip-gal-i').textContent=(gi+1)+'/'+GAL.length;document.querySelectorAll('.ip-thumb').forEach((t,k)=>t.classList.toggle('on',k===gi));}
-function galNav(d){galShow(gi+d);}
+function galCounterText(){var extra=Number(window._galBloqueadas||0);return (gi+1)+'/'+GAL.length+(extra?' · +'+extra+' bloqueadas':'');}
+function galShow(n){if(!GAL.length)return;var target=Number(n);if(!isFinite(target))target=gi;if(target<0)target=0;if(target>=GAL.length)target=GAL.length-1;gi=target;ipDesliza();document.querySelectorAll('.ip-dot').forEach(function(d,i){d.classList.toggle('on',i===gi);});var counter=document.getElementById('ip-gal-i');if(counter)counter.textContent=galCounterText();document.querySelectorAll('.ip-thumb').forEach((t,k)=>t.classList.toggle('on',k===gi));}
+function galNav(d){if(!GAL.length)return false;var target=gi+Number(d||0);if(target>=GAL.length){if(Number(window._galBloqueadas||0)>0){if(typeof lgOpen==='function')lgOpen();return false;}target=GAL.length-1;}if(target<0)target=0;galShow(target);return true;}
 function ipLbOpen(){if(!GAL.length)return;window._lbMode='main';document.getElementById('ip-lb-img').src=dynFotoVariante(GAL[gi],1600,'jpeg');document.getElementById('ip-lb').classList.add('on');}
 function ipLbClose(){document.getElementById('ip-lb').classList.remove('on');}
 function lbNav(d){
@@ -1022,7 +1023,7 @@ function lbNav(d){
     document.getElementById('ip-lb-img').src=dynFotoVariante(fotos[window._condLbIdx],1280,'jpeg');
   }else{
     if(!GAL.length)return;
-    galNav(d);
+    if(!galNav(d)) return;
     document.getElementById('ip-lb-img').src=dynFotoVariante(GAL[gi],1600,'jpeg');
   }
 }
@@ -1276,6 +1277,7 @@ function render(im,cond){
   const _liberado = (window.lgLiberado ? window.lgLiberado() : true);
   const _limite = (window.lgLimiteFotos ? window.lgLimiteFotos(TODAS_FOTOS.length) : TODAS_FOTOS.length);
   const _bloqueadas = TODAS_FOTOS.length - _limite;
+  window._galBloqueadas = _bloqueadas;
   // GAL = só as fotos visíveis (o resto exige cadastro)
   GAL = TODAS_FOTOS.slice(0, _limite);
   window._todasFotos = TODAS_FOTOS;
@@ -1289,7 +1291,7 @@ function render(im,cond){
         return '<div class="ip-slide" onclick="ipSlideClick('+i+')">'+dynFotoTag(f,((im.titulo||'Imóvel')+(im.cidade?' em '+im.cidade:''))+' — foto '+(i+1),{sizes:'100vw',width:1280,height:720,eager:i===0})+overlay+'</div>';
       }).join('')+'</div>'+
       (GAL.length>1?'<button class="ip-gal-arrow prev" onclick="galNav(-1)">&#8249;</button><button class="ip-gal-arrow next" onclick="galNav(1)">&#8250;</button>':'')+
-      '<div class="ip-gal-count" id="ip-gal-i">1/'+GAL.length+'</div>'+
+      '<div class="ip-gal-count" id="ip-gal-i" aria-live="polite">'+('1/'+GAL.length+(_bloqueadas?' · +'+_bloqueadas+' bloqueadas':''))+'</div>'+
       '<div class="ip-dots" id="ip-dots">'+GAL.map(function(_,i){return '<button class="ip-dot'+(i===0?' on':'')+'" onclick="galShow('+i+')" aria-label="Foto '+(i+1)+'"></button>';}).join('')+'</div>'+(((_bloqueadas>0)||(TODAS_FOTOS.length>3))?'<button class="ip-gallery-more" onclick="event.stopPropagation();'+(_bloqueadas>0?'lgOpen()':'ipLbOpen()')+'">'+(_bloqueadas>0?'🔒 +'+_bloqueadas+' fotos exclusivas':'Ver todas as fotos ↗')+'</button>':'')
     : '<div class="ip-gal-ph">🏠</div>';
 
@@ -1681,6 +1683,7 @@ init();
 
       msg.className='lg-msg ok'; msg.textContent='✓ Fotos liberadas!';
       setTimeout(function(){
+        if(typeof ipLbClose==='function') ipLbClose();
         lgClose();
         btn.disabled=false; btn.textContent='Liberar todas as fotos →';
         // recarregar a galeria já liberada
