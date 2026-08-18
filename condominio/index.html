@@ -168,6 +168,11 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 .sec-info{}
 .sec-title{font-family:'Fraunces',serif;font-size:22px;color:var(--ocean);line-height:1}
 .sec-sub{font-size:11px;color:var(--text-muted);letter-spacing:.05em;margin-top:3px}
+.cond-type-filter{display:flex;align-items:center;gap:12px;margin:-10px 0 24px;padding:12px 14px;background:rgba(247,241,232,.58);border:1px solid rgba(184,147,90,.22);border-radius:10px}
+.cond-type-filter label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);font-weight:600;white-space:nowrap}
+.cond-type-filter select{min-width:190px;border:1px solid rgba(31,181,196,.24);border-radius:8px;background:#fff;color:var(--ocean);font:500 13px Outfit,sans-serif;padding:9px 12px;outline:none}
+.cond-type-filter select:focus{border-color:var(--om);box-shadow:0 0 0 3px rgba(31,181,196,.12)}
+@media(max-width:600px){.cond-type-filter{align-items:stretch;flex-direction:column;gap:6px}.cond-type-filter select{width:100%;min-width:0}}
 
 /* ── IMÓVEIS GRID ── */
 .imoveis-section{padding:56px 0}
@@ -735,6 +740,12 @@ img,video,iframe,svg{max-width:100%}
 <div class="sec-title">Imóveis <em style="font-style:italic;color:var(--gold)">Disponíveis</em></div>
 <div class="sec-sub" id="imoveis-count-sub">Nenhum imóvel disponível no momento</div>
 </div>
+</div>
+<div class="cond-type-filter" id="cond-type-filter-wrap" hidden>
+<label for="cond-type-filter">Filtrar por tipo</label>
+<select aria-label="Filtrar imóveis por tipo" id="cond-type-filter" onchange="applyCondTipoFilter(this.value)">
+<option value="">Todos os tipos</option>
+</select>
 </div>
 <div class="imoveis-grid" id="imoveis-grid"></div>
 </div>
@@ -1636,6 +1647,26 @@ window.addEventListener('resize', () => {
 });
 
 // ── IMÓVEIS ──
+let COND_IMOVEIS_DISPONIVEIS = [];
+let COND_TIPO_SELECIONADO = '';
+
+function applyCondTipoFilter(value) {
+  COND_TIPO_SELECIONADO = String(value || '').trim();
+  renderCondImoveis();
+}
+
+function updateCondTipoOptions() {
+  const wrap = document.getElementById('cond-type-filter-wrap');
+  const select = document.getElementById('cond-type-filter');
+  if (!wrap || !select) return;
+  const tipos = [...new Set(COND_IMOVEIS_DISPONIVEIS.map(im => String(im.tipo || '').trim()).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  select.innerHTML = '<option value="">Todos os tipos</option>' + tipos.map(tipo => `<option value="${dynEsc(tipo)}">${dynEsc(tipo)}</option>`).join('');
+  if (tipos.includes(COND_TIPO_SELECIONADO)) select.value = COND_TIPO_SELECIONADO;
+  else COND_TIPO_SELECIONADO = '';
+  wrap.hidden = tipos.length === 0;
+}
+
 function urlPublicaImovelCond(im) {
   if (!im) return '/imoveis/';
   const stored = String(im.slug || '').trim().replace(/^\/+|\/+$/g, '').replace(/^-+|-+$/g, '');
@@ -1675,14 +1706,22 @@ function scheduleCondImoveis(condId) {
 }
 
 function buildImoveis(imoveis) {
-  const disp = imoveis.filter(i => i.publicar !== false && (i.status === 'Disponível' || i.status === 'Negociando'));
+  COND_IMOVEIS_DISPONIVEIS = imoveis.filter(i => i.publicar !== false && (i.status === 'Disponível' || i.status === 'Negociando'));
+  updateCondTipoOptions();
+  renderCondImoveis();
+}
+
+function renderCondImoveis() {
+  const disp = COND_TIPO_SELECIONADO
+    ? COND_IMOVEIS_DISPONIVEIS.filter(im => String(im.tipo || '').trim() === COND_TIPO_SELECIONADO)
+    : COND_IMOVEIS_DISPONIVEIS;
   const count = disp.length;
 
   document.getElementById('imoveis-count-num').textContent = count;
   document.getElementById('imoveis-count-sub').textContent =
-    count === 0 ? 'Nenhum imóvel disponível no momento'
-    : count === 1 ? '1 imóvel disponível para venda'
-    : `${count} imóveis disponíveis para venda`;
+    count === 0 ? (COND_TIPO_SELECIONADO ? `Nenhum ${COND_TIPO_SELECIONADO.toLowerCase()} disponível no momento` : 'Nenhum imóvel disponível no momento')
+    : count === 1 ? `1 ${COND_TIPO_SELECIONADO ? COND_TIPO_SELECIONADO.toLowerCase() : 'imóvel'} disponível para venda`
+    : `${count} imóveis${COND_TIPO_SELECIONADO ? ' do tipo ' + COND_TIPO_SELECIONADO.toLowerCase() : ''} disponíveis para venda`;
 
   if (count === 0) {
     document.getElementById('imoveis-grid').innerHTML = `

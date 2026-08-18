@@ -282,6 +282,7 @@ const paras = txt => String(txt || '')
 function blocoConteudo(cond, imoveis) {
   const nome = cond.nome || 'Condomínio';
   const cidade = cond.cidade || 'Litoral Norte Gaúcho';
+  const filterKey = String(cond.slug || nome).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'condominio';
   const partes = [];
 
   partes.push(`<section class="cond-conteudo-full" style="max-width:1000px;margin:0 auto;padding:24px 24px 44px">`);
@@ -375,22 +376,33 @@ function blocoConteudo(cond, imoveis) {
     partes.push(paras(dif));
   }
 
-  // Imóveis à venda (lista real, com link para cada imóvel)
+  // Imóveis à venda (lista real, com filtro client-side por tipo)
   if (Array.isArray(imoveis) && imoveis.length) {
+    const tiposImoveis = [...new Set(imoveis.map(im => String(im.tipo || '').trim()).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    const filterId = `cond-type-filter-${filterKey}`;
+    const gridId = `cond-type-grid-${filterKey}`;
     partes.push(`<h2 style="font-family:'Fraunces',serif;font-size:20px;color:#0d3b54;margin:26px 0 12px">Imóveis à venda no ${esc(nome)}</h2>`);
-    partes.push(`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">`);
+    if (tiposImoveis.length > 0) {
+      partes.push(`<div class="cond-type-filter-static" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 16px;padding:12px 14px;background:rgba(247,241,232,.58);border:1px solid rgba(184,147,90,.22);border-radius:10px"><label for="${esc(filterId)}" style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#5b7585;font-weight:600">Filtrar por tipo</label><select id="${esc(filterId)}" aria-label="Filtrar imóveis por tipo" style="min-width:190px;border:1px solid rgba(31,181,196,.24);border-radius:8px;background:#fff;color:#0d3b54;font:500 13px Outfit,sans-serif;padding:9px 12px"><option value="">Todos os tipos</option>${tiposImoveis.map(tipo => `<option value="${esc(tipo)}">${esc(tipo)}</option>`).join('')}</select></div>`);
+    }
+    partes.push(`<div id="${esc(gridId)}" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">`);
     imoveis.forEach(im => {
-      const tit = tituloPublico(im.titulo || im.nome || (im.tipo ? im.tipo + ' em ' + nome : 'Imóvel'));
+      const tipo = String(im.tipo || '').trim();
+      const tit = tituloPublico(im.titulo || im.nome || (tipo ? tipo + ' em ' + nome : 'Imóvel'));
       const preco = fmtPreco(im.preco || im.valor);
       const foto = fotoUrl((Array.isArray(im.fotos) ? im.fotos[0] : im.foto) || '');
       const slugImovel = slugPublicoImovel(im);
       const href = slugImovel ? '/imovel/' + encodeURIComponent(slugImovel) + '/' : '#';
-      partes.push(`<a href="${esc(href)}" style="display:block;border:1px solid #e5ded3;border-radius:12px;overflow:hidden;text-decoration:none;background:#fff">`);
+      partes.push(`<a href="${esc(href)}" data-condo-type-card="1" data-condo-type="${esc(tipo)}" style="display:block;border:1px solid #e5ded3;border-radius:12px;overflow:hidden;text-decoration:none;background:#fff">`);
       if (foto) partes.push(fotoTag(foto, `${tit} — ${cidade}`, {sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 260px', width:640, height:384}));
       partes.push(`<div style="padding:12px 14px"><div style="font-size:14px;color:#0d3b54;font-weight:600;line-height:1.35">${esc(tit)}</div>${preco ? `<div style="font-family:'Fraunces',serif;font-size:17px;color:#0c4a6e;margin-top:6px">${esc(preco)}</div>` : ''}</div>`);
       partes.push(`</a>`);
     });
     partes.push(`</div>`);
+    if (tiposImoveis.length > 0) {
+      partes.push(`<script>(function(){var s=document.getElementById(${JSON.stringify(filterId)}),g=document.getElementById(${JSON.stringify(gridId)});if(!s||!g)return;var cards=[].slice.call(g.querySelectorAll('[data-condo-type-card]'));s.addEventListener('change',function(){var v=s.value;cards.forEach(function(card){card.hidden=!!v&&card.getAttribute('data-condo-type')!==v;});});})();</script>`);
+    }
   }
 
   // Fecho com link para a cidade
