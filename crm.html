@@ -584,9 +584,26 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 .share-imov-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
 .share-imov-meta span{background:#eef8f9;color:#295267;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:700}
 .share-imov-desc{font-size:12px;line-height:1.55;color:#526b78;max-height:76px;overflow:hidden;margin:0}
-.share-imov-actions{background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:15px}
-.share-imov-actions .btn{width:100%;justify-content:center;margin-top:8px}
-.share-imov-actions .btn:first-of-type{margin-top:0}
+.share-imov-actions{background:var(--s2);border:1px solid var(--bd);border-radius:14px;padding:16px}
+.share-imov-subtitle{font-size:11px;line-height:1.45;color:var(--t3);margin:-2px 0 12px}
+.share-imov-action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.share-imov-action{display:flex;align-items:center;justify-content:center;gap:7px;min-height:48px;border:1px solid var(--bd);border-radius:9px;padding:8px 10px;cursor:pointer;font:700 12px/1.2 'DM Sans',sans-serif;transition:background .15s,border-color .15s,transform .15s}
+.share-imov-action:hover{transform:translateY(-1px)}
+.share-imov-action:active{transform:translateY(0)}
+.share-imov-action:focus-visible{outline:3px solid rgba(14,138,153,.24);outline-offset:2px}
+.share-imov-action small{display:block;font-size:10px;font-weight:500;margin-top:3px;opacity:.72}
+.share-imov-email-action{background:var(--ac);border-color:var(--ac);color:#fff}
+.share-imov-email-action:hover{background:#0b7784;border-color:#0b7784}
+.share-imov-whatsapp-action{background:#effaf3;border-color:#a8ddbd;color:#137a4a}
+.share-imov-whatsapp-action:hover{background:#dff5e8;border-color:#72c995}
+.share-imov-action-icon{font-size:17px;line-height:1}
+.share-imov-action-copy{text-align:left}
+.share-imov-link-title{margin-top:16px!important}
+.share-imov-link-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center}
+.share-imov-link-row .fi{min-width:0}
+.share-imov-copy-btn{height:39px;white-space:nowrap;border:1px solid #d6c18f;border-radius:8px;background:#fffaf0;color:#725a2b;padding:0 12px;cursor:pointer;font:700 11px 'DM Sans',sans-serif;transition:background .15s,border-color .15s}
+.share-imov-copy-btn:hover{background:#fff2d5;border-color:#c6a46b}
+.share-imov-copy-btn:focus-visible{outline:3px solid rgba(198,164,107,.28);outline-offset:2px}
 .share-imov-note{font-size:11px;line-height:1.5;color:var(--t3);margin:12px 0 0}
 .share-imov-text{width:100%;min-height:118px;resize:vertical;background:#fff;border:1px solid var(--bd);border-radius:8px;padding:10px;font:12px/1.45 'DM Sans',sans-serif;color:var(--tx);box-sizing:border-box}
 .drw-share-actions{background:linear-gradient(135deg,#eef9fa,#f7fbfb);border:1px solid #bfe3e6;border-radius:12px;padding:12px;margin:0 0 15px}
@@ -599,6 +616,12 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 .drw-share-email{color:#0e6f87}
 .drw-share-copy{color:#725a2b}
 @media(max-width:720px){
+  .share-imov-actions{padding:13px}
+  .share-imov-action-grid{grid-template-columns:1fr 1fr;gap:6px}
+  .share-imov-action{padding:8px 6px;font-size:11px}
+  .share-imov-action small{font-size:9px}
+  .share-imov-link-row{grid-template-columns:minmax(0,1fr) auto}
+  .share-imov-copy-btn{padding:0 10px}
   .drw-share-grid{grid-template-columns:1fr}
   .drw-share-btn{padding:10px}
 }
@@ -2911,11 +2934,21 @@ if(_savedToken && _savedUser){
       </div>
       <div class="share-imov-actions">
         <div class="fsec" style="margin-top:0">Enviar apresentação</div>
+        <p class="share-imov-subtitle">Escolha uma opção para compartilhar este imóvel com o cliente.</p>
         <div class="fg"><label class="fl" for="share-imov-email">E-mail do destinatário</label><input class="fi" id="share-imov-email" type="email" placeholder="cliente@email.com" autocomplete="email"></div>
-        <button class="btn bp" type="button" onclick="compartilharImovelEmail()">📧 Abrir e-mail já preenchido</button>
-        <button class="btn bg" type="button" onclick="compartilharImovelWhatsApp()">💬 Compartilhar via WhatsApp</button>
-        <div class="fg" style="margin-top:12px"><label class="fl" for="share-imov-url">Link do imóvel</label><input class="fi" id="share-imov-url" type="text" readonly aria-label="Link canônico do imóvel"></div>
-        <button class="btn bg" type="button" onclick="copiarLinkImovel()">🔗 Copiar link do imóvel</button>
+        <div class="share-imov-action-grid" aria-label="Ações de compartilhamento">
+          <button class="share-imov-action share-imov-email-action" type="button" onclick="compartilharImovelEmail()" aria-label="Abrir e-mail já preenchido">
+            <span class="share-imov-action-icon">📧</span><span class="share-imov-action-copy"><b>Abrir e-mail</b><small>Mensagem pronta</small></span>
+          </button>
+          <button class="share-imov-action share-imov-whatsapp-action" type="button" onclick="compartilharImovelWhatsApp()" aria-label="Compartilhar via WhatsApp">
+            <span class="share-imov-action-icon">💬</span><span class="share-imov-action-copy"><b>WhatsApp</b><small>Compartilhar agora</small></span>
+          </button>
+        </div>
+        <div class="fsec share-imov-link-title">Link direto</div>
+        <div class="share-imov-link-row">
+          <input class="fi" id="share-imov-url" type="text" readonly aria-label="Link canônico do imóvel">
+          <button class="share-imov-copy-btn" type="button" onclick="copiarLinkImovel()" aria-label="Copiar link do imóvel">🔗 Copiar</button>
+        </div>
         <div class="fsec" style="margin-top:15px">Prévia da mensagem</div>
         <textarea class="share-imov-text" id="share-imov-text" readonly aria-label="Prévia da mensagem de compartilhamento"></textarea>
         <p class="share-imov-note">O botão de e-mail abre o aplicativo padrão do seu computador ou celular com destinatário, assunto e apresentação preenchidos. Nenhum e-mail é enviado automaticamente pelo CRM.</p>
