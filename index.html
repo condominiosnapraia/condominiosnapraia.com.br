@@ -807,7 +807,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: LAGOA DOS QUADROS ══ -->
 <section class="viv-sec viv-editorial-card viv-lagoa sec-onda" id="viver-lagoa">
 <div class="viv-photo" data-slot="lagoa-1">
-<div class="viv-photo-ph" style="background-image:url('/img/home-lagoa-capa.webp')" role="img" aria-label="Paisagem da Lagoa dos Quadros"></div>
+<div class="viv-photo-ph" role="img" aria-label="Paisagem da Lagoa dos Quadros"></div>
 <div class="viv-photo-grad"></div>
 <div class="viv-photo-head">
 <div class="viv-eyebrow">Viver na Lagoa</div>
@@ -823,7 +823,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: MAR ══ -->
 <section class="viv-sec viv-editorial-card viv-mar sec-onda" id="viver-mar">
 <div class="viv-photo" data-slot="mar-1">
-<div class="viv-photo-ph" style="background-image:url('/img/home-mar-capa.webp')" role="img" aria-label="Paisagem do litoral norte gaúcho"></div>
+<div class="viv-photo-ph" role="img" aria-label="Paisagem do litoral norte gaúcho"></div>
 <div class="viv-photo-grad"></div>
 <div class="viv-photo-head">
 <div class="viv-eyebrow">Viver na Praia</div>
@@ -839,7 +839,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <!-- ══ SEÇÃO EDITORIAL COM CARROSSEL: CIDADE (meio-termo) ══ -->
 <section class="viv-sec viv-editorial-card viv-cidade sec-onda" id="viver-cidade">
 <div class="viv-photo" data-slot="cidade-1">
-<div class="viv-photo-ph" style="background-image:url('/img/home-cidade-capa.webp')" role="img" aria-label="Paisagem urbana do litoral norte gaúcho"></div>
+<div class="viv-photo-ph" role="img" aria-label="Paisagem urbana do litoral norte gaúcho"></div>
 <div class="viv-photo-grad"></div>
 <div class="viv-photo-head">
 <div class="viv-eyebrow">Viver na Cidade</div>
@@ -3047,7 +3047,7 @@ function deferHomeBelowFold(){
   const jobs=[
     {el:document.getElementById('sec-blog-preview'), run:()=>{if(!window._homeBlogLoaded){window._homeBlogLoaded=true;buildHomeBlog();}}},
     {el:document.getElementById('decisao-grid'), run:()=>{if(typeof carregarCapasDecisao==='function')carregarCapasDecisao();}},
-    {el:document.querySelector('.carr[data-carr]'), run:()=>{if(typeof carregarFotosCarrossel==='function')carregarFotosCarrossel();}}
+    {el:document.querySelector('.viv-photo[data-slot]'), run:()=>{if(typeof carregarFotosCarrossel==='function')carregarFotosCarrossel();}}
   ].filter(job=>job.el);
   if(!jobs.length)return;
   if(!('IntersectionObserver' in window)){
