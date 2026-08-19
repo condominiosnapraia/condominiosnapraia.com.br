@@ -49,10 +49,6 @@
     if (event.button === 2 && !editable(event.target)) event.preventDefault();
   }, true);
 
-  window.addEventListener('load', function () {
-    document.querySelectorAll('img, picture img, video, canvas').forEach(function (node) {
-      node.setAttribute('draggable', 'false');
-      node.setAttribute('ondragstart', 'return false');
-    });
-  });
+  // O bloqueio de arrasto já é tratado pelo listener delegado acima e pelo CSS
+  // `.conteudo-protegido`; evitamos uma varredura/mutação de todo o DOM no load.
 })();
