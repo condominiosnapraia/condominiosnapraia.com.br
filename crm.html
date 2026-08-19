@@ -2901,6 +2901,8 @@ if(_savedToken && _savedUser){
         <div class="fg"><label class="fl" for="share-imov-email">E-mail do destinatário</label><input class="fi" id="share-imov-email" type="email" placeholder="cliente@email.com" autocomplete="email"></div>
         <button class="btn bp" type="button" onclick="compartilharImovelEmail()">📧 Abrir e-mail já preenchido</button>
         <button class="btn bg" type="button" onclick="compartilharImovelWhatsApp()">💬 Compartilhar via WhatsApp</button>
+        <div class="fg" style="margin-top:12px"><label class="fl" for="share-imov-url">Link do imóvel</label><input class="fi" id="share-imov-url" type="text" readonly aria-label="Link canônico do imóvel"></div>
+        <button class="btn bg" type="button" onclick="copiarLinkImovel()">🔗 Copiar link do imóvel</button>
         <div class="fsec" style="margin-top:15px">Prévia da mensagem</div>
         <textarea class="share-imov-text" id="share-imov-text" readonly aria-label="Prévia da mensagem de compartilhamento"></textarea>
         <p class="share-imov-note">O botão de e-mail abre o aplicativo padrão do seu computador ou celular com destinatário, assunto e apresentação preenchidos. Nenhum e-mail é enviado automaticamente pelo CRM.</p>
@@ -4431,6 +4433,7 @@ function abrirCompartilhamentoImovel(id){
   byId('share-imov-desc').textContent=d.descricao;
   byId('share-imov-meta').innerHTML=d.meta.map(v=>'<span>'+clEsc(v)+'</span>').join('');
   byId('share-imov-text').value=textoCompartilhamentoImovel(d);
+  byId('share-imov-url').value=d.url;
   const cover=byId('share-imov-cover');cover.innerHTML=d.foto?'<img src="'+clEsc(d.foto)+'" alt="'+clEsc(d.titulo)+'">':'<span>🏠</span>';
   byId('share-imov-email').value='';
   oMo('share-imov-mo');
@@ -4448,6 +4451,25 @@ function compartilharImovelEmail(){
   const assunto='Imóvel selecionado para você | '+shareImovelAtual.titulo;
   const href='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(assunto)+'&body='+encodeURIComponent(textoCompartilhamentoImovel(shareImovelAtual));
   window.location.href=href;
+}
+async function copiarLinkImovel(){
+  if(!shareImovelAtual?.url)return;
+  const link=shareImovelAtual.url;
+  try{
+    if(navigator.clipboard&&window.isSecureContext){
+      await Promise.race([
+        navigator.clipboard.writeText(link),
+        new Promise((_,reject)=>setTimeout(()=>reject(new Error('clipboard-timeout')),1500))
+      ]);
+    }else{
+      const area=document.createElement('textarea');area.value=link;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();document.execCommand('copy');area.remove();
+    }
+    const campo=document.getElementById('share-imov-url');if(campo){campo.focus();campo.select();}
+    toast('Link do imóvel copiado!','success');
+  }catch(e){
+    const campo=document.getElementById('share-imov-url');if(campo){campo.focus();campo.select();}
+    toast('Não foi possível copiar automaticamente. O link ficou selecionado para copiar.','info');
+  }
 }
 function sIDrw(id){
   const x=DB.im.find(y=>y.id===id);if(!x)return;
