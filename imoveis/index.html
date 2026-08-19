@@ -488,8 +488,8 @@ details[open] .dec-faq-q:after{content:"−"}
 .il-layout.mapon .il-grid{grid-template-columns:1fr;max-height:78vh;overflow-y:auto;padding-right:6px}
 .il-layout.mapon .il-mapwrap{display:block;position:sticky;top:12px;height:78vh}
 .il-card.il-card-active{outline:2px solid var(--gold,#e0b34d);outline-offset:2px;border-radius:16px}
-.il-card-mapbtn{margin-top:10px;width:100%;background:#eef7f8;border:1px solid var(--border);color:#0c4a6e;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:8px;border-radius:8px;cursor:pointer;transition:all .2s}
-.il-card-mapbtn:hover{background:#0c4a6e;color:#fff}
+.il-card-detailbtn{display:block;margin-top:10px;width:100%;background:#eef7f8;border:1px solid var(--border);color:#0c4a6e;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:8px;border-radius:8px;text-align:center;transition:all .2s}
+.il-card:hover .il-card-detailbtn,.il-card-detailbtn:hover{background:#0c4a6e;color:#fff}
 /* marcador customizado */
 .il-price-wrap{background:transparent!important;border:none!important}
 .il-price-marker{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;background:#fff;color:#0c4a6e;font-family:'Outfit',sans-serif;font-weight:700;font-size:12.5px;line-height:1;padding:6px 10px 6px 7px;border-radius:100px;border:2px solid var(--mc,#0c4a6e);box-shadow:0 3px 10px rgba(12,74,110,.28);cursor:pointer;transition:transform .15s,box-shadow .15s;transform:translate(-50%,-100%)}
@@ -854,7 +854,7 @@ function render(lista){
         (cond.nome?'<div class="il-card-loc">📍 '+cond.nome+'</div>':'')+
         (specs.length?'<div class="il-card-specs">'+specs.map(s=>'<span>'+s+'</span>').join('')+'</div>':'')+
         '<div class="il-card-price">'+brl(i.preco)+'</div>'+
-        '<button type="button" class="il-card-mapbtn" onclick="event.preventDefault();event.stopPropagation();focarImovel(\''+(i.codigo||i.slug||i.id)+'\')" aria-label="Ver este imóvel no mapa">📍 Ver no mapa</button>'+
+        '<span class="il-card-detailbtn">Ver imóvel completo →</span>'+
       '</div></a>';
   }).join('');
 }
