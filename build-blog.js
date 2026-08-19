@@ -101,7 +101,7 @@ const HEADER_HTML = `<header class="desk-header">
       <a href="/imoveis">Imóveis</a>
       <a href="/condominios">Condomínios</a>
       <a href="/lancamentos">Lançamentos</a>
-      <a href="/contemplado-imoveis">Crédito</a>
+      <a href="/contemplado-imoveis/">Crédito</a>
       <a href="/turismo">Turismo</a>
       <a href="/blog">Blog</a>
       <a href="/contato">Contato</a>
@@ -122,7 +122,7 @@ const FOOTER_HTML = `<footer>
       <a class="ftr-wpp" href="https://wa.me/${WPP}"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
     </div>
     <div class="ftr-col"><div class="ftr-tit">Navegar</div><div class="ftr-links-grid">
-      <a href="/condominios">Condomínios</a><a href="/imoveis">Imóveis</a><a href="/lancamentos">Lançamentos</a><a href="/contemplado-imoveis">Crédito Contemplado</a><a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/contato">Contato</a><a href="/politica-privacidade">Política de Privacidade</a>
+      <a href="/condominios">Condomínios</a><a href="/imoveis">Imóveis</a><a href="/lancamentos">Lançamentos</a><a href="/contemplado-imoveis/">Crédito Contemplado</a><a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/contato">Contato</a><a href="/politica-privacidade">Política de Privacidade</a>
     </div></div>
     <div class="ftr-col"><div class="ftr-tit">Descobrir</div><div class="ftr-links-grid">
       <a href="/turismo">Turismo no Litoral</a><a href="/blog">Blog &amp; Notícias</a><a href="/sobre">Sobre</a>

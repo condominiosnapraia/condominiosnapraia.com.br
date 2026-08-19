@@ -44,7 +44,7 @@ const FOOTER_COMPLETO = `<footer>
       <a href="/condominios">Condomínios</a>
       <a href="/imoveis" onclick="showAllImov();return false">Imóveis</a>
       <a href="/lancamentos">Lançamentos</a>
-      <a href="/contemplado-imoveis">Crédito Contemplado</a>
+      <a href="/contemplado-imoveis/">Crédito Contemplado</a>
       <a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/refinanciamento-imobiliario">Refinanciamento</a><a href="/exclusividade-imobiliaria">Venda seu Imóvel</a><a href="/contato">Contato</a><a href="/sobre">Sobre</a><a href="/politica-privacidade">Política de Privacidade</a><a href="/termos">Termos de Uso</a>
     </div>
     </div>
@@ -130,7 +130,7 @@ const HEADER_COMPLETO = `<header class="desk-header" id="desk-header">
       <a href="/imoveis">Imóveis</a>
       <a href="/condominios">Condomínios</a>
       <a href="/lancamentos">Lançamentos</a>
-      <a href="/contemplado-imoveis">Crédito</a>
+      <a href="/contemplado-imoveis/">Crédito</a>
       <a href="/turismo">Turismo</a>
       <a href="/sobre">Sobre</a>
       <a href="/contato">Contato</a>

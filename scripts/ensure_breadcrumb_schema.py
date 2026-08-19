@@ -60,9 +60,9 @@ def breadcrumb_items(url: str, path: str, label: str) -> list[dict]:
     elif path.startswith("/condominio") or path.startswith("/condomini") or "condominio" in path:
         items.append({"@type": "ListItem", "position": 2, "name": "Condomínios", "item": SITE + "/condominios/"})
         items.append({"@type": "ListItem", "position": 3, "name": label, "item": url})
-    elif path == "/contemplado-imoveis" or path.startswith("/contemplado-imoveis/"):
-        items.append({"@type": "ListItem", "position": 2, "name": "Crédito contemplado", "item": SITE + "/contemplado-imoveis"})
-        if path != "/contemplado-imoveis":
+    elif path == "/contemplado-imoveis/" or path.startswith("/contemplado-imoveis/"):
+        items.append({"@type": "ListItem", "position": 2, "name": "Crédito contemplado", "item": SITE + "/contemplado-imoveis/"})
+        if path != "/contemplado-imoveis/":
             items.append({"@type": "ListItem", "position": 3, "name": label, "item": url})
     else:
         items.append({"@type": "ListItem", "position": 2, "name": label, "item": url})

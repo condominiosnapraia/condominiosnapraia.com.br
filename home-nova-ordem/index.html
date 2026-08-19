@@ -1629,7 +1629,7 @@ body{padding-top:56px}
           <span class="navq-t">Financiamento</span>
           <span class="navq-s">Financie até 90% do seu novo imóvel</span>
         </a>
-        <a class="navq-card" href="/contemplado-imoveis">
+        <a class="navq-card" href="/contemplado-imoveis/">
           <span class="navq-t">Crédito Contemplado</span>
           <span class="navq-s">A solução ideal para comprar seu imóvel</span>
         </a>
@@ -2184,7 +2184,7 @@ body{padding-top:56px}
       <h2 class="sectit">Precisando de <em>crédito?</em></h2>
       <p class="cidades-sub">Escolha a solução ideal para realizar seu negócio</p>
       <div class="pcred-grid">
-        <a class="pcred-card" href="/contemplado-imoveis">
+        <a class="pcred-card" href="/contemplado-imoveis/">
           <span class="pcred-ico">📋</span>
           <span class="pcred-t">Crédito Contemplado</span>
           <span class="pcred-s">Cartas prontas para comprar à vista, sem juros</span>
@@ -2216,7 +2216,7 @@ body{padding-top:56px}
         <div class="cred-hero-pills">
           <a class="cred-hero-pill" href="/financiamento-imobiliario/">Financiamento</a>
           <a class="cred-hero-pill" href="/refinanciamento-imobiliario/">Refinanciamento</a>
-          <a class="cred-hero-pill" href="/contemplado-imoveis">Crédito Contemplado</a>
+          <a class="cred-hero-pill" href="/contemplado-imoveis/">Crédito Contemplado</a>
           <a class="cred-hero-pill" href="/seguro-fianca/">Seguro Fiança</a>
         </div>
       </div>
@@ -2229,7 +2229,7 @@ body{padding-top:56px}
         <div class="ct-badge">💳 Crédito Contemplado</div>
         <h2 class="ct-invite-title">Cartas contempladas a partir de <em>R$ 450 mil</em></h2>
         <p class="ct-invite-sub">Compre seu imóvel à vista, sem juros — cartas prontas para uso imediato.</p>
-        <a class="ct-invite-btn" href="/contemplado-imoveis">Ver cartas disponíveis <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a class="ct-invite-btn" href="/contemplado-imoveis/">Ver cartas disponíveis <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
     </div>
   </section>
@@ -2512,7 +2512,7 @@ body{padding-top:56px}
       </div>
       <div class="ct-grid-6" id="blog-ct-cards"></div>
       <div style="text-align:center;margin-top:24px">
-        <a class="dest-btn-all" href="/contemplado-imoveis">Ver todas as opções <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a class="dest-btn-all" href="/contemplado-imoveis/">Ver todas as opções <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
     </div>
   </div>
@@ -2541,7 +2541,7 @@ body{padding-top:56px}
         </div>
         <div class="ct-grid-6" id="artigo-ct-cards"></div>
         <div style="text-align:center;margin-top:24px">
-          <a class="dest-btn-all" href="/contemplado-imoveis">Ver todas as opções <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a class="dest-btn-all" href="/contemplado-imoveis/">Ver todas as opções <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
     </div>
@@ -3352,7 +3352,7 @@ function buildDetail(c){
     var links=[];
     if(citySlug){ links.push(['Guia de '+cidadeNm,'/'+citySlug]); links.push(['O que fazer em '+cidadeNm,'/o-que-fazer-em-'+citySlug]); }
     links.push(['Ver condomínios','/condominios']);
-    links.push(['Crédito contemplado','/contemplado-imoveis']);
+    links.push(['Crédito contemplado','/contemplado-imoveis/']);
     links.forEach(function(l){
       var a=document.createElement('a'); a.href=l[1]; a.textContent=l[0];
       a.style.cssText='color:var(--om,#0e8a99);text-decoration:none;font-size:14px;background:var(--sl,#e8f7f8);padding:9px 15px;border-radius:20px';
@@ -4737,7 +4737,7 @@ async function renderContempladasCards(targetId){
       const cor = c.cor || '#0c4a6e';
       const adm = c.adm || c.administradora || 'Carta';
       const wpp = 'https://wa.me/5551999442252?text=' + encodeURIComponent(`Olá! Tenho interesse na carta ${adm} de ${fmt(c.credito)}.`);
-      return `<div class="ct-card" onclick="window.location='/contemplado-imoveis'">
+      return `<div class="ct-card" onclick="window.location='/contemplado-imoveis/'">
         <div class="ct-card-top">
           <div class="ct-card-adm"><div class="ct-card-logo" style="background:${cor}"><b style="font-size:9px;color:#fff">${adm.slice(0,3).toUpperCase()}</b></div>
           <div><div class="ct-card-adm-nome">${adm}</div><div class="ct-card-adm-cod">CÓD: ${c.cod||'—'}</div></div></div>
@@ -5069,7 +5069,7 @@ async function renderContempladasCards(targetId){
       <a href="/condominios/">Condomínios</a>
       <a href="/imoveis/" onclick="showAllImov();return false">Imóveis</a>
       <a href="/lancamentos/">Lançamentos</a>
-      <a href="/contemplado-imoveis">Crédito Contemplado</a>
+      <a href="/contemplado-imoveis/">Crédito Contemplado</a>
       <a href="/financiamento-imobiliario/">Financiamento</a><a href="/seguro-fianca/">Seguro Fiança</a><a href="/refinanciamento-imobiliario/">Refinanciamento</a><a href="/exclusividade-imobiliaria/">Venda seu Imóvel</a><a href="/contato/">Contato</a><a href="/sobre/">Sobre</a><a href="/politica-privacidade/">Política de Privacidade</a><a href="/termos/">Termos de Uso</a>
     </div>
     </div>

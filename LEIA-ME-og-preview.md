@@ -62,7 +62,7 @@ cuidando de tudo).
   `functions/condominio.js`. Coloque os DOIS na pasta `functions/`. Cada um
   intercepta sua rota (`/imovel` e `/condominio`) e injeta a prévia correta.
 - **Crédito (cartas contempladas)**: as cartas abrem em modal na mesma página
-  (`/contemplado-imoveis`), sem URL própria — então não precisa de função. Essa
+  (`/contemplado-imoveis/`), sem URL própria — então não precisa de função. Essa
   página já tem og:image/título/descrição corretos; agora que o arquivo
   `og-home.jpg` existe, a prévia dela funciona.
 - As páginas estáticas (home, imóveis, condomínios) usam `og-home.jpg`, e o

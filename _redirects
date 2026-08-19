@@ -1,5 +1,8 @@
 # Redirects estáticos gerados a partir de public.imoveis (codigo -> slug).
 # Correção de privacidade: URLs legadas minúsculas não podem expor quadra/lote.
+# Hub de crédito contemplado: versão canónica com barra final.
+/contemplado-imoveis /contemplado-imoveis/ 301
+/contemplado-imoveis.html /contemplado-imoveis/ 301
 /imovel-xan-018 /imovel/lote-a-venda-monaco-yacht-club-xangri-la/ 301
 /imovel-xan-018/ /imovel/lote-a-venda-monaco-yacht-club-xangri-la/ 301
 /imovel-xan-019 /imovel/lote-a-venda-monaco-yacht-club-xangri-la-2/ 301
