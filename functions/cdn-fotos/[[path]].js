@@ -51,6 +51,8 @@ export async function onRequestGet(context) {
   if (width || format) cacheUrl.searchParams.set('q', String(quality));
   if (format) cacheUrl.searchParams.set('fmt', format);
 
+  // Versão da pipeline: invalida respostas JPEG antigas guardadas antes do fallback Supabase.
+  cacheUrl.searchParams.set('v', '2');
   const cacheKey = new Request(cacheUrl.toString(), { method: 'GET' });
   const cache = caches.default;
   const cached = await cache.match(cacheKey);
