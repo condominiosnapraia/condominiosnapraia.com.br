@@ -64,8 +64,29 @@ export async function onRequestGet(context) {
     }
   };
 
-  let upstream = await fetch(SB_PUBLIC + caminho, fetchOptions);
-  // Se a transformação ainda não estiver habilitada na zona, mantém a foto funcionando.
+  let upstream;
+  if (width || format) {
+    // O plano actual da zona mantém Cloudflare Image Transformations desligado.
+    // O Supabase Storage disponibiliza a mesma transformação sem alterar o original.
+    const renderOrigin = SB_PUBLIC.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/');
+    const renderUrl = new URL(renderOrigin + caminho);
+    if (width) renderUrl.searchParams.set('width', String(width));
+    renderUrl.searchParams.set('quality', String(quality));
+    renderUrl.searchParams.set('resize', 'cover');
+    if (format) renderUrl.searchParams.set('format', format);
+    upstream = await fetch(renderUrl.toString(), {
+      cf: { cacheEverything: true, cacheTtl: 31536000 }
+    });
+
+    // Fallback adicional: tenta o transform do Cloudflare se o Supabase não o aceitar.
+    if (!upstream.ok) {
+      upstream = await fetch(SB_PUBLIC + caminho, fetchOptions);
+    }
+  } else {
+    upstream = await fetch(SB_PUBLIC + caminho, fetchOptions);
+  }
+
+  // Se nenhuma transformação estiver disponível, mantém a foto original funcional.
   if (!upstream.ok && Object.keys(imageOptions).length) {
     upstream = await fetch(SB_PUBLIC + caminho, {
       cf: { cacheEverything: true, cacheTtl: 31536000 }
