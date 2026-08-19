@@ -51,8 +51,8 @@ export async function onRequestGet(context) {
   if (width || format) cacheUrl.searchParams.set('q', String(quality));
   if (format) cacheUrl.searchParams.set('fmt', format);
 
-  // Versão da pipeline: invalida respostas JPEG antigas guardadas antes do fallback Supabase.
-  cacheUrl.searchParams.set('v', '2');
+  // Versão da pipeline: invalida variantes quadradas geradas pelo resize=cover.
+  cacheUrl.searchParams.set('v', '3');
   const cacheKey = new Request(cacheUrl.toString(), { method: 'GET' });
   const cache = caches.default;
   const cached = await cache.match(cacheKey);
@@ -74,7 +74,8 @@ export async function onRequestGet(context) {
     const renderUrl = new URL(renderOrigin + caminho);
     if (width) renderUrl.searchParams.set('width', String(width));
     renderUrl.searchParams.set('quality', String(quality));
-    renderUrl.searchParams.set('resize', 'cover');
+    // Preserva a proporção original; `cover` gerava variantes quadradas e recortava capas panorâmicas.
+    renderUrl.searchParams.set('resize', 'contain');
     if (format) renderUrl.searchParams.set('format', format);
     upstream = await fetch(renderUrl.toString(), {
       cf: { cacheEverything: true, cacheTtl: 31536000 }

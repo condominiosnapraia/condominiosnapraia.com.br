@@ -1396,7 +1396,7 @@ function fotoPublica(raw) {
 function fotoVariante(raw, width, format = 'webp', quality = 78) {
   const base = fotoPublica(raw).split('?')[0];
   if (!base || !base.startsWith('/cdn-fotos/')) return base;
-  return `${base}?w=${width}&q=${quality}&fmt=${format}&v=2`;
+  return `${base}?w=${width}&q=${quality}&fmt=${format}&v=3`;
 }
 
 function fotoSrcset(raw, format = 'webp', quality = 78) {
