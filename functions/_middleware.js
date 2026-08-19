@@ -1,4 +1,4 @@
-const FAVORITES_SCRIPT = '<script src="/js/favoritos.js" defer></script>';
+const FAVORITES_SCRIPT = '<script src="/js/favoritos.js?v=b3ff412" defer></script>';
 
 export async function onRequest(context) {
   const { request, next } = context;
