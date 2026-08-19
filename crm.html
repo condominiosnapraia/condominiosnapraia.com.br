@@ -4455,20 +4455,28 @@ function dadosCompartilhamentoImovel(id){
   const c=(DB.co||[]).find(y=>y.id===(x.condId||x.cond_id))||{};
   const cidade=c.cidade||c.localizacao||x.cidade_end||x.cidadeEnd||x.cidade||'Litoral Norte Gaúcho';
   const local=isForaImovel(x)?[x.bairro_end||x.bairroEnd||x.bairro,cidade].filter(Boolean).join(', '):[c.nome,cidade].filter(Boolean).join(' · ');
-  const slugify=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  const slug=x.slug||('imovel-'+slugify(x.codigo||x.ref||x.id));
-  const url='https://condominiosnapraia.com.br/imovel/'+encodeURIComponent(slug)+'/';
-  const fotos=(x.fotos_no_site&&x.fotos_no_site.length?x.fotos_no_site:(x.fotos||[])).filter(f=>typeof f==='string'&&/^https?:/i.test(f));
+  const slugify=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
   const seo=x.seo_data||x.seoData||{};
-  const descricao=String(seo.desc||x.descricao||'Confira este imóvel selecionado pelo Portal Meu Litoral.').replace(/\\s+/g,' ').trim();
+  const canonical=String(x.canonical_url||'').trim();
+  const slugBase=[seo.titulo||x.titulo||x.tipo||'imovel',x.codigo||x.ref||x.id].filter(Boolean).join(' ');
+  const slugDerivado=slugify(slugBase)||('imovel-'+slugify(x.codigo||x.ref||x.id));
+  const slugPersistido=String(x.slug||'').trim();
+  const slugValido=slugPersistido&&!/^imovel-[a-z]+$/i.test(slugPersistido)?slugPersistido:slugDerivado;
+  const url=/^https:\/\/condominiosnapraia\.com\.br\/imovel\/[^?#\s]+/i.test(canonical)?canonical.replace(/\/+$/,'')+'/':'https://condominiosnapraia.com.br/imovel/'+encodeURIComponent(slugValido)+'/';
+  const fotos=(x.fotos_no_site&&x.fotos_no_site.length?x.fotos_no_site:(x.fotos||[])).filter(f=>typeof f==='string'&&/^https?:/i.test(f));
+  const limparTexto=s=>String(s||'').replace(/\r\n?/g,'\n').replace(/[ \t]+/g,' ').replace(/\n{2,}/g,'\n').trim();
+  const removerEmoji=s=>limparTexto(s).replace(/[\u{2300}-\u{2BFF}\u{1F000}-\u{1FAFF}\uFE0F]/gu,'').replace(/[ \t]{2,}/g,' ').trim();
+  let descricao=removerEmoji(seo.desc||x.descricao||'Confira este imóvel selecionado pelo Portal Meu Litoral.');
+  const titulo=removerEmoji(x.titulo||x.tipo||'Imóvel no Litoral Norte Gaúcho');
+  if(titulo&&descricao.toLocaleLowerCase('pt-BR').startsWith(titulo.toLocaleLowerCase('pt-BR'))){descricao=descricao.slice(titulo.length).replace(/^[\s–—:|]+/,'').trim();}
   const meta=[x.tipo||'Imóvel',local||'Litoral Norte Gaúcho'];
   if(x.quartos)meta.push(x.quartos+' dorm.');
   if(x.suites)meta.push(x.suites+' suíte'+(Number(x.suites)>1?'s':''));
   if(x.area)meta.push(m2(x.area));
-  return {x,c,cidade,local,url,foto:fotos[0]||'',titulo:x.titulo||x.tipo||'Imóvel no Litoral Norte Gaúcho',preco:x.preco?brl(x.preco):'Sob consulta',meta,descricao:descricao.slice(0,320)};
+  return {x,c,cidade,local,url,foto:fotos[0]||'',titulo,preco:x.preco?brl(x.preco):'Sob consulta',meta,descricao:descricao.slice(0,320)};
 }
 function textoCompartilhamentoImovel(d){
-  return ['Olá! Separei este imóvel para você conhecer:', '', 'PORTAL MEU LITORAL', d.titulo, '', 'Valor: '+d.preco, 'Localização: '+(d.local||d.cidade), d.meta.filter((v,i)=>i>1).join(' · '), '', d.descricao, '', 'Veja fotos, detalhes e informações completas:', d.url, '', 'Se quiser, posso agendar uma visita e apresentar outras opções semelhantes.'].filter(Boolean).join('\\n');
+  return ['Olá! Separei um imóvel para você conhecer.','','PORTAL MEU LITORAL',d.titulo,'','Valor: '+d.preco,'Localização: '+(d.local||d.cidade),d.meta.filter((v,i)=>i>1).join(' · '),'',d.descricao,'','Veja fotos e detalhes completos:',d.url,'','Se quiser, posso agendar uma visita e apresentar outras opções semelhantes.'].join('\n').replace(/\n{3,}/g,'\n\n').trim();
 }
 function abrirCompartilhamentoImovel(id){
   const d=dadosCompartilhamentoImovel(id);if(!d){toast('Imóvel não encontrado.','error');return;}
