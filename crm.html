@@ -4465,7 +4465,9 @@ function compartilharImovelWhatsAppDireto(id){
 function compartilharImovelEmail(){
   if(!shareImovelAtual)return;
   const input=document.getElementById('share-imov-email');const email=(input?.value||'').trim();
-  if(!email||!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){toast('Informe um e-mail válido para compartilhar o imóvel.','error');input?.focus();return;}
+  const partesEmail=email.split('@');
+  const emailValido=email.length<=254&&partesEmail.length===2&&partesEmail[0].length>0&&partesEmail[1].includes('.')&&!partesEmail[1].startsWith('.')&&!partesEmail[1].endsWith('.')&&!email.includes(' ');
+  if(!emailValido){toast('Informe um e-mail válido para compartilhar o imóvel.','error');input?.focus();return;}
   const assunto='Imóvel selecionado para você | '+shareImovelAtual.titulo;
   const href='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(assunto)+'&body='+encodeURIComponent(textoCompartilhamentoImovel(shareImovelAtual));
   window.location.href=href;
