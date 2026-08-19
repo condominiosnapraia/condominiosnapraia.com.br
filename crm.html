@@ -762,6 +762,48 @@ function agendarRenovacao(){
   _renovTimer = setTimeout(()=>{ renovarToken().catch(()=>false); }, 45*60*1000);
 }
 
+function crmErroSessaoExpirada(){
+  const err=new Error('Sessão do CRM expirada. Faça login novamente para continuar.');
+  err.code='CRM_SESSION_EXPIRED';
+  err.sessionExpired=true;
+  return err;
+}
+
+const CRM_IMOV_DRAFT_KEY='cnp_imov_form_draft_v1';
+function guardarRascunhoImovelSessao(){
+  try{
+    const modal=document.getElementById('imov-mo');
+    if(!modal||!modal.classList.contains('op')) return false;
+    const fields={};
+    modal.querySelectorAll('input[id],select[id],textarea[id]').forEach(el=>{
+      fields[el.id]=el.type==='checkbox'?!!el.checked:el.value;
+    });
+    sessionStorage.setItem(CRM_IMOV_DRAFT_KEY,JSON.stringify({saved_at:Date.now(),fields}));
+    return true;
+  }catch(e){console.warn('Não foi possível guardar o rascunho local:',e);return false;}
+}
+function limparRascunhoImovelSessao(){try{sessionStorage.removeItem(CRM_IMOV_DRAFT_KEY);}catch(e){}}
+function restaurarRascunhoImovelSessao(){
+  try{
+    const raw=sessionStorage.getItem(CRM_IMOV_DRAFT_KEY);if(!raw)return false;
+    const draft=JSON.parse(raw);if(!draft||!draft.fields||Date.now()-Number(draft.saved_at||0)>2*60*60*1000)return false;
+    const modal=document.getElementById('imov-mo');if(!modal)return false;
+    Object.entries(draft.fields).forEach(([id,value])=>{
+      const el=document.getElementById(id);if(!el)return;
+      if(el.type==='checkbox')el.checked=!!value;else el.value=value??'';
+    });
+    if(typeof toggleForaCond==='function')toggleForaCond();
+    imModalDirty=true;
+    return true;
+  }catch(e){return false;}
+}
+function pedirLoginPorSessaoExpirada(){
+  guardarRascunhoImovelSessao();
+  const screen=document.getElementById('login-screen');
+  if(screen){screen.style.display='flex';showLoginView('lv-login');}
+  loginAlert('login-warn','Sua sessão expirou. Faça login novamente; o formulário do imóvel permanecerá aberto.','warn');
+}
+
 async function doLogin(){
   const email=(document.getElementById('login-user').value||'').trim();
   const pass=document.getElementById('login-pass').value;
@@ -958,6 +1000,14 @@ if(_savedToken && _savedUser){
     // renova o token logo ao abrir (se a aba ficou aberta muito tempo, ele pode ter expirado)
     // e reagenda a renovação periódica
     if(typeof renovarToken === 'function'){ renovarToken(); }
+    const reabrirRascunho=()=>{
+      if(restaurarRascunhoImovelSessao()){
+        oMo('imov-mo');
+        toast('Rascunho recuperado. Revise e salve o imóvel novamente.','info');
+      }
+    };
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',reabrirRascunho,{once:true});
+    else setTimeout(reabrirRascunho,300);
   }catch(e){}
 }
 </script>
@@ -3020,9 +3070,14 @@ const sb = {
     let r = await fetch(url, {...limpo, headers: montaHeaders()});
     if(r.status===401 || r.status===403){
       const txt = await r.clone().text().catch(()=> '');
-      if(/JWT expired|PGRST303|invalid.*token/i.test(txt)){
+      const sessaoInvalida=/JWT expired|PGRST303|invalid.*token/i.test(txt);
+      const possuiSessao=!!sessionStorage.getItem('cnp_crm_token');
+      if(sessaoInvalida && possuiSessao){
         const ok = await renovarToken();
-        if(ok){ r = await fetch(url, {...limpo, headers: montaHeaders()}); }
+        if(!ok) throw crmErroSessaoExpirada();
+        r = await fetch(url, {...limpo, headers: montaHeaders()});
+        const txt2 = r.ok?'':await r.clone().text().catch(()=> '');
+        if((r.status===401||r.status===403)&&/JWT expired|PGRST303|invalid.*token/i.test(txt2)) throw crmErroSessaoExpirada();
       }
     }
     return r;
@@ -4275,12 +4330,22 @@ async function savImov(){
     DB.invalidate('im');
     const fresh = await sb.get('imoveis','?order=created_at.asc');
     DB._cache.im = {data:fresh, ts:Date.now()};
+    limparRascunhoImovelSessao();
     imModalDirty=false;
     cMo('imov-mo');rImV();upB();
     toast(eid?'Imóvel atualizado!':'Imóvel cadastrado com '+iF.length+' foto(s)!','success');
     // Match automático: avisa se há clientes com interesse compatível
     if(typeof clAvisarMatchNovoImovel==='function'){ const _imNovo=DB.im.find(x=>x.id===o.id); clAvisarMatchNovoImovel(_imNovo); }
-  }catch(e){toast('Erro ao salvar: '+e.message,'error');console.error(e);}
+  }catch(e){
+    const msg=String(e&&e.message||e);
+    if(e&&e.sessionExpired||/PGRST303|JWT expired|CRM_SESSION_EXPIRED|invalid.*token/i.test(msg)){
+      pedirLoginPorSessaoExpirada();
+      toast('Sessão expirada. Faça login novamente; o formulário continuará aberto.','info');
+    }else{
+      toast('Erro ao salvar: '+msg,'error');
+      console.error(e);
+    }
+  }
   finally{if(btn){btn.disabled=false;btn.textContent='💾 Salvar Imóvel';}}
 }
 async function dImov(id){if(!confirm('Excluir imóvel?'))return;try{await sb.delete('imoveis',id);DB._cache.im.data=DB.im.filter(x=>x.id!==id);rImV();upB();toast('Imóvel excluído','info');}catch(e){toast('Erro: '+e.message,'error');}}
