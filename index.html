@@ -3724,7 +3724,8 @@ async function renderContempladasCards(targetId){
         var slug = el.getAttribute('data-lch');
         var foto = _mapaLch[slug + '__1'];
         if(foto){
-          el.style.backgroundImage = "url('" + foto + "')";
+          const fotoCard = fotoVariante(foto, 480, 'webp', 78);
+          el.style.backgroundImage = "url('" + fotoCard + "')";
           el.style.color = 'transparent';
           var tag = el.querySelector('.lch-tag');
           el.textContent = '';
