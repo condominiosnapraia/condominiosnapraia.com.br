@@ -184,16 +184,9 @@
   }
   function listingItems(){try{return Array.isArray(TODOS)?TODOS:[];}catch(e){return[];}}
   function mountListingButtons(){
-    const items=listingItems();if(!items.length)return;
-    document.querySelectorAll('.il-card').forEach(function(card){
-      if(card.querySelector('[data-fav-id]'))return;
-      const href=card.getAttribute('href')||'';const match=href.match(/\/imovel\/([^/?#]+)/i);if(!match)return;
-      let ref='';try{ref=decodeURIComponent(match[1]);}catch(e){ref=match[1];}
-      const im=items.find(function(x){return String(x.slug||'')===ref||String(x.codigo||'')===ref||String(x.id||'')===ref;});if(!im||!im.id)return;
-      const image=card.querySelector('.il-card-img');if(!image)return;
-      const btn=document.createElement('button');btn.type='button';btn.className='pml-fav-card-btn';btn.dataset.favId=im.id;image.appendChild(btn);
-    });
-    refreshButtons();
+    // O catálogo não exibe mais o favorito sobre a foto. A ação fica somente
+    // na página individual, onde há espaço para explicar o estado salvo.
+    document.querySelectorAll('.pml-fav-card-btn').forEach(function(btn){btn.remove();});
   }
   function mountDetailButton(){
     const im=window.STATIC_IMOVEL||window._imAtual;const host=document.querySelector('.ip-meta-row');if(!im||!im.id||!host||host.querySelector('.pml-fav-detail-btn'))return;
