@@ -160,7 +160,7 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 .fth{position:relative;aspect-ratio:4/3;border-radius:var(--rs);overflow:hidden;background:var(--s3)}
 .fth img{width:100%;height:100%;object-fit:cover}
 .fth .frm{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.7);border:none;color:#fff;width:17px;height:17px;border-radius:50%;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center}
-.fth.capa::after{content:'CAPA';position:absolute;bottom:3px;left:3px;background:var(--go);color:#0c0e14;font-size:8px;font-weight:700;padding:1px 5px;border-radius:2px}
+.fth.capa::after{content:'CAPA';position:absolute;bottom:3px;left:3px;background:var(--go);color:#0c0e14;font-size:8px;font-weight:700;padding:1px 5px;border-radius:2px}.im-foto-item{cursor:grab;transition:transform .15s,opacity .15s,border-color .15s}.im-foto-item:active{cursor:grabbing}.im-foto-item.dragging{opacity:.45;transform:scale(.98)}.im-foto-item.drag-over{border-color:var(--ac)!important;box-shadow:0 0 0 3px rgba(31,181,196,.22)}.im-foto-handle{color:#fff;background:rgba(13,59,84,.82);border-radius:4px;padding:2px 5px;font-size:14px;line-height:18px;cursor:grab}
 
 .dov{display:none;position:fixed;inset:0;z-index:800}
 .dov.op{display:block}
@@ -1115,6 +1115,7 @@ if(_savedToken && _savedUser){
     <div><div class="pht">Imóveis</div><div class="phs" id="i-sub"></div></div>
     <div class="phr">
       <select class="fs" id="i-view" onchange="rImV()" aria-label="I View"><option value="cards">Lista detalhada</option><option value="table">Tabela compacta</option></select>
+      <select class="fs" id="i-sort" onchange="iFiltMudou()" aria-label="Ordenar imóveis"><option value="recentes">Mais recentes primeiro</option><option value="antigos">Mais antigos primeiro</option><option value="preco-desc">Maior preço</option><option value="preco-asc">Menor preço</option><option value="codigo">Código</option></select>
       <button class="btn bg" onclick="gerarCodigosEmMassa()" title="Gera código para imóveis que ainda não têm">🔢 Gerar Códigos</button>
       <button class="btn bg" onclick="abrirCadastroIA()">✨ Cadastrar com IA</button>
       <button class="btn bp" onclick="oMo('imov-mo');rImF()">+ Novo Imóvel</button>
@@ -1122,13 +1123,15 @@ if(_savedToken && _savedUser){
   </div>
   <div class="chips" id="i-chips"></div>
   <div class="ttb">
-    <input class="sr" id="i-srch" placeholder="🔍 Buscar por imóvel, cidade, bairro, proprietário..." oninput="rImV()" aria-label="🔍 Buscar por imóvel, cidade, bairro, proprietário...">
-    <select class="fs" id="i-cf" onchange="rImV()" aria-label="I Cf"><option value="">Todos condomínios</option></select>
-    <select class="fs" id="i-lf" onchange="rImV()" aria-label="I Lf"><option value="">Todas localizações</option><option value="cond">Em condomínio</option><option value="fora">Fora de condomínio</option></select>
-    <select class="fs" id="i-sf" onchange="rImV()" aria-label="I Sf">
+    <input class="sr" id="i-srch" placeholder="🔍 Buscar por código, título, bairro, cidade ou proprietário..." oninput="iFiltMudou()" aria-label="Buscar por código, título, bairro, cidade ou proprietário">
+    <select class="fs" id="i-lf" onchange="iFiltMudou()" aria-label="Origem do imóvel"><option value="">Todas as origens</option><option value="cond">Em condomínio</option><option value="fora">Fora de condomínio</option></select>
+    <select class="fs" id="i-cf" onchange="iFiltMudou()" aria-label="Condomínio"><option value="">Todos condomínios</option></select>
+    <select class="fs" id="i-city" onchange="iFiltMudou()" aria-label="Cidade"><option value="">Todas as cidades</option></select>
+    <select class="fs" id="i-tf" onchange="iFiltMudou()" aria-label="Tipo de imóvel"><option value="">Todos os tipos</option></select>
+    <select class="fs" id="i-sf" onchange="iFiltMudou()" aria-label="Status do imóvel">
       <option value="">Todos status</option><option>Disponível</option><option>Negociando</option><option>Vendido</option><option>Retirado</option>
     </select>
-    <select class="fs" id="i-pf" onchange="rImV()" aria-label="I Pf">
+    <select class="fs" id="i-pf" onchange="iFiltMudou()" aria-label="Faixa de preço">
       <option value="">Todos preços</option>
       <option value="0-500000">Até R$500k</option><option value="500000-1000000">R$500k–1M</option>
       <option value="1000000-2000000">R$1M–2M</option><option value="2000000-5000000">R$2M–5M</option>
@@ -1136,6 +1139,7 @@ if(_savedToken && _savedUser){
     </select>
     <span style="margin-left:auto;font-size:11px;color:var(--t3)" id="i-cnt"></span>
   </div>
+  <div id="i-pag" style="display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin:12px 0 4px"></div>
   <div class="tw" id="i-twrap">
     <table><thead><tr><th>Código</th><th>Imóvel</th><th>Origem / Cidade</th><th>Tipo</th><th>Preço</th><th>Proprietário</th><th>Status</th><th>Site</th><th>Ações</th></tr></thead>
     <tbody id="i-tbody"></tbody></table>
@@ -2752,7 +2756,7 @@ if(_savedToken && _savedUser){
     <div class="mb">
       <div class="fsec">Fotos do Imóvel</div>
       <div style="background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r-sm);padding:10px 13px;margin-bottom:13px;font-size:11.5px;color:var(--t2)">
-        📷 A <strong>primeira foto</strong> será a capa do imóvel. Adicione fotos de todos os ambientes. Recomendado: mínimo 5 fotos.
+        📷 A <strong>primeira foto</strong> será a capa do imóvel. Arraste as fotos para mudar a sequência; no telemóvel, use o campo Ordem. Adicione fotos de todos os ambientes. Recomendado: mínimo 5 fotos.
       </div>
       <div class="fdrop" onclick="document.getElementById('ifi').click()">
         <input type="file" id="ifi" multiple accept="image/*,.heic,.heif,.webp" onchange="addF(this,'i')" aria-label="Ifi">
@@ -3841,42 +3845,92 @@ function condDoImovel(x){return (DB.co||[]).find(y=>y.id===(x.condId||x.cond_id)
 function localImovelLabel(x){return isForaImovel(x)?'Fora de condomínio':(condDoImovel(x).nome||'—');}
 function cidadeImovelLabel(x){const c=condDoImovel(x);return c.cidade||c.localizacao||x.cidade_end||x.cidadeEnd||x.cidade||'—';}
 function pCS(){
-  const co=DB.co;
+  const co=DB.co||[];
   const o='<option value="">Selecione...</option>'+co.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
   const f='<option value="">Todos condomínios</option>'+co.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
   document.getElementById('im-cond').innerHTML=o;
   document.getElementById('i-cf').innerHTML=f;
+  const cidadeMap=new Map();
+  (DB.im||[]).forEach(x=>{const value=String(cidadeImovelLabel(x)||'').trim();const key=value.toLocaleLowerCase('pt-BR');if(value&&value!=='—'&&!cidadeMap.has(key))cidadeMap.set(key,value);});
+  const cidades=[...cidadeMap.values()].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const tipos=[...new Set((DB.im||[]).map(x=>String(x.tipo||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const cityEl=document.getElementById('i-city');
+  const typeEl=document.getElementById('i-tf');
+  if(cityEl) cityEl.innerHTML='<option value="">Todas as cidades</option>'+cidades.map(v=>`<option value="${v}">${v}</option>`).join('');
+  if(typeEl) typeEl.innerHTML='<option value="">Todos os tipos</option>'+tipos.map(v=>`<option value="${v}">${v}</option>`).join('');
   const ti=['Casa','Terreno','Apartamento'];
   document.getElementById('i-chips').innerHTML=`<div class="chip on" onclick="sTF(this,'')">Todos</div>`+ti.map(t=>`<div class="chip" onclick="sTF(this,'${t}')">${t}</div>`).join('');
 }
 let tF='';
-function sTF(el,t){tF=t;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');rImV()}
+let iPagina=1;
+let iPageSize=10;
+function iFiltMudou(){iPagina=1;rImV()}
+function sTF(el,t){tF=t;iPagina=1;document.querySelectorAll('#i-chips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');rImV()}
+function iSetPageSize(v){iPageSize=Number(v);iPagina=1;rImV()}
+function iIrPagina(p){iPagina=Math.max(1,Number(p)||1);rImV()}
+function iSortValue(x){
+  const raw=x&& (x.created_at||x.createdAt||x.criado_em||x.data_cadastro||x.updated_at||x.updatedAt||x.atualizado_em);
+  const time=raw?Date.parse(raw):NaN;
+  return Number.isFinite(time)?time:0;
+}
+function iPaginar(data){
+  const total=data.length;
+  const pages=iPageSize?Math.max(1,Math.ceil(total/iPageSize)):1;
+  iPagina=Math.min(iPagina,pages);
+  const start=iPageSize?(iPagina-1)*iPageSize:0;
+  return {items:iPageSize?data.slice(start,start+iPageSize):data,total,pages,start,end:iPageSize?Math.min(start+iPageSize,total):total};
+}
+function rImPag(total,pages,start,end){
+  const el=document.getElementById('i-pag');if(!el)return;
+  if(!total){el.innerHTML='';return;}
+  const opts=[10,20,30,50,0].map(n=>`<option value="${n}" ${iPageSize===n?'selected':''}>${n?'Mostrar '+n:'Mostrar todos'}</option>`).join('');
+  let nav='';
+  if(pages>1){
+    const prev=Math.max(1,iPagina-1),next=Math.min(pages,iPagina+1);
+    nav=`<button class="btn bg bsm" onclick="iIrPagina(${prev})" ${iPagina===1?'disabled':''}>← Anterior</button><span style="font-size:11px;color:var(--t3)">Página ${iPagina} de ${pages}</span><button class="btn bg bsm" onclick="iIrPagina(${next})" ${iPagina===pages?'disabled':''}>Próxima →</button>`;
+  }
+  el.innerHTML=`<span style="font-size:11px;color:var(--t3)">${start+1}–${end} de ${total}</span><select class="fs" onchange="iSetPageSize(this.value)" aria-label="Quantidade de imóveis por página">${opts}</select>${nav}`;
+}
 function rImV(){const v=document.getElementById('i-view').value;document.getElementById('i-twrap').style.display=v==='table'?'':'none';document.getElementById('i-cwrap').style.display=v==='cards'?'':'none';v==='table'?rImT():rImC()}
 function iFiltered(){
   const s=(document.getElementById('i-srch')||{value:''}).value.toLowerCase().trim();
   const cf=(document.getElementById('i-cf')||{value:''}).value;
+  const city=(document.getElementById('i-city')||{value:''}).value;
+  const type=(document.getElementById('i-tf')||{value:''}).value;
   const lf=(document.getElementById('i-lf')||{value:''}).value;
   const sf=(document.getElementById('i-sf')||{value:''}).value;
   const pf=(document.getElementById('i-pf')||{value:''}).value;
-  const co=DB.co;const pr=DB.pr||[];
-  return DB.im.filter(x=>{
-    const c=co.find(y=>y.id===x.condId)||{nome:''};
-    const p=pr.find(y=>y.id===(x.propId||x.prop_id))||{nome:'',telefone:''};
-    // busca ampla: título, condomínio, quadra, lote, proprietário (nome+telefone), código
-    const alvo=[x.titulo,c.nome,x.quadra,x.lote,p.nome,p.telefone,p.whatsapp,x.codigo,x.ref,x.bairro,x.bairro_end,x.bairroEnd,x.cidade,x.cidade_end,x.cidadeEnd].map(v=>String(v||'').toLowerCase()).join(' ');
+  const sort=(document.getElementById('i-sort')||{value:'recentes'}).value;
+  const co=DB.co||[];const pr=DB.pr||[];
+  const data=(DB.im||[]).filter(x=>{
+    const c=condDoImovel(x);
+    const p=pr.find(y=>y.id===(x.propId||x.prop_id))||{nome:'',telefone:'',whatsapp:''};
+    const cidade=cidadeImovelLabel(x);
+    const tipo=String(x.tipo||'').trim();
+    const alvo=[x.titulo,c.nome,x.quadra,x.lote,p.nome,p.telefone,p.whatsapp,x.codigo,x.ref,x.bairro,x.bairro_end,x.bairroEnd,x.cidade,x.cidade_end,x.cidadeEnd,tipo].map(v=>String(v||'').toLowerCase()).join(' ');
     const ms=!s||alvo.includes(s);
-    const mc=!cf||x.condId===cf;
-    const mst=!sf||x.status===sf;
+    const mc=!cf||String(x.condId||x.cond_id||'')===String(cf);
+    const mcity=!city||cidade.toLocaleLowerCase('pt-BR')===String(city).toLocaleLowerCase('pt-BR');
+    const mtype=!type||tipo===type;
+    const mst=!sf||String(x.status||'')===sf;
     const ml=!lf||(lf==='fora'?isForaImovel(x):!isForaImovel(x));
     const mt=!tF||tipoCategoriaImovel(x.tipo)===tF;
-    let mp=true;if(pf){const[mn,mx]=pf.split('-').map(Number);mp=(+x.preco||0)>=mn&&(+x.preco||0)<mx}
-    return ms&&mc&&mst&&ml&&mt&&mp;
+    let mp=true;if(pf){const[mn,mx]=pf.split('-').map(Number);mp=(+x.preco||0)>=mn&&(+x.preco||0)<mx;}
+    return ms&&mc&&mcity&&mtype&&mst&&ml&&mt&&mp;
+  });
+  return data.sort((a,b)=>{
+    if(sort==='preco-desc') return (+b.preco||0)-(+a.preco||0);
+    if(sort==='preco-asc') return (+a.preco||0)-(+b.preco||0);
+    if(sort==='codigo') return String(a.codigo||a.ref||'').localeCompare(String(b.codigo||b.ref||''),'pt-BR',{numeric:true,sensitivity:'base'});
+    const delta=iSortValue(b)-iSortValue(a);
+    return sort==='antigos'?delta*-1:delta;
   });
 }
 function rImT(){
-  const data=iFiltered();const co=DB.co,pr=DB.pr;
+  const full=iFiltered();const pag=iPaginar(full);const data=pag.items;const co=DB.co,pr=DB.pr;
   document.getElementById('i-sub').textContent=`${DB.im.length} imóveis cadastrados`;
-  document.getElementById('i-cnt').textContent=data.length+' resultado'+(data.length!==1?'s':'');
+  document.getElementById('i-cnt').textContent=full.length+' resultado'+(full.length!==1?'s':'');
+  rImPag(pag.total,pag.pages,pag.start,pag.end);
   const sc={Disponível:'tgn',Negociando:'tgo',Vendido:'tbl',Retirado:'trd'};
   document.getElementById('i-tbody').innerHTML=data.length===0?`<tr><td colspan="9"><div class="te"><div class="te-ic">🏠</div><h3>Nenhum imóvel</h3></div></td></tr>`
     :data.map(x=>{
@@ -3902,7 +3956,9 @@ function rImT(){
       </tr>`;}).join('');
 }
 function rImC(){
-  const data=iFiltered();const co=DB.co;const pr=DB.pr||[];
+  const full=iFiltered();const pag=iPaginar(full);const data=pag.items;const co=DB.co;const pr=DB.pr||[];
+  document.getElementById('i-cnt').textContent=full.length+' resultado'+(full.length!==1?'s':'');
+  rImPag(pag.total,pag.pages,pag.start,pag.end);
   const sc={Disponível:'tgn',Negociando:'tgo',Vendido:'tbl',Retirado:'trd'};
   document.getElementById('i-cgrid').innerHTML=data.length===0?`<div class="te" style="grid-column:1/-1"><div class="te-ic">🏠</div><h3>Nenhum imóvel</h3></div>`
     :data.map(x=>{
@@ -4718,10 +4774,11 @@ function rFG(p){
     const onSite = sel[i] !== false;
     const isCapa = i === 0;
     return `
-    <div style="position:relative;border-radius:var(--r);overflow:hidden;border:2px solid ${onSite?'var(--gn)':'var(--bd2)'}">
+    <div class="im-foto-item" draggable="${p==='i'?'true':'false'}" data-foto-index="${i}" ondragstart="fotoDragStart(event,'${p}',${i})" ondragover="fotoDragOver(event)" ondragleave="fotoDragLeave(event)" ondrop="fotoDrop(event,'${p}',${i})" ondragend="fotoDragEnd(event)" style="position:relative;border-radius:var(--r);overflow:hidden;border:2px solid ${onSite?'var(--gn)':'var(--bd2)'}">
       <img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;cursor:pointer" onclick="toggleSite('${p}',${i})" title="${onSite?'Publicar no site — clique para remover':'Não vai ao site — clique para incluir'}" alt="Foto do Portal Meu Litoral">
       ${isCapa?`<div style="position:absolute;top:5px;left:5px;background:var(--go);color:#fff;font-size:9px;padding:2px 7px;border-radius:3px;font-weight:700;letter-spacing:.08em">CAPA</div>`:''}
-      <div style="position:absolute;top:5px;right:5px;display:flex;gap:4px">
+      <div style="position:absolute;top:5px;right:5px;display:flex;gap:4px;align-items:center">
+        ${p==='i'?`<span class="im-foto-handle" title="Arraste para mudar a ordem" aria-label="Arrastar foto">⠿</span>`:''}
         <button onclick="toggleSite('${p}',${i})" style="background:${onSite?'var(--gn)':'var(--s4)'};border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center" title="${onSite?'Remove do site':'Inclui no site'}">${onSite?'✓':'○'}</button>
         <button onclick="rmF('${p}',${i})" style="background:rgba(214,48,49,.85);border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:13px;font-weight:700" title="Remover foto">✕</button>
       </div>
@@ -4738,6 +4795,42 @@ function rFG(p){
       </div>
     </div>`;
   }).join('');
+}
+
+let fotoDragState=null;
+function fotoDragStart(event,p,i){
+  if(p!=='i') return;
+  fotoDragState={p,from:i};
+  event.dataTransfer.effectAllowed='move';
+  event.dataTransfer.setData('text/plain',String(i));
+  event.currentTarget.classList.add('dragging');
+}
+function fotoDragOver(event){
+  event.preventDefault();
+  event.dataTransfer.dropEffect='move';
+  event.currentTarget.classList.add('drag-over');
+}
+function fotoDragLeave(event){event.currentTarget.classList.remove('drag-over');}
+function fotoDragEnd(event){
+  event.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.im-foto-item.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  fotoDragState=null;
+}
+function fotoDrop(event,p,to){
+  event.preventDefault();
+  event.currentTarget.classList.remove('drag-over');
+  const st=fotoDragState;
+  if(!st||st.p!==p||st.from===to){fotoDragState=null;return;}
+  const arr=p==='c'?cF:iF;
+  const sel=p==='c'?cFS:iFS;
+  const [foto]=arr.splice(st.from,1);
+  const [site]=sel.splice(st.from,1);
+  const insertAt=st.from<to?Math.max(0,to-1):to;
+  arr.splice(insertAt,0,foto);
+  sel.splice(insertAt,0,site);
+  fotoDragState=null;
+  rFG(p);
+  toast('Ordem das fotos atualizada','success');
 }
 
 // Reordena a foto da posição "i" para a posição digitada (1-based)
