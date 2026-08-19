@@ -855,7 +855,7 @@ const _logoCache = {};
 const admIcoHtml = (id,sz) => {
   const a=getAdm(id);
   if(a.logo){
-    return `<div class="carta-adm-ico" style="width:${sz}px;height:${sz}px;background:#fff;padding:4px;border:1px solid #e2e8e2;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><img src="${a.logo}" style="width:100%;height:100%;object-fit:contain" alt="${a.nome||''}" onerror="this.parentElement.style.background='${a.cor||'#0c4a6e'}';this.parentElement.style.padding='0';this.parentElement.style.border='0';this.parentElement.innerHTML='${a.abrev||'?'}'"></div>`;
+    return `<div class="carta-adm-ico" style="width:${sz}px;height:${sz}px;background:#fff;padding:4px;border:1px solid #e2e8e2;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center"><img src="${a.logo}" loading="lazy" decoding="async" width="${sz}" height="${sz}" style="width:100%;height:100%;object-fit:contain" alt="${a.nome||''}" onerror="this.parentElement.style.background='${a.cor||'#0c4a6e'}';this.parentElement.style.padding='0';this.parentElement.style.border='0';this.parentElement.innerHTML='${a.abrev||'?'}'"></div>`;
   }
   return `<div class="carta-adm-ico" style="width:${sz}px;height:${sz}px;background:${a.cor||'#0c4a6e'};border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center">${a.abrev||'?'}</div>`;
 };
