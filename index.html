@@ -2816,29 +2816,35 @@ function initTodosCarrosseis(){
 // para que a primeira pintura não dependa do Supabase.
 async function carregarFotosCarrossel(){
   const mapa={
-    'lagoa-1':'/img/home-lagoa-capa.webp',
-    'mar-1':'/img/home-mar-capa.webp',
-    'cidade-1':'/img/home-cidade-capa.webp'
+    'lagoa-1':{avif:'/img/home-lagoa-capa.avif',fallback:'/img/home-lagoa-capa.webp'},
+    'mar-1':{avif:'/img/home-mar-capa.avif',fallback:'/img/home-mar-capa.webp'},
+    'cidade-1':{avif:'/img/home-cidade-capa.avif',fallback:'/img/home-cidade-capa.webp'}
   };
   const aplicarFotos=()=>{
     document.querySelectorAll('.carr-slide[data-slot], .carr-single[data-slot]').forEach(sl=>{
-      const url=mapa[sl.getAttribute('data-slot')];
-      if(url){
+      const imagem=mapa[sl.getAttribute('data-slot')];
+      if(imagem){
         const cap=sl.querySelector('.carr-cap');
         const capTxt=cap?cap.textContent:'';
         const ph=sl.querySelector('.carr-slide-ph');
-        if(ph) ph.outerHTML='<img src="'+url+'" alt="'+capTxt+'" loading="lazy">';
+        if(ph) ph.outerHTML='<picture style="display:block;width:100%;height:100%"><source type="image/avif" srcset="'+imagem.avif+'"><img src="'+imagem.fallback+'" alt="'+capTxt+'" loading="lazy" decoding="async" width="1800" height="1267" style="width:100%;height:100%;object-fit:cover"></picture>';
       }
     });
     document.querySelectorAll('.imm-bg[data-slot]').forEach(el=>{
-      const url=mapa[el.getAttribute('data-slot')];
-      if(url) el.style.backgroundImage="url('"+url+"')";
+      const imagem=mapa[el.getAttribute('data-slot')];
+      if(imagem){
+        el.style.backgroundImage='url("'+imagem.fallback+'")';
+        el.style.backgroundImage='image-set(url("'+imagem.avif+'") type("image/avif"), url("'+imagem.fallback+'") type("image/webp"))';
+      }
     });
     document.querySelectorAll('.viv-photo[data-slot]').forEach(el=>{
-      const url=mapa[el.getAttribute('data-slot')];
-      if(url){
+      const imagem=mapa[el.getAttribute('data-slot')];
+      if(imagem){
         const ph=el.querySelector('.viv-photo-ph');
-        if(ph) ph.style.backgroundImage="url('"+url+"')";
+        if(ph){
+          ph.style.backgroundImage='url("'+imagem.fallback+'")';
+          ph.style.backgroundImage='image-set(url("'+imagem.avif+'") type("image/avif"), url("'+imagem.fallback+'") type("image/webp"))';
+        }
       }
     });
   };
