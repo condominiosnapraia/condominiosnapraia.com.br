@@ -570,6 +570,25 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 .brk-ac-atu:hover{background:#25d366 !important}
 .brk-ac-atu.off{background:var(--s2) !important;border-color:var(--bd) !important;opacity:.6}
 .brk-ac-atu.off:hover{background:#e2e6ec !important;opacity:1}
+.brk-ac-share{background:#e8f7fa !important;border-color:#8ed8df !important;color:#0e8a99}
+.brk-ac-share:hover{background:#d3f0f3 !important}
+.share-imov-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(280px,.92fr);gap:18px;align-items:start}
+.share-imov-preview{overflow:hidden;border:1px solid #d7e5e8;border-radius:14px;background:#fff;box-shadow:0 8px 24px rgba(13,59,84,.08)}
+.share-imov-cover{height:190px;background:linear-gradient(135deg,#0d3b54,#0e8a99);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.share-imov-cover img{width:100%;height:100%;object-fit:cover}
+.share-imov-cover span{font-size:48px}
+.share-imov-preview-body{padding:16px}
+.share-imov-kicker{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#0e8a99;font-weight:800;margin-bottom:6px}
+.share-imov-title{font-family:'DM Serif Display',serif;font-size:23px;line-height:1.12;color:#0d3b54;margin-bottom:10px}
+.share-imov-price{font-family:'DM Serif Display',serif;font-size:22px;color:#0e8a99;margin-bottom:11px}
+.share-imov-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.share-imov-meta span{background:#eef8f9;color:#295267;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:700}
+.share-imov-desc{font-size:12px;line-height:1.55;color:#526b78;max-height:76px;overflow:hidden;margin:0}
+.share-imov-actions{background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:15px}
+.share-imov-actions .btn{width:100%;justify-content:center;margin-top:8px}
+.share-imov-actions .btn:first-of-type{margin-top:0}
+.share-imov-note{font-size:11px;line-height:1.5;color:var(--t3);margin:12px 0 0}
+.share-imov-text{width:100%;min-height:118px;resize:vertical;background:#fff;border:1px solid var(--bd);border-radius:8px;padding:10px;font:12px/1.45 'DM Sans',sans-serif;color:var(--tx);box-sizing:border-box}
 @media(max-width:720px){
   .brk{flex-wrap:wrap}
   .brk-foto{width:100%;min-width:100%;height:150px}
@@ -2431,6 +2450,7 @@ if(_savedToken && _savedUser){
   <div class="dhdr">
     <div class="mt" id="drw-title">Detalhes</div>
     <div style="display:flex;gap:7px">
+      <button class="btn bg bsm" id="drw-share">↗ Compartilhar</button>
       <button class="btn bg bsm" id="drw-edit">✏ Editar</button>
       <button class="mx" onclick="cDrw()">✕</button>
     </div>
@@ -2858,6 +2878,36 @@ if(_savedToken && _savedUser){
     <button class="btn bg" onclick="cMo('imov-mo')">Cancelar</button>
     <button class="btn bp" onclick="savImov()">💾 Salvar Imóvel</button>
   </div>
+</div></div>
+
+<!-- MODAL COMPARTILHAR IMÓVEL -->
+<div class="ov" id="share-imov-mo">
+<div class="mo mo-xl">
+  <div class="mh"><div class="mt">Compartilhar imóvel</div><button class="mx" onclick="cMo('share-imov-mo')">✕</button></div>
+  <div class="mb">
+    <div class="share-imov-layout">
+      <div class="share-imov-preview" id="share-imov-preview">
+        <div class="share-imov-cover" id="share-imov-cover"><span>🏠</span></div>
+        <div class="share-imov-preview-body">
+          <div class="share-imov-kicker">PORTAL MEU LITORAL · OPORTUNIDADE</div>
+          <div class="share-imov-title" id="share-imov-title">Imóvel</div>
+          <div class="share-imov-price" id="share-imov-price">Sob consulta</div>
+          <div class="share-imov-meta" id="share-imov-meta"></div>
+          <p class="share-imov-desc" id="share-imov-desc">Confira todos os detalhes, fotos e informações deste imóvel.</p>
+        </div>
+      </div>
+      <div class="share-imov-actions">
+        <div class="fsec" style="margin-top:0">Enviar apresentação</div>
+        <div class="fg"><label class="fl" for="share-imov-email">E-mail do destinatário</label><input class="fi" id="share-imov-email" type="email" placeholder="cliente@email.com" autocomplete="email"></div>
+        <button class="btn bp" type="button" onclick="compartilharImovelEmail()">📧 Abrir e-mail já preenchido</button>
+        <button class="btn bg" type="button" onclick="compartilharImovelWhatsApp()">💬 Compartilhar via WhatsApp</button>
+        <div class="fsec" style="margin-top:15px">Prévia da mensagem</div>
+        <textarea class="share-imov-text" id="share-imov-text" readonly aria-label="Prévia da mensagem de compartilhamento"></textarea>
+        <p class="share-imov-note">O botão de e-mail abre o aplicativo padrão do seu computador ou celular com destinatário, assunto e apresentação preenchidos. Nenhum e-mail é enviado automaticamente pelo CRM.</p>
+      </div>
+    </div>
+  </div>
+  <div class="mf"><button class="btn bg" type="button" onclick="cMo('share-imov-mo')">Fechar</button></div>
 </div></div>
 
 <!-- MODAL PROPRIETÁRIO -->
@@ -4010,6 +4060,7 @@ function rImT(){
         <td><span class="tag ${sc[x.status]||'tbl'}">${x.status||'—'}</span></td>
         <td>${x.publicar?'<span class="tag tgn">✓</span>':'<span class="tag trd">✗</span>'}</td>
         <td onclick="event.stopPropagation()"><div class="acts">
+          <button class="btn bg bxs" onclick="abrirCompartilhamentoImovel('${x.id}');event.stopPropagation()" title="Compartilhar imóvel">↗</button>
           <button class="btn bg bxs" onclick="eImov('${x.id}')">✏</button>
           <button class="btn bd2b bxs" onclick="dImov('${x.id}')">🗑</button>
         </div></td>
@@ -4067,6 +4118,7 @@ function rImC(){
           <div class="brk-status"><span class="tag ${sc[x.status]||'tbl'}">${x.status||'—'}</span></div>
           <div class="brk-acoes">
             ${btnAtu}
+            <button class="brk-ac brk-ac-share" onclick="event.stopPropagation();abrirCompartilhamentoImovel('${x.id}')" title="Compartilhar imóvel">↗</button>
             <button class="brk-ac" onclick="event.stopPropagation();eImov('${x.id}')" title="Editar">✏️</button>
             <button class="brk-ac" onclick="event.stopPropagation();dImov('${x.id}')" title="Excluir">🗑️</button>
           </div>
@@ -4349,12 +4401,61 @@ async function savImov(){
   finally{if(btn){btn.disabled=false;btn.textContent='💾 Salvar Imóvel';}}
 }
 async function dImov(id){if(!confirm('Excluir imóvel?'))return;try{await sb.delete('imoveis',id);DB._cache.im.data=DB.im.filter(x=>x.id!==id);rImV();upB();toast('Imóvel excluído','info');}catch(e){toast('Erro: '+e.message,'error');}}
+let shareImovelAtual=null;
+function dadosCompartilhamentoImovel(id){
+  const x=(DB.im||[]).find(y=>y.id===id);if(!x)return null;
+  const c=(DB.co||[]).find(y=>y.id===(x.condId||x.cond_id))||{};
+  const cidade=c.cidade||c.localizacao||x.cidade_end||x.cidadeEnd||x.cidade||'Litoral Norte Gaúcho';
+  const local=isForaImovel(x)?[x.bairro_end||x.bairroEnd||x.bairro,cidade].filter(Boolean).join(', '):[c.nome,cidade].filter(Boolean).join(' · ');
+  const slugify=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const slug=x.slug||('imovel-'+slugify(x.codigo||x.ref||x.id));
+  const url='https://condominiosnapraia.com.br/imovel/'+encodeURIComponent(slug)+'/';
+  const fotos=(x.fotos_no_site&&x.fotos_no_site.length?x.fotos_no_site:(x.fotos||[])).filter(f=>typeof f==='string'&&/^https?:/i.test(f));
+  const seo=x.seo_data||x.seoData||{};
+  const descricao=String(seo.desc||x.descricao||'Confira este imóvel selecionado pelo Portal Meu Litoral.').replace(/\\s+/g,' ').trim();
+  const meta=[x.tipo||'Imóvel',local||'Litoral Norte Gaúcho'];
+  if(x.quartos)meta.push(x.quartos+' dorm.');
+  if(x.suites)meta.push(x.suites+' suíte'+(Number(x.suites)>1?'s':''));
+  if(x.area)meta.push(m2(x.area));
+  return {x,c,cidade,local,url,foto:fotos[0]||'',titulo:x.titulo||x.tipo||'Imóvel no Litoral Norte Gaúcho',preco:x.preco?brl(x.preco):'Sob consulta',meta,descricao:descricao.slice(0,320)};
+}
+function textoCompartilhamentoImovel(d){
+  return ['Olá! Separei este imóvel para você conhecer:', '', 'PORTAL MEU LITORAL', d.titulo, '', 'Valor: '+d.preco, 'Localização: '+(d.local||d.cidade), d.meta.filter((v,i)=>i>1).join(' · '), '', d.descricao, '', 'Veja fotos, detalhes e informações completas:', d.url, '', 'Se quiser, posso agendar uma visita e apresentar outras opções semelhantes.'].filter(Boolean).join('\\n');
+}
+function abrirCompartilhamentoImovel(id){
+  const d=dadosCompartilhamentoImovel(id);if(!d){toast('Imóvel não encontrado.','error');return;}
+  shareImovelAtual=d;
+  const byId=n=>document.getElementById(n);
+  byId('share-imov-title').textContent=d.titulo;
+  byId('share-imov-price').textContent=d.preco;
+  byId('share-imov-desc').textContent=d.descricao;
+  byId('share-imov-meta').innerHTML=d.meta.map(v=>'<span>'+clEsc(v)+'</span>').join('');
+  byId('share-imov-text').value=textoCompartilhamentoImovel(d);
+  const cover=byId('share-imov-cover');cover.innerHTML=d.foto?'<img src="'+clEsc(d.foto)+'" alt="'+clEsc(d.titulo)+'">':'<span>🏠</span>';
+  byId('share-imov-email').value='';
+  oMo('share-imov-mo');
+  setTimeout(()=>byId('share-imov-email')?.focus(),80);
+}
+function compartilharImovelWhatsApp(){
+  if(!shareImovelAtual)return;
+  const url='https://wa.me/?text='+encodeURIComponent(textoCompartilhamentoImovel(shareImovelAtual));
+  window.open(url,'_blank','noopener,noreferrer');
+}
+function compartilharImovelEmail(){
+  if(!shareImovelAtual)return;
+  const input=document.getElementById('share-imov-email');const email=(input?.value||'').trim();
+  if(!email||!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){toast('Informe um e-mail válido para compartilhar o imóvel.','error');input?.focus();return;}
+  const assunto='Imóvel selecionado para você | '+shareImovelAtual.titulo;
+  const href='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(assunto)+'&body='+encodeURIComponent(textoCompartilhamentoImovel(shareImovelAtual));
+  window.location.href=href;
+}
 function sIDrw(id){
   const x=DB.im.find(y=>y.id===id);if(!x)return;
   const c=DB.co.find(y=>y.id===(x.condId||x.cond_id))||{nome:'—'};
   const p=DB.pr.find(y=>y.id===(x.propId||x.prop_id))||{nome:'—',telefone:'—'};
   const sc={Disponível:'tgn',Negociando:'tgo',Vendido:'tbl',Retirado:'trd'};
   document.getElementById('drw-title').textContent=x.titulo||'Imóvel';
+  document.getElementById('drw-share').onclick=()=>{cDrw();abrirCompartilhamentoImovel(id)};
   document.getElementById('drw-edit').onclick=()=>{cDrw();eImov(id)};
   document.getElementById('drw-body').innerHTML=`
     ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:100%;height:230px;object-fit:cover;border-radius:var(--r);margin-bottom:12px" alt="Foto do Portal Meu Litoral">`:`<div style="width:100%;height:230px;background:var(--s4);border-radius:var(--r);margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:44px">🏠</div>`}
