@@ -1410,15 +1410,47 @@ function escapeAttr(value) {
 }
 
 function fotoTag(raw, alt, options = {}) {
-  const {className = '', sizes = '100vw', width = 640, height = 384, eager = false, fetchPriority = false} = options;
+  const {className = '', sizes = '100vw', width = 640, height = 384, eager = false, fetchPriority = false, deferLoad = false} = options;
   const base = fotoPublica(raw);
   if (!base) return '';
   const loading = eager ? 'eager' : 'lazy';
   const priority = fetchPriority ? ' fetchpriority="high"' : '';
   const srcset = fotoSrcset(base, 'webp');
-  const srcsetAttr = srcset ? ` srcset="${escapeAttr(srcset)}" sizes="${escapeAttr(sizes)}"` : '';
   const src = base.startsWith('/cdn-fotos/') ? fotoVariante(base, width, 'jpeg') : base;
-  return `<img class="${escapeAttr(className)}" src="${escapeAttr(src)}"${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority} alt="${escapeAttr(alt)}">`;
+  const srcAttr = deferLoad ? ` data-lazy-src="${escapeAttr(src)}"` : ` src="${escapeAttr(src)}"`;
+  const srcsetAttr = srcset ? `${deferLoad ? ' data-lazy-srcset' : ' srcset'}="${escapeAttr(srcset)}" sizes="${escapeAttr(sizes)}"` : '';
+  return `<img class="${escapeAttr(className)}"${srcAttr}${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority} alt="${escapeAttr(alt)}">`;
+}
+
+// Adia somente a transferência das imagens de cards que estão longe da viewport.
+// O texto, os links e as dimensões permanecem no DOM para preservar SEO e CLS.
+function ativarImagensAdidas(root = document) {
+  const imagens = Array.from(root.querySelectorAll('img[data-lazy-src], img[data-lazy-srcset]'));
+  if (!imagens.length) return;
+  const carregar = img => {
+    const srcset = img.getAttribute('data-lazy-srcset');
+    if (srcset) {
+      img.setAttribute('srcset', srcset);
+      img.removeAttribute('data-lazy-srcset');
+    }
+    const src = img.getAttribute('data-lazy-src');
+    if (src) {
+      img.setAttribute('src', src);
+      img.removeAttribute('data-lazy-src');
+    }
+  };
+  if (!('IntersectionObserver' in window)) {
+    imagens.forEach(carregar);
+    return;
+  }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+      carregar(entry.target);
+    });
+  }, {rootMargin: '300px 0px'});
+  imagens.forEach(img => observer.observe(img));
 }
 
 const HOME_COND_SELECT_MIN = [
@@ -2796,7 +2828,7 @@ function buildImovCard(i){
     i.vagas?`🚗 ${i.vagas} ${i.vagas==1?'vaga':'vagas'}`:null
   ].filter(Boolean).map(s=>`<span class="icspec">${s}</span>`).join('');
   return`<a class="icard vis" href="/imovel?id=${encodeURIComponent(i.codigo||i.slug||i.id)}" style="text-decoration:none;color:inherit">
-    <div class="icimg">${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
+    <div class="icimg">${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384,deferLoad:true}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
     <div class="icbody">
       <div class="ictipo">${i.tipo||'Imóvel'}</div>
       <div class="ictit">${i.titulo||'—'}</div>
@@ -2976,6 +3008,8 @@ function buildHomeDestaques(){
     renderHomeGrid('home-terreno-grid', pickDestaques(terrenosCondominio, destTerreno, 6), '🌳', 'Cadastre terrenos em condomínio no CRM para exibi-los aqui');
     renderHomeGrid('home-terreno-fora-grid', terrenosFora.slice(0,6), '📐', 'Ainda não há terrenos fora de condomínio publicados.');
 
+    // Activar imagens apenas quando os cards se aproximarem do viewport.
+    ativarImagensAdidas();
     // Trigger fade animations
     if(typeof obs === 'function') obs();
 
