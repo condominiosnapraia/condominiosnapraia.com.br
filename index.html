@@ -1381,7 +1381,15 @@ function fotoPublica(raw) {
   if (s.startsWith('data:') || s.startsWith('blob:')) return s;
   if (s.startsWith('/cdn-fotos/')) return s;
   if (s.startsWith(STORAGE_PUBLIC_PREFIX)) return '/cdn-fotos/' + s.slice(STORAGE_PUBLIC_PREFIX.length).replace(/^\/+/, '');
-  if (/^https?:\/\//i.test(s)) return s;
+  if (/^https?:\/\//i.test(s)) {
+    try {
+      const u = new URL(s, window.location.origin);
+      if (u.origin === window.location.origin && u.pathname.startsWith('/cdn-fotos/')) {
+        return u.pathname + u.search;
+      }
+    } catch (_) {}
+    return s;
+  }
   return '/cdn-fotos/' + s.replace(/^\/+/, '');
 }
 
