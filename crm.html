@@ -5013,7 +5013,7 @@ async function montarGaleriaLanc(chave){
       ${selo}
       ${thumb}
       <div style="font-size:11px;color:${ehCapa?'#c79a3a':'var(--t2)'};font-weight:${ehCapa?'700':'400'};margin:7px 0 6px;line-height:1.3;min-height:28px">${ehCapa?'⭐ ':''}${cap}</div>
-      <input type="file" accept="image/*" style="display:none" id="gf-${esp.fk}" onchange="uploadGaleriaLanc('${esp.fk}',this)" aria-label="Gf ${Esp.Fk}">
+      <input type="file" accept="image/*" style="display:none" id="gf-${esp.fk}" onchange="uploadGaleriaLanc('${esp.fk}',this)" aria-label="Gf ${esp.fk}">
       <button class="btn ${ehCapa?'bs':'bg'} bsm" style="width:100%" onclick="document.getElementById('gf-${esp.fk}').click()">${atual?'Trocar foto':'Enviar foto'}</button>
     </div>`;
   }).join('');
