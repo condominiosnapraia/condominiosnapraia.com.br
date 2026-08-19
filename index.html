@@ -3583,12 +3583,12 @@ async function renderContempladasCards(targetId){
     return;
   }
   
-  // Carrega dados do Supabase
+  // A primeira tela já está no HTML; a consulta remota pode aguardar o período ocioso.
+  // Hashes legados continuam a carregar imediatamente para preservar os redirects.
   try{
-    await fetchSiteData();
     const h=location.hash;
-    if(h.startsWith('#cond/')){ location.replace('/condominio/?id='+encodeURIComponent(h.replace('#cond/',''))); return; }
-    if(h.startsWith('#imovel/')){ location.replace('/imovel?id='+encodeURIComponent(h.replace('#imovel/',''))); return; }
+    if(h.startsWith('#cond/')){ await fetchSiteData(); location.replace('/condominio/?id='+encodeURIComponent(h.replace('#cond/',''))); return; }
+    if(h.startsWith('#imovel/')){ await fetchSiteData(); location.replace('/imovel?id='+encodeURIComponent(h.replace('#imovel/',''))); return; }
     if(h==='#turismo'){openTurismo();return;}
     // rotas antigas (hash) → agora existem páginas dedicadas: redireciona
     if(h==='#imoveis'||h==='#todos-imoveis'){ location.replace('/imoveis'); return; }
@@ -3603,18 +3603,20 @@ async function renderContempladasCards(targetId){
     (document.getElementById('pt-c')||{style:{},classList:{add(){},remove(){}}}).classList.add('on');
     (document.getElementById('pt-i')||{style:{},classList:{add(){},remove(){}}}).classList.remove('on');
     const _ptt=document.getElementById('pt-t'); if(_ptt) _ptt.classList.remove('on');
-    const renderHomeBelowFold=()=>{
-      buildHomeDestaques();
-      rCond(); buildCities(); updateHeroStats(); renderDestaquesCidade();
-      if(typeof sfcPreencherLista==='function') sfcPreencherLista();
-      if(typeof initTodosCarrosseis==='function') initTodosCarrosseis();
-      deferHomeBelowFold();
+    const renderHomeBelowFold=async()=>{
+      try{
+        await fetchSiteData();
+        buildHomeDestaques();
+        rCond(); buildCities(); updateHeroStats(); renderDestaquesCidade();
+        if(typeof sfcPreencherLista==='function') sfcPreencherLista();
+        if(typeof initTodosCarrosseis==='function') initTodosCarrosseis();
+        deferHomeBelowFold();
+      }catch(err){ console.error('Deferred home data error:',err); }
     };
-    // A primeira tela já está no HTML; monte os grids pesados no primeiro período ocioso.
     if('requestIdleCallback' in window){
-      requestIdleCallback(renderHomeBelowFold,{timeout:900});
+      requestIdleCallback(()=>{ renderHomeBelowFold(); },{timeout:1200});
     }else{
-      setTimeout(renderHomeBelowFold,0);
+      setTimeout(()=>{ renderHomeBelowFold(); },1200);
     }
   }catch(e){
     console.error('Init error:', e);
