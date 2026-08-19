@@ -8,9 +8,24 @@ const PUBLIC_SLUG_ALIASES = {
   'XAN-018': 'lote-a-venda-monaco-yacht-club-xangri-la',
   'XAN-019': 'lote-a-venda-monaco-yacht-club-xangri-la-2'
 };
+function slugifyPublicImovel(value) {
+  return String(value || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-+/g, '-');
+}
 function slugPublico(im) {
   const codigo = String(im?.codigo || '').toUpperCase();
-  return PUBLIC_SLUG_ALIASES[codigo] || im.slug || im.codigo || im.id;
+  if (PUBLIC_SLUG_ALIASES[codigo]) return PUBLIC_SLUG_ALIASES[codigo];
+  const stored = String(im?.slug || '').trim().replace(/^\/+|\/+$/g, '');
+  if (stored && !/^[A-Z]{2,5}-\d{3}$/i.test(stored)) return stored;
+  const base = slugifyPublicImovel(im?.titulo || im?.tipo || 'imovel');
+  const suffix = slugifyPublicImovel(im?.codigo || '');
+  if (base && suffix && !base.endsWith(suffix)) return `${base}-${suffix}`;
+  return base || stored || im?.codigo || im?.id;
 }
 		const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 

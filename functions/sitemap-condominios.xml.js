@@ -9,6 +9,10 @@ const EXCLUDED_PUBLIC_SLUGS = new Set([
     'ocean-side-xangri-la',
     'tirol',
     'sunset-xangri-la',
+    // Registos legados sem página pública correspondente; não remover do Supabase.
+    'condominio-livin-resort-atlantida-',
+    'condominio-thera-santorini-',
+    'condominio-xangri-la-villas-resort-',
     // Páginas estáticas canónicas já publicadas no sitemap principal.
     'vivendas-da-marina-osorio',
     'prime-beach-capao-da-canoa'
