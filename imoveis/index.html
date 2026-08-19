@@ -733,9 +733,12 @@ function fotos(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||Str
 let TODOS=[], CONDS={}, MANSOES_MODE=false;
 
 async function carregar(){
-  const conds=await sbGet('condominios','?select=id,nome,cidade,latitude,longitude');
+  // As duas consultas são independentes; executá-las juntas reduz uma viagem de rede.
+  const [conds,imv]=await Promise.all([
+    sbGet('condominios','?select=id,nome,cidade,latitude,longitude'),
+    sbGet('imoveis','?status=neq.Vendido&publicar=eq.true&select='+encodeURIComponent(CAT_IMOV_SELECT)+'&order=created_at.desc&limit=500')
+  ]);
   if(Array.isArray(conds)) conds.forEach(c=>CONDS[c.id]=c);
-  let imv=await sbGet('imoveis','?status=neq.Vendido&publicar=eq.true&select='+encodeURIComponent(CAT_IMOV_SELECT)+'&order=created_at.desc&limit=500');
   TODOS=Array.isArray(imv)?imv.filter(i=>i.publicar!==false&&i.status!=='Vendido'):[];
   // popular filtros de cidade e tipo
   const cidades=new Set(), tipos=new Set();
