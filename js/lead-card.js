@@ -12,6 +12,7 @@
   var mount = document.getElementById('lead-card');
   if(!mount) return;
 
+  function iniciar(){
   var css = ''+
   '.ldc{max-width:860px;margin:44px auto;padding:0 20px}'+
   '.ldc-card{background:#faf7f0;border:1px solid rgba(184,147,90,.28);border-radius:16px;padding:28px 26px;box-shadow:0 6px 24px rgba(12,74,110,.05)}'+
@@ -150,4 +151,10 @@
     }
   }
   document.getElementById('ldc-btn').addEventListener('click', enviar);
+  }
+
+  // O cartão fica abaixo da primeira tela na maioria das páginas; montá-lo em
+  // período ocioso reduz trabalho inicial sem atrasar a disponibilidade do formulário.
+  if('requestIdleCallback' in window) requestIdleCallback(iniciar, {timeout:1200});
+  else setTimeout(iniciar, 300);
 })();
