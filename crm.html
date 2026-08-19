@@ -2429,6 +2429,8 @@ if(_savedToken && _savedUser){
           <select class="fse" id="cm-pad" aria-label="Pad"><option>Alto Padrão</option><option>Luxo</option><option>Super Luxo</option><option>Médio Padrão</option></select></div>
         <div class="fg"><label class="fl" for="cm-tipo">Tipo</label>
           <select class="fse" id="cm-tipo" aria-label="Tipo"><option>Fechado</option><option>Bairro Planejado</option><option>Resort</option><option>Marina</option><option>Club</option></select></div>
+        <div class="fg"><label class="fl" for="cm-orientacao">Estrutura do condomínio</label>
+          <select class="fse" id="cm-orientacao" aria-label="Estrutura do condomínio"><option value="">Não definida</option><option value="Horizontal">Horizontal</option><option value="Vertical">Vertical</option></select></div>
         <div class="fg"><label class="fl" for="cm-perfil">Perfil (localização) *</label>
           <select class="fse" id="cm-perfil" aria-label="Perfil"><option value="">Selecione...</option><option value="mar">🌊 Beira-mar</option><option value="lagoa">🦢 Beira da lagoa</option><option value="cidade">🏙️ Cidade / Centro</option></select></div>
       </div>
@@ -3357,6 +3359,7 @@ function rCond(){
           <span class="cond-crm-tag tgo">${nIm} ${nIm!==1?'imóveis':'imóvel'}</span>
           <span class="cond-crm-tag tbl">${nFotos} foto${nFotos!==1?'s':''}</span>
           ${c.padrao?`<span class="cond-crm-tag" style="background:var(--acd);color:var(--ac)">${c.padrao}</span>`:''}
+          ${c.orientacao?`<span class="cond-crm-tag tbl">${c.orientacao}</span>`:''}
         </div>
         ${ams?`<div class="cond-crm-am">🏷 ${ams}${(c.amenidades||[]).length>4?` +${(c.amenidades||[]).length-4} mais`:''}</div>`:''}
         <div class="cond-crm-foot">
@@ -3368,7 +3371,7 @@ function rCond(){
   }).join('');
 }
 let cF=[];
-function rCF(){cF=[];cFS=[];document.getElementById('cm-id').value='';document.getElementById('cm-title').textContent='Novo Condomínio';['cm-nome','cm-bairro','cm-desc','cm-seo','cm-area','cm-lotes','cm-inc','cm-ano','cm-am','cm-end','cm-maps','cm-site','cm-seo-titulo','cm-seo-desc','cm-seo-kw','cm-seo-slogan','cm-seo-tour','cm-seo-video'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});document.getElementById('cm-cid').value='';document.getElementById('cm-perfil').value='';document.getElementById('cm-pub').value='1';document.getElementById('cfg').innerHTML='';['cm-seo-tc','cm-seo-dc'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='0'});renderAmenidadesGrid([]);
+function rCF(){cF=[];cFS=[];document.getElementById('cm-id').value='';document.getElementById('cm-title').textContent='Novo Condomínio';['cm-nome','cm-bairro','cm-desc','cm-seo','cm-area','cm-lotes','cm-inc','cm-ano','cm-am','cm-end','cm-maps','cm-site','cm-seo-titulo','cm-seo-desc','cm-seo-kw','cm-seo-slogan','cm-seo-tour','cm-seo-video'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});document.getElementById('cm-cid').value='';document.getElementById('cm-orientacao').value='';document.getElementById('cm-perfil').value='';document.getElementById('cm-pub').value='1';document.getElementById('cfg').innerHTML='';['cm-seo-tc','cm-seo-dc'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='0'});renderAmenidadesGrid([]);
   // ── CMS: limpar novos campos ──
   ['cm-slug','cm-seo-content','cm-canonical','cm-og-image','cm-lat','cm-lng','cm-local-det','cm-infra-det','cm-historia','cm-mercado','cm-diferenciais','cm-preco-terrenos','cm-preco-casas','cm-valorizacao','cm-planta'].forEach(id=>{const e=document.getElementById(id);if(e){e.value='';e.removeAttribute('data-touched');}});
   const fj=document.getElementById('cm-faq-json'); if(fj) fj.value='[]';
@@ -3418,6 +3421,7 @@ function eCond(id){
   document.getElementById('cm-ano').value=c.ano||'';
   document.getElementById('cm-pad').value=c.padrao||'Alto Padrão';
   document.getElementById('cm-tipo').value=c.tipo||'Fechado';
+  document.getElementById('cm-orientacao').value=c.orientacao||c.tipo_estrutura||'';
   document.getElementById('cm-perfil').value=c.perfil||'';
   renderAmenidadesGrid(c.amenidades||[]);
   document.getElementById('cm-end').value=c.endereco||'';
@@ -3706,7 +3710,7 @@ function cmCollect(){
   return {
     nome:cmGet('cm-nome'), cidade:cmGet('cm-cid'), bairro:cmGet('cm-bairro'), slug:cmGet('cm-slug'),
     descricao:cmGet('cm-desc'), area:cmGet('cm-area'), lotes:cmGet('cm-lotes'), incorporadora:cmGet('cm-inc'),
-    ano:cmGet('cm-ano'), padrao:cmGet('cm-pad'), tipo:cmGet('cm-tipo'),
+    ano:cmGet('cm-ano'), padrao:cmGet('cm-pad'), tipo:cmGet('cm-tipo'), orientacao:cmGet('cm-orientacao'),
     endereco:cmGet('cm-end'), maps:cmGet('cm-maps'), latitude:cmGet('cm-lat'), longitude:cmGet('cm-lng'),
     localizacao_detalhada:cmGet('cm-local-det'), infraestrutura_detalhada:cmGet('cm-infra-det'),
     seo_title:cmGet('cm-seo-titulo'), seo_description:cmGet('cm-seo-desc'), seo_keywords:cmGet('cm-seo-kw'),
@@ -3760,6 +3764,7 @@ async function savCond(){
       ano:document.getElementById('cm-ano').value,
       padrao:document.getElementById('cm-pad').value,
       tipo:document.getElementById('cm-tipo').value,
+      orientacao:document.getElementById('cm-orientacao').value,
       perfil:document.getElementById('cm-perfil').value,
       amenidades:document.getElementById('cm-am').value.split(',').map(s=>s.trim()).filter(Boolean),
       endereco:document.getElementById('cm-end').value,
