@@ -4015,6 +4015,7 @@ function rImC(){
 }
 let iF=[];
 function rImF(){
+  imModalDirty=false;
   iF=[];iFS=[];
   document.getElementById('im-id').value='';
   document.getElementById('im-title').textContent='Novo Imóvel';
@@ -4269,6 +4270,7 @@ async function savImov(){
     DB.invalidate('im');
     const fresh = await sb.get('imoveis','?order=created_at.asc');
     DB._cache.im = {data:fresh, ts:Date.now()};
+    imModalDirty=false;
     cMo('imov-mo');rImV();upB();
     toast(eid?'Imóvel atualizado!':'Imóvel cadastrado com '+iF.length+' foto(s)!','success');
     // Match automático: avisa se há clientes com interesse compatível
@@ -4745,6 +4747,7 @@ function compressImgLanc(file, cb){
 }
 
 function addF(inp, p){
+  if(p==='i') imMarcarAlterado();
   const arr = p === 'c' ? cF : iF;
   const sel = p === 'c' ? cFS : iFS; // seleção para site
   Array.from(inp.files).forEach(f => {
@@ -4829,6 +4832,7 @@ function fotoDrop(event,p,to){
   arr.splice(insertAt,0,foto);
   sel.splice(insertAt,0,site);
   fotoDragState=null;
+  if(p==='i') imMarcarAlterado();
   rFG(p);
   toast('Ordem das fotos atualizada','success');
 }
@@ -4846,17 +4850,20 @@ function setFotoOrdem(p, i, novaPos){
   const [sMov] = sel.splice(i,1);
   arr.splice(np,0,fMov);
   sel.splice(np,0,sMov);
+  if(p==='i') imMarcarAlterado();
   rFG(p);
   toast('Ordem atualizada','success');
 }
 
 function toggleSite(p, i){
   const sel = p === 'c' ? cFS : iFS;
+  if(p==='i') imMarcarAlterado();
   sel[i] = !(sel[i] !== false);
   rFG(p);
 }
 
 function moveF(p, i, dir){
+  if(p==='i') imMarcarAlterado();
   const arr = p === 'c' ? cF : iF;
   const sel = p === 'c' ? cFS : iFS;
   const ni = i + dir;
@@ -4867,6 +4874,7 @@ function moveF(p, i, dir){
 }
 
 function rmF(p, i){
+  if(p==='i') imMarcarAlterado();
   const arr = p === 'c' ? cF : iF;
   const sel = p === 'c' ? cFS : iFS;
   arr.splice(i, 1);
@@ -4910,9 +4918,25 @@ function oDrw(){document.getElementById('drw').classList.add('op');document.getE
 function cDrw(){document.getElementById('drw').classList.remove('op');document.getElementById('dov').classList.remove('op')}
 
 // ── MODALS ──
+let imModalDirty=false;
+function imMarcarAlterado(){
+  const modal=document.getElementById('imov-mo');
+  if(modal?.classList.contains('op')) imModalDirty=true;
+}
+function imPodeFechar(){
+  if(!imModalDirty) return true;
+  return window.confirm('Existem informações não salvas neste imóvel. Deseja realmente fechar e descartar o que foi preenchido?');
+}
 function oMo(id){document.getElementById(id).classList.add('op')}
-function cMo(id){document.getElementById(id).classList.remove('op')}
-document.querySelectorAll('.ov').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('op')})});
+function cMo(id){
+  if(id==='imov-mo'&&!imPodeFechar()) return;
+  document.getElementById(id).classList.remove('op');
+  if(id==='imov-mo') imModalDirty=false;
+}
+document.addEventListener('input',e=>{if(e.target.closest('#imov-mo')) imMarcarAlterado();});
+document.addEventListener('change',e=>{if(e.target.closest('#imov-mo')) imMarcarAlterado();});
+window.addEventListener('beforeunload',e=>{if(imModalDirty){e.preventDefault();e.returnValue='';}});
+document.querySelectorAll('.ov').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)cMo(o.id)})});
 
 // ── TOAST ──
 function toast(msg,type='info'){
