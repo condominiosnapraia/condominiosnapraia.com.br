@@ -276,6 +276,13 @@ function paginaListagem(artigos){
       ...(a.dataRaw?{"datePublished":new Date(a.dataRaw).toISOString()}:{})
     }))
   };
+  const breadcrumb = {
+    "@context":"https://schema.org","@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"Início","item":`${SITE}/`},
+      {"@type":"ListItem","position":2,"name":"Blog","item":`${SITE}/blog/`}
+    ]
+  };
 
   return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -291,7 +298,8 @@ ${HEAD_COMUM}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Blog | Portal Meu Litoral">
 <meta name="twitter:description" content="Artigos e novidades sobre imóveis e condomínios no Litoral Norte Gaúcho.">
-<script type="application/ld+json">${JSON.stringify(itemList)}</script>
+  <script type="application/ld+json">${JSON.stringify(itemList)}</script>
+  <script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>
 <style>
 ${CSS_COMUM}
 .b-hero{background:linear-gradient(150deg,#0c4a6e 0%,#0e7490 55%,#0891b2 100%);color:#fff;padding:56px 24px 64px;text-align:center}
@@ -347,6 +355,14 @@ function paginaArtigo(a, anterior, proximo){
   if(a.resumo) schema.description=a.resumo;
   if(capaAbs) schema.image=capaAbs;
   if(a.dataRaw){ const iso=new Date(a.dataRaw).toISOString(); schema.datePublished=iso; schema.dateModified=iso; }
+  const breadcrumb = {
+    "@context":"https://schema.org","@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"Início","item":`${SITE}/`},
+      {"@type":"ListItem","position":2,"name":"Blog","item":`${SITE}/blog/`},
+      {"@type":"ListItem","position":3,"name":a.titulo,"item":pageUrl}
+    ]
+  };
 
   const capaHtml = a.capa ? `<img class="artigo-capa" src="${esc(a.capa)}" alt="${esc(a.titulo)}" width="760" height="428">` : '';
 
@@ -374,7 +390,8 @@ ${capaAbs?`<meta property="og:image" content="${esc(capaAbs)}">`:''}
 <meta name="twitter:title" content="${esc(a.titulo)}">
 <meta name="twitter:description" content="${esc(a.resumo)}">
 ${capaAbs?`<meta name="twitter:image" content="${esc(capaAbs)}">`:''}
-<script type="application/ld+json">${JSON.stringify(schema)}</script>
+  <script type="application/ld+json">${JSON.stringify(schema)}</script>
+  <script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>
 <style>
 ${CSS_COMUM}
 .artigo-wrap{max-width:760px;margin:0 auto;padding:20px 24px 60px}
