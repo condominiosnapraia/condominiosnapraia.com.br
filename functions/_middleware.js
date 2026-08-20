@@ -16,7 +16,11 @@ export async function onRequest(context) {
   // O painel administrativo tem autenticação e scripts próprios; permanece isolado.
   if (path === '/crm' || path === '/crm.html' || path.startsWith('/crm/')) return next();
 
+  // Favoritos só é necessário na página de favoritos e no detalhe de imóvel.
+  // Evita injetar ~10 KiB e iniciar JS extra na homepage, listagens e páginas editoriais.
+  const needsFavorites = path === '/favoritos' || path === '/favoritos/' || path === '/imovel' || path === '/imovel/' || path.startsWith('/imovel/');
   const response = await next();
+  if (!needsFavorites) return response;
   const contentType = response.headers.get('content-type') || '';
   if (!contentType.toLowerCase().includes('text/html')) return response;
   if (response.status < 200 || response.status >= 300) return response;
