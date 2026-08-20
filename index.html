@@ -151,6 +151,27 @@
   #home-imov-grid .icfoot{margin-top:auto}
 }
 </style>
+<style id="home-offscreen-rendering">
+/* Mantém SEO e DOM, mas evita pintar secções muito abaixo da primeira viewport. */
+#view-home > #sec-imoveis,
+#view-home > #sec-apartamentos,
+#view-home > #sec-fora-cond,
+#view-home > #sec-terrenos,
+#view-home > #sec-terrenos-fora,
+#view-home > #qfilter2,
+#view-home > #sec-condominios,
+#view-home > #viver-intro-sec,
+#view-home > #viver-lagoa,
+#view-home > #viver-mar,
+#view-home > #viver-cidade,
+#view-home > #sec-blog-preview,
+#view-home > #guias-cidades,
+#view-home > #guias-decisao,
+#view-home > #pcred-sec-sec {
+  content-visibility:auto;
+  contain-intrinsic-size: auto 760px;
+}
+</style>
 <style id="home-information-architecture">
 @media (min-width:769px){
   #qfilter2 .qfilter-inner{max-width:1320px}
