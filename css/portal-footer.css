@@ -171,6 +171,20 @@ footer .ftr-wpp:hover {
 }
 
 
+/* Navegação móvel: contraste legível e foco visível em fundos claros */
+.mob-footer-nav .mob-footer-btn {
+  color: #456575;
+}
+.mob-footer-nav .mob-footer-btn.active,
+.mob-footer-nav .mob-footer-btn:hover,
+.mob-footer-nav .mob-footer-btn:focus-visible {
+  color: #0c4a6e;
+}
+.mob-footer-nav .mob-footer-btn:focus-visible {
+  outline: 2px solid #d5aa57;
+  outline-offset: -2px;
+}
+
 /* WhatsApp do cabeçalho: contato visível sem competir com a navegação */
 .desk-header .dh-cta {
   display: inline-flex;
