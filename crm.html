@@ -2766,7 +2766,7 @@ if(_savedToken && _savedUser){
         <div class="fg"><label class="fl" for="im-final">Finalidade *</label>
           <select class="fse" id="im-final" aria-label="Final"><option value="venda">Venda</option><option value="locacao">Locação</option><option value="temporada">Temporada</option></select></div>
         <div class="fg"><label class="fl" for="im-tipo">Categoria / Tipo *</label>
-          <select class="fse" id="im-tipo" aria-label="Tipo"><option>Casa Térrea</option><option>Sobrado</option><option>Apartamento</option><option>Lote</option><option>Cobertura</option><option>Duplex</option><option>Loft</option><option>Kitnet</option><option>Galpão</option><option>Outro</option></select></div>
+          <select class="fse" id="im-tipo" aria-label="Tipo"><option>Casa Térrea</option><option>Sobrado</option><option>Apartamento</option><option>Lote</option><option>Cobertura</option><option>Duplex</option><option>Loft</option><option>Kitnet</option><option>Galpão</option><option>Loja Comercial</option><option>Sala Comercial</option><option>Outro</option></select></div>
         <div class="fg"><label class="fl" for="im-codigo">Código do Imóvel</label><input class="fi" id="im-codigo" placeholder="Gerado automaticamente (ex: XAN-001)" readonly style="background:#eef9fa;font-weight:700;color:#0d3b54"></div>
         <div class="fg"><label class="fl" for="im-ref">Referência Interna</label><input class="fi" id="im-ref" placeholder="Ex: COND-001, REF-2025"></div>
         <div class="fg"><label class="fl" for="im-st">Status *</label>
@@ -4037,6 +4037,7 @@ function tipoCategoriaImovel(v){
   const t=String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   if(/terreno|lote/.test(t)) return 'Terreno';
   if(/apart|loft|kitnet|flat|studio/.test(t)) return 'Apartamento';
+  if(/loja|sala|comercial|galpao/.test(t)) return 'Comercial';
   return 'Casa';
 }
 function isForaImovel(x){return x?.fora_condominio===true || x?.foraCondominio===true;}
@@ -4052,12 +4053,13 @@ function pCS(){
   const cidadeMap=new Map();
   (DB.im||[]).forEach(x=>{const value=String(cidadeImovelLabel(x)||'').trim();const key=value.toLocaleLowerCase('pt-BR');if(value&&value!=='—'&&!cidadeMap.has(key))cidadeMap.set(key,value);});
   const cidades=[...cidadeMap.values()].sort((a,b)=>a.localeCompare(b,'pt-BR'));
-  const tipos=[...new Set((DB.im||[]).map(x=>String(x.tipo||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const tiposBase=['Casa Térrea','Sobrado','Apartamento','Lote','Cobertura','Duplex','Loft','Kitnet','Galpão','Loja Comercial','Sala Comercial','Outro'];
+  const tipos=[...new Set([...tiposBase,...(DB.im||[]).map(x=>String(x.tipo||'').trim()).filter(Boolean)])].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   const cityEl=document.getElementById('i-city');
   const typeEl=document.getElementById('i-tf');
   if(cityEl) cityEl.innerHTML='<option value="">Todas as cidades</option>'+cidades.map(v=>`<option value="${v}">${v}</option>`).join('');
   if(typeEl) typeEl.innerHTML='<option value="">Todos os tipos</option>'+tipos.map(v=>`<option value="${v}">${v}</option>`).join('');
-  const ti=['Casa','Terreno','Apartamento'];
+  const ti=['Casa','Terreno','Apartamento','Comercial'];
   document.getElementById('i-chips').innerHTML=`<div class="chip on" onclick="sTF(this,'')">Todos</div>`+ti.map(t=>`<div class="chip" onclick="sTF(this,'${t}')">${t}</div>`).join('');
 }
 let tF='';
