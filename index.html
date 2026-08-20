@@ -3688,11 +3688,20 @@ async function renderContempladasCards(targetId){
         deferHomeBelowFold();
       }catch(err){ console.error('Deferred home data error:',err); }
     };
-    if('requestIdleCallback' in window){
-      requestIdleCallback(()=>{ renderHomeBelowFold(); },{timeout:2200});
-    }else{
-      setTimeout(()=>{ renderHomeBelowFold(); },2200);
-    }
+    const iniciarHomeAposPrimeiraTela=()=>{
+      const iniciar=()=>{
+        if('requestIdleCallback' in window){
+          requestIdleCallback(()=>{ renderHomeBelowFold(); },{timeout:3500});
+        }else{
+          setTimeout(()=>{ renderHomeBelowFold(); },1800);
+        }
+      };
+      if('requestAnimationFrame' in window) requestAnimationFrame(iniciar);
+      else iniciar();
+    };
+    // A primeira tela deve pintar antes das consultas completas do portfólio.
+    if(document.readyState==='complete') iniciarHomeAposPrimeiraTela();
+    else window.addEventListener('load', iniciarHomeAposPrimeiraTela, {once:true});
   }catch(e){
     console.error('Init error:', e);
     (document.getElementById('c-grid')||{style:{},classList:{add(){},remove(){}}}).innerHTML='<div class="empty"><div class="empty-ico">⚠️</div><p>Erro ao carregar dados. Verifique a conexão.</p></div>';
