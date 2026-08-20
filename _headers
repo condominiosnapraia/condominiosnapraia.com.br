@@ -31,8 +31,12 @@
   X-Content-Type-Options: nosniff
   X-Robots-Tag: noindex, noarchive
 
-# As páginas HTML NÃO devem ter cache longo (senão o site "trava" numa
-# versão antiga). Elas revalidam sempre, mas continuam rápidas.
+# A homepage é pública e pode ser servida pela borda por poucos minutos.
+# O navegador continua revalidando (max-age=0), enquanto o s-maxage reduz o TTFB
+# sem colocar o CRM ou as páginas de detalhe em cache de longa duração.
+/
+  Cache-Control: public, max-age=0, s-maxage=300, stale-while-revalidate=600
+# As demais páginas HTML continuam sempre revalidando.
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
