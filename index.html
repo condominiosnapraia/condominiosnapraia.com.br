@@ -2896,10 +2896,19 @@ function buildHomeDestaques(){
       return;
     }
 
-    let showCond=destCond.length
-      ? condos.filter(c=>destCond.includes(c.id)&&c.ativo!==false).slice(0,10)
-      : condos.filter(c=>c.ativo!==false).slice(0,10);
-    if(!showCond.length) showCond=condos.slice(0,10);
+    const destCondSet=new Set((Array.isArray(destCond)?destCond:[]).map(String));
+    const ofertaCount=c=>(c.imoveis||[]).filter(i=>i&&i.status==='Disponível'&&i.publicar!==false).length;
+    const ordenarDestaques=(a,b)=>{
+      const diff=ofertaCount(b)-ofertaCount(a);
+      if(diff)return diff;
+      const aManual=destCondSet.has(String(a.id));
+      const bManual=destCondSet.has(String(b.id));
+      if(aManual!==bManual)return aManual?-1:1;
+      return String(a.nome||'').localeCompare(String(b.nome||''),'pt');
+    };
+    // A prioridade comercial é a oferta disponível; a curadoria manual só desempata.
+    let showCond=condos.filter(c=>c.ativo!==false).sort(ordenarDestaques).slice(0,10);
+    if(!showCond.length) showCond=condos.slice().sort(ordenarDestaques).slice(0,10);
 
     const cg=document.getElementById('home-cond-grid');
     if(cg) cg.innerHTML=showCond.map(buildCondCard).join('');

@@ -782,12 +782,33 @@ function selectLoose(id,value){var el=document.getElementById(id);if(!el||!value
 const PUBLIC_EXCLUDED_CONDO_SLUGS=new Set(['ocean-side-xangri-la','tirol']);
 function publicCondoSlug(c){return String(c&& (c.slug||c.id) || '').trim().toLowerCase();}
 function publicCondoCity(c){return publicCondoSlug(c)==='pulse-resort-experience-xangri-la'?'Capão da Canoa':(c.cidade||c.localizacao||'');}
+function imoveisVendaCount(c){return Number(c&&c._imoveisVendaCount)||0;}
+function ordenarPorOferta(a,b){
+  var diff=imoveisVendaCount(b)-imoveisVendaCount(a);
+  if(diff)return diff;
+  return String(a&&a.nome||'').localeCompare(String(b&&b.nome||''),'pt');
+}
 const STATIC_CONDO_SLUGS=new Set(['aura-garden-place-xangri-la','cyano-private-resort-osorio','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','condominio-maquine-la-marina','condominio-xangri-la-villas-resort','sunset-xangri-la','marina-de-xangri-la','marina-park','xangri-la-marina']);
 let TODOS=[];
 
 async function carregar(){
-  var conds=await sbGet('condominios','?ativo=eq.true&select='+encodeURIComponent(CAT_COND_SELECT)+'&order=nome.asc&limit=200');
-  TODOS=(Array.isArray(conds)?conds:[]).filter(function(c){return !PUBLIC_EXCLUDED_CONDO_SLUGS.has(publicCondoSlug(c));});
+  var respostas=await Promise.all([
+    sbGet('condominios','?ativo=eq.true&select='+encodeURIComponent(CAT_COND_SELECT)+'&order=nome.asc&limit=200'),
+    sbGet('imoveis','?status=eq.Disponível&publicar=eq.true&select=id,cond_id,status,publicar&limit=2000')
+  ]);
+  var conds=Array.isArray(respostas[0])?respostas[0]:[];
+  var imoveisVenda=Array.isArray(respostas[1])?respostas[1]:[];
+  var contagens={};
+  imoveisVenda.forEach(function(im){
+    if(im&&im.cond_id!=null){
+      var id=String(im.cond_id);
+      contagens[id]=(contagens[id]||0)+1;
+    }
+  });
+  TODOS=(Array.isArray(conds)?conds:[])
+    .filter(function(c){return !PUBLIC_EXCLUDED_CONDO_SLUGS.has(publicCondoSlug(c));})
+    .map(function(c){return Object.assign({},c,{_imoveisVendaCount:contagens[String(c.id)]||0});})
+    .sort(ordenarPorOferta);
   var cidades=new Set(), tipos=new Set();
   TODOS.forEach(function(c){
     var cid=publicCondoCity(c); if(cid)cidades.add(cid);
