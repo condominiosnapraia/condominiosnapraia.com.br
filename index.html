@@ -3715,6 +3715,30 @@ async function renderContempladasCards(targetId){
   });
 
   // ── ATIVADOR DE FOTOS DOS CARDS ──
+  // Para cada [data-foto-card], carrega a imagem apenas quando o card se
+  // aproxima da viewport; isso evita descarregar todas as capas abaixo da dobra.
+  var _cardFotoObserver = null;
+  function agendarFotoCard(el, carregar){
+    if(!el || typeof carregar!=='function' || el.dataset.fotoAgendada==='1') return;
+    el.dataset.fotoAgendada='1';
+    if(!('IntersectionObserver' in window)){
+      setTimeout(carregar,1200);
+      return;
+    }
+    if(!_cardFotoObserver){
+      _cardFotoObserver=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(!entry.isIntersecting) return;
+          _cardFotoObserver.unobserve(entry.target);
+          var fn=entry.target._pmlFotoLoad;
+          delete entry.target._pmlFotoLoad;
+          if(fn) fn();
+        });
+      },{rootMargin:'700px 0px'});
+    }
+    el._pmlFotoLoad=carregar;
+    _cardFotoObserver.observe(el);
+  }
   // Para cada [data-foto-card], carrega /img/card-{slug}.jpg.
   // Com novas tentativas: se a requisição falhar (ex.: timeout sob conexão lenta),
   // tenta de novo até 3 vezes antes de manter o placeholder. Isso evita que
@@ -3758,7 +3782,7 @@ async function renderContempladasCards(targetId){
       var _mapa = _fotosSiteMap || window._fotosSiteMap;
       var urlCRM = _mapa && _mapa[slug];
       if(urlCRM){
-        carregarComRetry(el, urlCRM, 1);
+        agendarFotoCard(el,function(){carregarComRetry(el, urlCRM, 1);});
       }
       // sem foto no CRM: mantém o placeholder (nada de buscar /img/card-*.jpg,
       // esses arquivos não existem e geravam ~180 requisições 404 por visita)
@@ -3770,12 +3794,14 @@ async function renderContempladasCards(targetId){
         var slug = el.getAttribute('data-lch');
         var foto = _mapaLch[slug + '__1'];
         if(foto){
-          const fotoCard = fotoVariante(foto, 480, 'webp', 68);
-          el.style.backgroundImage = "url('" + fotoCard + "')";
-          el.style.color = 'transparent';
-          var tag = el.querySelector('.lch-tag');
-          el.textContent = '';
-          if(tag) el.appendChild(tag);
+          agendarFotoCard(el,function(){
+            const fotoCard = fotoVariante(foto, 480, 'webp', 68);
+            el.style.backgroundImage = "url('" + fotoCard + "')";
+            el.style.color = 'transparent';
+            var tag = el.querySelector('.lch-tag');
+            el.textContent = '';
+            if(tag) el.appendChild(tag);
+          });
         }
       });
     }
