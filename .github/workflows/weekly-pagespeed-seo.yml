@@ -1,0 +1,79 @@
+name: Weekly PageSpeed and SEO monitor
+
+on:
+  schedule:
+    # Segunda-feira às 08:00 no horário de Brasília (11:00 UTC).
+    - cron: "0 11 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: weekly-pagespeed-seo
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Audit production performance and SEO
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore previous monitor state
+        uses: actions/cache@v4
+        with:
+          path: .monitor-state.json
+          key: pagespeed-seo-state-${{ github.run_id }}
+          restore-keys: |
+            pagespeed-seo-state-
+
+      - name: Run PageSpeed and SEO audit
+        id: audit
+        env:
+          PAGESPEED_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
+          REPORT_DIR: reports
+          STATE_PATH: .monitor-state.json
+        run: python3 .github/scripts/monitor_pagespeed_seo.py
+
+      - name: Upload weekly report and raw JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pagespeed-seo-${{ github.run_number }}
+          path: reports/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Open issue for confirmed regression
+        if: steps.audit.outputs.issue == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('reports/weekly-report.md', 'utf8');
+            const title = `PageSpeed/SEO regression — ${new Date().toISOString().slice(0, 10)}`;
+            const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+            if (openIssues.some(issue => issue.title.startsWith('PageSpeed/SEO regression'))) {
+              core.info('An open PageSpeed/SEO regression issue already exists; skipping duplicate.');
+              return;
+            }
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body
+            });
