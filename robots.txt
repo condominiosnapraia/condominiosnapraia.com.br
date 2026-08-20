@@ -12,4 +12,4 @@ Disallow: /exportar-dados.html
 Disallow: /restaurar.html
 Disallow: /teste-fotos.html
 
-Sitemap: https://condominiosnapraia.com.br/sitemap.xml
+Sitemap: https://condominiosnapraia.com.br/sitemap-index.xml

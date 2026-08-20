@@ -1,4 +1,7 @@
 # Redirects estáticos gerados a partir de public.imoveis (codigo -> slug).
+# Rota duplicada: consolidar o conteúdo de turismo na URL canónica.
+/allure-beach-condo-xangri-la/turismo/ /o-que-fazer-em-xangri-la/ 301
+
 # Correção de privacidade: URLs legadas minúsculas não podem expor quadra/lote.
 # Hub de crédito contemplado: versão canónica com barra final.
 /contemplado-imoveis /contemplado-imoveis/ 301
