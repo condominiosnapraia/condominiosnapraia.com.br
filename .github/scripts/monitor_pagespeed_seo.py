@@ -5,6 +5,7 @@ import datetime as dt
 import json
 import os
 import re
+import subprocess
 import sys
 import urllib.error
 import urllib.parse
@@ -119,6 +120,43 @@ def metric_value(audits: dict, key: str) -> float | None:
     return float(value) if isinstance(value, (int, float)) else None
 
 
+def run_lighthouse_fallback(url: str, strategy: str) -> dict:
+    output_path = REPORT_DIR / f"lighthouse-{strategy}.json"
+    command = [
+        "npx", "--yes", "lighthouse", url,
+        "--only-categories=performance",
+        "--form-factor", strategy,
+        "--throttling-method", "simulate",
+        "--output=json",
+        f"--output-path={output_path}",
+        "--chrome-flags=--headless --no-sandbox --disable-dev-shm-usage",
+    ]
+    if strategy == "desktop":
+        command.append("--screenEmulation.disabled=true")
+    try:
+        subprocess.run(command, check=True, timeout=180, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        payload = json.loads(output_path.read_text(encoding="utf-8"))
+        lighthouse = payload.get("lighthouseResult", payload)
+        audits = lighthouse.get("audits", {})
+        score = lighthouse.get("categories", {}).get("performance", {}).get("score")
+        return {
+            "url": url,
+            "strategy": strategy,
+            "status": 200,
+            "source": "lighthouse-cli",
+            "performance": round(score * 100, 1) if isinstance(score, (int, float)) else None,
+            "fcp_ms": metric_value(audits, "first-contentful-paint"),
+            "lcp_ms": metric_value(audits, "largest-contentful-paint"),
+            "tbt_ms": metric_value(audits, "total-blocking-time"),
+            "cls": metric_value(audits, "cumulative-layout-shift"),
+            "inp_ms": metric_value(audits, "interaction-to-next-paint"),
+            "tti_ms": metric_value(audits, "interactive"),
+            "speed_index_ms": metric_value(audits, "speed-index"),
+        }
+    except Exception as error:
+        return {"url": url, "strategy": strategy, "status": None, "source": "lighthouse-cli", "error": str(error)}
+
+
 def run_pagespeed(url: str, strategy: str) -> dict:
     query = {
         "url": url,
@@ -131,10 +169,15 @@ def run_pagespeed(url: str, strategy: str) -> dict:
     endpoint = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?" + urllib.parse.urlencode(query)
     result = fetch(endpoint, timeout=120)
     if result["status"] != 200:
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            fallback = run_lighthouse_fallback(url, strategy)
+            fallback["pagespeed_api_status"] = result["status"]
+            return fallback
         return {
             "url": url,
             "strategy": strategy,
             "status": result["status"],
+            "source": "pagespeed-api",
             "error": result["error"] or text_body(result)[:500],
         }
     try:
@@ -146,6 +189,7 @@ def run_pagespeed(url: str, strategy: str) -> dict:
             "url": url,
             "strategy": strategy,
             "status": 200,
+            "source": "pagespeed-api",
             "performance": round(score * 100, 1) if isinstance(score, (int, float)) else None,
             "fcp_ms": metric_value(audits, "first-contentful-paint"),
             "lcp_ms": metric_value(audits, "largest-contentful-paint"),
@@ -253,10 +297,14 @@ def main() -> int:
         findings.extend(compare_metrics(current, previous_item))
 
     pagespeed_unavailable = [item for item in pagespeed if item.get("status") != 200]
+    pagespeed_fallback = [item for item in pagespeed if item.get("source") == "lighthouse-cli" and item.get("status") == 200]
     availability_notes = []
+    if pagespeed_fallback:
+        strategies = ", ".join(item.get("strategy", "unknown") for item in pagespeed_fallback)
+        availability_notes.append(f"PageSpeed API indisponível para {strategies}; métricas substituídas por Lighthouse CLI.")
     if pagespeed_unavailable:
         strategies = ", ".join(item.get("strategy", "unknown") for item in pagespeed_unavailable)
-        availability_notes.append(f"PageSpeed indisponível para {strategies}; a API pode estar em quota ou sem chave. Métricas não foram inventadas.")
+        availability_notes.append(f"Não foi possível obter métricas de performance para {strategies}; a API pode estar em quota e o fallback falhou.")
     metric_findings = bool(findings)
     previous_streak = int(previous_state.get("metric_regression_streak", 0) or 0)
     metric_streak = previous_streak + 1 if metric_findings else 0
@@ -305,13 +353,14 @@ def main() -> int:
         "",
         "## PageSpeed",
         "",
-        "| Estratégia | Performance | FCP | LCP | TBT | CLS | Status |",
-        "|---|---:|---:|---:|---:|---:|---:|",
+        "| Estratégia | Fonte | Performance | FCP | LCP | TBT | CLS | Status |",
+        "|---|---|---:|---:|---:|---:|---:|---:|",
     ]
     for item in pagespeed:
         def fmt(value, suffix=""):
             return "—" if value is None else f"{value:.0f}{suffix}"
-        lines.append(f"| {item.get('strategy', '—')} | {item.get('performance', '—')} | {fmt(item.get('fcp_ms'), ' ms')} | {fmt(item.get('lcp_ms'), ' ms')} | {fmt(item.get('tbt_ms'), ' ms')} | {item.get('cls', '—')} | {item.get('status', '—')} |")
+        source_label = "Lighthouse" if item.get("source") == "lighthouse-cli" else "PageSpeed API"
+        lines.append(f"| {item.get('strategy', '—')} | {source_label} | {item.get('performance', '—')} | {fmt(item.get('fcp_ms'), ' ms')} | {fmt(item.get('lcp_ms'), ' ms')} | {fmt(item.get('tbt_ms'), ' ms')} | {item.get('cls', '—')} | {item.get('status', '—')} |")
     lines.extend(["", "## SEO técnico", ""])
     for item in seo:
         lines.append(f"- {item['name']}: HTTP {item['status']}; canonical={'OK' if item['canonical'] else 'FALHA'}; title={'OK' if item['title'] else 'FALHA'}; description={'OK' if item['description'] else 'FALHA'}.")
