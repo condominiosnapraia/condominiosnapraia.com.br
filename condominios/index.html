@@ -483,6 +483,8 @@ details[open] .dec-faq-q:after{content:"−"}
 .cl-card-city{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px}
 .cl-card-t{font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--ocean);line-height:1.2;margin-bottom:8px}
 .cl-card-desc{font-size:13px;color:var(--tm);line-height:1.6;flex:1}
+.cl-card-stock{display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 10px;border:1px solid rgba(14,138,153,.18);border-radius:9px;background:#f2fbfb;color:var(--ocean);font-size:12px;line-height:1.25;font-weight:500}
+.cl-card-stock strong{font-family:'Fraunces',serif;color:var(--om);font-size:17px;line-height:1}
 .cl-card-amen{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
 .cl-card-tag{background:var(--sl);color:var(--ocean);font-size:11px;padding:4px 9px;border-radius:100px}
 .cl-card-link{margin-top:14px;font-size:13px;font-weight:700;color:var(--om)}
@@ -863,6 +865,7 @@ function render(lista){
     var f=fotos(c.fotos_no_site||c.fotos);
     var img=f.length?'<img src="'+esc(f[0])+'" alt="'+esc(c.nome||'Condomínio')+'" loading="lazy">':'&#127963;';
     var perfilBadge=c.perfil&&PERFIL_LBL[c.perfil]?'<span class="cl-badge perfil">'+esc(PERFIL_LBL[c.perfil])+'</span>':'';
+    var oferta=imoveisVendaCount(c);
     var amen=(c.amenidades||[]).slice(0,3);
     var amenHtml=amen.length?'<div class="cl-card-amen">'+amen.map(function(a){return '<span class="cl-card-tag">'+esc(a)+'</span>';}).join('')+'</div>':'';
     var desc=esc((c.descricao||'').slice(0,100)+((c.descricao||'').length>100?'...':''));
@@ -876,6 +879,7 @@ function render(lista){
         '<div class="cl-card-city">'+esc(cidade)+'</div>'+
         '<div class="cl-card-t">'+esc(c.nome||'Condomínio')+'</div>'+
         (desc?'<div class="cl-card-desc">'+desc+'</div>':'')+
+        (oferta>0?'<div class="cl-card-stock" aria-label="'+oferta+' '+(oferta===1?'imóvel disponível para venda':'imóveis disponíveis para venda')+'"><strong>'+oferta+'</strong><span>'+(oferta===1?'imóvel disponível para venda':'imóveis disponíveis para venda')+'</span></div>':'')+
         amenHtml+
         '<div class="cl-card-link">Ver condomínio &rarr;</div>'+
       '</div></a>';
