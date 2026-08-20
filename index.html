@@ -1390,13 +1390,13 @@ function ativarImagensAdidas(root = document) {
 }
 
 const HOME_COND_SELECT_MIN = [
-  'id','slug','nome','cidade','descricao','amenidades','fotos_no_site','ativo'
+  'id','slug','nome','cidade','descricao','amenidades','ativo'
 ].join(',');
 
 const HOME_IMOV_SELECT_MIN = [
   'id','slug','codigo','titulo','cond_id','fora_condominio','status','publicar',
   'tipo','preco','quartos','suites','banheiros','vagas','area','area_privativa',
-  'area_construida','terreno','cidade_end','bairro_end','fotos_no_site'
+  'area_construida','terreno','cidade_end','bairro_end'
 ].join(',');
 
 // A seleção completa fica reservada para hashes legados de detalhe, que ainda usam
@@ -1433,7 +1433,12 @@ function agendarConfigHome(){
       try{buildHomeDestaques();renderDestaquesCidade();}catch(e){}
     }).catch(function(){_homeConfigPromise=Promise.resolve(null);});
   };
-  if('requestIdleCallback' in window) requestIdleCallback(job,{timeout:2600}); else setTimeout(job,2400);
+  const schedule=function(){
+    if('requestIdleCallback' in window) requestIdleCallback(job,{timeout:5000});
+    else setTimeout(job,1800);
+  };
+  if(document.readyState==='complete') schedule();
+  else window.addEventListener('load',schedule,{once:true});
 }
 async function carregarDadosExtras(){
   if(window._dadosExtrasCarregados) return;
@@ -1469,8 +1474,8 @@ async function fetchSiteData(){
     ]);
     // Registros antigos que ainda não têm fotos_no_site recebem apenas o campo
     // legado em uma segunda consulta enxuta; no cadastro atual essa leva é zero.
-    async function hidratarFotosLegadas(rows, table){
-      if(hashLegado || !Array.isArray(rows) || !rows.length) return rows;
+    async function hidratarFotosLegadas(rows, table, habilitarFotos){
+      if(!habilitarFotos || hashLegado || !Array.isArray(rows) || !rows.length) return rows;
       const ids=rows.filter(row=>!row.fotos_no_site && row.id).map(row=>String(row.id));
       if(!ids.length) return rows;
       try{
@@ -1481,8 +1486,8 @@ async function fetchSiteData(){
       }catch(_){ return rows; }
     }
     const [condominios, imoveis] = await Promise.all([
-      hidratarFotosLegadas(condominiosRaw,'condominios'),
-      hidratarFotosLegadas(imoveisRaw,'imoveis')
+      hidratarFotosLegadas(condominiosRaw,'condominios',condSelect.includes('fotos_no_site')),
+      hidratarFotosLegadas(imoveisRaw,'imoveis',imovSelect.includes('fotos_no_site'))
     ]);
     const cfgsRaw = [];
     const carrosselFotos = [];
@@ -2710,7 +2715,7 @@ function buildCondCard(c){
   const imd=(c.imoveis||[]).filter(i=>i.status==='Disponível');
   const condUrl=c.slug?('/condominio/?id='+encodeURIComponent(c.slug)):('/condominio/?id='+encodeURIComponent(c.id));
   return`<a class="ccard vis" href="${condUrl}" style="text-decoration:none;color:inherit;display:block">
-    <div class="ci">${imgH}<div class="cbadge">${loc}</div>${imd.length?`<div class="cibadge">${imd.length} ${imd.length>1?'imóveis':'imóvel'}</div>`:''}</div>
+    <div class="ci"${!fotos.length?` data-home-cond-img="${escapeAttr(c.id)}"`:''}>${imgH}<div class="cbadge">${loc}</div>${imd.length?`<div class="cibadge">${imd.length} ${imd.length>1?'imóveis':'imóvel'}</div>`:''}</div>
     <div class="cbody">
       <div class="cname">${c.nome}</div>
       <div class="cloc">📍 ${loc}</div>
@@ -2764,7 +2769,7 @@ function buildImovCard(i){
     i.vagas?`🚗 ${i.vagas} ${i.vagas==1?'vaga':'vagas'}`:null
   ].filter(Boolean).map(s=>`<span class="icspec">${s}</span>`).join('');
   return`<a class="icard vis" href="/imovel?id=${encodeURIComponent(i.codigo||i.slug||i.id)}" style="text-decoration:none;color:inherit">
-    <div class="icimg">${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384,deferLoad:true}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
+    <div class="icimg"${!foto?` data-home-imov-img="${escapeAttr(i.id)}"`:''}>${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384,deferLoad:true}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
     <div class="icbody">
       <div class="ictipo">${i.tipo||'Imóvel'}</div>
       <div class="ictit">${i.titulo||'—'}</div>
@@ -2958,6 +2963,11 @@ function buildHomeDestaques(){
     renderHomeGrid('home-fora-grid', casasFora.slice(0,8), '🏡', 'Cadastre casas e sobrados fora de condomínio no CRM para exibi-los aqui');
     renderHomeGrid('home-terreno-grid', pickDestaques(terrenosCondominio, destTerreno, 6), '🌳', 'Cadastre terrenos em condomínio no CRM para exibi-los aqui');
     renderHomeGrid('home-terreno-fora-grid', terrenosFora.slice(0,6), '📐', 'Ainda não há terrenos fora de condomínio publicados.');
+    // Se a secção já estiver próxima, o observer pode ter disparado antes do render.
+    const homePhotoSection=document.getElementById('sec-imoveis')||document.getElementById('sec-condominios');
+    if(homePhotoSection && homePhotoSection.getBoundingClientRect().top < window.innerHeight+700 && typeof carregarFotosHomeCards==='function'){
+      setTimeout(carregarFotosHomeCards,0);
+    }
 
     // Activar imagens apenas quando os cards se aproximarem do viewport.
     ativarImagensAdidas();
@@ -3027,9 +3037,60 @@ function buildHomeBlog(){
   });
 }
 
+// Hidrata apenas os cards de imóveis/condomínios que já foram renderizados abaixo da dobra.
+// A consulta completa continua disponível nas páginas dedicadas; a homepage recebe
+// somente os dados necessários para texto, filtros e ordenação no primeiro carregamento.
+let _homePhotoPromise=null;
+function homeFirstPhoto(row){
+  const listas=[row&&row.fotos_no_site,row&&row.fotos].filter(Array.isArray);
+  for(const lista of listas){
+    const foto=lista.find(f=>f&&typeof f==='string'&&!f.startsWith('idb:'));
+    if(foto)return foto;
+  }
+  return '';
+}
+function aplicarFotoHome(el, row, titulo, tipo){
+  const foto=homeFirstPhoto(row);
+  if(!foto||!el)return;
+  const img=fotoTag(foto,titulo||'Imagem do imóvel',{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
+  if(!img)return;
+  if(tipo==='cond'){
+    const placeholder=el.querySelector('.ci-grad');
+    if(placeholder)placeholder.remove();
+    el.insertAdjacentHTML('afterbegin',img);
+    el.removeAttribute('data-home-cond-img');
+  }else{
+    const badges=Array.from(el.querySelectorAll('.icst,.iccod'));
+    el.innerHTML=img;
+    badges.forEach(function(b){el.appendChild(b);});
+    el.removeAttribute('data-home-imov-img');
+  }
+}
+function carregarFotosHomeCards(){
+  if(_homePhotoPromise)return _homePhotoPromise;
+  const condEls=Array.from(document.querySelectorAll('[data-home-cond-img]'));
+  const imovEls=Array.from(document.querySelectorAll('[data-home-imov-img]'));
+  const condIds=[...new Set(condEls.map(el=>el.getAttribute('data-home-cond-img')).filter(Boolean))];
+  const imovIds=[...new Set(imovEls.map(el=>el.getAttribute('data-home-imov-img')).filter(Boolean))];
+  if(!condIds.length&&!imovIds.length)return Promise.resolve();
+  const jobs=[];
+  if(condIds.length)jobs.push(sbSite.get('condominios',`?id=in.(${condIds.join(',')})&select=id,fotos_no_site,fotos&limit=50`).catch(function(){return [];}));
+  else jobs.push(Promise.resolve([]));
+  if(imovIds.length)jobs.push(sbSite.get('imoveis',`?id=in.(${imovIds.join(',')})&select=id,fotos_no_site,fotos&limit=50`).catch(function(){return [];}));
+  else jobs.push(Promise.resolve([]));
+  _homePhotoPromise=Promise.all(jobs).then(function(result){
+    const condMap={};(result[0]||[]).forEach(function(row){condMap[String(row.id)]=row;});
+    const imovMap={};(result[1]||[]).forEach(function(row){imovMap[String(row.id)]=row;});
+    condEls.forEach(function(el){const id=el.getAttribute('data-home-cond-img');const row=condMap[String(id)];if(row)aplicarFotoHome(el,row,el.querySelector('.cbadge')?.textContent||'Condomínio','cond');});
+    imovEls.forEach(function(el){const id=el.getAttribute('data-home-imov-img');const row=imovMap[String(id)];if(row)aplicarFotoHome(el,row,'Imóvel','imov');});
+  });
+  return _homePhotoPromise;
+}
+
 // Adia consultas e imagens de seções abaixo da dobra até que o usuário se aproxime.
 function deferHomeBelowFold(){
   const jobs=[
+    {el:document.getElementById('sec-imoveis')||document.getElementById('sec-condominios'), run:()=>{if(typeof carregarFotosHomeCards==='function')carregarFotosHomeCards();}},
     {el:document.getElementById('sec-blog-preview'), run:()=>{if(!window._homeBlogLoaded){window._homeBlogLoaded=true;buildHomeBlog();}}},
     {el:document.getElementById('decisao-grid'), run:()=>{if(typeof carregarCapasDecisao==='function')carregarCapasDecisao();}},
     {el:document.querySelector('.viv-photo[data-slot]'), run:()=>{if(typeof carregarFotosCarrossel==='function')carregarFotosCarrossel();}}
@@ -3709,7 +3770,7 @@ async function renderContempladasCards(targetId){
         var slug = el.getAttribute('data-lch');
         var foto = _mapaLch[slug + '__1'];
         if(foto){
-          const fotoCard = fotoVariante(foto, 480, 'webp', 78);
+          const fotoCard = fotoVariante(foto, 480, 'webp', 68);
           el.style.backgroundImage = "url('" + fotoCard + "')";
           el.style.color = 'transparent';
           var tag = el.querySelector('.lch-tag');
