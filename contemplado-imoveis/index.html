@@ -866,6 +866,17 @@ const PER = 24;
 let lista = [];
 let pg = 1;
 
+function cartaPath(c){
+  const code = String(c.cod || 'sem-codigo').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'sem-codigo';
+  const same = CARTAS.filter(x => String(x.cod || '').toLowerCase() === String(c.cod || '').toLowerCase());
+  const idx = same.findIndex(x => String(x.id) === String(c.id));
+  return '/carta-contemplada-imovel-' + code + (idx > 0 ? '-' + (idx + 1) : '') + '/';
+}
+function openLanding(event,url){
+  if(event && event.target && event.target.closest && event.target.closest('a,button')) return;
+  window.location.href = url;
+}
+
 function filtrar(){
   const vmax=parseInt(document.getElementById('f-vmax').value)||0;
   const parc=parseInt(document.getElementById('f-parc').value)||0;
@@ -891,8 +902,10 @@ function render(){
     document.getElementById('pag').innerHTML='';
     return;
   }
-  grid.innerHTML=pagina.map(c=>`
-    <div class="carta" onclick="openM(${c.id})">
+  grid.innerHTML=pagina.map(c=>{
+    const landing=cartaPath(c);
+    return `
+    <article class="carta" role="link" tabindex="0" data-landing="${landing}" onclick="openLanding(event,this.dataset.landing)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLanding(event,this.dataset.landing)}">
       <div class="carta-top">
         <div class="carta-adm-row">
           ${admIcoHtml(c.adm_id,28)}
@@ -908,11 +921,12 @@ function render(){
         </div>
         <div class="carta-entrada">Entrada: <strong>${brl(c.entrada)}</strong></div>
         <div class="carta-footer">
-          <button class="btn-ver" onclick="event.stopPropagation();openM(${c.id})">Ver detalhes</button>
-          <a class="btn-wpp" href="https://wa.me/5551982868888?text=${encodeURIComponent('Olá! Tenho interesse na carta '+getAdm(c.adm_id).nome+' cód '+c.cod+' de '+brl(c.credito)+' com parcela de '+brl(c.parcela)+'. Pode me dar mais informações?')}" target="_blank" onclick="event.stopPropagation()">${wppSvg} WhatsApp</a>
+          <a class="btn-ver" href="${landing}" style="text-decoration:none" onclick="event.stopPropagation()">Ver carta</a>
+          <a class="btn-wpp" href="https://wa.me/5551982868888?text=${encodeURIComponent('Olá! Tenho interesse na carta '+getAdm(c.adm_id).nome+' cód '+c.cod+' de '+brl(c.credito)+' com parcela de '+brl(c.parcela)+'. Pode me dar mais informações?')}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${wppSvg} WhatsApp</a>
         </div>
       </div>
-    </div>`).join('');
+    </article>`;
+  }).join('');
   buildPag();
 }
 
