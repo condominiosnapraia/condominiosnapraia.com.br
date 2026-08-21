@@ -20,7 +20,7 @@
     gtag('config','AW-16759565872');
   }
   ['pointerdown','keydown','touchstart'].forEach(function(ev){window.addEventListener(ev,start,{once:true,passive:true});});
-  setTimeout(start,1800);
+  setTimeout(start,5000);
   document.addEventListener('click',function(e){
     var a=e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
     if(!a)return;
@@ -872,24 +872,6 @@ function lbClose(){ document.getElementById('vv-lb').classList.remove('on'); }
 function lbNav(d){ const list=window.__lbList||[]; if(!list.length) return; window.__lbIdx=(window.__lbIdx+d+list.length)%list.length; lbShow(); }
 document.addEventListener('keydown',e=>{ if(!document.getElementById('vv-lb').classList.contains('on'))return; if(e.key==='Escape')lbClose(); if(e.key==='ArrowRight')lbNav(1); if(e.key==='ArrowLeft')lbNav(-1); });
 document.getElementById('vv-lb')?.addEventListener('click',e=>{ if(e.target.id==='vv-lb')lbClose(); });
-</script>
-<script>
-(function(){
-  function hydrateHero(){
-    sbGet('os_carrossel_home','?slot=eq.mar-1&select=foto_url&limit=1').then(function(fotos){
-      if(Array.isArray(fotos)&&fotos.length&&fotos[0].foto_url){
-        var bg=document.getElementById('vv-hero-bg');
-        if(bg){
-          bg.style.backgroundImage="url('"+fotos[0].foto_url+"')";
-          bg.style.backgroundSize='cover';
-          bg.style.backgroundPosition='center';
-          bg.classList.add('has-photo');
-        }
-      }
-    }).catch(function(){});
-  }
-  setTimeout(hydrateHero,1600);
-})();
 </script>
 </body>
 </html>
