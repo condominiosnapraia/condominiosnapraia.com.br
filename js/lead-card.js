@@ -29,7 +29,7 @@
   '.ldc-btn:disabled{opacity:.6;cursor:default}'+
   '.ldc-msg{font-size:13px;margin-top:10px;text-align:center;display:none}'+
   '.ldc-msg.err{display:block;color:#c0392b}'+
-  '.ldc-priv{font-size:11.5px;color:#9bb0bd;text-align:center;margin-top:12px}'+
+  '.ldc-priv{font-size:11.5px;color:#456575;text-align:center;margin-top:12px}'+
   '.ldc-ok{display:none;text-align:center;padding:16px 4px}'+
   '.ldc-ok.on{display:block}'+
   '.ldc-ok-ico{font-size:36px;margin-bottom:8px}'+

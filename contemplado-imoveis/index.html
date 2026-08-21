@@ -37,7 +37,7 @@
 :root {
   --ocean:#0d3b54;
   --ocean2:#0e8a99;
-  --gold:#e0b34d;
+  --gold:#9a6b00;
   --gold-light: #f5e6d0;
   --gold-dark: #8a6b3d;
   --green: #16a34a;
@@ -78,7 +78,7 @@ body { font-family: 'Outfit', sans-serif; background: var(--pagebg); color: var(
   font-size: 17px;
 }
 .hdr-brand { font-size: 16px; font-weight: 700; color: #fff; line-height: 1.2; letter-spacing: .02em; }
-.hdr-sub { font-size: 9px; color: var(--gold); text-transform: uppercase; letter-spacing: .14em; }
+.hdr-sub { font-size: 9px; color: #f0cd7c; text-transform: uppercase; letter-spacing: .14em; }
 .hdr-back {
   display: flex; align-items: center; gap: 6px;
   font-size: 11px; color: rgba(255,255,255,.5); text-decoration: none;
@@ -146,7 +146,7 @@ body { font-family: 'Outfit', sans-serif; background: var(--pagebg); color: var(
   color: var(--ocean); font-weight: 300; line-height: 1.2;
   text-align: center; margin: 0 auto;
 }
-.hero-title em { color: var(--gold); font-style: italic; }
+.hero-title em { color: #8a6100; font-style: italic; }
 
 
 
@@ -963,8 +963,12 @@ function closeM(){document.getElementById('modal-ov').classList.remove('open');d
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
 // Show loading state immediately
 document.getElementById('grid').innerHTML='<div class="empty"><div style="font-size:36px;margin-bottom:12px">⏳</div><p>Carregando cartas...</p></div>';
-// Load after DOM is ready
-setTimeout(()=>{ filtrar(); }, 10);
+// Carrega o catálogo após a primeira pintura para não competir com o título e o CTA.
+(function(){
+  const start=()=>filtrar();
+  if('requestIdleCallback' in window) requestIdleCallback(start,{timeout:1400});
+  else setTimeout(start,120);
+})();
 </script>
 
 <nav class="mob-footer-nav">
