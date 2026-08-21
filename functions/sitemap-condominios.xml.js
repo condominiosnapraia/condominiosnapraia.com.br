@@ -5,6 +5,10 @@
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const SITE = 'https://condominiosnapraia.com.br';
+// Registros com rota dinâmica 200, mas sem página amigável estática, não entram no sitemap até a página ser gerada.
+const EXCLUDED_PUBLIC_SLUGS = new Set([
+  'condominio-lynemar-business-capao-da-canoa'
+]);
 const PUBLIC_SLUG_ALIASES = new Map([
   ['condominio-livin-resort-atlantida-', 'condominio-livin-resort-atlantida'],
   ['condominio-thera-santorini-', 'condominio-thera-santorini'],
@@ -41,7 +45,7 @@ export async function onRequest(context) {
   const validos = (Array.isArray(condominios) ? condominios : []).filter(c => {
     if (c.ativo === false) return false;
     const slug = String(c.slug || '').trim().toLowerCase();
-    return Boolean(slug);
+    return Boolean(slug) && !EXCLUDED_PUBLIC_SLUGS.has(slug);
   });
 
   const vistos = new Set();
