@@ -521,6 +521,61 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   <script src="/js/protecao-conteudo.js" defer></script>
 
 <style id="a11y-contrast-fix">#view-home .qr-sec .eyebrow,#view-home .qr-sec .sectit em{color:#7a5a1f!important}.qr-sec .cidades-sub,.popsearch-sub{color:#4d6672!important}</style>
+<style id="home-regression-repair">
+/* Restauração controlada: cada onda usa exatamente a cor da seção que a contém. */
+#view-home > #lch-sec-sec,
+#view-home > #sec-imoveis,
+#view-home > #sec-apartamentos,
+#view-home > #sec-fora-cond,
+#view-home > #sec-imoveis-comerciais,
+#view-home > #sec-terrenos,
+#view-home > #sec-terrenos-fora,
+#view-home > #qfilter2,
+#view-home > #sec-condominios,
+#view-home > #sec-condominios-verticais,
+#view-home > #viver-intro-sec,
+#view-home > #viver-lagoa,
+#view-home > #viver-mar,
+#view-home > #viver-cidade,
+#view-home > #pcred-sec-sec,
+#view-home > #guias-cidades,
+#view-home > #guias-decisao,
+#view-home > #sec-blog-preview{--wave-from:inherit!important}
+#view-home > #lch-sec-sec{--wave-from:#eef3ec!important}
+#view-home > #sec-imoveis{--wave-from:#f3f8fa!important}
+#view-home > #sec-apartamentos{--wave-from:#fffaf2!important}
+#view-home > #sec-fora-cond{--wave-from:#eef8f7!important}
+#view-home > #sec-imoveis-comerciais{--wave-from:#fffaf2!important}
+#view-home > #sec-terrenos{--wave-from:#fbfaf7!important}
+#view-home > #sec-terrenos-fora{--wave-from:#f3f8fa!important}
+#view-home > #qfilter2{--wave-from:#fbf5eb!important}
+#view-home > #sec-condominios{--wave-from:#eef3ec!important}
+#view-home > #sec-condominios-verticais{--wave-from:#f3f8fa!important}
+#view-home > #viver-intro-sec{--wave-from:#fff!important}
+#view-home > #viver-lagoa{--wave-from:#eef8f5!important}
+#view-home > #viver-mar{--wave-from:#eef7fb!important}
+#view-home > #viver-cidade{--wave-from:#fffaf0!important}
+#view-home > #pcred-sec-sec{--wave-from:#faf6ef!important}
+#view-home > #guias-cidades{--wave-from:#fff!important}
+#view-home > #guias-decisao{--wave-from:#faf6ef!important}
+#view-home > #sec-blog-preview{--wave-from:#fff!important}
+#view-home > .sec-onda::before{background:var(--wave-from)!important}
+#view-home > #sec-imoveis-comerciais.sec-onda::before,
+#view-home > #sec-condominios-verticais.sec-onda::before{top:-56px!important;height:112px!important}
+/* Enquadramento integral: a foto não é ampliada nem cortada dentro do card. */
+#view-home .icimg img,
+#view-home .ci img,
+#view-home .ci-slide img{object-fit:contain!important;object-position:center!important;transform:none!important;background:#eef3f5}
+#view-home .icimg,
+#view-home .ci{background:#eef3f5!important}
+#view-home .icard:hover .icimg img,
+#view-home .ccard:hover .ci img,
+#view-home .ccard:hover .ci-slide.ativa{transform:none!important}
+@media(max-width:768px){
+  #view-home > #sec-imoveis-comerciais.sec-onda::before,
+  #view-home > #sec-condominios-verticais.sec-onda::before{top:-36px!important;height:72px!important}
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -1531,7 +1586,7 @@ const HOME_COND_SELECT_MIN = [
 
 const HOME_IMOV_SELECT_MIN = [
   'id','slug','codigo','titulo','cond_id','fora_condominio','status','publicar',
-  'tipo','preco','quartos','suites','banheiros','vagas','area','area_privativa',
+  'tipo','preco','quartos','suites','banheiros','vagas','area','area_privativa','fotos_no_site',
   'area_construida','terreno','cidade_end','bairro_end'
 ].join(',');
 
@@ -2909,7 +2964,7 @@ function buildImovCard(i){
     i.vagas?`🚗 ${i.vagas} ${i.vagas==1?'vaga':'vagas'}`:null
   ].filter(Boolean).map(s=>`<span class="icspec">${s}</span>`).join('');
   return`<a class="icard vis" href="/imovel?id=${encodeURIComponent(i.codigo||i.slug||i.id)}" style="text-decoration:none;color:inherit">
-    <div class="icimg"${!foto?` data-home-imov-img="${escapeAttr(i.id)}"`:''}>${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384,deferLoad:true}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
+    <div class="icimg"${!foto?` data-home-imov-img="${escapeAttr(i.id)}"`:''}>${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
     <div class="icbody">
       <div class="ictipo">${i.tipo||'Imóvel'}</div>
       <div class="ictit">${i.titulo||'—'}</div>
