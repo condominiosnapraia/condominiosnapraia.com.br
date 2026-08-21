@@ -84,7 +84,7 @@ li{margin-bottom:7px;font-size:16.5px}
 .info .l{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--om);font-weight:700;margin-bottom:4px}
 .info .v{font-size:15px;font-weight:600;color:var(--ocean)}
 .foto{position:relative;border-radius:14px;overflow:hidden;margin:24px 0;background:linear-gradient(135deg,var(--azulclaro,#cdeef2),var(--espuma,#e8f7f8));width:100%;aspect-ratio:16/8;min-height:0;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center}
-.foto.tem-foto{aspect-ratio:16/9}
+.foto.tem-foto{aspect-ratio:16/9}.foto-editorial{display:block;background:#e8f7f8}.foto-editorial picture,.foto-editorial img{display:block;width:100%;height:100%}.foto-editorial img{object-fit:cover}.foto-editorial figcaption{padding:10px 14px 0;color:var(--tm);font-size:12px;line-height:1.45}.turismo-galeria{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0 34px}.turismo-galeria figure{margin:0}.turismo-galeria .foto{margin:0;height:100%}@media(max-width:760px){.turismo-galeria{grid-template-columns:1fr 1fr}}@media(max-width:560px){.turismo-galeria{grid-template-columns:1fr}}
 @media(max-width:560px){.foto{aspect-ratio:4/3}.foto.tem-foto{aspect-ratio:4/3}}
 .foto .ph{text-align:center;color:var(--om);padding:20px}
 .foto .ph .ic{font-size:30px;display:block;margin-bottom:6px;opacity:.6}
@@ -225,14 +225,14 @@ body{padding-top:56px}
 </header>
 
 <nav class="crumb wrap"><a href="/">Início</a> › <a href="/capao-da-canoa/">Capão da Canoa</a> › <span>O que fazer</span></nav>
-<div class="hero"><div class="hero-bg" data-foto="hero"></div><div class="wrap">
+<div class="hero"><div class="hero-bg" data-foto="hero" style="background-image:linear-gradient(180deg,rgba(13,59,84,.12),rgba(13,59,84,.72)),url('/img/turismo/capao-da-canoa/praca-marina-park-vista-1.avif');background-size:cover;background-position:center"></div><div class="wrap">
 <h1>O que fazer em <em>Capão da Canoa</em></h1>
 <p>A maior cidade do Litoral Norte gaúcho reúne praias extensas, os maiores parques aquáticos do estado, a Lagoa dos Quadros e praças charmosas. Veja o guia completo do que fazer em Capão da Canoa — na temporada e o ano todo.</p>
 </div>
 <div class="wave-divider"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="#fff" d="M0,30 C240,70 480,70 720,40 C960,10 1200,10 1440,38 L1440,70 L0,70 Z"></path></svg></div>
 </div>
 <article class="wrap">
-<div class="foto" data-foto="orla"><div class="ph"><span class="ic">🏖️</span><span class="tx">Espaço para foto: orla / praia de Capão da Canoa</span></div></div>
+<figure class="foto tem-foto foto-editorial" data-foto="orla"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/praca-do-avezon-vista-aerea-1.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/praca-do-avezon-vista-aerea-1.webp"><img src="/img/turismo/capao-da-canoa/praca-do-avezon-vista-aerea-1.jpg" width="4032" height="3024" loading="eager" fetchpriority="high" decoding="async" alt="Praça do Avezon, orla e praia de Capão da Canoa vistas de cima"></picture><figcaption>A Praça do Avezon integra área verde, lazer, calçadão e a paisagem da praia de Capão da Canoa.</figcaption></figure>
 
 <div class="info-grid">
 <div class="info"><div class="l">Cidade</div><div class="v">Capão da Canoa / RS</div></div>
@@ -261,7 +261,7 @@ body{padding-top:56px}
 <h2 id="lagoa">Lagoa dos Quadros</h2>
 <p>A <a href="/lagoa-dos-quadros/">Lagoa dos Quadros</a> é um dos cartões-postais da cidade. Com águas calmas e rasas, é o lugar ideal para esportes náuticos como jet ski, windsurf, kitesurf, stand-up paddle e vela. O Parque Náutico, às margens da lagoa, foi revitalizado e conta com trapiche, deque, mirante com vista da orla, restaurantes, quadras e estacionamento para mais de 100 veículos. É um dos melhores points para acompanhar o pôr do sol em Capão.</p>
 
-<div class="foto" data-foto="lagoa"><div class="ph"><span class="ic">🌅</span><span class="tx">Espaço para foto: pôr do sol na Lagoa dos Quadros</span></div></div>
+<figure class="foto tem-foto foto-editorial" data-foto="lagoa"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/praca-luis-bassani-vista-aerea.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/praca-luis-bassani-vista-aerea.webp"><img src="/img/turismo/capao-da-canoa/praca-luis-bassani-vista-aerea.jpg" width="4096" height="3072" loading="lazy" decoding="async" alt="Praça Luís Bassani em Capão da Canoa com a área urbana e a lagoa ao fundo"></picture><figcaption>A vista aérea da Praça Luís Bassani mostra a relação entre a área urbana e a paisagem lagunar de Capão da Canoa.</figcaption></figure>
 
 <h2 id="parques">Parques aquáticos</h2>
 <p>Capão da Canoa abriga os <strong>maiores parques aquáticos do Rio Grande do Sul</strong>. O <a href="/marina-park/">Marina Park</a>, na Estrada do Mar, é conhecido como "o parque dos gaúchos" há mais de 20 anos, com toboáguas, piscina tropical, piscinas infantis, bares aquáticos, o espaço coberto e térmico "O Mundo de Atlântida" e quadra de beach tennis. O Acqua Lokos é o outro gigante, com tobogãs, piscinas, área de recreação e até hotel. São o programa perfeito para os dias quentes e para famílias com crianças.</p>
@@ -272,9 +272,9 @@ body{padding-top:56px}
 <h2 id="gastronomia">Gastronomia</h2>
 <p>A <strong>Avenida Paraguassú</strong>, na área central, concentra boa parte dos restaurantes, churrascarias, petiscarias e lanchonetes da cidade. No verão, a vida noturna ganha força com bares e casas à beira-mar. A cidade recebe turistas brasileiros, argentinos e uruguaios, e a oferta gastronômica acompanha esse público diverso, do casual ao mais sofisticado.</p>
 
-<div class="foto" data-foto="parque"><div class="ph"><span class="ic">🎢</span><span class="tx">Espaço para foto: parque aquático</span></div></div>
+<figure class="foto tem-foto foto-editorial" data-foto="parque"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/praca-marina-park-vista-2.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/praca-marina-park-vista-2.webp"><img src="/img/turismo/capao-da-canoa/praca-marina-park-vista-2.jpg" width="4160" height="3120" loading="lazy" decoding="async" alt="Praça Marina Park e edifícios do entorno em Capão da Canoa"></picture><figcaption>A Praça Marina Park aparece entre edifícios residenciais, áreas de lazer e vias urbanas do litoral.</figcaption></figure>
 
-<h2 id="roteiro">Roteiro sugerido (3 dias)</h2>
+<section class="turismo-galeria" aria-label="Praças e paisagens de Capão da Canoa"><figure class="foto tem-foto foto-editorial"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/praca-do-avezon-vista-aerea-3.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/praca-do-avezon-vista-aerea-3.webp"><img src="/img/turismo/capao-da-canoa/praca-do-avezon-vista-aerea-3.jpg" width="4096" height="3072" loading="lazy" decoding="async" alt="Orla de Capão da Canoa e Praça do Avezon vistas de cima"></picture><figcaption>Orla e Praça do Avezon</figcaption></figure><figure class="foto tem-foto foto-editorial"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/praca-marina-park-vista-3.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/praca-marina-park-vista-3.webp"><img src="/img/turismo/capao-da-canoa/praca-marina-park-vista-3.jpg" width="4160" height="3120" loading="lazy" decoding="async" alt="Vista urbana da Praça Marina Park e da área central de Capão da Canoa"></picture><figcaption>Praça Marina Park</figcaption></figure><figure class="foto tem-foto foto-editorial"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/praca-do-avezon-vista-aerea-4.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/praca-do-avezon-vista-aerea-4.webp"><img src="/img/turismo/capao-da-canoa/praca-do-avezon-vista-aerea-4.jpg" width="4160" height="3120" loading="lazy" decoding="async" alt="Praia e faixa urbana de Capão da Canoa em vista aérea"></picture><figcaption>Praia e cidade</figcaption></figure></section><h2 id="roteiro">Roteiro sugerido (3 dias)</h2>
 <p><strong>Dia 1 — Praia e orla:</strong> comece pela Praia de Capão da Canoa, caminhe pelo calçadão e termine o dia com jantar na Avenida Paraguassú ou em um bar à beira-mar.</p>
 <p><strong>Dia 2 — Parque aquático:</strong> dia inteiro de diversão no Marina Park ou Acqua Lokos, ótimo para famílias.</p>
 <p><strong>Dia 3 — Lagoa dos Quadros:</strong> esportes náuticos e contemplação no Parque Náutico, fechando com o pôr do sol sobre a lagoa.</p>

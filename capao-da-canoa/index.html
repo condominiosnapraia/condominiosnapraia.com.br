@@ -62,7 +62,7 @@ nav.crumb{font-size:13px;color:var(--tm);padding:14px 0}
 nav.crumb a{color:var(--om);text-decoration:none}
 .hero{position:relative;background:radial-gradient(900px 380px at 82% -10%, var(--azulclaro) 0%, transparent 60%),radial-gradient(700px 360px at 8% 8%, #fdeede 0%, transparent 55%),linear-gradient(180deg,#fffefb,var(--espuma));color:var(--ocean);padding:54px 0;overflow:hidden}.hero h1 em{font-style:italic;color:var(--om)}.wave-divider{position:absolute;left:0;right:0;bottom:-1px;z-index:1;line-height:0}.wave-divider svg{width:100%;height:70px;display:block}.hero .wrap{position:relative;z-index:2}.hero{padding-bottom:84px}
 .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
-.hero-bg{display:none}
+.hero-bg{display:block;position:absolute;inset:0;opacity:.22;background-size:cover;background-position:center;filter:saturate(.95)}
 .hero .wrap{position:relative;z-index:1}
 .hero .wrap{max-width:920px}
 h1{font-family:'Fraunces',serif;font-size:clamp(28px,5vw,44px);font-weight:600;margin-bottom:14px;line-height:1.12;letter-spacing:-.02em}
@@ -119,7 +119,7 @@ footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60
 footer a{color:#fff;text-decoration:none}
 
 .foto{position:relative;border-radius:14px;overflow:hidden;margin:24px 0;background:linear-gradient(135deg,var(--azulclaro,#cdeef2),var(--espuma,#e8f7f8));width:100%;aspect-ratio:16/8;min-height:0;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center}
-.foto.tem-foto{aspect-ratio:16/9}
+.foto.tem-foto{aspect-ratio:16/9}.foto-editorial{display:block;background:#e8f7f8}.foto-editorial picture,.foto-editorial img{display:block;width:100%;height:100%}.foto-editorial img{object-fit:cover}.foto-editorial figcaption{padding:10px 14px 0;color:var(--tm);font-size:12px;line-height:1.45}
 @media(max-width:560px){.foto{aspect-ratio:4/3}.foto.tem-foto{aspect-ratio:4/3}}
 
 .foto .ph{text-align:center;color:var(--om);padding:20px}
@@ -256,7 +256,7 @@ body{padding-top:56px}
 <p>Em 1933, Cornélios surgiu como o 6º Distrito de Osório, incluindo a Vila de Capão da Canoa; em 1952, a sede do distrito foi transferida para a praia de Capão da Canoa, que se desenvolvia rapidamente com a construção de estradas. A <strong>emancipação do município</strong> veio pela Lei 7.638, de 12 de abril de 1982, com a posse do primeiro prefeito em janeiro de 1983. Inicialmente, o município contava com 23 balneários e cerca de 30 km de orla.</p>
 <p>A chegada das primeiras colônias de imigrantes — alemães, italianos e judeus — ajudou a transformar o antigo vilarejo de pescadores em um polo de veraneio. Foi a partir dos anos 1930 que os primeiros hotéis instalaram seus alicerces, marcando o início da vocação turística da cidade. A construção de estradas ligando o litoral à capital e à serra acelerou esse processo, e em poucas décadas Capão da Canoa deixou de ser um ponto de pesca para se tornar a principal cidade do Litoral Norte. Hoje, segundo o Censo 2022 do IBGE, o município tem população estável de cerca de 63.594 habitantes, sendo o mais populoso e o 35º maior do Rio Grande do Sul — um vibrante município litorâneo rico em história e cultura.</p>
 
-<div class="foto" data-foto="destaque"><div class="ph"><span class="ic">📸</span><span class="tx">Espaço para foto: vista de Capao Da Canoa</span></div></div>
+<figure class="foto tem-foto foto-editorial" data-foto="destaque"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/praca-flavio-boianovski-vista-aerea.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/praca-flavio-boianovski-vista-aerea.webp"><img src="/img/turismo/capao-da-canoa/praca-flavio-boianovski-vista-aerea.jpg" width="4096" height="3072" loading="eager" fetchpriority="high" decoding="async" alt="Vista aérea da Praça Flávio Boianovski em Capão da Canoa, com a cidade e o mar ao fundo"></picture><figcaption>Praça Flávio Boianovski: um dos espaços urbanos que ajudam a contar a história de Capão da Canoa.</figcaption></figure>
 <h2 id="localizacao">Localização e acessos</h2>
 <p>Capão da Canoa está situada no Litoral Norte do Rio Grande do Sul, na latitude 29º44' sul, a poucos metros acima do nível do mar. O município limita-se ao leste com o oceano Atlântico, ao sul com Xangri-lá, ao norte com Terra de Areia e a oeste com Maquiné e Terra de Areia. Possui quatro distritos: a sede Capão da Canoa e os balneários de Capão Novo, Arroio Teixeira e Curumim.</p>
 <p>O acesso principal é pela <strong>Estrada do Mar (RS-389)</strong>, que conecta os balneários do litoral e facilita o deslocamento a partir de Porto Alegre e da região metropolitana. Essa facilidade de acesso às grandes cidades é um dos diferenciais da cidade, permitindo que moradores e veranistas circulem com conveniência entre a capital e o litoral.</p>
@@ -293,7 +293,7 @@ body{padding-top:56px}
 <p>Os distritos da parte norte do município oferecem praias mais tranquilas e residenciais. O balneário Capão Novo Village é peculiar no litoral gaúcho: não há comércio na praia e é proibida a construção de edifícios, preservando um perfil mais exclusivo e arborizado, com lagos e praças junto à orla.</p>
 <div class="destaque">A diversidade de balneários — do agitado centro às tranquilas praias do norte — permite que cada perfil de comprador encontre o ambiente ideal, o que amplia o leque de oportunidades de investimento na cidade.</div>
 
-<div class="foto" data-foto="turismo"><div class="ph"><span class="ic">🏖️</span><span class="tx">Espaço para foto: praia / ponto turístico</span></div></div>
+<figure class="foto tem-foto foto-editorial" data-foto="turismo"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/orla-e-praca-do-farol.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/orla-e-praca-do-farol.webp"><img src="/img/turismo/capao-da-canoa/orla-e-praca-do-farol.jpg" width="4096" height="3072" loading="lazy" decoding="async" alt="Orla e Praça do Farol em Capão da Canoa vistas de cima, com a praia ao fundo"></picture><figcaption>A orla e a Praça do Farol formam um dos cenários mais reconhecíveis do centro de Capão da Canoa.</figcaption></figure>
 <h2 id="mercado">Mercado imobiliário de Capão da Canoa</h2>
 <p>Capão da Canoa ostenta uma posição notável: é o <strong>segundo maior mercado imobiliário do Rio Grande do Sul</strong>, atrás apenas de Porto Alegre. Segundo o setor, o município movimentou aproximadamente <strong>R$ 5,7 bilhões em VGV em 2025</strong>, entre revendas e lançamentos — um número que evidencia a força e a maturidade do mercado local.</p>
 <p>Esse desempenho é sustentado por fatores estruturais sólidos: a cidade é a maior e mais populosa do litoral, tem vida econômica o ano inteiro, e atrai tanto moradores permanentes quanto veranistas e investidores. A valorização imobiliária na região está entre <strong>10% e 12% ao ano</strong>, e Capão da Canoa, por seu volume e liquidez, é uma das praças mais seguras para investir no litoral gaúcho.</p>
@@ -314,7 +314,7 @@ body{padding-top:56px}
 <a href="/xangri-la/">Condomínios em Xangri-lá</a>
 </div>
 
-<div class="foto" data-foto="condominios"><div class="ph"><span class="ic">🏘️</span><span class="tx">Espaço para foto: condomínio / imóvel</span></div></div>
+<figure class="foto tem-foto foto-editorial" data-foto="condominios"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/vista-urbana-de-capao-da-canoa.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/vista-urbana-de-capao-da-canoa.webp"><img src="/img/turismo/capao-da-canoa/vista-urbana-de-capao-da-canoa.jpg" width="4096" height="3072" loading="lazy" decoding="async" alt="Vista urbana de Capão da Canoa com edifícios residenciais, ruas e áreas verdes"></picture><figcaption>A paisagem urbana de Capão da Canoa combina moradia, comércio, áreas verdes e proximidade com a praia.</figcaption></figure>
 <h2 id="bairros">Bairros de Capão da Canoa</h2>
 <p>Conhecer os bairros é o primeiro passo para escolher onde morar ou investir em Capão da Canoa. Cada um tem um perfil próprio — do agito comercial do Centro ao alto padrão do Navegantes, passando por regiões familiares e tranquilas. Veja os guias completos de cada bairro:</p>
 <ul>

@@ -62,7 +62,7 @@ nav.crumb{font-size:13px;color:var(--tm);padding:14px 0}
 nav.crumb a{color:var(--om);text-decoration:none}
 .hero{position:relative;background:radial-gradient(900px 380px at 82% -10%, var(--azulclaro) 0%, transparent 60%),radial-gradient(700px 360px at 8% 8%, #fdeede 0%, transparent 55%),linear-gradient(180deg,#fffefb,var(--espuma));color:var(--ocean);padding:54px 0 84px;overflow:hidden}
 .hero .wrap{position:relative;z-index:2;max-width:920px}
-.hero-bg{display:none}
+.hero-bg{display:block;position:absolute;inset:0;opacity:.22;background-size:cover;background-position:center;filter:saturate(.95)}
 h1{font-family:'Fraunces',serif;font-size:clamp(28px,5vw,44px);font-weight:600;margin-bottom:14px;line-height:1.12;letter-spacing:-.02em}
 h1 em{font-style:italic;color:var(--om)}
 .hero p{font-size:17px;color:var(--tm);max-width:760px}
@@ -84,7 +84,7 @@ li{margin-bottom:7px;font-size:16.5px}
 .info .l{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--om);font-weight:700;margin-bottom:4px}
 .info .v{font-size:15px;font-weight:600;color:var(--ocean)}
 .foto{position:relative;border-radius:14px;overflow:hidden;margin:24px 0;background:linear-gradient(135deg,var(--azulclaro,#cdeef2),var(--espuma,#e8f7f8));width:100%;aspect-ratio:16/8;min-height:0;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center}
-.foto.tem-foto{aspect-ratio:16/9}
+.foto.tem-foto{aspect-ratio:16/9}.foto-editorial{display:block;background:#e8f7f8}.foto-editorial picture,.foto-editorial img{display:block;width:100%;height:100%}.foto-editorial img{object-fit:cover}.foto-editorial figcaption{padding:10px 14px 0;color:var(--tm);font-size:12px;line-height:1.45}.centro-galeria{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:26px 0 34px}.centro-galeria figure{margin:0}.centro-galeria .foto{margin:0;height:100%}@media(max-width:620px){.centro-galeria{grid-template-columns:1fr}}
 @media(max-width:560px){.foto{aspect-ratio:4/3}.foto.tem-foto{aspect-ratio:4/3}}
 .foto .ph{text-align:center;color:var(--om);padding:20px}
 .foto .ph .ic{font-size:30px;display:block;margin-bottom:6px;opacity:.6}
@@ -212,14 +212,14 @@ body{padding-top:56px}
 </header>
 
 <nav class="crumb wrap"><a href="/">Início</a> › <a href="/capao-da-canoa/">Capão da Canoa</a> › <span>Centro</span></nav>
-<div class="hero"><div class="hero-bg" data-foto="hero"></div><div class="wrap">
+<div class="hero"><div class="hero-bg" data-foto="hero" style="background-image:linear-gradient(180deg,rgba(13,59,84,.12),rgba(13,59,84,.68)),url('/img/turismo/capao-da-canoa/centro-capao-da-canoa-avenida.avif');background-size:cover;background-position:center"></div><div class="wrap">
 <h1>Bairro Centro de Capão da Canoa: <em>morar perto de tudo</em></h1>
 <p>O Centro é o coração de Capão da Canoa: comércio, gastronomia, praia e vida o ano todo. Veja como é morar no Centro, perfil, vantagens e imóveis.</p>
 </div>
 <div class="wave-divider"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="#fff" d="M0,30 C240,70 480,70 720,40 C960,10 1200,10 1440,38 L1440,70 L0,70 Z"></path></svg></div>
 </div>
 <article class="wrap">
-<div class="foto" data-foto="rua"><div class="ph"><span class="ic">🏙️</span><span class="tx">Espaço para foto: Centro de Capão da Canoa</span></div></div>
+<figure class="foto tem-foto foto-editorial" data-foto="rua"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/centro-capao-da-canoa-marco-urbano.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/centro-capao-da-canoa-marco-urbano.webp"><img src="/img/turismo/capao-da-canoa/centro-capao-da-canoa-marco-urbano.jpg" width="4096" height="3072" loading="eager" fetchpriority="high" decoding="async" alt="Centro de Capão da Canoa visto de cima, com o marco urbano, ruas e edifícios"></picture><figcaption>O Centro de Capão da Canoa reúne referências urbanas, comércio, serviços e acesso à orla.</figcaption></figure>
 <div class="info-grid">
 <div class="info"><div class="l">Perfil</div><div class="v">Comercial e agitado</div></div>
 <div class="info"><div class="l">Destaque</div><div class="v">Perto de tudo e da praia</div></div>
@@ -238,7 +238,7 @@ body{padding-top:56px}
 <li>Boa estrutura para fazer tudo a pé.</li>
 <li>Ótimo para quem gosta de movimento e conveniência.</li>
 </ul>
-<div class="foto" data-foto="praia"><div class="ph"><span class="ic">🏖️</span><span class="tx">Espaço para foto: orla / praia no Centro</span></div></div>
+<figure class="foto tem-foto foto-editorial" data-foto="praia"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/centro-capao-da-canoa-orla.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/centro-capao-da-canoa-orla.webp"><img src="/img/turismo/capao-da-canoa/centro-capao-da-canoa-orla.jpg" width="4096" height="3072" loading="lazy" decoding="async" alt="Centro de Capão da Canoa e orla vistos do alto"></picture><figcaption>Do Centro, a orla e a praia ficam integradas à rotina urbana da cidade.</figcaption></figure>
 <h2 id="perfil">Perfil de quem mora no Centro</h2>
 <p>O Centro atrai quem valoriza praticidade e vida urbana à beira-mar: profissionais, investidores que buscam imóveis para locação de temporada (pela altíssima procura) e famílias que gostam de ter serviços e lazer ao alcance dos pés. É também a primeira opção de muitos veranistas, justamente pela conveniência.</p>
 <h2 id="localizacao">Localização e o entorno</h2>
@@ -248,7 +248,7 @@ body{padding-top:56px}
 <h2 id="imoveis">Imóveis no bairro Centro</h2>
 <p>Quem procura <strong>imóveis no Centro</strong>, em Capão da Canoa, encontra desde apartamentos a casas e terrenos. Seja para <strong>comprar casa no Centro</strong>, <strong>apartamento no Centro</strong> ou <strong>investir no bairro Centro</strong>, a região oferece opções para morar o ano todo ou veranear. Fale com um especialista para ver as oportunidades disponíveis e os valores atualizados.</p>
 <div class="ilinks"><a href="/capao-da-canoa/">Guia de Capão da Canoa</a><a href="/o-que-fazer-em-capao-da-canoa/">O que fazer em Capão</a><a href="/#condominios">Ver condomínios</a><a href="/contemplado-imoveis/">Crédito contemplado</a></div>
-<h2 id="faq">Perguntas frequentes</h2>
+<section class="centro-galeria" aria-label="Galeria de fotos do Centro de Capão da Canoa"><figure class="foto tem-foto foto-editorial"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/centro-capao-da-canoa-por-do-sol.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/centro-capao-da-canoa-por-do-sol.webp"><img src="/img/turismo/capao-da-canoa/centro-capao-da-canoa-por-do-sol.jpg" width="4096" height="3072" loading="lazy" decoding="async" alt="Pôr do sol sobre o Centro de Capão da Canoa e a paisagem do litoral"></picture><figcaption>O pôr do sol revela a conexão entre a área urbana, a orla e a paisagem do litoral.</figcaption></figure><figure class="foto tem-foto foto-editorial"><picture><source type="image/avif" srcset="/img/turismo/capao-da-canoa/centro-capao-da-canoa-avenida.avif"><source type="image/webp" srcset="/img/turismo/capao-da-canoa/centro-capao-da-canoa-avenida.webp"><img src="/img/turismo/capao-da-canoa/centro-capao-da-canoa-avenida.jpg" width="4096" height="3072" loading="lazy" decoding="async" alt="Avenida central de Capão da Canoa com comércio, edifícios e trânsito urbano"></picture><figcaption>A avenida central concentra circulação, comércio e serviços ao longo do ano.</figcaption></figure></section><h2 id="faq">Perguntas frequentes</h2>
 <details class="faq-item"><summary>Como é morar no Centro de Capão da Canoa?</summary><p>Morar no Centro significa estar perto de tudo: comércio, gastronomia, serviços e praia, com vida o ano todo. É o bairro mais movimentado e badalado da cidade, ideal para quem gosta de conveniência e agitação.</p></details>
 <details class="faq-item"><summary>O Centro de Capão da Canoa é bom para investir?</summary><p>Sim. Pela alta procura, imóveis no Centro têm boa liquidez e forte demanda para locação de temporada, além de valorização constante por causa da localização.</p></details>
 <details class="faq-item"><summary>O que tem no Centro de Capão da Canoa?</summary><p>Shopping, lojas, supermercados, bancos, a Praça dos Camelôs e a Avenida Paraguassú, com restaurantes, pubs e as tradicionais casas de crepe, além de acesso fácil à praia.</p></details>
