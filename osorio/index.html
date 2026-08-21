@@ -245,6 +245,39 @@ body{padding-top:56px}
 @media(max-width:850px){.city-hero-layout{grid-template-columns:1fr;gap:23px}.city-hero-visual{min-height:0}.city-hero-gallery{height:270px}.city-hero-copy>p{max-width:760px}.city-intent-head{display:block}.city-intent-head p{text-align:left;margin-top:5px}}
 @media(max-width:600px){.city-hero-layout{gap:18px}.city-hero-actions{display:grid;grid-template-columns:1fr 1fr}.city-hero-actions a{width:100%;padding-inline:10px;font-size:12px}.city-hero-visual{padding:6px;border-radius:18px}.city-hero-gallery{height:226px;gap:6px}.city-hero-gallery img{border-radius:12px}.city-intent{margin-top:20px;padding-top:22px}.city-intent h2{font-size:22px}.city-intent-grid{grid-template-columns:1fr;gap:9px}.city-intent-card{min-height:112px;padding:15px;display:grid;grid-template-columns:38px 1fr;column-gap:11px;align-items:center}.city-intent-card .ico{grid-row:1/3;margin:0}.city-intent-card strong{font-size:18px}.city-intent-card span:last-child{padding:2px 0 0;margin:0}.city-mobile-note{font-size:12px}}
 </style>
+
+<style id="city-opportunity-layout">
+.city-opps{margin:30px 0 10px;padding:28px 0 10px;border-top:1px solid rgba(31,181,196,.18)}
+.city-opps-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:17px}
+.city-opps-head h2{margin:0 0 5px;font-size:25px}
+.city-opps-head p{margin:0;color:var(--tm);font-size:14px;max-width:540px}
+.city-opps-all{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;min-height:40px;padding:9px 14px;border:1px solid rgba(31,181,196,.28);border-radius:999px;color:var(--ocean);background:#fff;text-decoration:none;font-size:12px;font-weight:700}
+.city-opps-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+.city-opp-panel{padding:18px;border:1px solid rgba(31,181,196,.18);border-radius:18px;background:linear-gradient(150deg,#fff,#f7fcfc);box-shadow:0 5px 17px rgba(13,59,84,.055)}
+.city-opp-panel.credit-panel{background:linear-gradient(150deg,#fffdf6,#fff8e7);border-color:rgba(224,179,77,.35)}
+.city-opp-panel h3{margin:0 0 4px;font-size:20px;color:var(--ocean)}
+.city-opp-panel>p{margin:0 0 14px;color:var(--tm);font-size:13px;line-height:1.5}
+.city-prop-list,.city-cond-list{display:grid;gap:9px}
+.city-prop-card{display:grid;grid-template-columns:112px minmax(0,1fr);gap:12px;align-items:stretch;padding:8px;border:1px solid rgba(13,59,84,.1);border-radius:13px;background:#fff;text-decoration:none;color:var(--ocean);transition:transform .2s,box-shadow .2s,border-color .2s}
+.city-prop-card:hover,.city-cond-card:hover{transform:translateY(-2px);border-color:#1fb5c4;box-shadow:0 8px 18px rgba(13,59,84,.1)}
+.city-prop-card img{width:112px;height:92px;object-fit:cover;border-radius:9px;background:#e8f7f8}
+.city-prop-info{min-width:0;display:flex;flex-direction:column;justify-content:center}
+.city-prop-type,.city-cond-type{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#0e8a99;font-weight:800}
+.city-prop-title,.city-cond-name{font-family:'Fraunces',serif;font-size:17px;font-weight:600;line-height:1.16;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.city-prop-meta{font-size:12px;color:var(--tm);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.city-prop-price{font-weight:800;font-size:14px;color:var(--ocean);margin-top:6px}
+.city-cond-card{display:grid;grid-template-columns:74px minmax(0,1fr);gap:10px;align-items:center;padding:8px;border:1px solid rgba(13,59,84,.1);border-radius:13px;background:#fff;text-decoration:none;color:var(--ocean);transition:transform .2s,box-shadow .2s,border-color .2s}
+.city-cond-card img{width:74px;height:64px;object-fit:cover;border-radius:8px;background:#e8f7f8}
+.city-cond-info{min-width:0}.city-cond-name{font-size:16px;margin-top:3px}.city-cond-meta{font-size:11.5px;color:var(--tm);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.city-opp-empty{padding:16px;border-radius:12px;background:rgba(232,247,248,.7);color:var(--tm);font-size:13px;line-height:1.55}
+.city-opp-empty a{display:inline-block;margin-top:8px;color:#0e8a99;font-weight:700;text-decoration:none}
+.city-opps-foot{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px}
+.city-opps-foot a{font-size:12px;color:#0e8a99;background:#e8f7f8;border-radius:999px;padding:8px 13px;text-decoration:none;font-weight:700}
+.city-opps-skeleton{height:120px;border-radius:12px;background:linear-gradient(90deg,#edf7f7,#fff,#edf7f7);background-size:200% 100%;animation:city-shimmer 1.4s linear infinite}
+@keyframes city-shimmer{to{background-position:-200% 0}}
+@media(max-width:760px){.city-opps-head{display:block}.city-opps-head p{margin-top:5px}.city-opps-all{margin-top:13px}.city-opps-grid{grid-template-columns:1fr;gap:12px}.city-opp-panel{padding:15px}}
+@media(max-width:480px){.city-prop-card{grid-template-columns:92px minmax(0,1fr)}.city-prop-card img{width:92px;height:84px}.city-opps-head h2{font-size:22px}.city-opps-foot{justify-content:stretch}.city-opps-foot a{flex:1;text-align:center}}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -274,6 +307,8 @@ body{padding-top:56px}
 <article class="wrap">
 
 <section class="city-intent" aria-labelledby="city-intent-title"><div class="city-intent-head"><div><div class="city-intent-eyebrow">Próximo passo</div><h2 id="city-intent-title">Encontre sua oportunidade em Osório</h2></div><p>Use o guia para decidir o perfil da região e fale com quem conhece imóveis, condomínios e crédito para comprar no litoral.</p></div><div class="city-intent-grid"><a class="city-intent-card" href="/imoveis/?cidade=Osório"><span class="ico" aria-hidden="true">⌂</span><strong>Quero comprar um imóvel</strong><span>Ver casas, terrenos e apartamentos →</span></a><a class="city-intent-card" href="/condominios/"><span class="ico" aria-hidden="true">◈</span><strong>Quero conhecer condomínios</strong><span>Compare empreendimentos e estruturas →</span></a><a class="city-intent-card credit" href="/contemplado-imoveis/"><span class="ico" aria-hidden="true">R$</span><strong>Quero usar crédito contemplado</strong><span>Ver cartas disponíveis para imóveis →</span></a></div><p class="city-mobile-note">Precisa de orientação? <a href="https://wa.me/5551982868888?text=Ol%C3%A1!%20Quero%20ver%20im%C3%B3veis%20e%20condom%C3%ADnios%20em%20Os%C3%B3rio." rel="nofollow">Fale com um consultor no WhatsApp.</a></p></section>
+
+<section class="city-opps" data-city-opps data-city-name="Osório" data-city-query="Osório" aria-labelledby="city-opps-title"><div class="city-opps-head"><div><div class="city-intent-eyebrow">Oportunidades reais</div><h2 id="city-opps-title">Imóveis e condomínios em Osório</h2><p>Veja o que está publicado agora e avance para um atendimento personalizado.</p></div><a class="city-opps-all" href="/imoveis/?cidade=Osório">Ver todos os imóveis</a></div><div class="city-opps-grid"><div class="city-opp-panel"><h3>Imóveis disponíveis</h3><p>Seleção atual para morar, veranear ou investir em Osório.</p><div class="city-prop-list" data-city-properties><div class="city-opps-skeleton" aria-label="Carregando imóveis"></div></div></div><div class="city-opp-panel"><h3>Condomínios da cidade</h3><p>Conheça empreendimentos e perfis antes de escolher o imóvel.</p><div class="city-cond-list" data-city-condos><div class="city-opps-skeleton" aria-label="Carregando condomínios"></div></div></div></div><div class="city-opps-foot"><a href="/condominios/">Comparar condomínios</a><a href="/contemplado-imoveis/">Usar crédito contemplado</a></div></section>
 
 <div class="toc">
 <h2>Neste guia</h2>
@@ -584,6 +619,60 @@ body{padding-top:56px}
       });
     })
     .catch(function(){gallery.classList.add('is-empty')});
+})();
+</script>
+
+<script>
+(function(){
+  var root=document.querySelector('[data-city-opps]');
+  var cfg=document.querySelector('[data-city-photo-config]');
+  if(!root||!cfg)return;
+  var SB_URL=cfg.getAttribute('data-sb-url'), SB_KEY=cfg.getAttribute('data-sb-key');
+  var city=root.getAttribute('data-city-name')||'';
+  var cityQuery=root.getAttribute('data-city-query')||city;
+  var propsEl=root.querySelector('[data-city-properties]'), condsEl=root.querySelector('[data-city-condos]');
+  var H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
+  var STORAGE=SB_URL+'/storage/v1/object/public/';
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]});}
+  function norm(v){return String(v==null?'':v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();}
+  function photo(v){
+    var s=Array.isArray(v)?(v.find(Boolean)||''):String(v||'');
+    if(!s)return '';
+    if(s.indexOf(STORAGE)===0)return '/cdn-fotos/'+s.slice(STORAGE.length).replace(/^\/+/, '').split('?')[0];
+    return s;
+  }
+  function brl(v){
+    var n=Number(String(v==null?'':v).replace(/[^0-9,.-]/g,'').replace(/\./g,'').replace(',','.'));
+    return n>0?n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}):(v?'Consulte':'Valor sob consulta');
+  }
+  function urlImovel(i){var ref=i.slug||i.codigo||i.id;return ref?'/imovel/'+encodeURIComponent(ref)+'/':'/imoveis/?cidade='+encodeURIComponent(cityQuery)}
+  function urlCondo(c){return '/condominio/?id='+encodeURIComponent(c.slug||c.id||'')}
+  function get(t,params){return fetch(SB_URL+'/rest/v1/'+t+'?'+params,{headers:H}).then(function(r){return r.ok?r.json():[]}).catch(function(){return[]})}
+  function imageTag(src,alt,w,h){return src?'<img src="'+esc(src)+'" width="'+w+'" height="'+h+'" loading="lazy" decoding="async" alt="'+esc(alt)+'">':'<div style="width:'+w+'px;height:'+h+'px;border-radius:9px;background:#e8f7f8;display:flex;align-items:center;justify-content:center;font-size:24px">⌂</div>'}
+  function renderProps(items){
+    if(!items.length){propsEl.innerHTML='<div class="city-opp-empty">Não há imóveis publicados com cidade preenchida para esta região neste momento.<br><a href="/imoveis/?cidade='+encodeURIComponent(cityQuery)+'">Ver a busca da cidade e falar com um consultor →</a></div>';return}
+    propsEl.innerHTML=items.slice(0,3).map(function(i){
+      var title=i.titulo||i.tipo||'Imóvel disponível';
+      var local=[i.bairro_end,i.cidade_end].filter(Boolean).join(' · ');
+      return '<a class="city-prop-card" href="'+urlImovel(i)+'">'+imageTag(photo(i.fotos_no_site&&i.fotos_no_site.length?i.fotos_no_site:i.fotos),title+' em '+city,112,92)+'<span class="city-prop-info"><span class="city-prop-type">'+esc(i.tipo||'Imóvel à venda')+'</span><strong class="city-prop-title">'+esc(title)+'</strong><span class="city-prop-meta">'+esc(local||city)+'</span><span class="city-prop-price">'+esc(brl(i.preco))+'</span></span></a>';
+    }).join('');
+  }
+  function renderCondos(items){
+    if(!items.length){condsEl.innerHTML='<div class="city-opp-empty">Nenhum condomínio publicado foi encontrado com esse nome de cidade.<br><a href="/condominios/">Ver todos os condomínios →</a></div>';return}
+    condsEl.innerHTML=items.slice(0,3).map(function(c){
+      var title=c.nome||'Condomínio';
+      var meta=[c.bairro,c.perfil].filter(Boolean).join(' · ')||city;
+      return '<a class="city-cond-card" href="'+urlCondo(c)+'">'+imageTag(photo(c.fotos_no_site&&c.fotos_no_site.length?c.fotos_no_site:c.fotos),title+' em '+city,74,64)+'<span class="city-cond-info"><span class="city-cond-type">Condomínio</span><strong class="city-cond-name">'+esc(title)+'</strong><span class="city-cond-meta">'+esc(meta)+'</span></span></a>';
+    }).join('');
+  }
+  Promise.all([
+    get('imoveis','status=eq.Dispon%C3%ADvel&publicar=eq.true&select=id,slug,codigo,titulo,tipo,preco,cidade_end,bairro_end,fotos_no_site,fotos&limit=250'),
+    get('condominios','ativo=eq.true&cidade=eq.'+encodeURIComponent(city)+'&select=id,slug,nome,cidade,bairro,perfil,fotos_no_site,fotos&order=nome.asc&limit=100')
+  ]).then(function(all){
+    var props=(Array.isArray(all[0])?all[0]:[]).filter(function(i){return norm(i.cidade_end)===norm(city)});
+    var condos=Array.isArray(all[1])?all[1]:[];
+    renderProps(props); renderCondos(condos);
+  }).catch(function(){renderProps([]);renderCondos([])});
 })();
 </script>
 </body>
