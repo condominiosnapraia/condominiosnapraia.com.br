@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'contemplado-imoveis' / 'index.html'
 CSS_PATH = ROOT / 'css' / 'carta-contemplada.css'
+DATA_PATH = ROOT / 'data' / 'cartas-publicas.json'
 BASE_URL = 'https://condominiosnapraia.com.br'
 PREFIX = 'carta-contemplada-imovel-'
 
@@ -55,11 +56,14 @@ def amount_short(value: object) -> str:
 
 
 def load_cards() -> list[dict]:
-    source = SOURCE.read_text(encoding='utf-8')
-    match = re.search(r'(?:const|let) CARTAS\s*=\s*(\[.*?\]);\s*\n', source, re.S)
-    if not match:
-        raise SystemExit('CARTAS array not found in contemplado-imoveis/index.html')
-    data = json.loads(match.group(1))
+    if DATA_PATH.exists():
+        data = json.loads(DATA_PATH.read_text(encoding='utf-8'))
+    else:
+        source = SOURCE.read_text(encoding='utf-8')
+        match = re.search(r'(?:const|let) CARTAS\s*=\s*(\[.*?\]);\s*\n', source, re.S)
+        if not match:
+            raise SystemExit('CARTAS array not found in contemplado-imoveis/index.html')
+        data = json.loads(match.group(1))
     if not isinstance(data, list) or not data:
         raise SystemExit('CARTAS array is empty')
     return data
@@ -340,7 +344,7 @@ def page_html(card: dict, url_path: str, related: list[dict], paths: dict[str, s
 def update_catalog(cards: list[dict], paths: dict[str, str]) -> None:
     path = SOURCE
     text = path.read_text(encoding='utf-8')
-    text = text.replace('const CARTAS =', 'let CARTAS =', 1)
+    text = re.sub(r'(?:const|let) CARTAS\s*=\s*\[.*?\];\s*\n', 'let CARTAS = [];\n', text, count=1, flags=re.S)
     marker = "const PER = 24;\nlet lista = [];\nlet pg = 1;"
     replacement = """const PER = 24;
 let lista = [];
@@ -360,12 +364,16 @@ function openLanding(event,url){
         if marker not in text:
             raise SystemExit('catalog marker not found')
         text = text.replace(marker, replacement, 1)
-    if 'function carregarCartasSupabase()' not in text:
+    if True:
         live_loader = """const CREDIT_SUPABASE_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const CREDIT_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+const CREDIT_FALLBACK_URL = '/data/cartas-publicas.json';
 function normalizarCartaSupabase(r){
   const adm=getAdm(r.adm_id)||{};
   return {id:String(r.id||''),cod:String(r.cod||''),adm_id:String(r.adm_id||''),credito:Number(r.credito)||0,entrada:Number(r.entrada)||0,prazo:Number(r.prazo)||0,parcela:Number(r.parcela)||0,saldo:Number(r.saldo_devedor)||0,adm:adm.nome||r.adm_id,cor:adm.cor||'#0e7490',abrev:adm.abrev||'?'};
+}
+function normalizarCartaFallback(r){
+  return {id:String(r.id||''),cod:String(r.cod||''),adm_id:String(r.adm_id||''),credito:Number(r.credito)||0,entrada:Number(r.entrada)||0,prazo:Number(r.prazo)||0,parcela:Number(r.parcela)||0,saldo:Number(r.saldo||r.saldo_devedor)||0,adm:String(r.adm||r.adm_id||''),cor:r.cor||'#0e7490',abrev:r.abrev||'?'};
 }
 async function carregarCartasSupabase(){
   try{
@@ -384,13 +392,30 @@ async function carregarCartasSupabase(){
     if(!fresh.length) throw new Error('Catálogo vazio');
     CARTAS=fresh;
     filtrar();
-  }catch(err){ console.warn('Catálogo Supabase indisponível; usando fallback inline.',err); }
+    return;
+  }catch(err){ console.warn('Supabase indisponível; tentando fallback JSON.',err); }
+  try{
+    const r=await fetch(CREDIT_FALLBACK_URL,{cache:'force-cache'});
+    if(!r.ok) throw new Error('Fallback HTTP '+r.status);
+    const fallback=await r.json();
+    const fresh=Array.isArray(fallback)?fallback.map(normalizarCartaFallback).filter(c=>c.cod&&c.credito>0):[];
+    if(!fresh.length) throw new Error('Fallback vazio');
+    CARTAS=fresh;
+    filtrar();
+  }catch(err){
+    console.warn('Catálogo indisponível; mantendo estado de carregamento.',err);
+  }
 }
 """
-        if 'function filtrar(){' not in text:
+        loader_start = text.find('const CREDIT_SUPABASE_URL')
+        loader_end = text.find('function filtrar(){', loader_start if loader_start >= 0 else 0)
+        if loader_start >= 0 and loader_end >= 0:
+            text = text[:loader_start] + live_loader + '\n' + text[loader_end:]
+        elif loader_start < 0 and loader_end >= 0:
+            text = text.replace('function filtrar(){', live_loader + '\nfunction filtrar(){', 1)
+        else:
             raise SystemExit('catalog filter function not found')
-        text = text.replace('function filtrar(){', live_loader + '\nfunction filtrar(){', 1)
-    text = text.replace('const start=()=>filtrar();', 'const start=()=>{filtrar();carregarCartasSupabase();};', 1)
+    text = text.replace('const start=()=>{filtrar();carregarCartasSupabase();};', 'const start=()=>carregarCartasSupabase();', 1)
     old_start = "function render(){\n  const start=(pg-1)*PER, pagina=lista.slice(start,start+PER);"
     old_end = "  buildPag();\n}\n\nfunction buildPag(){"
     start = text.find(old_start)
@@ -440,6 +465,8 @@ function buildPag(){"""
 
 def main() -> None:
     cards = load_cards()
+    DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
+    DATA_PATH.write_text(json.dumps(cards, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     paths = build_paths(cards)
     CSS_PATH.write_text(CSS.strip() + '\n', encoding='utf-8')
     update_catalog(cards, paths)
