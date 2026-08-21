@@ -1,4 +1,4 @@
-const FAVORITES_SCRIPT = '<script src="/js/favoritos.js?v=detail-only-20260819" defer></script>';
+const FAVORITES_SCRIPT = '<script src="/js/favoritos.js?v=accessibility-20260821" defer></script>';
 const LEGACY_REDIRECTS = {
   '/condominio-maquine-la-marina-': '/condominio-maquine-la-marina/',
   '/condominio-maquine-la-marina-/': '/condominio-maquine-la-marina/',
