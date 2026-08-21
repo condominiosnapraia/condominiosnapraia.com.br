@@ -117,9 +117,29 @@ body { font-family: 'Outfit', sans-serif; background: var(--pagebg); color: var(
   background: radial-gradient(ellipse 60% 70% at 80% 50%, rgba(26,58,74,.04), transparent);
 }
 
-.hero-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-inner { max-width: 1120px; margin: 0 auto; position: relative; z-index: 1; }
 
 .hero-desc { font-size: 14px; color: var(--text2); line-height: 1.7; margin: 14px auto 0; text-align: center; max-width: 720px; }
+.hero-guide{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:22px auto 0}
+.hero-guide-step{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid rgba(13,59,84,.12);border-radius:999px;background:rgba(255,255,255,.7);color:var(--ocean);font-size:11px;font-weight:700;box-shadow:0 4px 14px rgba(13,59,84,.04)}
+.hero-guide-num{display:grid;place-items:center;width:19px;height:19px;border-radius:50%;background:var(--gold);color:#fff;font-size:10px}
+.hero-note{margin:17px auto 0;color:var(--text3);font-size:11px;line-height:1.6}
+.filtros-head{max-width:1280px;margin:0 auto;padding:16px 24px 0;display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.filtros-title{color:var(--ocean);font-family:'Fraunces',serif;font-size:19px;font-weight:500}
+.filtros-help{color:var(--text3);font-size:11px}
+.filtros-controls{max-width:1280px;margin:0 auto;padding:10px 24px 16px;display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.main-hdr{padding:0 4px}
+.main-hdr-note{color:var(--text3);font-size:11px}
+.carta{border-color:#e2e9eb;box-shadow:0 3px 14px rgba(13,59,84,.06)}
+.carta:focus-visible{outline:3px solid rgba(14,116,144,.3);outline-offset:3px}
+.carta-top{padding:18px 18px 15px;background:linear-gradient(180deg,#fff 0%,#fbfdfd 100%)}
+.carta-credito{font-size:28px;letter-spacing:-.8px}
+.carta-body{padding:13px 15px 15px}
+.spec{border:1px solid #f0eee8}
+.carta-entrada{background:#f8fbf7;border-color:#dbeadf;color:#466052}
+.btn-ver,.btn-wpp{min-height:34px}
+@media(max-width:768px){.hero-guide{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;padding:0 2px 4px;scrollbar-width:none}.hero-guide::-webkit-scrollbar{display:none}.hero-guide-step{flex:0 0 auto}.hero-note{text-align:left}.filtros-head{padding:14px 14px 0;display:block}.filtros-help{display:block;margin-top:4px}.filtros-controls{padding:10px 14px 14px}.main-hdr{padding:0}.main-hdr-note{font-size:10px}}
+@media(max-width:400px){.hero-guide-step{font-size:10px;padding:7px 10px}.filtros-title{font-size:17px}}
 .seo-credit-content{background:#fff;border-top:1px solid var(--border);padding:58px 24px 64px}
 .seo-credit-inner{max-width:1080px;margin:0 auto;color:var(--text2)}
 .seo-credit-kicker{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dark);font-weight:700;text-align:center;margin-bottom:10px}
@@ -652,12 +672,19 @@ body{padding-top:56px}
     <div class="hero-inner">
     <span class="hero-eyebrow">Crédito contemplado para imóveis</span>
     <h1 class="hero-title">Carta de crédito contemplada para <em>comprar imóvel</em></h1>
-    <p class="hero-desc">Consulte opções de crédito para aquisição de imóveis e compare valor, entrada, parcela e prazo antes de falar com o nosso consultor.</p>
+    <p class="hero-desc">Compare cartas com crédito, entrada, parcela e prazo informados no catálogo. Abra cada opção para conferir os detalhes e fale com o consultor pelo código.</p>
+    <div class="hero-guide" aria-label="Como escolher uma carta">
+      <span class="hero-guide-step"><b class="hero-guide-num">1</b> Defina seu crédito</span>
+      <span class="hero-guide-step"><b class="hero-guide-num">2</b> Compare as condições</span>
+      <span class="hero-guide-step"><b class="hero-guide-num">3</b> Confirme pelo WhatsApp</span>
+    </div>
+    <p class="hero-note">Valores de referência do catálogo. Disponibilidade e regras devem ser confirmadas com a administradora.</p>
   </div>
 </section>
 
 <div class="filtros-wrap">
-  <div class="filtros-inner">
+  <div class="filtros-head"><strong class="filtros-title">Encontre a carta certa para o seu imóvel</strong><span class="filtros-help">Comece pelo crédito ou pela parcela que cabe no seu planejamento.</span></div>
+  <div class="filtros-controls">
     <div class="fgroup">
       <label class="flbl" for="f-vmax">Valor do crédito</label>
       <select class="fsel" id="f-vmax" onchange="filtrar()" aria-label="Vmax">
@@ -704,6 +731,7 @@ body{padding-top:56px}
 <div class="main">
   <div class="main-hdr">
     <div class="main-ttl"><strong id="ccnt">0</strong> cartas encontradas</div>
+    <div class="main-hdr-note">Cada card abre uma página própria com código e condições.</div>
   </div>
   <div class="grid" id="grid"></div>
   <div class="pag" id="pag"></div>
@@ -905,7 +933,7 @@ function render(){
   grid.innerHTML=pagina.map(c=>{
     const landing=cartaPath(c);
     return `
-    <article class="carta" role="link" tabindex="0" data-landing="${landing}" onclick="openLanding(event,this.dataset.landing)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLanding(event,this.dataset.landing)}">
+    <article class="carta" data-landing="${landing}" onclick="openLanding(event,this.dataset.landing)">
       <div class="carta-top">
         <div class="carta-adm-row">
           ${admIcoHtml(c.adm_id,28)}
