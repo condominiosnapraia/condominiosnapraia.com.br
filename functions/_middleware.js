@@ -20,16 +20,28 @@ export async function onRequest(context) {
   // Evita injetar ~10 KiB e iniciar JS extra na homepage, listagens e páginas editoriais.
   const needsFavorites = path === '/favoritos' || path === '/favoritos/' || path === '/imovel' || path === '/imovel/' || path.startsWith('/imovel/');
   const response = await next();
-  if (!needsFavorites) return response;
   const contentType = response.headers.get('content-type') || '';
   if (!contentType.toLowerCase().includes('text/html')) return response;
   if (response.status < 200 || response.status >= 300) return response;
 
-  return new HTMLRewriter()
-    .on('head', {
+  const rewriter = new HTMLRewriter()
+    .on('a.wpp-float', {
+      element(element) {
+        element.setAttribute('aria-label', 'Falar com um consultor pelo WhatsApp');
+        element.setAttribute('title', 'Falar com um consultor pelo WhatsApp');
+      },
+    })
+    .on('a.btn-wpp', {
+      element(element) {
+        element.setAttribute('aria-label', 'Falar com um consultor pelo WhatsApp sobre esta oportunidade');
+      },
+    });
+  if (needsFavorites) {
+    rewriter.on('head', {
       element(element) {
         element.append(FAVORITES_SCRIPT, { html: true });
       },
-    })
-    .transform(response);
+    });
+  }
+  return rewriter.transform(response);
 }
