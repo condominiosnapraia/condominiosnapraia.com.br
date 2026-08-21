@@ -208,6 +208,43 @@ body{padding-top:56px}
 @media(max-width:640px){.city-places{margin-top:34px;padding-top:24px}.city-place-grid{grid-template-columns:1fr 1fr;gap:10px}.city-place-card{min-height:142px;padding:15px}.city-place-name{font-size:18px}}
 @media(max-width:420px){.city-place-grid{grid-template-columns:1fr}}
 </style>
+
+<style id="city-conversion-layout">
+/* Layout editorial + conversão: a cidade inspira, o próximo passo converte. */
+.city-hero-layout{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);align-items:center;gap:34px}
+.city-hero-copy{min-width:0}
+.city-hero-copy>p{max-width:700px}
+.city-hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.city-hero-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:11px 17px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;transition:transform .2s,box-shadow .2s}
+.city-hero-actions a:hover{transform:translateY(-2px)}
+.city-hero-actions .primary{background:#25d366;color:#fff;box-shadow:0 7px 18px rgba(37,211,102,.25)}
+.city-hero-actions .secondary{background:#fff;color:var(--ocean);border:1px solid rgba(13,59,84,.14)}
+.city-hero-visual{position:relative;min-height:330px;padding:9px;border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(205,238,242,.72));box-shadow:0 18px 44px rgba(13,59,84,.14);overflow:hidden}
+.city-hero-visual:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 15%,rgba(255,255,255,.9),transparent 36%),linear-gradient(145deg,rgba(14,138,153,.08),rgba(224,179,77,.12));pointer-events:none}
+.city-hero-gallery{position:relative;z-index:1;display:grid;grid-template-columns:1.35fr .85fr;grid-template-rows:1fr 1fr;gap:9px;height:312px}
+.city-hero-gallery img{display:block;width:100%;height:100%;min-height:0;object-fit:cover;border-radius:16px;background:#dceff0;box-shadow:0 4px 14px rgba(13,59,84,.12)}
+.city-hero-gallery img:first-child{grid-row:1/3}
+.city-hero-gallery.is-empty{display:flex;align-items:center;justify-content:center}
+.city-hero-gallery.is-empty:after{content:"Fotos editoriais da cidade em atualização";color:#0e8a99;font-size:13px;font-weight:600;text-align:center;padding:20px}
+.city-intent{margin:28px 0 8px;padding:27px 0 7px;border-top:1px solid rgba(31,181,196,.18)}
+.city-intent-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:16px}
+.city-intent-eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#b07f18;font-weight:800;margin-bottom:6px}
+.city-intent h2{margin:0 0 5px;font-size:25px}
+.city-intent-head p{margin:0;color:var(--tm);font-size:14px;max-width:480px;text-align:right}
+.city-intent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.city-intent-card{position:relative;display:flex;flex-direction:column;min-height:154px;padding:18px 18px 16px;border:1px solid rgba(31,181,196,.2);border-radius:16px;background:linear-gradient(150deg,#fff,#f4fbfb);color:var(--ocean);text-decoration:none;box-shadow:0 5px 16px rgba(13,59,84,.06);transition:transform .2s,box-shadow .2s,border-color .2s}
+.city-intent-card:hover{transform:translateY(-3px);border-color:#1fb5c4;box-shadow:0 12px 24px rgba(13,59,84,.11)}
+.city-intent-card .ico{display:inline-flex;width:34px;height:34px;align-items:center;justify-content:center;border-radius:11px;background:#e8f7f8;color:#0e8a99;font-size:18px;margin-bottom:12px}
+.city-intent-card strong{font-family:'Fraunces',serif;font-size:19px;line-height:1.15;color:var(--ocean)}
+.city-intent-card span:last-child{margin-top:auto;padding-top:9px;color:#0e8a99;font-size:12.5px;font-weight:700}
+.city-intent-card.credit{background:linear-gradient(150deg,#fffdf5,#fff7df);border-color:rgba(224,179,77,.38)}
+.city-intent-card.credit .ico{background:#fff0bd;color:#9a7017}
+.city-intent-card.whatsapp{background:linear-gradient(150deg,#f5fff8,#eafff1);border-color:rgba(37,211,102,.26)}
+.city-intent-card.whatsapp .ico{background:#d8f9e4;color:#138a45}
+.city-mobile-note{margin:15px 0 0;color:#5b7585;font-size:12.5px;text-align:center}
+@media(max-width:850px){.city-hero-layout{grid-template-columns:1fr;gap:23px}.city-hero-visual{min-height:0}.city-hero-gallery{height:270px}.city-hero-copy>p{max-width:760px}.city-intent-head{display:block}.city-intent-head p{text-align:left;margin-top:5px}}
+@media(max-width:600px){.city-hero-layout{gap:18px}.city-hero-actions{display:grid;grid-template-columns:1fr 1fr}.city-hero-actions a{width:100%;padding-inline:10px;font-size:12px}.city-hero-visual{padding:6px;border-radius:18px}.city-hero-gallery{height:226px;gap:6px}.city-hero-gallery img{border-radius:12px}.city-intent{margin-top:20px;padding-top:22px}.city-intent h2{font-size:22px}.city-intent-grid{grid-template-columns:1fr;gap:9px}.city-intent-card{min-height:112px;padding:15px;display:grid;grid-template-columns:38px 1fr;column-gap:11px;align-items:center}.city-intent-card .ico{grid-row:1/3;margin:0}.city-intent-card strong{font-size:18px}.city-intent-card span:last-child{padding:2px 0 0;margin:0}.city-mobile-note{font-size:12px}}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -232,12 +269,11 @@ body{padding-top:56px}
 
 <nav class="crumb wrap"><a href="/">Início</a> › <span>Capão da Canoa</span></nav>
 
-<div class="hero"><div class="wrap">
-<h1>Capão da Canoa / RS: Condomínios, Imóveis e Investimento <em>no Litoral Norte</em></h1>
-<p>A maior cidade do Litoral Norte gaúcho e o segundo maior mercado imobiliário do Rio Grande do Sul, atrás apenas de Porto Alegre. Com 11 balneários, ampla orla e a Lagoa dos Quadros, Capão da Canoa une vida o ano inteiro, infraestrutura completa e forte potencial de valorização. Este é o guia completo da cidade.</p>
-</div><div class="wave-divider"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="#fff" d="M0,30 C240,70 480,70 720,40 C960,10 1200,10 1440,38 L1440,70 L0,70 Z"></path></svg></div></div>
+<div class="hero"><div class="wrap"><div class="city-hero-layout"><div class="city-hero-copy"><h1>Capão da Canoa / RS: Condomínios, Imóveis e Investimento <em>no Litoral Norte</em></h1><p>A maior cidade do Litoral Norte gaúcho e o segundo maior mercado imobiliário do Rio Grande do Sul, atrás apenas de Porto Alegre. Com 11 balneários, ampla orla e a Lagoa dos Quadros, Capão da Canoa une vida o ano inteiro, infraestrutura completa e forte potencial de valorização. Este é o guia completo da cidade.</p><div class="city-hero-actions"><a class="primary" href="/imoveis/?cidade=Capão da Canoa">Ver imóveis disponíveis</a><a class="secondary" href="/condominios/">Explorar condomínios</a></div></div><div class="city-hero-visual" aria-label="Fotos de Capão da Canoa"><div class="city-hero-gallery" data-city-gallery data-city-label="Capão da Canoa"><img src="/cdn-fotos/fotos/site/card-capao-da-canoa__1-1781055063587.jpg" width="1600" height="1131" loading="eager" decoding="async" fetchpriority="high" alt="Foto de Capão da Canoa para conhecer a região e avaliar oportunidades imobiliárias"><img src="/cdn-fotos/fotos/otim/fotos-site-capao-da-canoa-2-1784854317154.webp" width="1600" height="1131" loading="lazy" decoding="async" alt="Foto de Capão da Canoa para conhecer a região e avaliar oportunidades imobiliárias"><img src="/cdn-fotos/fotos/otim/fotos-site-capao-da-canoa-3-1784854318040.webp" width="1600" height="1131" loading="lazy" decoding="async" alt="Foto de Capão da Canoa para conhecer a região e avaliar oportunidades imobiliárias"></div></div></div></div><div class="wave-divider"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="#fff" d="M0,30 C240,70 480,70 720,40 C960,10 1200,10 1440,38 L1440,70 L0,70 Z"></path></svg></div></div>
 
 <article class="wrap">
+
+<section class="city-intent" aria-labelledby="city-intent-title"><div class="city-intent-head"><div><div class="city-intent-eyebrow">Próximo passo</div><h2 id="city-intent-title">Encontre sua oportunidade em Capão da Canoa</h2></div><p>Use o guia para decidir o perfil da região e fale com quem conhece imóveis, condomínios e crédito para comprar no litoral.</p></div><div class="city-intent-grid"><a class="city-intent-card" href="/imoveis/?cidade=Capão da Canoa"><span class="ico" aria-hidden="true">⌂</span><strong>Quero comprar um imóvel</strong><span>Ver casas, terrenos e apartamentos →</span></a><a class="city-intent-card" href="/condominios/"><span class="ico" aria-hidden="true">◈</span><strong>Quero conhecer condomínios</strong><span>Compare empreendimentos e estruturas →</span></a><a class="city-intent-card credit" href="/contemplado-imoveis/"><span class="ico" aria-hidden="true">R$</span><strong>Quero usar crédito contemplado</strong><span>Ver cartas disponíveis para imóveis →</span></a></div><p class="city-mobile-note">Precisa de orientação? <a href="https://wa.me/5551982868888?text=Ol%C3%A1!%20Quero%20ver%20im%C3%B3veis%20e%20condom%C3%ADnios%20em%20Cap%C3%A3o%20da%20Canoa." rel="nofollow">Fale com um consultor no WhatsApp.</a></p></section>
 
 <div class="toc">
 <h2>Neste guia</h2>
@@ -524,6 +560,48 @@ body{padding-top:56px}
         if(mapa[chave]) aplicar(el, mapa[chave]);
       });
     }).catch(function(){});
+})();
+</script>
+<script data-city-photo-config data-sb-url="https://cddgkhkzcnyzzcllgzoz.supabase.co" data-sb-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE" data-city-slug="capao-da-canoa"></script>
+
+<script>
+(function(){
+  var gallery=document.querySelector('[data-city-gallery]');
+  if(!gallery)return;
+  var configScript=document.querySelector('script[data-city-photo-config]');
+  if(!configScript)return;
+  var SB_URL=configScript.getAttribute('data-sb-url');
+  var SB_KEY=configScript.getAttribute('data-sb-key');
+  var PG=configScript.getAttribute('data-city-slug');
+  var label=gallery.getAttribute('data-city-label')||'cidade';
+  fetch(SB_URL+'/rest/v1/configuracoes?chave=eq.fotos_site&select=valor',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}})
+    .then(function(r){return r.json()})
+    .then(function(d){
+      var mapa=(d&&d[0]&&d[0].valor)||{};
+      if(typeof mapa==='string'){try{mapa=JSON.parse(mapa)}catch(_){mapa={}}}
+      function prox(u){
+        try{
+          var marker='/storage/v1/object/public/';
+          var at=String(u||'').indexOf(marker);
+          if(at>-1)return '/cdn-fotos/'+String(u).slice(at+marker.length).split('?')[0];
+        }catch(_){ }
+        return u;
+      }
+      var urls=[1,2,3].map(function(i){return prox(mapa[PG+'__'+i])}).filter(Boolean);
+      if(!urls.length){if(!gallery.children.length)gallery.classList.add('is-empty');return}
+      if(gallery.children.length===urls.length){urls.forEach(function(url,i){if(gallery.children[i].getAttribute('src')!==url)gallery.children[i].src=url;});return}
+      gallery.innerHTML='';
+      urls.forEach(function(url,i){
+        var img=document.createElement('img');
+        img.src=url;
+        img.alt='Foto de '+label+' para conhecer a região e avaliar oportunidades imobiliárias';
+        img.loading=i===0?'eager':'lazy';
+        img.decoding='async';
+        if(i===0)img.fetchPriority='high';
+        gallery.appendChild(img);
+      });
+    })
+    .catch(function(){gallery.classList.add('is-empty')});
 })();
 </script>
 </body>
