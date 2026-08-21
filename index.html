@@ -1482,7 +1482,11 @@ async function carregarDadosExtras(){
 
 async function fetchSiteData(){
   const now = Date.now();
-  if(_siteCache && (now - _siteCacheTs) < SITE_CACHE_TTL) return _siteCache;
+  if(_siteCache && (now - _siteCacheTs) < SITE_CACHE_TTL){
+    // O cache de sessão não carrega as configurações editoriais; reagenda as capas.
+    agendarConfigHome();
+    return _siteCache;
+  }
   try{
     // A homepage usa uma seleção mínima; hashes de detalhe mantêm compatibilidade
     // com o conjunto completo de metadados e infraestrutura.
@@ -3861,8 +3865,17 @@ async function renderContempladasCards(targetId){
   } else {
     ativarFotosCards();
   }
-  // reexecuta quando a view de Turismo é aberta (cards .tv-foto entram em tela)
+  // Reexpõe as rotinas para reaplicar fotos após consultas assíncronas.
   window.ativarFotosCards = ativarFotosCards;
+  window.carregarFotosSite = carregarFotosSite;
+  // A configuração de capas é independente do catálogo e pode chegar depois da primeira pintura.
+  // Antes, o fallback existia mas nunca era chamado no carregamento inicial.
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', carregarFotosSite, {once:true});
+  } else {
+    setTimeout(carregarFotosSite, 0);
+  }
+  // reexecuta quando a view de Turismo é aberta (cards .tv-foto entram em tela)
 
   // ── Auto-play do carrossel de lançamentos ──
   // Passa um card a cada intervalo; pausa quando o usuário interage (mouse/toque/arraste);
