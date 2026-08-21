@@ -307,9 +307,10 @@ function openLanding(event,url){
   if(event && event.target && event.target.closest && event.target.closest('a,button')) return;
   window.location.href = url;
 }"""
-    if marker not in text:
-        raise SystemExit('catalog marker not found')
-    text = text.replace(marker, replacement, 1)
+    if 'function cartaPath(c)' not in text:
+        if marker not in text:
+            raise SystemExit('catalog marker not found')
+        text = text.replace(marker, replacement, 1)
     old_start = "function render(){\n  const start=(pg-1)*PER, pagina=lista.slice(start,start+PER);"
     old_end = "  buildPag();\n}\n\nfunction buildPag(){"
     start = text.find(old_start)
