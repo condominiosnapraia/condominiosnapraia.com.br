@@ -863,7 +863,7 @@ function render(lista){
     const isFora=i.fora_condominio===true||i.foraCondominio===true;
     const bairroFora=isFora?String(i.bairro_end||'').trim():'';
     const f=fotos(i.fotos_no_site||i.fotos);
-    const img=f.length?'<img src="'+thumb(f[0],500)+'" srcset="'+thumb(f[0],500)+' 1x, '+thumb(f[0],900)+' 2x" alt="'+(i.titulo||'')+'" loading="lazy" decoding="async" width="400" height="300">':'🏠';
+    const img=f.length?'<img src="'+thumb(f[0],500)+'" srcset="'+thumb(f[0],500)+' 1x, '+thumb(f[0],700)+' 2x" sizes="(max-width:560px) calc(100vw - 48px), (max-width:900px) calc(50vw - 32px), 400px" alt="'+(i.titulo||'')+'" loading="lazy" decoding="async" width="400" height="300">':'🏠';
     // so entram os campos preenchidos; area privativa aparece quando existe
     const specs=[];
     const areaPriv=i.area_privativa||i.areaPrivativa;
