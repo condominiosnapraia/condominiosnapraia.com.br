@@ -193,6 +193,21 @@ body{padding-top:56px}
   <link rel="stylesheet" href="/css/portal-footer.css?v=20260821-a11y">
   <link rel="preload" as="style" href="/css/protecao-conteudo.css" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/css/protecao-conteudo.css"></noscript>
   <script src="/js/protecao-conteudo.js" defer></script>
+
+<style>
+/* Cards de bairros e áreas dentro dos guias individuais */
+.city-places{margin:42px 0 34px;padding:28px 0 4px;border-top:1px solid rgba(31,181,196,.18)}
+.city-places h2{margin-top:0}
+.city-places-intro{color:#5b7585;max-width:760px}
+.city-place-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:22px}
+.city-place-card{display:flex;flex-direction:column;gap:8px;min-height:150px;padding:18px;background:#fff;border:1px solid #dce8ea;border-radius:16px;text-decoration:none;box-shadow:0 3px 12px rgba(13,59,84,.06);transition:transform .2s,box-shadow .2s,border-color .2s}
+.city-place-card:hover{transform:translateY(-4px);border-color:#1fb5c4;box-shadow:0 12px 26px rgba(13,59,84,.12)}
+.city-place-kicker{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#096b78;font-weight:700}
+.city-place-name{font-family:'Fraunces',serif;font-size:20px;line-height:1.15;color:#0d3b54;font-weight:600}
+.city-place-desc{font-size:13px;line-height:1.5;color:#5b7585;margin-top:auto}
+@media(max-width:640px){.city-places{margin-top:34px;padding-top:24px}.city-place-grid{grid-template-columns:1fr 1fr;gap:10px}.city-place-card{min-height:142px;padding:15px}.city-place-name{font-size:18px}}
+@media(max-width:420px){.city-place-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -317,6 +332,16 @@ body{padding-top:56px}
 </div>
 
 <div class="foto" data-foto="condominios"><div class="ph"><span class="ic">🏘️</span><span class="tx">Espaço para foto: condomínio / imóvel</span></div></div>
+<section class="city-places" id="areas" aria-labelledby="areas-title">
+<h2 id="areas-title">Áreas e referências de Osório</h2>
+<p class="city-places-intro">Osório combina centro urbano, bairros planejados, praias de acesso próximo e referências naturais. Explore cada eixo do guia sem misturar a navegação de bairros com a Home Turismo.</p>
+<div class="city-place-grid">
+<a class="city-place-card" href="/osorio/#condominios"><span class="city-place-kicker">Cidade</span><span class="city-place-name">Centro e bairros planejados</span><span class="city-place-desc">Moradia permanente, comércio e novos empreendimentos.</span></a>
+<a class="city-place-card" href="/osorio/#turismo"><span class="city-place-kicker">Praia próxima</span><span class="city-place-name">Atlântida Sul</span><span class="city-place-desc">Acesso às praias e conexão com o litoral.</span></a>
+<a class="city-place-card" href="/osorio/#turismo"><span class="city-place-kicker">Praia próxima</span><span class="city-place-name">Mariápolis</span><span class="city-place-desc">Alternativa litorânea ligada ao município.</span></a>
+<a class="city-place-card" href="/morro-da-borussia/"><span class="city-place-kicker">Natureza</span><span class="city-place-name">Morro da Borússia</span><span class="city-place-desc">Mirante, trilhas, gastronomia e turismo rural.</span></a>
+</div>
+</section>
 <h2 id="investimento">Por que investir em Osório</h2>
 <p>Investir em Osório é apostar em uma cidade em plena ascensão, com fundamentos sólidos: localização estratégica na porta de entrada do litoral, crescimento populacional consistente, urbanismo planejado e um custo de entrada mais acessível que as cidades de praia. Essa combinação cria uma janela de oportunidade para quem entra agora, antes da valorização acompanhar o ritmo das vizinhas litorâneas.</p>
 <p>O perfil de investimento é variado: há quem compre terreno em bairro planejado para construir e valorizar, quem adquira imóvel para locação (impulsionada pela população universitária e pelos trabalhadores das indústrias) e quem busque a moradia permanente que também é reserva de valor. A diversificação econômica de Osório — energia, indústria, educação e turismo — confere ao mercado uma estabilidade que cidades exclusivamente turísticas não têm.</p>

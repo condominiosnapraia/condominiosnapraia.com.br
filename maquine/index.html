@@ -193,6 +193,21 @@ body{padding-top:56px}
   <link rel="stylesheet" href="/css/portal-footer.css?v=20260821-a11y">
   <link rel="preload" as="style" href="/css/protecao-conteudo.css" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/css/protecao-conteudo.css"></noscript>
   <script src="/js/protecao-conteudo.js" defer></script>
+
+<style>
+/* Cards de bairros e áreas dentro dos guias individuais */
+.city-places{margin:42px 0 34px;padding:28px 0 4px;border-top:1px solid rgba(31,181,196,.18)}
+.city-places h2{margin-top:0}
+.city-places-intro{color:#5b7585;max-width:760px}
+.city-place-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:22px}
+.city-place-card{display:flex;flex-direction:column;gap:8px;min-height:150px;padding:18px;background:#fff;border:1px solid #dce8ea;border-radius:16px;text-decoration:none;box-shadow:0 3px 12px rgba(13,59,84,.06);transition:transform .2s,box-shadow .2s,border-color .2s}
+.city-place-card:hover{transform:translateY(-4px);border-color:#1fb5c4;box-shadow:0 12px 26px rgba(13,59,84,.12)}
+.city-place-kicker{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#096b78;font-weight:700}
+.city-place-name{font-family:'Fraunces',serif;font-size:20px;line-height:1.15;color:#0d3b54;font-weight:600}
+.city-place-desc{font-size:13px;line-height:1.5;color:#5b7585;margin-top:auto}
+@media(max-width:640px){.city-places{margin-top:34px;padding-top:24px}.city-place-grid{grid-template-columns:1fr 1fr;gap:10px}.city-place-card{min-height:142px;padding:15px}.city-place-name{font-size:18px}}
+@media(max-width:420px){.city-place-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -314,6 +329,16 @@ body{padding-top:56px}
 </div>
 
 <div class="foto" data-foto="condominios"><div class="ph"><span class="ic">🏘️</span><span class="tx">Espaço para foto: condomínio / imóvel</span></div></div>
+<section class="city-places" id="areas" aria-labelledby="areas-title">
+<h2 id="areas-title">Áreas e experiências de Maquiné</h2>
+<p class="city-places-intro">Maquiné tem perfil serrano e rural. Por isso, os cards desta página destacam as localidades e experiências já descritas no guia, sem criar bairros não confirmados.</p>
+<div class="city-place-grid">
+<a class="city-place-card" href="/maquine/#localizacao"><span class="city-place-kicker">Localidade</span><span class="city-place-name">Centro de Maquiné</span><span class="city-place-desc">Base para acessar serviços, vale e atrativos naturais.</span></a>
+<a class="city-place-card" href="/maquine/#turismo"><span class="city-place-kicker">Distrito</span><span class="city-place-name">Barra do Ouro</span><span class="city-place-desc">Principal eixo de acesso às cascatas do município.</span></a>
+<a class="city-place-card" href="/cascata-do-garapia/"><span class="city-place-kicker">Ecoturismo</span><span class="city-place-name">Cascata do Garapiá</span><span class="city-place-desc">Trilha, banho e uma das experiências mais conhecidas da região.</span></a>
+<a class="city-place-card" href="/cascata-da-forqueta/"><span class="city-place-kicker">Ecoturismo</span><span class="city-place-name">Cascata da Forqueta</span><span class="city-place-desc">Paisagem mais selvagem e acesso de maior aventura.</span></a>
+</div>
+</section>
 <h2 id="investimento">Por que investir em Maquiné</h2>
 <p>Investir em Maquiné é apostar em uma tendência de longo prazo: a valorização crescente de destinos de natureza e bem-estar. À medida que as cidades de praia se adensam e se tornam mais caras, o desejo por refúgios verdes ganha força, e Maquiné é o principal representante desse perfil no litoral norte gaúcho.</p>
 <p>As oportunidades vão além da moradia. O ecoturismo aquecido cria espaço para empreendimentos de hospedagem — pousadas, campings, glampings, restaurantes de experiência — que aproveitam o fluxo crescente de visitantes em busca das cascatas e trilhas. Para o investidor de perfil mais arrojado e alinhado à sustentabilidade, Maquiné oferece um mercado de nicho com baixa concorrência e alto apelo emocional.</p>

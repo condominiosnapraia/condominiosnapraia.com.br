@@ -193,6 +193,21 @@ body{padding-top:56px}
   <link rel="stylesheet" href="/css/portal-footer.css?v=20260821-a11y">
   <link rel="preload" as="style" href="/css/protecao-conteudo.css" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/css/protecao-conteudo.css"></noscript>
   <script src="/js/protecao-conteudo.js" defer></script>
+
+<style>
+/* Cards de bairros e áreas dentro dos guias individuais */
+.city-places{margin:42px 0 34px;padding:28px 0 4px;border-top:1px solid rgba(31,181,196,.18)}
+.city-places h2{margin-top:0}
+.city-places-intro{color:#5b7585;max-width:760px}
+.city-place-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:22px}
+.city-place-card{display:flex;flex-direction:column;gap:8px;min-height:150px;padding:18px;background:#fff;border:1px solid #dce8ea;border-radius:16px;text-decoration:none;box-shadow:0 3px 12px rgba(13,59,84,.06);transition:transform .2s,box-shadow .2s,border-color .2s}
+.city-place-card:hover{transform:translateY(-4px);border-color:#1fb5c4;box-shadow:0 12px 26px rgba(13,59,84,.12)}
+.city-place-kicker{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#096b78;font-weight:700}
+.city-place-name{font-family:'Fraunces',serif;font-size:20px;line-height:1.15;color:#0d3b54;font-weight:600}
+.city-place-desc{font-size:13px;line-height:1.5;color:#5b7585;margin-top:auto}
+@media(max-width:640px){.city-places{margin-top:34px;padding-top:24px}.city-place-grid{grid-template-columns:1fr 1fr;gap:10px}.city-place-card{min-height:142px;padding:15px}.city-place-name{font-size:18px}}
+@media(max-width:420px){.city-place-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -317,19 +332,21 @@ body{padding-top:56px}
 </div>
 
 <div class="foto" data-foto="condominios"><div class="ph"><span class="ic">🏘️</span><span class="tx">Espaço para foto: condomínio / imóvel</span></div></div>
-<h2 id="bairros">Bairros e balneários de Xangri-lá</h2>
-<p>Xangri-lá tem nove balneários, cada um com seu jeito — do mais nobre e badalado ao mais tranquilo e familiar. Conhecer o perfil de cada um ajuda a escolher onde morar ou veranear. Veja os guias completos:</p>
-<ul>
-<li><a href="/xangri-la-atlantida/"><strong>Atlântida</strong></a> — o endereço mais nobre e badalado, com casas de luxo e a plataforma.</li>
-<li><a href="/xangri-la-centro/"><strong>Centro</strong></a> — praticidade, comércio e serviços, perto da praia.</li>
-<li><a href="/xangri-la-rainha-do-mar/"><strong>Rainha do Mar</strong></a> — tradicional, familiar e tranquilo.</li>
-<li><a href="/xangri-la-remanso/"><strong>Remanso</strong></a> — veraneio tradicional, bem localizado e sereno.</li>
-<li><a href="/xangri-la-marina/"><strong>Marina</strong></a> — náutica e condomínios à beira-lago.</li>
-<li><a href="/xangri-la-noiva-do-mar/"><strong>Noiva do Mar</strong></a> — calmo e familiar, longe da muvuca.</li>
-<li><a href="/xangri-la-maristela/"><strong>Maristela</strong></a> — veraneio tradicional e tranquilo.</li>
-<li><a href="/xangri-la-arpoador/"><strong>Arpoador</strong></a> — natureza e praia sossegada.</li>
-<li><a href="/xangri-la-coqueiros/"><strong>Praia dos Coqueiros</strong></a> — sossego sereno à beira-mar.</li>
-</ul>
+<section class="city-places" id="bairros" aria-labelledby="bairros-title">
+<h2 id="bairros-title">Bairros e balneários de Xangri-lá</h2>
+<p class="city-places-intro">Compare os nove balneários de Xangri-lá e encontre o perfil mais adequado para morar, veranear ou investir.</p>
+<div class="city-place-grid">
+<a class="city-place-card" href="/xangri-la-atlantida/"><span class="city-place-kicker">Balneário</span><span class="city-place-name">Atlântida</span><span class="city-place-desc">Endereço nobre, badalado e conectado à plataforma.</span></a>
+<a class="city-place-card" href="/xangri-la-centro/"><span class="city-place-kicker">Balneário</span><span class="city-place-name">Centro</span><span class="city-place-desc">Praticidade, comércio e serviços perto da praia.</span></a>
+<a class="city-place-card" href="/xangri-la-rainha-do-mar/"><span class="city-place-kicker">Balneário</span><span class="city-place-name">Rainha do Mar</span><span class="city-place-desc">Tradicional, familiar e tranquilo.</span></a>
+<a class="city-place-card" href="/xangri-la-remanso/"><span class="city-place-kicker">Balneário</span><span class="city-place-name">Remanso</span><span class="city-place-desc">Veraneio tradicional e localização serena.</span></a>
+<a class="city-place-card" href="/xangri-la-marina/"><span class="city-place-kicker">Balneário</span><span class="city-place-name">Marina</span><span class="city-place-desc">Náutica e condomínios à beira-lago.</span></a>
+<a class="city-place-card" href="/xangri-la-noiva-do-mar/"><span class="city-place-kicker">Balneário</span><span class="city-place-name">Noiva do Mar</span><span class="city-place-desc">Calmo e familiar, longe da movimentação.</span></a>
+<a class="city-place-card" href="/xangri-la-maristela/"><span class="city-place-kicker">Balneário</span><span class="city-place-name">Maristela</span><span class="city-place-desc">Veraneio tradicional e perfil tranquilo.</span></a>
+<a class="city-place-card" href="/xangri-la-arpoador/"><span class="city-place-kicker">Balneário</span><span class="city-place-name">Arpoador</span><span class="city-place-desc">Natureza e praia mais sossegada.</span></a>
+<a class="city-place-card" href="/xangri-la-coqueiros/"><span class="city-place-kicker">Balneário</span><span class="city-place-name">Praia dos Coqueiros</span><span class="city-place-desc">Sossego sereno à beira-mar.</span></a>
+</div>
+</section>
 <h2 id="investimento">Por que investir em Xangri-lá</h2>
 <p>Investir em Xangri-lá significa posicionar capital no endereço mais valorizado do Litoral Norte gaúcho. Os fundamentos são sólidos: valorização anual consistente, demanda qualificada crescente, oferta limitada de áreas nobres e um mercado de locação por temporada aquecido nos meses de verão, que oferece renda complementar atrativa.</p>
 <p>O perfil do investidor em Xangri-lá é variado: há quem compre terreno em condomínio para construir e revender valorizado, quem adquira imóvel pronto para locação de temporada e quem busque a segunda residência que também funciona como reserva de valor. Em todos os casos, a combinação de localização premium, segurança e infraestrutura sustenta tanto o uso quanto o retorno financeiro.</p>
