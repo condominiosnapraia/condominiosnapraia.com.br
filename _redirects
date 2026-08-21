@@ -1,4 +1,17 @@
 # Redirects estáticos gerados a partir de public.imoveis (codigo -> slug).
+# Rota duplicada: consolidar snapshots e aliases na URL canónica.
+/home-h1-seo / 301
+/home-h1-seo/ / 301
+/home-nova-ordem / 301
+/home-nova-ordem/ / 301
+/home-popup-profissional / 301
+/home-popup-profissional/ / 301
+/condominios-index /condominios/ 301
+/condominios-index/ /condominios/ 301
+/condominios-index.html /condominios/ 301
+/exclusividade /exclusividade-imobiliaria/ 301
+/exclusividade/ /exclusividade-imobiliaria/ 301
+
 # Rota duplicada: consolidar o conteúdo de turismo na URL canónica.
 /allure-beach-condo-xangri-la/turismo/ /o-que-fazer-em-xangri-la/ 301
 
