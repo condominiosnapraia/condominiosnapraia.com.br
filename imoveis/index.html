@@ -4,25 +4,35 @@
 <script>(function(){var P='https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/',F=window.fetch;window.fetch=function(u,o){var s=typeof u==='string'?u:(u&&u.url)||'';var p=F.call(window,u,o);if(s.indexOf('.supabase.co/rest/v1/')===-1)return p;return p.then(function(r){var ct=r.headers.get('content-type')||'';if(ct.indexOf('json')===-1)return r;return r.text().then(function(t){return new Response(t.split(P).join(location.origin+'/cdn-fotos/'),{status:r.status,statusText:r.statusText,headers:r.headers})})})};})();</script>
 <!-- Google tag (gtag.js) -->
 <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
-<!-- Google Analytics (GA4) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK"></script>
+<!-- Google Analytics (GA4): fila imediata e carregamento em idle para não bloquear o primeiro viewport. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-25TRZRKFLK');
   gtag('config', 'AW-16759565872');
-  // rastrear cliques no WhatsApp como evento (para medir conversões)
+  (function(){
+    function carregarAnalytics(){
+      if(window.__portalAnalyticsLoaded) return;
+      window.__portalAnalyticsLoaded = true;
+      var s=document.createElement('script');
+      s.async=true;
+      s.src='https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK';
+      document.head.appendChild(s);
+    }
+    if('requestIdleCallback' in window) requestIdleCallback(carregarAnalytics,{timeout:2500});
+    else setTimeout(carregarAnalytics,1800);
+  })();
   document.addEventListener('click', function(e){
-    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
+    var a=e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
     if(a){
-      try{ gtag('event', 'clique_whatsapp', {event_category:'contato', event_label: location.pathname}); }catch(_){}
-      if((a.href||'').indexOf('5551982868888') > -1){
-        try{ gtag('event','conversion',{'send_to':'AW-16759565872/MiTlCKf559EcELDcyrc-'}); }catch(_){}
-        try{ if(typeof fbq==='function') fbq('track','Contact'); }catch(_){}
+      try{gtag('event','clique_whatsapp',{event_category:'contato',event_label:location.pathname});}catch(_){}
+      if((a.href||'').indexOf('5551982868888')>-1){
+        try{gtag('event','conversion',{'send_to':'AW-16759565872/MiTlCKf559EcELDcyrc-'});}catch(_){}
+        try{if(typeof fbq==='function')fbq('track','Contact');}catch(_){}
       }
     }
-  }, true);
+  },true);
 </script>
 <!-- Fim Google Analytics -->
 
@@ -48,7 +58,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://cddgkhkzcnyzzcllgzoz.supabase.co" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Outfit:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Outfit:wght@300;400;500;600;700&display=swap"></noscript>
 <style>
 :root{--ocean:#0d3b54;--om:#0e8a99;--ol:#1fb5c4;--gold:#e0b34d;--gold-d:#c79a3a;--sl:#e8f7f8;--text:#0d3b54;--tm:#5b7585;--areia:#f7f1e8;--espuma:#e8f7f8;--azulclaro:#cdeef2;--border:rgba(31,181,196,.18);--white:#fff}
 *{margin:0;padding:0;box-sizing:border-box}
