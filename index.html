@@ -568,6 +568,15 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #view-home .ci-slide img{object-fit:contain!important;object-position:center!important;transform:none!important;background:#eef3f5}
 #view-home .icimg,
 #view-home .ci{background:#eef3f5!important}
+#view-home .icimg.has-photo::before,
+#view-home .ci.has-photo::before{content:"";position:absolute;inset:-14px;background-image:var(--card-photo);background-size:cover;background-position:center;filter:blur(14px) saturate(.82);opacity:.28;transform:scale(1.08);z-index:0;pointer-events:none}
+#view-home .icimg.has-photo>img,
+#view-home .ci.has-photo>img,
+#view-home .ci.has-photo>.ci-carousel{position:relative;z-index:1}
+#view-home .icimg.has-photo>.icst,
+#view-home .icimg.has-photo>.iccod,
+#view-home .ci.has-photo>.cbadge,
+#view-home .ci.has-photo>.cibadge{z-index:3}
 #view-home .icard:hover .icimg img,
 #view-home .ccard:hover .ci img,
 #view-home .ccard:hover .ci-slide.ativa{transform:none!important}
@@ -2887,6 +2896,12 @@ async function applyTurismoConfig(t){
 }
 
 
+// Preenche as laterais do media box sem cortar a foto principal.
+function homePhotoBackdrop(raw){
+  const url=fotoVariante(raw,640,'webp');
+  return url?` style="--card-photo:url('${escapeAttr(url)}')"`:'';
+}
+
 // ── BUILD COND CARD ──
 function buildCondCard(c){
   const loc=c.localizacao||c.cidade||'';
@@ -2909,8 +2924,9 @@ function buildCondCard(c){
   }
   const imd=(c.imoveis||[]).filter(i=>i.status==='Disponível');
   const condUrl=c.slug?('/condominio/?id='+encodeURIComponent(c.slug)):('/condominio/?id='+encodeURIComponent(c.id));
+  const fotoCss=fotos.length?homePhotoBackdrop(fotos[0]):'';
   return`<a class="ccard vis" href="${condUrl}" style="text-decoration:none;color:inherit;display:block">
-    <div class="ci"${!fotos.length?` data-home-cond-img="${escapeAttr(c.id)}"`:''}>${imgH}<div class="cbadge">${loc}</div>${imd.length?`<div class="cibadge">${imd.length} ${imd.length>1?'imóveis':'imóvel'}</div>`:''}</div>
+    <div class="ci${fotos.length?' has-photo':''}"${fotoCss}${!fotos.length?` data-home-cond-img="${escapeAttr(c.id)}"`:''}>${imgH}<div class="cbadge">${loc}</div>${imd.length?`<div class="cibadge">${imd.length} ${imd.length>1?'imóveis':'imóvel'}</div>`:''}</div>
     <div class="cbody">
       <div class="cname">${c.nome}</div>
       <div class="cloc">📍 ${loc}</div>
@@ -2952,6 +2968,7 @@ window.iniciarCarrosseisCards=iniciarCarrosseisCards;
 // ── BUILD IMOV CARD ──
 function buildImovCard(i){
   const foto=i.fotos&&i.fotos.find(f=>f&&(f.startsWith('data:')||f.startsWith('http')));
+  const fotoCss=foto?homePhotoBackdrop(foto):'';
   const brl=v=>{try{return Number(String(v||0).replace(/\D/g,'')).toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:0});}catch{return'Consulte';}};
   const condo=i._c?`${i._c.nome} · ${i._c.localizacao||i._c.cidade||''}`:(i.condominioNome|| [i.bairro_end||i.bairroEnd, i.cidade_end||i.cidadeEnd].filter(Boolean).join(' · ') || '');
   const sc=i.status==='Disponível'?'stv':i.status==='Reservado'?'str':'stv';
@@ -2964,7 +2981,7 @@ function buildImovCard(i){
     i.vagas?`🚗 ${i.vagas} ${i.vagas==1?'vaga':'vagas'}`:null
   ].filter(Boolean).map(s=>`<span class="icspec">${s}</span>`).join('');
   return`<a class="icard vis" href="/imovel?id=${encodeURIComponent(i.codigo||i.slug||i.id)}" style="text-decoration:none;color:inherit">
-    <div class="icimg"${!foto?` data-home-imov-img="${escapeAttr(i.id)}"`:''}>${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
+    <div class="icimg${foto?' has-photo':''}"${fotoCss}${!foto?` data-home-imov-img="${escapeAttr(i.id)}"`:''}>${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
     <div class="icbody">
       <div class="ictipo">${i.tipo||'Imóvel'}</div>
       <div class="ictit">${i.titulo||'—'}</div>
