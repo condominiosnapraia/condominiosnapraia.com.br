@@ -24,12 +24,18 @@ URLS = {
     "condominios": f"{ROOT}/condominios/",
     "credito_contemplado": f"{ROOT}/contemplado-imoveis/",
     "favoritos": f"{ROOT}/favoritos/",
+    "turismo": f"{ROOT}/turismo/",
+    "morar_lagoa": f"{ROOT}/viver-na-lagoa/",
+    "morar_mar": f"{ROOT}/viver-no-mar/",
+    "morar_cidade": f"{ROOT}/viver-na-cidade/",
 }
 SITEMAPS = {
     "sitemap-index.xml": f"{ROOT}/sitemap-index.xml",
     "sitemap.xml": f"{ROOT}/sitemap.xml",
     "sitemap-condominios.xml": f"{ROOT}/sitemap-condominios.xml",
     "sitemap-imoveis.xml": f"{ROOT}/sitemap-imoveis.xml",
+    "sitemap-cartas.xml": f"{ROOT}/sitemap-cartas.xml",
+    "sitemap-lancamentos.xml": f"{ROOT}/sitemap-lancamentos.xml",
 }
 ASSETS = {
     "favicon_svg": f"{ROOT}/img/favicon.svg",
