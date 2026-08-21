@@ -767,7 +767,7 @@ async function carregar(){
   // filtro de tipo FIXO: Sobrado, Casa Térrea, Apartamento, Lote
   // "Casa Térrea" também reconhece imóveis antigos salvos como "Casa" e "Terreno" antigo vira "Lote"
   const ft=document.getElementById('f-tipo');
-  ['Casa','Sobrado','Lote','Terreno','Apartamento'].forEach(t=>ft.innerHTML+='<option value="'+t+'">'+t+'</option>');
+  ['Casa','Sobrado','Lote','Terreno','Apartamento','Loja','Sala Comercial'].forEach(t=>ft.innerHTML+='<option value="'+t+'">'+t+'</option>');
   // ler query params (?cidade=&tipo=&fora=1&cond=em)
   const q=new URLSearchParams(location.search);
   MANSOES_MODE=q.get('mansoes')==='1';

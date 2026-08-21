@@ -500,6 +500,23 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #view-home > #sec-blog-preview.sec-onda::before{top:-36px!important;height:72px!important}
 }
 </style>
+<style id="home-vertical-commercial-sections">
+#view-home > .home-stock-section[hidden]{display:none!important}
+#view-home > #sec-condominios-verticais{background:#f3f8fa!important;--wave-from:#eef3ec}
+#view-home > #sec-imoveis-comerciais{background:#fffaf2!important;--wave-from:#eef8f7}
+#view-home > #sec-terrenos{--wave-from:#fffaf2}
+#view-home > #viver-intro-sec{--wave-from:#f3f8fa}
+#view-home > #sec-condominios-verticais .cgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+#view-home > #sec-imoveis-comerciais .igrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:900px){
+  #view-home > #sec-condominios-verticais .cgrid,
+  #view-home > #sec-imoveis-comerciais .igrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  #view-home > #sec-condominios-verticais .cgrid,
+  #view-home > #sec-imoveis-comerciais .igrid{grid-template-columns:1fr}
+}
+</style>
   <link rel="preload" as="style" href="/css/protecao-conteudo.css" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="/css/protecao-conteudo.css"></noscript>
   <script src="/js/protecao-conteudo.js" defer></script>
 
@@ -750,6 +767,20 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 </div>
 </div>
 </section>
+<!-- ══ LOJAS E SALAS COMERCIAIS ══ -->
+<section class="dest-section sec-onda home-stock-section" id="sec-imoveis-comerciais" hidden>
+  <div class="dest-inner">
+    <div class="dest-header">
+      <div>
+        <p class="eyebrow">Imóveis Comerciais</p>
+        <h2 class="sectit sectit-stacked"><span class="sectit-main">Lojas e Salas Comerciais</span><span class="sectit-sub">Oportunidades para investir e empreender</span></h2>
+      </div>
+      <a class="dest-ver-btn" href="/imoveis/?tipo=Loja">Ver todos</a>
+    </div>
+    <div class="igrid" id="home-comercial-grid"></div>
+    <div class="dest-ver-all"><a class="dest-btn-all cta-section-all" href="/imoveis/?tipo=Loja">Ver todas as oportunidades comerciais <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></div>
+  </div>
+</section>
 <!-- ══ DESTAQUES TERRENOS ══ -->
 <section class="dest-section sec-onda" id="sec-terrenos">
 <div class="dest-inner">
@@ -839,6 +870,20 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 </a>
 </div>
 </div>
+</section>
+<!-- ══ CONDOMÍNIOS VERTICAIS ══ -->
+<section class="dest-section sec-onda home-stock-section" id="sec-condominios-verticais" hidden>
+  <div class="dest-inner">
+    <div class="dest-header">
+      <div>
+        <p class="eyebrow">Condomínios Verticais</p>
+        <h2 class="sectit sectit-stacked"><span class="sectit-main">Edifícios e Apartamentos</span><span class="sectit-sub">Condomínios verticais em destaque</span></h2>
+      </div>
+      <a class="dest-ver-btn" href="/condominios/">Ver todos</a>
+    </div>
+    <div class="cgrid" id="home-cond-vertical-grid"></div>
+    <div class="dest-ver-all"><a class="dest-btn-all cta-section-all" href="/condominios/">Ver todos os condomínios verticais <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></div>
+  </div>
 </section>
 <!-- ══ CABEÇALHO: Lagoa ou Mar? ══ -->
 <section class="viver-intro sec-onda" id="viver-intro-sec">
@@ -1474,7 +1519,7 @@ function ativarImagensAdidas(root = document) {
 }
 
 const HOME_COND_SELECT_MIN = [
-  'id','slug','nome','cidade','descricao','amenidades','ativo'
+  'id','slug','nome','cidade','descricao','amenidades','ativo','orientacao','perfil','fotos_no_site'
 ].join(',');
 
 const HOME_IMOV_SELECT_MIN = [
@@ -3044,7 +3089,25 @@ function buildHomeDestaques(){
     const terrenosCondominio = allImov.filter(i=>!ehFora(i) && tipoCategoria(i)==='terreno');
     const casasFora = allImov.filter(i=>ehFora(i) && tipoCategoria(i)==='casa');
     const terrenosFora = allImov.filter(i=>ehFora(i) && tipoCategoria(i)==='terreno');
+    const comerciais = allImov.filter(commercialType).slice(0,6);
+    renderHomeGrid('home-comercial-grid', comerciais, '🏬', 'Cadastre lojas e salas comerciais no CRM para exibi-las aqui');
+    toggleHomeStockSection('sec-imoveis-comerciais', comerciais.length > 0);
     const destTerreno = _siteCache?.destTerreno||[];
+    const toggleHomeStockSection = (id, visible) => {
+      const section = document.getElementById(id);
+      if(section) section.hidden = !visible;
+    };
+    const isVerticalCondo = c => /vertical/i.test(String(c.orientacao||'')) || /vertical/i.test(String(c.perfil||''));
+    const commercialType = i => {
+      const value = String(i.tipo||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      return /loja|sala comercial|sala|ponto comercial|conjunto comercial/.test(value);
+    };
+    const verticalCondos = condos.filter(isVerticalCondo).sort(ordenarDestaques).slice(0,6);
+    const verticalGrid = document.getElementById('home-cond-vertical-grid');
+    if(verticalGrid){
+      verticalGrid.innerHTML = verticalCondos.length ? verticalCondos.map(buildCondCard).join('') : '';
+      toggleHomeStockSection('sec-condominios-verticais', verticalCondos.length > 0);
+    }
 
     renderHomeGrid('home-imov-grid', pickDestaques(casasCondominio, destImov, 8), '🏠', 'Cadastre casas e sobrados em condomínio no CRM para exibi-los aqui');
     renderHomeGrid('home-apartamento-grid', apartamentos.slice(0,8), '🏢', 'Nenhum apartamento publicado disponível no momento');
