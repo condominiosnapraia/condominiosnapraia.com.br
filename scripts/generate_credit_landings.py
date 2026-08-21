@@ -147,9 +147,9 @@ def page_html(card: dict, url_path: str, related: list[dict], paths: dict[str, s
     url = BASE_URL + url_path
     title = f'Carta contemplada {code} | {amount_short(card.get("credito"))} | Portal Meu Litoral'
     description = (
-        f"Carta de crédito contemplada {adm}, código {code}, com crédito de {credit}, "
-        f"entrada informada de {entry} e {term} parcelas de {installment}. "
-        'Consulte a disponibilidade e as condições para usar em seu imóvel.'
+        f"Carta contemplada {code}: crédito de {credit}, entrada de {entry}, "
+        f"parcela de {installment} em {term}x. "
+        'Consulte disponibilidade.'
     )
     faq_items = [
         ('A carta de crédito contemplada pode ser usada para comprar imóvel?',
