@@ -1004,7 +1004,7 @@ function render(){
         <div class="carta-entrada">Entrada: <strong>${brl(c.entrada)}</strong></div>
         <div class="carta-footer">
           <a class="btn-ver" href="${landing}" style="text-decoration:none" onclick="event.stopPropagation()">Ver carta</a>
-          <a class="btn-wpp" href="https://wa.me/5551982868888?text=${encodeURIComponent('Olá! Tenho interesse na carta '+getAdm(c.adm_id).nome+' cód '+c.cod+' de '+brl(c.credito)+' com parcela de '+brl(c.parcela)+'. Pode me dar mais informações?')}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${wppSvg} WhatsApp</a>
+          <a class="btn-wpp" aria-label="Falar no WhatsApp sobre esta carta de crédito" href="https://wa.me/5551982868888?text=${encodeURIComponent('Olá! Tenho interesse na carta '+getAdm(c.adm_id).nome+' cód '+c.cod+' de '+brl(c.credito)+' com parcela de '+brl(c.parcela)+'. Pode me dar mais informações?')}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${wppSvg} WhatsApp</a>
         </div>
       </div>
     </article>`;
