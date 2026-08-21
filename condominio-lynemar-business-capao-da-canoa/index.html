@@ -1127,7 +1127,7 @@ function urlPublicaCondominio(c) {
 }
 
 const params = new URLSearchParams(location.search);
-const condId = params.get('id');
+const condId = params.get('id') || 'condominio-lynemar-business-capao-da-canoa';
 let cond = null;
 let galIdx = 0;
 let galModalIdx = 1;
