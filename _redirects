@@ -1,3 +1,7 @@
+/condominio-thera-santorini- /condominio-thera-santorini/ 301
+/condominio-thera-santorini-/ /condominio-thera-santorini/ 301
+/condominio-livin-resort-atlantida- /condominio-livin-resort-atlantida/ 301
+/condominio-livin-resort-atlantida-/ /condominio-livin-resort-atlantida/ 301
 # Redirects estáticos gerados a partir de public.imoveis (codigo -> slug).
 # Rota duplicada: consolidar snapshots e aliases na URL canónica.
 /home-h1-seo / 301
@@ -30,8 +34,6 @@
 
 # Query strings não entram aqui: o Cloudflare Pages _redirects não suporta parâmetros.
 # Empreendimentos não confirmados pelo proprietário não permanecem indexáveis no portal.
-/ocean-side-xangri-la /condominios/ 301
-/ocean-side-xangri-la/ /condominios/ 301
 /atlantida /condominios/ 301
 /LINK_DE_AVALIACAO /contato/ 301
 /imovel-XAN-096 /imovel/lote-beira-lago-a-venda-no-condominio-isla-xangri-la-xan-096/ 301
