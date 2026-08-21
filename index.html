@@ -504,8 +504,8 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #view-home > .home-stock-section[hidden]{display:none!important}
 #view-home > #sec-condominios-verticais{background:#f3f8fa!important;--wave-from:#eef3ec}
 #view-home > #sec-imoveis-comerciais{background:#fffaf2!important;--wave-from:#eef8f7}
-#view-home > #sec-terrenos{--wave-from:#fffaf2}
-#view-home > #viver-intro-sec{--wave-from:#f3f8fa}
+#view-home > #sec-terrenos{background:#fbfaf7!important;--wave-from:#fffaf2}
+#view-home > #viver-intro-sec{background:#fff!important;--wave-from:#f3f8fa}
 #view-home > #sec-condominios-verticais .cgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 #view-home > #sec-imoveis-comerciais .igrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:900px){
@@ -1411,8 +1411,15 @@ try{
   const _cached = sessionStorage.getItem('_siteCacheV2');
   const _cachedTs = parseInt(sessionStorage.getItem('_siteCacheTsV2')||'0');
   if(_cached && (Date.now()-_cachedTs) < SITE_CACHE_TTL){
-    _siteCache = JSON.parse(_cached);
-    _siteCacheTs = _cachedTs;
+    const _parsed = JSON.parse(_cached);
+    const _hasVerticalFields = Array.isArray(_parsed?.condominios) && _parsed.condominios.every(c => Object.prototype.hasOwnProperty.call(c,'orientacao') && Object.prototype.hasOwnProperty.call(c,'perfil'));
+    if(_hasVerticalFields){
+      _siteCache = _parsed;
+      _siteCacheTs = _cachedTs;
+    }else{
+      sessionStorage.removeItem('_siteCacheV2');
+      sessionStorage.removeItem('_siteCacheTsV2');
+    }
   }
 }catch(e){}
 
@@ -3089,9 +3096,6 @@ function buildHomeDestaques(){
     const terrenosCondominio = allImov.filter(i=>!ehFora(i) && tipoCategoria(i)==='terreno');
     const casasFora = allImov.filter(i=>ehFora(i) && tipoCategoria(i)==='casa');
     const terrenosFora = allImov.filter(i=>ehFora(i) && tipoCategoria(i)==='terreno');
-    const comerciais = allImov.filter(commercialType).slice(0,6);
-    renderHomeGrid('home-comercial-grid', comerciais, '🏬', 'Cadastre lojas e salas comerciais no CRM para exibi-las aqui');
-    toggleHomeStockSection('sec-imoveis-comerciais', comerciais.length > 0);
     const destTerreno = _siteCache?.destTerreno||[];
     const toggleHomeStockSection = (id, visible) => {
       const section = document.getElementById(id);
@@ -3102,6 +3106,9 @@ function buildHomeDestaques(){
       const value = String(i.tipo||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
       return /loja|sala comercial|sala|ponto comercial|conjunto comercial/.test(value);
     };
+    const comerciais = allImov.filter(commercialType).slice(0,6);
+    renderHomeGrid('home-comercial-grid', comerciais, '🏬', 'Cadastre lojas e salas comerciais no CRM para exibi-las aqui');
+    toggleHomeStockSection('sec-imoveis-comerciais', comerciais.length > 0);
     const verticalCondos = condos.filter(isVerticalCondo).sort(ordenarDestaques).slice(0,6);
     const verticalGrid = document.getElementById('home-cond-vertical-grid');
     if(verticalGrid){
