@@ -8,7 +8,8 @@ const SITE = 'https://condominiosnapraia.com.br';
 const PUBLIC_SLUG_ALIASES = new Map([
   ['condominio-livin-resort-atlantida-', 'condominio-livin-resort-atlantida'],
   ['condominio-thera-santorini-', 'condominio-thera-santorini'],
-  ['condominio-xangri-la-villas-resort-', 'condominio-xangri-la-villas-resort']
+  ['condominio-xangri-la-villas-resort-', 'condominio-xangri-la-villas-resort'],
+  ['condominio-maquine-la-marina-', 'condominio-maquine-la-marina']
 ]);
 
 function esc(s) {
