@@ -4,15 +4,26 @@
 <script>(function(){var P='https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/',F=window.fetch;window.fetch=function(u,o){var s=typeof u==='string'?u:(u&&u.url)||'';var p=F.call(window,u,o);if(s.indexOf('.supabase.co/rest/v1/')===-1)return p;return p.then(function(r){var ct=r.headers.get('content-type')||'';if(ct.indexOf('json')===-1)return r;return r.text().then(function(t){return new Response(t.split(P).join(location.origin+'/cdn-fotos/'),{status:r.status,statusText:r.statusText,headers:r.headers})})})};})();</script>
 <!-- Google tag (gtag.js) -->
 <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
-<!-- Google Analytics (GA4) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK"></script>
+<!-- Google Analytics (GA4): a fila é criada imediatamente; o script de terceiros é carregado em idle. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-25TRZRKFLK');
   gtag('config', 'AW-16759565872');
-  // rastrear cliques no WhatsApp como evento (para medir conversões)
+  (function(){
+    function carregarAnalytics(){
+      if(window.__portalAnalyticsLoaded) return;
+      window.__portalAnalyticsLoaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-25TRZRKFLK';
+      document.head.appendChild(s);
+    }
+    if('requestIdleCallback' in window) requestIdleCallback(carregarAnalytics, {timeout:2500});
+    else setTimeout(carregarAnalytics, 1800);
+  })();
+  // Rastrear cliques no WhatsApp sem bloquear a primeira pintura.
   document.addEventListener('click', function(e){
     var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"], a[href*="api.whatsapp"]');
     if(a){
@@ -32,7 +43,9 @@
 <title>Carta de Crédito Contemplada para Imóvel | Portal Meu Litoral</title>
 <meta name="description" content="Encontre cartas de crédito contempladas para comprar imóvel, com filtros por crédito, entrada, parcela e prazo. Consulte as opções e confirme as regras.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Outfit:wght@300;400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Outfit:wght@300;400;500;600;700;800&display=swap"></noscript>
 <style>
 :root {
   --ocean:#0d3b54;
