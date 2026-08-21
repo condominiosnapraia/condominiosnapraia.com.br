@@ -10,7 +10,7 @@ assert all('sec-onda' in (section.get('class') or []) for section in sections), 
 css = '\n'.join(style.get_text() for style in soup.find_all('style'))
 assert 'viv-sec::before{content:""!important;display:block!important}' in css, 'Ondas editoriais continuam desativadas'
 
-ids = ['lch-sec-sec','sec-imoveis','sec-apartamentos','sec-fora-cond','sec-terrenos','sec-terrenos-fora','qfilter2','sec-condominios','viver-intro-sec','qfilter','pcred-sec-sec','guias-cidades','guias-decisao','sec-blog-preview']
+ids = ['lch-sec-sec','sec-imoveis','sec-apartamentos','sec-fora-cond','sec-terrenos','sec-terrenos-fora','qfilter2','sec-condominios','viver-intro-sec','pcred-sec-sec','guias-cidades','guias-decisao','sec-blog-preview']
 ids += ['viver-lagoa','viver-mar','viver-cidade']
 
 for sid in ids:
