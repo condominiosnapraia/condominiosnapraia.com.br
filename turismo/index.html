@@ -262,16 +262,30 @@ body{margin:0;font-family:'Outfit',sans-serif;color:#2b3d48;background:#fff;padd
 .ttit{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,40px);color:var(--ocean);font-weight:400;margin:0}
 .ttit em{color:var(--om);font-style:italic}
 .tsub{color:var(--tm);margin:10px 0 0;font-size:15px}
-/* Cidades */
-.tcid-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:38px}
-.tcid-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;text-decoration:none;box-shadow:0 3px 14px rgba(13,59,84,.05);transition:transform .22s,box-shadow .22s;text-align:left;display:flex;flex-direction:column}
-.tcid-card:hover{transform:translateY(-5px);box-shadow:0 16px 34px rgba(13,59,84,.14)}
-.tcid-top{height:120px;position:relative;display:flex;align-items:flex-end;padding:14px}
-.tcid-tag{background:rgba(255,255,255,.92);color:var(--ocean);font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 11px;border-radius:100px}
-.tcid-body{padding:18px 20px 22px;display:flex;flex-direction:column;gap:7px}
-.tcid-nome{font-family:'Fraunces',serif;font-size:21px;color:var(--ocean);font-weight:600;margin:0}
-.tcid-desc{font-size:13.5px;color:var(--tm);line-height:1.5;margin:0;flex:1}
-.tcid-link{color:var(--om);font-weight:700;font-size:13.5px;margin-top:6px}
+/* Cidades — cards editoriais com capa, contexto e galeria */
+.tcid-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:38px}
+.tcid-card{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;text-decoration:none;box-shadow:0 5px 18px rgba(13,59,84,.07);transition:transform .22s,box-shadow .22s,border-color .22s;text-align:left;display:flex;flex-direction:column;min-width:0}
+.tcid-card:hover{transform:translateY(-5px);box-shadow:0 18px 38px rgba(13,59,84,.15);border-color:rgba(31,181,196,.45)}
+.tcid-top{height:232px;position:relative;display:flex;align-items:flex-end;padding:18px;overflow:hidden;background-size:cover;background-position:center}
+.tcid-top::after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(180deg,transparent,rgba(13,59,84,.76));pointer-events:none}
+.tcid-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s;display:block}
+.tcid-top.has-photo .tcid-cover{opacity:1}
+.tcid-tag{position:relative;z-index:2;background:rgba(255,255,255,.94);color:var(--ocean);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 13px;border-radius:100px;box-shadow:0 3px 12px rgba(13,59,84,.13)}
+.tcid-body{padding:22px 22px 24px;display:flex;flex-direction:column;gap:9px}
+.tcid-kicker{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--om);font-weight:700}
+.tcid-nome{font-family:'Fraunces',serif;font-size:27px;color:var(--ocean);font-weight:600;line-height:1.1;margin:0}
+.tcid-desc{font-size:14.5px;color:var(--tm);line-height:1.6;margin:0;min-height:68px}
+.tcid-place{display:flex;align-items:flex-start;gap:10px;margin-top:5px;padding:12px 13px;background:#f2fafb;border:1px solid rgba(31,181,196,.16);border-radius:12px}
+.tcid-place-ico{font-size:21px;line-height:1.1}
+.tcid-place-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+.tcid-place-copy strong{font-size:13px;color:var(--ocean);line-height:1.25}
+.tcid-place-copy span{font-size:12px;color:var(--tm);line-height:1.4}
+.tcid-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.tcid-gallery[hidden]{display:none}
+.tcid-gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block;background:#eaf5f6}
+.tcid-link{color:var(--om);font-weight:700;font-size:14px;margin-top:7px}
+@media(max-width:900px){.tcid-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.tcid-grid{grid-template-columns:1fr;gap:18px}.tcid-top{height:225px;padding:16px}.tcid-body{padding:20px 18px 22px}.tcid-nome{font-size:26px}.tcid-desc{min-height:0}.tcid-gallery{gap:7px}}
 /* Onde ir */
 .tonde-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:38px}
 .tonde-card{display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:26px 22px;background:#fff;border:1px solid var(--border);border-radius:16px;text-decoration:none;box-shadow:0 3px 14px rgba(13,59,84,.05);transition:transform .2s,box-shadow .2s,border-color .2s;text-align:left}
@@ -333,25 +347,68 @@ body{margin:0;font-family:'Outfit',sans-serif;color:#2b3d48;background:#fff;padd
     <p class="tsub">Um pouco de cada destino do Litoral Norte: praias, natureza, experiências e oportunidades para morar ou investir.</p>
     <div class="tcid-grid">
       <a class="tcid-card" href="/xangri-la/">
-        <div class="tcid-top" data-slot="turismo-xangri" style="background:linear-gradient(135deg,#0c4a6e,#0e7490)"><span class="tcid-tag">Capital dos Condomínios</span></div>
-        <div class="tcid-body"><h3 class="tcid-nome">Xangri-lá</h3><p class="tcid-desc">A cidade mais valorizada do litoral, com as praias e condomínios de maior padrão.</p><span class="tcid-link">Ver guia →</span></div>
+        <div class="tcid-top" data-slot="turismo-xangri" style="background:linear-gradient(135deg,#0c4a6e,#0e7490)">
+          <img class="tcid-cover" alt="Praia e paisagem de Xangri-lá" width="1200" height="675" loading="lazy" decoding="async">
+          <span class="tcid-tag">Capital dos Condomínios</span>
+        </div>
+        <div class="tcid-body">
+          <div class="tcid-kicker">Guia completo da cidade</div>
+          <h3 class="tcid-nome">Xangri-lá</h3>
+          <p class="tcid-desc">Praias, balneários e condomínios de alto padrão para quem busca exclusividade, lazer e vida à beira-mar.</p>
+          <div class="tcid-place"><span class="tcid-place-ico">🏖️</span><div class="tcid-place-copy"><strong>Atlântida e seus balneários</strong><span>Praia, plataforma, gastronomia e experiências no litoral.</span></div></div>
+          <div class="tcid-gallery" data-gallery="turismo-xangri" hidden aria-label="Galeria de Xangri-lá"></div>
+          <span class="tcid-link">Ver guia de Xangri-lá →</span>
+        </div>
       </a>
       <a class="tcid-card" href="/capao-da-canoa/">
-        <div class="tcid-top" data-slot="turismo-capao" style="background-image:linear-gradient(180deg,rgba(13,59,84,.08),rgba(13,59,84,.62)),url('/img/turismo/capao-da-canoa/praca-flavio-boianovski-vista-aerea-1200.avif');background-size:cover;background-position:center"><span class="tcid-tag">Maior cidade do litoral</span></div>
-        <div class="tcid-body"><h3 class="tcid-nome">Capão da Canoa</h3><p class="tcid-desc">Vida o ano todo, 11 balneários e a Lagoa dos Quadros para os esportes náuticos.</p><span class="tcid-link">Ver guia →</span></div>
+        <div class="tcid-top has-photo" data-slot="turismo-capao" style="background-image:linear-gradient(180deg,rgba(13,59,84,.08),rgba(13,59,84,.62)),url('/img/turismo/capao-da-canoa/praca-flavio-boianovski-vista-aerea-768.avif');background-size:cover;background-position:center">
+          <img class="tcid-cover" src="/img/turismo/capao-da-canoa/praca-flavio-boianovski-vista-aerea-768.avif" srcset="/img/turismo/capao-da-canoa/praca-flavio-boianovski-vista-aerea-768.avif 768w, /img/turismo/capao-da-canoa/praca-flavio-boianovski-vista-aerea-1200.avif 1200w" sizes="(max-width: 600px) calc(100vw - 40px), 520px" alt="Vista aérea da Praça Flávio Boianovski e da orla de Capão da Canoa" width="1200" height="675" loading="lazy" decoding="async">
+          <span class="tcid-tag">Maior cidade do litoral</span>
+        </div>
+        <div class="tcid-body">
+          <div class="tcid-kicker">Guia completo da cidade</div>
+          <h3 class="tcid-nome">Capão da Canoa</h3>
+          <p class="tcid-desc">Vida o ano todo, balneários, orla urbana, Lagoa dos Quadros e uma agenda de lazer para diferentes estilos de vida.</p>
+          <div class="tcid-place"><span class="tcid-place-ico">🌿</span><div class="tcid-place-copy"><strong>Praça Flávio Boianovski</strong><span>Convivência, lazer e paisagem urbana junto à orla.</span></div></div>
+          <div class="tcid-gallery tcid-gallery-static" aria-label="Galeria de Capão da Canoa">
+            <img src="/img/turismo/capao-da-canoa/praca-flavio-boianovski-e-orla-480.avif" srcset="/img/turismo/capao-da-canoa/praca-flavio-boianovski-e-orla-480.avif 480w, /img/turismo/capao-da-canoa/praca-flavio-boianovski-e-orla-768.avif 768w" sizes="(max-width: 600px) 30vw, 160px" alt="Praça Flávio Boianovski e orla de Capão da Canoa" width="768" height="576" loading="lazy" decoding="async">
+            <img src="/img/turismo/capao-da-canoa/centro-capao-da-canoa-avenida-480.avif" srcset="/img/turismo/capao-da-canoa/centro-capao-da-canoa-avenida-480.avif 480w, /img/turismo/capao-da-canoa/centro-capao-da-canoa-avenida-768.avif 768w" sizes="(max-width: 600px) 30vw, 160px" alt="Avenida e centro de Capão da Canoa" width="768" height="576" loading="lazy" decoding="async">
+            <img src="/img/turismo/capao-da-canoa/praca-do-farol-vista-aerea-480.avif" srcset="/img/turismo/capao-da-canoa/praca-do-farol-vista-aerea-480.avif 480w, /img/turismo/capao-da-canoa/praca-do-farol-vista-aerea-768.avif 768w" sizes="(max-width: 600px) 30vw, 160px" alt="Praça do Farol em Capão da Canoa" width="768" height="576" loading="lazy" decoding="async">
+          </div>
+          <span class="tcid-link">Ver guia de Capão da Canoa →</span>
+        </div>
       </a>
       <a class="tcid-card" href="/osorio/">
-        <div class="tcid-top" data-slot="turismo-osorio" style="background:linear-gradient(135deg,#0891b2,#06b6d4)"><span class="tcid-tag">Porta de entrada</span></div>
-        <div class="tcid-body"><h3 class="tcid-nome">Osório</h3><p class="tcid-desc">Cidade dos ventos e das lagoas, com o maior parque eólico e natureza exuberante.</p><span class="tcid-link">Ver guia →</span></div>
+        <div class="tcid-top" data-slot="turismo-osorio" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">
+          <img class="tcid-cover" alt="Paisagem de Osório e suas lagoas" width="1200" height="675" loading="lazy" decoding="async">
+          <span class="tcid-tag">Porta de entrada</span>
+        </div>
+        <div class="tcid-body">
+          <div class="tcid-kicker">Guia completo da cidade</div>
+          <h3 class="tcid-nome">Osório</h3>
+          <p class="tcid-desc">Lagoas, ventos, natureza e estrutura urbana em uma cidade estratégica para viver perto do mar e da serra.</p>
+          <div class="tcid-place"><span class="tcid-place-ico">🌄</span><div class="tcid-place-copy"><strong>Morro da Borússia</strong><span>Mirantes, natureza e experiências ao ar livre nos arredores da cidade.</span></div></div>
+          <div class="tcid-gallery" data-gallery="turismo-osorio" hidden aria-label="Galeria de Osório"></div>
+          <span class="tcid-link">Ver guia de Osório →</span>
+        </div>
       </a>
       <a class="tcid-card" href="/maquine/">
-        <div class="tcid-top" data-slot="turismo-maquine" style="background:linear-gradient(135deg,#0d7a4f,#10b981)"><span class="tcid-tag">Natureza & Ecoturismo</span></div>
-        <div class="tcid-body"><h3 class="tcid-nome">Maquiné</h3><p class="tcid-desc">O vale verde do litoral, com cachoeiras, trilhas, a Reserva da Biosfera e a Mata Atlântica.</p><span class="tcid-link">Ver guia →</span></div>
+        <div class="tcid-top" data-slot="turismo-maquine" style="background:linear-gradient(135deg,#0d7a4f,#10b981)">
+          <img class="tcid-cover" alt="Natureza e ecoturismo em Maquiné" width="1200" height="675" loading="lazy" decoding="async">
+          <span class="tcid-tag">Natureza &amp; Ecoturismo</span>
+        </div>
+        <div class="tcid-body">
+          <div class="tcid-kicker">Guia completo da cidade</div>
+          <h3 class="tcid-nome">Maquiné</h3>
+          <p class="tcid-desc">O vale verde do litoral, com cascatas, trilhas, Mata Atlântica e refúgios para quem valoriza tranquilidade.</p>
+          <div class="tcid-place"><span class="tcid-place-ico">🌿</span><div class="tcid-place-copy"><strong>Barra do Ouro e Garapiá</strong><span>O eixo de acesso às cascatas e ao ecoturismo de Maquiné.</span></div></div>
+          <div class="tcid-gallery" data-gallery="turismo-maquine" hidden aria-label="Galeria de Maquiné"></div>
+          <span class="tcid-link">Ver guia de Maquiné →</span>
+        </div>
       </a>
     </div>
   </div>
 </section>
-
 <!-- ONDE IR -->
 <section class="tsec tsec-alt" id="passeios">
   <div class="tsec-in">
@@ -509,7 +566,19 @@ body{margin:0;font-family:'Outfit',sans-serif;color:#2b3d48;background:#fff;padd
       var map={};rows.forEach(function(r){if(r&&r.slot)map[r.slot]=r.foto_url;});
       document.querySelectorAll('.tcid-top[data-slot]').forEach(function(el){
         var url=map[el.getAttribute('data-slot')];
-        if(url){el.style.backgroundImage='linear-gradient(180deg,rgba(13,59,84,.05),rgba(13,59,84,.45)),url('+url+')';el.style.backgroundSize='cover';el.style.backgroundPosition='center';}
+        var img=el.querySelector('.tcid-cover');
+        if(url){
+          if(img){img.removeAttribute('srcset');img.onerror=function(){img.removeAttribute('src');el.classList.remove('has-photo');};img.src=url;}
+          el.classList.add('has-photo');
+        }
+      });
+      document.querySelectorAll('.tcid-gallery[data-gallery]').forEach(function(gal){
+        var base=gal.getAttribute('data-gallery');
+        var urls=[2,3,4].map(function(i){return map[base+'-'+i];}).filter(Boolean);
+        if(urls.length){
+          gal.innerHTML=urls.map(function(url,i){return '<img src="'+url+'" alt="Foto '+(i+1)+' de '+base.replace('turismo-','')+'" loading="lazy" decoding="async" width="768" height="576">';}).join('');
+          gal.hidden=false;
+        }
       });
     }).catch(function(){});
 })();
