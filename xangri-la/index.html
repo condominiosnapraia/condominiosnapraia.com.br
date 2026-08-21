@@ -524,17 +524,7 @@ body{padding-top:56px}
   </div>
 </footer>
 
-<script>
-(function(){
-  document.querySelectorAll('.foto[data-foto]').forEach(function(el){
-    var nome=el.getAttribute('data-foto');
-    var url='/img/xangri-la-'+nome+'.jpg';
-    var img=new Image();
-    img.onload=function(){el.classList.add('tem-foto');el.style.backgroundImage="url('"+url+"')";el.style.backgroundSize='cover';el.style.backgroundPosition='center'};
-    img.src=url;
-  });
-})();
-</script>
+<!-- Fotos editoriais: carregadas pelo loader configuracoes.fotos_site acima. -->
 
 <nav class="mob-footer-nav">
   <div class="mob-footer-items">
