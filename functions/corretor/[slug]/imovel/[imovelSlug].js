@@ -200,20 +200,42 @@ export async function onRequest(context) {
   const { dbSlug, publicSlug } = siteSlugInfo(requestedSiteSlug);
   const requestPath = new URL(context.request.url).pathname;
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requestedSiteSlug !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/imovel/${encodeURIComponent(imovelRef)}/`, 301);
-  const feed = await getPartnerFeed(publicSlug);
+  let feed = null;
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
-  const site = sites[0] || (feed?.site ? { id: '', slug: dbSlug, nome: feed.site.name, creci: feed.site.creci, telefone: feed.site.phone, whatsapp: feed.site.whatsapp, email: feed.site.email, cidade: feed.site.city, bio: feed.site.bio, logo_url: feed.site.logo_url, capa_url: feed.site.cover_url } : null);
+  let site = sites[0] || null;
+  if (!site) {
+    feed = await getPartnerFeed(publicSlug);
+    site = feed?.site ? { id: '', slug: dbSlug, nome: feed.site.name, creci: feed.site.creci, telefone: feed.site.phone, whatsapp: feed.site.whatsapp, email: feed.site.email, cidade: feed.site.city, bio: feed.site.bio, logo_url: feed.site.logo_url, capa_url: feed.site.cover_url } : null;
+  }
   if (!site) return notFound();
-  const feedProperties = Array.isArray(feed?.properties) ? feed.properties : [];
-  const feedRows = feedProperties.map((item) => ({ id: item.id, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: item.id, slug: item.slug, codigo: item.code, ref: item.code, titulo: item.title, tipo: 'Imóvel', cidade_end: item.city, bairro: item.neighborhood, preco: item.price, quartos: item.bedrooms, suites: item.suites, area: item.area, descricao: item.description, photo_count: Number(item.photo_count) || (Array.isArray(item.photos) ? item.photos.length : item.cover_image ? 1 : 0), fotos_no_site: Array.isArray(item.photos) && item.photos.length ? item.photos : (item.cover_image ? [item.cover_image] : []), fotos: Array.isArray(item.photos) ? item.photos : [], fotos_para_site: [], status: 'Disponível', publicar: true } }));
-  let rows = feedRows;
-  let row = feedRows.find((candidate) => { const im = candidate.imovel || {}; return [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
+  const propertySelect = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,corretor,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
+  let rows = [];
+  let row = null;
+  if (site.id) {
+    const directProperties = await getJson(`imoveis?slug=eq.${encodeURIComponent(imovelRef)}&select=${propertySelect}&limit=1`);
+    const directProperty = Array.isArray(directProperties) ? directProperties[0] : null;
+    if (directProperty?.id) {
+      const directLinks = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&imovel_id=eq.${encodeURIComponent(directProperty.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada&limit=1`);
+      if (directLinks[0]) row = { ...directLinks[0], imovel: directProperty };
+    }
+  }
+  if (!row?.imovel) {
+    feed = feed || await getPartnerFeed(publicSlug);
+    const feedProperties = Array.isArray(feed?.properties) ? feed.properties : [];
+    const feedRows = feedProperties.map((item) => ({ id: item.id, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: item.id, slug: item.slug, codigo: item.code, ref: item.code, titulo: item.title, tipo: 'Imóvel', cidade_end: item.city, bairro: item.neighborhood, preco: item.price, quartos: item.bedrooms, suites: item.suites, area: item.area, descricao: item.description, photo_count: Number(item.photo_count) || (Array.isArray(item.photos) ? item.photos.length : item.cover_image ? 1 : 0), fotos_no_site: Array.isArray(item.photos) && item.photos.length ? item.photos : (item.cover_image ? [item.cover_image] : []), fotos: Array.isArray(item.photos) ? item.photos : [], fotos_para_site: [], status: 'Disponível', publicar: true } }));
+    rows = feedRows;
+    row = feedRows.find((candidate) => { const im = candidate.imovel || {}; return [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
+  }
   if (!row?.imovel && site.id) {
-    const propertySelect = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
     rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${propertySelect})&order=destaque.desc,ordem.asc&limit=1000`);
     row = (Array.isArray(rows) ? rows : []).find((candidate) => { const im = candidate.imovel || {}; return isPublishedRow(candidate) && [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
   }
   if (!row?.imovel) return notFound();
+  if (!rows.length) {
+    feed = feed || await getPartnerFeed(publicSlug);
+    const relatedProperties = Array.isArray(feed?.properties) ? feed.properties : [];
+    rows = relatedProperties.map((item) => ({ id: item.id, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: item.id, slug: item.slug, codigo: item.code, ref: item.code, titulo: item.title, tipo: 'Imóvel', cidade_end: item.city, bairro: item.neighborhood, preco: item.price, quartos: item.bedrooms, suites: item.suites, area: item.area, descricao: item.description, photo_count: Number(item.photo_count) || (Array.isArray(item.photos) ? item.photos.length : item.cover_image ? 1 : 0), fotos_no_site: Array.isArray(item.photos) && item.photos.length ? item.photos : (item.cover_image ? [item.cover_image] : []), fotos: Array.isArray(item.photos) ? item.photos : [], fotos_para_site: [], status: 'Disponível', publicar: true } }));
+  }
   let imovel = { ...row.imovel, titulo: row.titulo_personalizado || row.imovel.titulo, descricao: row.chamada_personalizada || row.imovel.descricao };
   const media = await getJson(`imoveis?id=eq.${encodeURIComponent(imovel.id)}&select=id,slug,codigo,ref,titulo,tipo,fotos,fotos_no_site,fotos_para_site&limit=1`);
   if (Array.isArray(media) && media[0]) imovel = { ...imovel, ...media[0] };
