@@ -575,6 +575,14 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   #view-home > #sec-condominios-verticais.sec-onda::before{top:-36px!important;height:72px!important}
 }
 </style>
+<style id="home-lcp-media">
+/* A hero usa um elemento de imagem explícito para acelerar a descoberta do LCP. */
+#view-home .hero{background-image:none!important}
+#view-home .hero-lcp-media{position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;overflow:hidden;pointer-events:none}
+#view-home .hero-lcp-media img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 30%;pointer-events:none}
+#view-home .hero-bg{z-index:1}
+#view-home .hero-inner{z-index:2}
+</style>
 <style>
 /* Ajuste responsivo da capa: evita que a marca ultrapasse a viewport em telas estreitas. */
 @media(max-width:600px){
@@ -626,6 +634,13 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <div class="view on" id="view-home" role="main">
 <!-- HERO -->
 <section class="hero">
+<picture class="hero-lcp-media" aria-hidden="true">
+<source media="(max-width: 768px)" type="image/avif" srcset="/img/hero-praia-mobile.avif">
+<source media="(max-width: 768px)" type="image/webp" srcset="/img/hero-praia-mobile.webp">
+<source type="image/avif" srcset="/img/hero-praia.avif">
+<source type="image/webp" srcset="/img/hero-praia.webp">
+<img src="/img/hero-praia.jpg" alt="" width="2400" height="1350" fetchpriority="high" decoding="async">
+</picture>
 <div class="hero-bg"></div>
 <div class="hero-inner">
 <div class="hero-content">
