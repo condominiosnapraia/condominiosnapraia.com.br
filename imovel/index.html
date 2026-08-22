@@ -557,6 +557,22 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-trust-badges{display:flex;gap:8px;margin-top:14px}
 .ip-tb{flex:1;display:flex;align-items:center;gap:5px;justify-content:center;background:var(--sl);border-radius:10px;padding:9px 6px;font-size:11.5px;font-weight:600;color:var(--ocean)}
 .ip-tb span{font-size:14px}
+.ip-agent{margin-top:18px;padding:18px;border:1px solid rgba(31,181,196,.22);border-radius:14px;background:linear-gradient(145deg,#f7fbfc,#fff)}
+.ip-agent-top{display:flex;align-items:center;gap:12px}
+.ip-agent-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:linear-gradient(135deg,var(--ocean),var(--om));color:#fff;font:600 16px 'Fraunces',serif}
+.ip-agent-name{font-size:15px;font-weight:700;color:var(--ocean);line-height:1.2}
+.ip-agent-role{font-size:12px;color:var(--tm);margin-top:3px;line-height:1.35}
+.ip-agent-creci{font-size:12px;color:var(--tm);margin:12px 0 13px;line-height:1.45}
+.ip-agent-wpp{display:flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:#fff;text-decoration:none;font-size:13px;font-weight:700;padding:11px 14px;border-radius:100px;transition:transform .2s,box-shadow .2s}
+.ip-agent-wpp:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(37,211,102,.28)}
+.ip-breadcrumb{font-size:12px;color:var(--tm);margin:0 0 14px;line-height:1.5}
+.ip-breadcrumb a{color:var(--om);text-decoration:none}.ip-breadcrumb a:hover{text-decoration:underline}
+.ip-details-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 12px;margin-top:14px;max-width:780px}
+.ip-detail-item{padding:11px 12px;border:1px solid var(--border);border-radius:10px;background:#fbfdfd}
+.ip-detail-label{display:block;color:var(--tm);font-size:10px;letter-spacing:.09em;text-transform:uppercase;line-height:1.25}
+.ip-detail-value{display:block;color:var(--ocean);font-size:14px;font-weight:600;margin-top:3px;line-height:1.35}
+@media(max-width:520px){.ip-details-grid{grid-template-columns:1fr 1fr;gap:8px}.ip-detail-item{padding:10px}.ip-detail-value{font-size:13px}.ip-agent{padding:16px}}
+@media(max-width:360px){.ip-details-grid{grid-template-columns:1fr}}
 .ip-formwrap{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
 .ip-form-h{font-size:13px;font-weight:700;color:var(--ocean);margin-bottom:10px}
 .ip-inp{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:11px 13px;font-size:14px;font-family:inherit;color:#2b3d48;margin-bottom:8px;background:#fbfdfd;transition:border-color .2s}
@@ -1060,9 +1076,9 @@ function dynFotoTag(raw, alt, options = {}) {
 
 const DYN_IMOV_SELECT = [
   'id','slug','codigo','titulo','cond_id','status','publicar','tipo','preco',
-  'quartos','suites','banheiros','vagas','area','area_privativa','area_construida','cidade_end',
-  'descricao','diferenciais','fotos_no_site','financiamento','permuta',
-  'iptu','cond_taxa','seo_data'
+  'quartos','suites','banheiros','vagas','area','area_privativa','area_construida','cidade_end','bairro_end','fora_condominio','ref_local',
+  'descricao','diferenciais','fotos_no_site','financiamento','permuta','corretor',
+  'iptu','cond_taxa','seo_data','lavabos','salas','depositos','andar','sol','vista','fachada','ano_construcao','pavimentos','mobiliado','decorado','semi_mobiliado','sem_mobilia'
 ].join(',');
 
 const DYN_SIM_SELECT = [
@@ -1423,9 +1439,24 @@ function render(im,cond){
   ].filter(s=>s.v!==null&&s.v!==''&&s.v!==0);
   const specHtml=specs.map(s=>'<div class="ip-spec"><div class="ip-spec-ico">'+s.i+'</div><div class="ip-spec-v">'+s.v+'</div><div class="ip-spec-l">'+s.l+'</div></div>').join('');
 
-  const difs=diferenciaisPublicos(im.diferenciais);
-  const difHtml=difs.length?'<div class="ip-sec-h">Diferenciais</div><div class="ip-difs">'+difs.map(d=>'<span class="ip-dif">'+d+'</span>').join('')+'</div>':'';
-
+    const difs=diferenciaisPublicos(im.diferenciais);
+  const difHtml=difs.length?'<div class="ip-sec-h">Diferenciais</div><div class="ip-difs">'+difs.map(d=>'<span class="ip-dif">'+dynEsc(d)+'</span>').join('')+'</div>':'';
+  const detailItems=[
+    ['Bairro',im.bairro_end],
+    ['Cidade',im.cidade_end],
+    ['Salas',im.salas],
+    ['Lavabos',im.lavabos],
+    ['Depósitos',im.depositos],
+    ['Andar',im.andar],
+    ['Pavimentos',im.pavimentos],
+    ['Ano de construção',im.ano_construcao],
+    ['Orientação solar',im.sol],
+    ['Vista',im.vista],
+    ['Fachada',im.fachada],
+    ['Mobiliado',im.mobiliado?'Sim':(im.sem_mobilia?'Não':null)],
+    ['Localização',im.fora_condominio?'Fora de condomínio':(cond&&cond.nome?'Em condomínio':'Litoral Norte Gaúcho')]
+  ].filter(function(item){return item[1]!==null&&item[1]!==undefined&&String(item[1]).trim()!=='';});
+  const detailsHtml=detailItems.length?'<div class="ip-sec-h">Detalhes do imóvel</div><div class="ip-details-grid">'+detailItems.map(function(item){return '<div class="ip-detail-item"><span class="ip-detail-label">'+dynEsc(item[0])+'</span><span class="ip-detail-value">'+dynEsc(item[1])+'</span></div>';}).join('')+'</div>':'';
   const ex=[];
   if(im.financiamento)ex.push('✓ Aceita financiamento');
   if(im.permuta)ex.push('✓ Aceita permuta');
@@ -1439,10 +1470,12 @@ function render(im,cond){
   const vm=String(raw).match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,20})/);
   const videoHtml=vm?'<div class="ip-video"><div class="ip-sec-h">Vídeo do imóvel</div><div class="ip-video-frame"><iframe src="https://www.youtube.com/embed/'+vm[1]+'" title="Vídeo" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>':'';
 
-  const loc=[cond.nome,cond.localizacao||cond.cidade||im.cidade].filter(Boolean).join(' · ');
+    const loc=[cond.nome,cond.localizacao||cond.cidade_end||im.cidade_end,im.bairro_end].filter(Boolean).join(' · ');
   const codigoLinha=im.codigo?('Cód: '+im.codigo):'Imóvel';
   const tipoLinha=[im.tipo,im.status].filter(Boolean);
-
+  const brokerName=String(im.corretor||'Condomínios na Praia').trim();
+  const brokerInitials=brokerName.split(/\s+/).filter(Boolean).slice(0,2).map(function(part){return part.charAt(0);}).join('').toUpperCase()||'CN';
+  const brokerRole=im.corretor?'Corretor responsável pelo anúncio':'Atendimento imobiliário no Litoral Norte Gaúcho';
   // ── Bloco de detalhes do CONDOMÍNIO ──
   let condHtml='';
   if(cond && cond.nome){
@@ -1479,8 +1512,10 @@ function render(im,cond){
   }
 
   const wm=encodeURIComponent('Olá! Tenho interesse no imóvel '+(im.titulo||'')+(cond.nome?(' no '+cond.nome):'')+'. Preço: '+brl(im.preco)+'.');
+  const brokerHtml='<div class="ip-agent"><div class="ip-agent-top"><div class="ip-agent-avatar" aria-hidden="true">'+dynEsc(brokerInitials)+'</div><div><div class="ip-agent-name">'+dynEsc(brokerName)+'</div><div class="ip-agent-role">'+dynEsc(brokerRole)+'</div></div></div><div class="ip-agent-creci">Intermediação imobiliária · CRECI-RS 72.386<br>Atendimento personalizado e agendamento de visitas.</div><a class="ip-agent-wpp" href="https://wa.me/'+WPP+'?text='+wm+'" target="_blank" rel="nofollow"><span aria-hidden="true">◉</span> Falar com o corretor</a></div>';
 
   document.getElementById('ip-content').innerHTML =
+    '<nav class="ip-breadcrumb" aria-label="Breadcrumb"><a href="/">Início</a> › <a href="/imoveis/">Imóveis</a> › <span>'+dynEsc(im.titulo||'Imóvel')+'</span></nav>'+
     '<div class="ip-gal">'+galHtml+'</div>'+thumbs+
     '<div class="ip-grid">'+
       '<div class="ip-main">'+
@@ -1497,8 +1532,8 @@ function render(im,cond){
         '<h1 class="ip-title">'+(im.titulo||'Imóvel')+'</h1>'+
         (loc?'<div class="ip-loc">📍 '+loc+'</div>':'')+
         (specs.length?'<div class="ip-specs">'+specHtml+'</div>':'')+
-        (im.descricao?('<div class="ip-sec-h">Sobre o imóvel</div><div class="ip-desc">'+descricaoPublica(im.descricao)+'</div>'):'')+
-        difHtml+exHtml+videoHtml+
+        (im.descricao?('<div class="ip-sec-h">Sobre o imóvel</div><div class="ip-desc">'+dynEsc(descricaoPublica(im.descricao)).replace(/\n/g,'<br>')+'</div>'):'')+
+        detailsHtml+difHtml+exHtml+videoHtml+
       '</div>'+
       '<aside class="ip-side"><div class="ip-card">'+
         '<div class="ip-price-lbl">Valor</div>'+
@@ -1516,16 +1551,16 @@ function render(im,cond){
           '<div class="ip-fok" id="ip-f-ok" style="display:none">✓ Pronto! Abrindo o WhatsApp com seus dados...</div>'+
         '</div>'+
         '<div class="ip-trust">'+
-          '<div class="ip-trust-av">FR</div>'+
+          '<div class="ip-trust-av">'+dynEsc(brokerInitials)+'</div>'+
           '<div class="ip-trust-info">'+
-            '<div class="ip-trust-name">Entre em contato <span class="ip-trust-check" title="Corretor verificado">✓</span></div>'+
-            '<div class="ip-trust-role">Corretor · CRECI-RS 72.386</div>'+
+            '<div class="ip-trust-name">'+dynEsc(brokerName)+' <span class="ip-trust-check" title="Atendimento imobiliário">✓</span></div>'+
+            '<div class="ip-trust-role">'+dynEsc(brokerRole)+' · CRECI-RS 72.386</div>'+
           '</div>'+
         '</div>'+
         '<div class="ip-trust-badges">'+
           '<div class="ip-tb"><span>⚡</span> Resposta rápida</div>'+
           '<div class="ip-tb"><span>🔒</span> Atendimento seguro</div>'+
-        '</div>'+
+        '</div>'+brokerHtml+
       '</div></aside>'+
       condHtml+
     '</div>'+

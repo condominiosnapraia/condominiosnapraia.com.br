@@ -2959,6 +2959,16 @@ window.iniciarCarrosseisCards=iniciarCarrosseisCards;
 
 
 // ── BUILD IMOV CARD ──
+function slugHomeImovel(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').replace(/-+/g,'-');}
+function urlHomeImovel(i){
+  if(!i) return '/imovel/';
+  const stored=String(i.slug||'').trim().replace(/^\/+|\/+$/g,'');
+  if(stored) return '/imovel/'+encodeURIComponent(stored)+'/';
+  const base=slugHomeImovel(i.titulo||i.tipo||'imovel');
+  const code=slugHomeImovel(i.codigo||'');
+  const slug=code && !base.endsWith(code) ? base+'-'+code : base;
+  return '/imovel/'+encodeURIComponent(slug||i.id)+'/';
+}
 function buildImovCard(i){
   const foto=i.fotos&&i.fotos.find(f=>f&&(f.startsWith('data:')||f.startsWith('http')));
   const brl=v=>{try{return Number(String(v||0).replace(/\D/g,'')).toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:0});}catch{return'Consulte';}};
@@ -2972,7 +2982,7 @@ function buildImovCard(i){
     areaVal?`📐 ${areaVal}m²`:null,
     i.vagas?`🚗 ${i.vagas} ${i.vagas==1?'vaga':'vagas'}`:null
   ].filter(Boolean).map(s=>`<span class="icspec">${s}</span>`).join('');
-  return`<a class="icard vis" href="/imovel?id=${encodeURIComponent(i.codigo||i.slug||i.id)}" style="text-decoration:none;color:inherit">
+  return`<a class="icard vis" href="${urlHomeImovel(i)}" style="text-decoration:none;color:inherit">
     <div class="icimg"${!foto?` data-home-imov-img="${escapeAttr(i.id)}"`:''}>${foto?fotoTag(foto,i.titulo,{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
     <div class="icbody">
       <div class="ictipo">${i.tipo||'Imóvel'}</div>

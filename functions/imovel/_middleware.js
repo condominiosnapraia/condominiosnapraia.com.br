@@ -130,7 +130,7 @@ async function buscarImovel(ref, key) {
   const codeSuffix = (String(resolvedRef).match(/(?:^|-)([A-Z]{2,5}-\d{3})$/i)?.[1] || '').toUpperCase();
   const codeFilter = codeSuffix && codeSuffix.toLowerCase() !== String(resolvedRef).toLowerCase()
     ? `,codigo.eq.${encodeURIComponent(codeSuffix)}` : '';
-  const query = `${SUPABASE_URL}/rest/v1/imoveis?or=(codigo.eq.${valor},slug.eq.${valor},id.eq.${valor}${codeFilter})&select=id,slug,codigo,titulo,cond_id,tipo,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,cidade_end,descricao,fotos_no_site,fotos&limit=1`;
+  const query = `${SUPABASE_URL}/rest/v1/imoveis?or=(codigo.eq.${valor},slug.eq.${valor},id.eq.${valor}${codeFilter})&select=id,slug,codigo,titulo,cond_id,tipo,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,cidade_end,bairro_end,fora_condominio,ref_local,corretor,descricao,diferenciais,fotos_no_site,fotos&limit=1`;
   try {
     const r = await fetchSupabaseComRetry(query, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
     if (!r || !r.ok) return null;
@@ -193,8 +193,11 @@ function schemaImovel(im, canonicalUrl, title, description, image, city) {
   return result;
 }
 
-function ssrBlock(im, title, description, image, canonicalUrl, city) {
+function ssrBlock(im, cond, title, description, image, canonicalUrl, city) {
   const price = precoPublico(im?.preco);
+  const broker = String(im?.corretor || 'Condomínios na Praia').trim();
+  const condName = String(cond?.nome || '').trim();
+  const condCity = String(cond?.cidade || city || '').trim();
   const facts = [
     im?.tipo ? `<div><span>Tipo</span><strong>${esc(im.tipo)}</strong></div>` : '',
     im?.quartos ? `<div><span>Quartos</span><strong>${esc(im.quartos)}</strong></div>` : '',
@@ -209,6 +212,8 @@ function ssrBlock(im, title, description, image, canonicalUrl, city) {
     ${facts ? `<div class="ip-ssr-facts" aria-label="Características do imóvel">${facts}</div>` : ''}
     ${price ? `<p class="ip-price"><span class="ip-price-lbl">Valor</span>${esc(price)}</p>` : ''}
     <div class="ip-desc"><h2>Sobre este imóvel</h2><p>${esc(description)}</p></div>
+    ${condName ? `<section class="ip-ssr-cond"><h2>Informações do condomínio</h2><p><strong>${esc(condName)}</strong>${condCity ? ` · ${esc(condCity)}` : ''}</p>${cond?.descricao ? `<p>${esc(descricaoPublica(cond.descricao))}</p>` : ''}${Array.isArray(cond?.amenidades) && cond.amenidades.length ? `<p><strong>Infraestrutura:</strong> ${esc(cond.amenidades.slice(0, 8).join(', '))}</p>` : ''}</section>` : ''}
+    <section class="ip-ssr-broker"><h2>Corretor responsável</h2><p><strong>${esc(broker)}</strong> · CRECI-RS 72.386</p><p>Atendimento personalizado para compra e visita ao imóvel.</p><p><a href="https://wa.me/5551982868888?text=${encodeURIComponent(`Olá! Tenho interesse no imóvel ${title}${condName ? ` no ${condName}` : ''}.`)}">Falar no WhatsApp</a></p></section>
     <p class="ip-ssr-cta"><a href="${SITE}/contato/">Fale com um consultor</a></p>
   </article>`;
 }
@@ -226,6 +231,16 @@ export async function onRequest(context) {
   if (!ref) return response;
   const im = await buscarImovel(ref, env?.SUPABASE_ANON_KEY || SB_ANON_FALLBACK);
   if (!im) return response;
+  let cond = null;
+  if (im.cond_id) {
+    try {
+      const condResponse = await fetchSupabaseComRetry(`${SUPABASE_URL}/rest/v1/condominios?id=eq.${encodeURIComponent(im.cond_id)}&select=id,slug,nome,cidade,bairro,descricao,amenidades&limit=1`, { headers: { apikey: env?.SUPABASE_ANON_KEY || SB_ANON_FALLBACK, Authorization: `Bearer ${env?.SUPABASE_ANON_KEY || SB_ANON_FALLBACK}` } });
+      if (condResponse?.ok) {
+        const condRows = await condResponse.json();
+        cond = Array.isArray(condRows) ? condRows[0] || null : null;
+      }
+    } catch (_) { cond = null; }
+  }
 
   const canonicalSlug = slugPublico(im);
   if (legacyRef && legacyRef !== canonicalSlug) {
@@ -245,7 +260,7 @@ export async function onRequest(context) {
   const description = (descricaoPublica(im.descricao) || `${title} no Litoral Norte Gaúcho. Confira fotos, valor e detalhes.`).slice(0, 160);
   const image = fotoPrincipal(im);
   const canonicalUrl = `${SITE}/imovel/${encodeURIComponent(canonicalSlug)}/`;
-  const schema = schemaImovel(im, canonicalUrl, title, description, image, city);
+      const schema = schemaImovel(im, canonicalUrl, title, description, image, city);
 
   const html = await response.text();
   // O title da aba deve ser compacto; mantemos o título editorial completo no H1/OG/JSON-LD.
@@ -259,8 +274,8 @@ export async function onRequest(context) {
     `\n<meta property="og:image:height" content="900">` +
     `\n<meta name="twitter:image" content="${esc(image)}">` +
     '\n<meta name="twitter:card" content="summary_large_image">' +
-    '\n<style id="ip-ssr-style">.ip-ssr{padding:20px 0 48px}.ip-ssr-image{display:block;width:100%;height:auto;max-height:560px;object-fit:cover;border-radius:16px;margin:18px 0}.ip-ssr-location{color:#5b7585;font-size:14px}.ip-ssr-facts{display:flex;flex-wrap:wrap;gap:1px;background:rgba(31,181,196,.18);border:1px solid rgba(31,181,196,.18);border-radius:12px;overflow:hidden;margin:24px 0}.ip-ssr-facts div{background:#fff;padding:14px 18px;min-width:130px}.ip-ssr-facts span{display:block;color:#5b7585;font-size:10px;letter-spacing:.12em;text-transform:uppercase}.ip-ssr-facts strong{display:block;color:#0d3b54;margin-top:3px}.ip-ssr .ip-desc h2{font-family:Fraunces,serif;color:#0d3b54;margin:30px 0 8px}.ip-ssr .ip-desc p{color:#2e4654;line-height:1.75}.ip-ssr-cta a{display:inline-flex;background:#0d3b54;color:#fff;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600}</style>';
-  const content = ssrBlock(im, title, description, image, canonicalUrl, city);
+    '\n<style id="ip-ssr-style">.ip-ssr{padding:20px 0 48px}.ip-ssr-image{display:block;width:100%;height:auto;max-height:560px;object-fit:cover;border-radius:16px;margin:18px 0}.ip-ssr-location{color:#5b7585;font-size:14px}.ip-ssr-facts{display:flex;flex-wrap:wrap;gap:1px;background:rgba(31,181,196,.18);border:1px solid rgba(31,181,196,.18);border-radius:12px;overflow:hidden;margin:24px 0}.ip-ssr-facts div{background:#fff;padding:14px 18px;min-width:130px}.ip-ssr-facts span{display:block;color:#5b7585;font-size:10px;letter-spacing:.12em;text-transform:uppercase}.ip-ssr-facts strong{display:block;color:#0d3b54;margin-top:3px}.ip-ssr .ip-desc h2,.ip-ssr-cond h2,.ip-ssr-broker h2{font-family:Fraunces,serif;color:#0d3b54;margin:30px 0 8px}.ip-ssr .ip-desc p,.ip-ssr-cond p,.ip-ssr-broker p{color:#2e4654;line-height:1.75}.ip-ssr-broker,.ip-ssr-cond{padding:18px 20px;border:1px solid rgba(31,181,196,.18);border-radius:14px;margin-top:22px;background:#f7fbfc}.ip-ssr-broker a{color:#0a7d32;font-weight:700}.ip-ssr-cta a{display:inline-flex;background:#0d3b54;color:#fff;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600}</style>';
+  const content = ssrBlock(im, cond, title, description, image, canonicalUrl, city);
   const transformed = html
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${htmlTitle}</title>`)
     .replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${htmlDesc}">`)
