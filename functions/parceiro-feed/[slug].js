@@ -52,7 +52,7 @@ export async function onRequest(context) {
     area: row.imovel.area || null,
     cover_image: firstPhoto(row.imovel),
     featured: Boolean(row.destaque),
-    public_url: `https://condominiosnapraia.com.br/imovel/${encodeURIComponent(row.imovel.slug || row.imovel.id)}`,
+    public_url: `https://condominiosnapraia.com.br/corretor/${encodeURIComponent(site.slug)}/imovel/${encodeURIComponent(row.imovel.slug || row.imovel.codigo || row.imovel.id)}/`,
   }));
-  return new Response(JSON.stringify({ version: '1.0', provider: 'Condomínios na Praia', generated_at: new Date().toISOString(), site: { slug: site.slug, name: site.nome, creci: site.creci || null, phone: site.telefone || null, whatsapp: site.whatsapp || null, email: site.email || null, city: site.cidade || null, bio: site.bio || null, logo_url: site.logo_url || null, cover_url: site.capa_url || null }, properties }, null, 2), { headers });
+  return new Response(JSON.stringify({ version: '1.1', provider: 'Condomínios na Praia', generated_at: new Date().toISOString(), site: { slug: site.slug, name: site.nome, landing_url: `https://condominiosnapraia.com.br/corretor/${encodeURIComponent(site.slug)}/`, creci: site.creci || null, phone: site.telefone || null, whatsapp: site.whatsapp || null, email: site.email || null, city: site.cidade || null, bio: site.bio || null, logo_url: site.logo_url || null, cover_url: site.capa_url || null }, properties }, null, 2), { headers });
 }

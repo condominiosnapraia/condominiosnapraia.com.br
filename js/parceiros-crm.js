@@ -68,7 +68,7 @@
 
   function parcRenderDetail(){
     const site=parcCurrent;const detail=document.getElementById('parc-detail');if(!site||!detail)return;
-    const landing=`${publicBase()}/parceiro/${encodeURIComponent(site.slug)}`;
+    const landing=`${publicBase()}/corretor/${encodeURIComponent(site.slug)}`;
     const feed=`${publicBase()}/parceiro-feed/${encodeURIComponent(site.slug)}`;
     const selected=parcRelations.filter((row)=>row.publicado).length;
     const leadCount=parcLeads.length;
