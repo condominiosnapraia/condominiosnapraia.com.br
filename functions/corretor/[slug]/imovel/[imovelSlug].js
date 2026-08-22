@@ -150,7 +150,8 @@ function page({ site, imovel, cond, siteSlug, relatedRows }) {
   const location = [imovel.bairro_end || imovel.bairro, city].filter(Boolean).join(' · ');
   const photos = photosOf(imovel);
   const openPhotos = photos.slice(0, 3);
-  const hiddenPhotoCount = Math.max(0, photos.length - openPhotos.length);
+  const totalPhotoCount = Number(imovel.photo_count) > 0 ? Number(imovel.photo_count) : photos.length;
+  const hiddenPhotoCount = Math.max(0, totalPhotoCount - openPhotos.length);
   const heroImage = photos[0] || `${BASE}/img/og-home.jpg`;
   const description = cleanDescription(imovel.descricao) || `${imovel.tipo || 'Imóvel'} disponível para compra em ${city}.`;
   const broker = imovel.corretor || site.nome || 'Corretor parceiro';
@@ -199,7 +200,7 @@ export async function onRequest(context) {
   const site = sites[0] || (feed?.site ? { id: '', slug: dbSlug, nome: feed.site.name, creci: feed.site.creci, telefone: feed.site.phone, whatsapp: feed.site.whatsapp, email: feed.site.email, cidade: feed.site.city, bio: feed.site.bio, logo_url: feed.site.logo_url, capa_url: feed.site.cover_url } : null);
   if (!site) return notFound();
   const feedProperties = Array.isArray(feed?.properties) ? feed.properties : [];
-  const feedRows = feedProperties.map((item) => ({ id: item.id, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: item.id, slug: item.slug, codigo: item.code, ref: item.code, titulo: item.title, tipo: 'Imóvel', cidade_end: item.city, bairro: item.neighborhood, preco: item.price, quartos: item.bedrooms, suites: item.suites, area: item.area, descricao: item.description, fotos_no_site: Array.isArray(item.photos) && item.photos.length ? item.photos : (item.cover_image ? [item.cover_image] : []), fotos: Array.isArray(item.photos) ? item.photos : [], fotos_para_site: [], status: 'Disponível', publicar: true } }));
+  const feedRows = feedProperties.map((item) => ({ id: item.id, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: item.id, slug: item.slug, codigo: item.code, ref: item.code, titulo: item.title, tipo: 'Imóvel', cidade_end: item.city, bairro: item.neighborhood, preco: item.price, quartos: item.bedrooms, suites: item.suites, area: item.area, descricao: item.description, photo_count: Number(item.photo_count) || (Array.isArray(item.photos) ? item.photos.length : item.cover_image ? 1 : 0), fotos_no_site: Array.isArray(item.photos) && item.photos.length ? item.photos : (item.cover_image ? [item.cover_image] : []), fotos: Array.isArray(item.photos) ? item.photos : [], fotos_para_site: [], status: 'Disponível', publicar: true } }));
   let rows = feedRows;
   let row = feedRows.find((candidate) => { const im = candidate.imovel || {}; return [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
   if (!row?.imovel && site.id) {
