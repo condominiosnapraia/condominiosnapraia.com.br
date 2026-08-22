@@ -18,6 +18,7 @@ export async function onRequest() {
     const landing = `${SITE}/corretor/${encodeURIComponent(publicSlug)}/`;
     urls.push({ loc: landing, lastmod: lastmod(site), priority: '0.8' });
     urls.push({ loc: `${landing}contato/`, lastmod: lastmod(site), priority: '0.7' });
+    urls.push({ loc: `${landing}imoveis/`, lastmod: lastmod(site), priority: '0.8' });
     const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=updated_at,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,status,publicar,updated_at)&limit=1000`);
     (Array.isArray(rows) ? rows : []).forEach((row) => {
       const im = row?.imovel;
