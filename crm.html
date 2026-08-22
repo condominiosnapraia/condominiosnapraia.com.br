@@ -22,6 +22,9 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
 <title>Condomínios na Praia | CRM</title>
+<style>
+.parc-notice{margin:0 0 14px;padding:12px 14px;border:1px solid rgba(45,107,228,.2);border-left:3px solid var(--ac);border-radius:var(--r);background:#fff;color:var(--t2);line-height:1.45}.parc-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:14px}.parc-stat{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:13px}.parc-stat strong{display:block;font:600 23px 'DM Serif Display',serif;color:var(--tx)}.parc-stat span{display:block;font-size:11px;color:var(--t3);margin-top:4px}.parc-layout{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(380px,1.15fr);gap:14px;align-items:start}.parc-sites-list{padding:10px}.parc-site-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 10px;border:1px solid var(--bd);border-radius:var(--rs);margin-bottom:8px;background:var(--sf);cursor:pointer}.parc-site-row:hover,.parc-site-row.on{border-color:var(--ac);background:var(--acd)}.parc-site-row strong{display:block;font-size:13px;color:var(--tx)}.parc-site-row small{display:block;color:var(--t3);margin-top:3px}.parc-site-status{font-size:10px;padding:3px 7px;border-radius:12px;background:var(--s3);color:var(--t2);white-space:nowrap}.parc-site-status.active{background:var(--gnd);color:var(--gn)}.parc-site-status.suspended{background:var(--rdd);color:var(--rd)}.parc-detail{min-height:420px}.parc-detail-body{padding:16px}.parc-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid var(--bd);padding-bottom:14px;margin-bottom:14px}.parc-detail-head h3{font:600 21px 'DM Serif Display',serif;color:var(--tx);margin:0 0 4px}.parc-detail-head p{font-size:12px;color:var(--t3);margin:0}.parc-actions{display:flex;gap:7px;flex-wrap:wrap}.parc-url{display:flex;gap:7px;align-items:center;margin:10px 0 16px}.parc-url input{flex:1;min-width:0;background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);padding:8px 10px;color:var(--t2);font-size:11px}.parc-section-title{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin:18px 0 9px}.parc-property-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:390px;overflow:auto}.parc-property{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--bd);border-radius:var(--rs);padding:9px;background:var(--s2)}.parc-property input{margin-top:3px}.parc-property strong{display:block;font-size:12px;color:var(--tx);line-height:1.25}.parc-property span{display:block;color:var(--t3);font-size:10px;margin-top:3px}.parc-plan-badge{display:inline-block;padding:4px 8px;background:var(--god);color:var(--go);border-radius:20px;font-size:10px;font-weight:700}.parc-empty{padding:26px;text-align:center;color:var(--t3)}@media(max-width:900px){.parc-layout{grid-template-columns:1fr}.parc-detail{min-height:0}}@media(max-width:600px){.parc-stats{grid-template-columns:1fr 1fr}.parc-property-list{grid-template-columns:1fr}.parc-detail-head{display:block}.parc-actions{margin-top:10px}.parc-url{display:block}.parc-url input{width:100%;margin-bottom:7px}.parc-notice{font-size:12px}}
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
@@ -1184,6 +1187,7 @@ if(_savedToken && _savedUser){
   <div class="nsec">Sistema</div>
   <button class="ni" onclick="go('usuarios',this)" data-p="usuarios"><span class="ic">👥</span>Usuários</button>
   <button class="ni" onclick="go('atividades',this)" data-p="atividades"><span class="ic">📋</span>Atividades</button>
+  <button class="ni" onclick="go('parceiros',this)" data-p="parceiros"><span class="ic">🌐</span>Sites de Corretores</button>
   <div class="sfooter">
     <div style="font-weight:600;color:var(--t2);margin-bottom:2px">Admin</div>
     condominiosnapraia.com.br
@@ -3422,7 +3426,7 @@ function toggleMobMore(trigger){
 }
 function mobGoMore(id,btn){
   toggleMobMore();
-  const target=document.getElementById('mn-'+({lancamentos:'la',negociacoes:'ne',agenda:'ag',leadsfotos:'lf',leadscampanha:'lc',fotos:'fo',destaques:'de',blog:'bl',carrossel:'ca',capas:'cp',editor:'ed',relatorios:'re',admins:'ad',usuarios:'us',atividades:'at'}[id]||''));
+  const target=document.getElementById('mn-'+({lancamentos:'la',negociacoes:'ne',agenda:'ag',leadsfotos:'lf',leadscampanha:'lc',fotos:'fo',destaques:'de',blog:'bl',carrossel:'ca',capas:'cp',editor:'ed',relatorios:'re',admins:'ad',usuarios:'us',atividades:'at',parceiros:'pa'}[id]||''));
   go(id,target||btn);
   const more=document.getElementById('mn-more');
   if(more) more.classList.add('on');
@@ -3436,7 +3440,7 @@ function go(id,btn){
   if(btn)btn.classList.add('on');
   const h={dashboard:buildDash,condominios:rCond,imoveis:()=>{pCS();rImV()},
     proprietarios:rProp,clientes:buildClientes,'clientes-import':clImpInit,negociacoes:()=>{pIS();rKb()},
-    agenda:()=>{pIS();rCal()},relatorios:buildRel,editor:edLoad,destaques:buildDestaques,fotos:buildFotos,blog:buildBlog,lancamentos:buildLancamentos,contempladas:buildContempladas,admins:buildAdmins,usuarios:buildUsuarios,atividades:buildAtividades,'cadastro-ia':iaPanelInit,capas:carregarCapas,carrossel:carregarCarrossel,leads:carregarLeads,leadsfotos:carregarLeadsFotos,leadscampanha:carregarLeadsCampanha};
+    agenda:()=>{pIS();rCal()},relatorios:buildRel,editor:edLoad,destaques:buildDestaques,fotos:buildFotos,blog:buildBlog,lancamentos:buildLancamentos,contempladas:buildContempladas,admins:buildAdmins,usuarios:buildUsuarios,atividades:buildAtividades,parceiros:parcLoad,'cadastro-ia':iaPanelInit,capas:carregarCapas,carrossel:carregarCarrossel,leads:carregarLeads,leadsfotos:carregarLeadsFotos,leadscampanha:carregarLeadsCampanha};
   if(h[id])h[id]();
   upB();
 }
@@ -10017,6 +10021,26 @@ async function iaAplicarRascunho(){
   },120);
 }
 </script>
+<!-- SITES DE CORRETORES / MVP MULTI-TENANT -->
+<div class="panel" id="panel-parceiros">
+  <div class="ph">
+    <div><div class="pht">Sites de Corretores</div><div class="phs">Landing pages conectadas ao catálogo do CRM</div></div>
+    <div class="phr"><button class="btn bp" onclick="parcOpenNew()">+ Novo site parceiro</button></div>
+  </div>
+  <div class="parc-notice"><strong>MVP comercial em implantação.</strong> A publicação usa somente imóveis autorizados e os planos estão em modo de teste; nenhuma cobrança automática foi ativada.</div>
+  <div class="parc-stats" id="parc-stats"></div>
+  <div class="parc-layout">
+    <section class="tw"><div class="ttb"><strong>Sites cadastrados</strong><button class="btn bg bsm" onclick="parcLoad()">↻ Atualizar</button></div><div id="parc-sites-list" class="parc-sites-list"><div class="te">Carregando sites…</div></div></section>
+    <section class="tw parc-detail" id="parc-detail"><div class="te"><div class="te-ic">🌐</div><h3>Selecione um site</h3><p>Crie um site parceiro ou selecione um cadastro para publicar imóveis.</p></div></section>
+  </div>
+</div>
+
+<div class="ov" id="parc-new-mo">
+  <div class="mo mo-sm"><div class="mh"><div class="mt">Novo site parceiro</div><button class="mx" onclick="cMo('parc-new-mo')">✕</button></div><div class="mb">
+    <div class="fgg"><div class="fgf fg"><label class="fl" for="parc-nome">Nome profissional</label><input class="fi" id="parc-nome" placeholder="Ex.: Felipe Almeida Imóveis"></div><div class="fg"><label class="fl" for="parc-slug">Slug público</label><input class="fi" id="parc-slug" placeholder="felipe-almeida"></div><div class="fg"><label class="fl" for="parc-wpp">WhatsApp</label><input class="fi" id="parc-wpp" placeholder="(51) 99999-9999"></div><div class="fg"><label class="fl" for="parc-email">E-mail</label><input class="fi" id="parc-email" type="email" placeholder="corretor@email.com"></div><div class="fgf fg"><label class="fl" for="parc-bio">Apresentação</label><textarea class="fta" id="parc-bio" placeholder="Apresente seu atendimento e sua região."></textarea></div></div>
+  </div><div class="mf"><button class="btn bg" onclick="cMo('parc-new-mo')">Cancelar</button><button class="btn bp" onclick="parcSaveNew()">Salvar em modo rascunho</button></div></div>
+</div>
+
 <!-- MOBILE BOTTOM NAV -->
 <nav class="mob-nav" aria-label="Navegação principal do CRM">
   <div class="mob-nav-inner">
@@ -10048,9 +10072,11 @@ async function iaAplicarRascunho(){
       <button class="mob-more-item" onclick="mobGoMore('admins',this)"><span>🏦</span><strong>Administradoras</strong></button>
       <button class="mob-more-item" onclick="mobGoMore('usuarios',this)"><span>👥</span><strong>Usuários</strong></button>
       <button class="mob-more-item" onclick="mobGoMore('atividades',this)"><span>📋</span><strong>Atividades</strong></button>
+      <button class="mob-more-item" onclick="mobGoMore('parceiros',this)"><span>🌐</span><strong>Sites de Corretores</strong></button>
     </div>
   </section>
 </div>
 <div class="autosave-ind" id="cnp-autosave">💾 Rascunho salvo</div>
+<script src="/js/parceiros-crm.js" defer></script>
 </body>
 </html>
