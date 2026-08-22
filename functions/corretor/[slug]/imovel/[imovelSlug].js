@@ -25,7 +25,7 @@ function publicPhoto(value) {
 }
 function photosOf(imovel) {
   const seen = new Set();
-  const values = [...toArray(imovel?.fotos_no_site), ...toArray(imovel?.fotos_para_site)];
+  const values = [...toArray(imovel?.fotos_no_site), ...toArray(imovel?.fotos), ...toArray(imovel?.fotos_para_site)];
   return values.map(publicPhoto).filter((url) => url && !seen.has(url) && seen.add(url)).slice(0, 16);
 }
 function slugify(value) { return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-'); }
@@ -57,6 +57,24 @@ function inferContext(item) {
   const condo = condoMatch ? condoMatch[1].replace(/^[^a-záàâãéêíóôõúç]+/i, '').replace(/\s+/g, ' ').trim() : '';
   return { city, type, condo };
 }
+function propertyFamily(item) {
+  const context = inferContext(item);
+  const directType = normalized(item?.tipo);
+  const type = directType && !/^(imovel|imóvel|disponivel|disponível)$/.test(directType) ? directType : normalized(context.type || item?.title || item?.titulo);
+  if (/terreno|lote/.test(type)) return 'terreno';
+  if (/apart|cobertura|loft|kitnet|flat|studio/.test(type)) return 'apartamento';
+  if (/loja|sala|comercial|ponto|conjunto/.test(type)) return 'comercial';
+  if (/casa|sobrado|chale|chalé/.test(type)) return 'casa';
+  return type || 'imovel';
+}
+function numericValue(value) {
+  const number = Number(String(value ?? '').replace(/[^0-9,.-]/g, '').replace(/\.(?=\d{3}(?:\D|$))/g, '').replace(',', '.'));
+  return Number.isFinite(number) && number > 0 ? number : null;
+}
+function bedroomValue(item) {
+  const number = numericValue(item?.quartos || item?.bedrooms);
+  return number === null ? null : Math.round(number);
+}
 function isPublishedRow(row) { const im = row?.imovel || {}; return Boolean(im.id) && im.publicar !== false && String(im.status || '').toLowerCase() !== 'vendido'; }
 async function getJson(path) {
   try { const response = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HEADERS }); return response.ok ? await response.json() : []; } catch (_) { return []; }
@@ -85,15 +103,40 @@ function relatedSection(title, subtitle, items, contextLabel = '') {
 }
 function selectRelated(rows, target, cond, siteSlug) {
   const targetContext = inferContext(target);
-  const candidates = (Array.isArray(rows) ? rows : []).filter(isPublishedRow).filter((row) => String(row.imovel.id) !== String(target.id)).map((row) => ({ ...row, context: inferContext(row.imovel), url: propertyUrl(siteSlug, row.imovel) }));
+  const targetFamily = propertyFamily(target);
   const targetCity = normalized(target.cidade_end || target.cidade || cond?.cidade || targetContext.city);
-  const targetType = normalized(target.tipo || targetContext.type);
-  const targetCondo = normalized(target.cond_id || targetContext.condo);
-  const used = new Set();
-  const pick = (predicate, limit) => candidates.filter((row) => !used.has(String(row.imovel.id)) && predicate(row.imovel, row.context)).slice(0, limit).map((row) => { used.add(String(row.imovel.id)); return row; });
-  const sameCondo = targetCondo ? pick((im, context) => normalized(im.cond_id || context.condo) === targetCondo, 4) : [];
-  const similar = pick((im, context) => normalized(im.tipo || context.type) === targetType, 4);
-  const sameCity = targetCity ? pick((im, context) => normalized(im.cidade_end || im.cidade || context.city) === targetCity, 4) : [];
+  const targetRooms = bedroomValue(target);
+  const targetPrice = numericValue(target.preco);
+  const targetCondo = normalized(cond?.nome || target.cond?.name || target._derivedCondo || targetContext.condo);
+  const candidates = (Array.isArray(rows) ? rows : []).filter(isPublishedRow).filter((row) => String(row.imovel.id) !== String(target.id)).map((row) => ({ ...row, context: inferContext(row.imovel), family: propertyFamily(row.imovel), url: propertyUrl(siteSlug, row.imovel) }));
+  const contextCity = (im, context) => normalized(im.cidade_end || im.cidade || context.city);
+  const contextCondo = (im, context) => normalized(im.cond_id || im.cond?.name || context.condo);
+  const scoreFor = (row) => {
+    const im = row.imovel;
+    if (row.family !== targetFamily) return -Infinity;
+    let score = 0;
+    const city = contextCity(im, row.context);
+    const condo = contextCondo(im, row.context);
+    if (targetCondo && condo && condo === targetCondo) score += 80;
+    if (targetCity && city && city === targetCity) score += 40;
+    const rooms = bedroomValue(im);
+    if (targetRooms !== null && rooms !== null) {
+      const difference = Math.abs(rooms - targetRooms);
+      score += difference === 0 ? 28 : difference === 1 ? 14 : difference === 2 ? 3 : -18;
+    }
+    const price = numericValue(im.preco);
+    if (targetPrice !== null && price !== null) {
+      const distance = Math.abs(price - targetPrice) / Math.max(targetPrice, 1);
+      score += distance <= .1 ? 28 : distance <= .2 ? 18 : distance <= .35 ? 8 : distance <= .55 ? 0 : -18;
+    }
+    return score;
+  };
+  const ranked = candidates.map((row) => ({ ...row, score: scoreFor(row) })).filter((row) => Number.isFinite(row.score)).sort((a, b) => b.score - a.score || Math.abs((numericValue(a.imovel.preco) || 0) - (targetPrice || 0)) - Math.abs((numericValue(b.imovel.preco) || 0) - (targetPrice || 0)));
+  const selected = new Set();
+  const take = (predicate, limit) => ranked.filter((row) => !selected.has(String(row.imovel.id)) && predicate(row)).slice(0, limit).map((row) => { selected.add(String(row.imovel.id)); return row; });
+  const sameCondo = targetCondo ? take((row) => contextCondo(row.imovel, row.context) === targetCondo, 4) : [];
+  const sameCity = targetCity ? take((row) => contextCity(row.imovel, row.context) === targetCity && row.score >= 30, 4) : [];
+  const similar = take((row) => row.score >= 20, 4);
   return { sameCondo, similar, sameCity, targetContext };
 }
 
@@ -125,7 +168,7 @@ function page({ site, imovel, cond, siteSlug, relatedRows }) {
   const hiddenCondoPhotoCount = Math.max(0, condoAllPhotos.length - condoPhotos.length);
   const condoGalleryMarkup = condoPhotos.length ? `<div class="condo-gallery" id="condo-gallery">${condoPhotos.map((photo, index) => `<img src="${esc(photo)}" alt="${esc(cond?.nome || 'Empreendimento')} — infraestrutura ${index + 1}" loading="lazy" decoding="async">`).join('')}${hiddenCondoPhotoCount ? `<div class="gallery-gate condo-gate" data-gallery-lock="condo"><div><strong>+${hiddenCondoPhotoCount} fotos do empreendimento</strong><span>Faça login para ver a galeria completa.</span></div><button type="button" class="unlock-button" data-gallery-auth>Fazer login para ver mais</button></div>` : ''}</div>` : '';
   const related = selectRelated(relatedRows, { ...imovel, _derivedCondo: context.condo, _derivedCity: context.city, _derivedType: context.type }, cond, siteSlug);
-  const relatedMarkup = relatedSection('Imóveis semelhantes', 'Outras oportunidades com características próximas a este imóvel.', related.similar) + (condoName ? relatedSection(`Mais imóveis no ${condoName}`, 'Veja outras opções disponíveis no mesmo condomínio ou empreendimento.', related.sameCondo, condoName) : '') + relatedSection(`Imóveis em ${city}`, 'Encontre outras oportunidades na mesma cidade.', related.sameCity, city);
+  const relatedMarkup = (condoName ? relatedSection(`Mais imóveis no ${condoName}`, 'Opções da mesma tipologia dentro deste condomínio ou empreendimento.', related.sameCondo, condoName) : '') + relatedSection('Imóveis semelhantes', 'Mesma tipologia, com dormitórios e valores próximos ao imóvel consultado.', related.similar) + relatedSection(`Imóveis em ${city}`, 'Outras oportunidades da mesma tipologia na mesma cidade.', related.sameCity, city);
   const schema = { '@context': 'https://schema.org', '@type': 'RealEstateListing', name: title, description, url: canonical, image: photos.slice(0, 8), itemOffered: { '@type': /apartamento/i.test(imovel.tipo || '') ? 'Apartment' : 'Residence', name: title, address: { '@type': 'PostalAddress', addressLocality: city, addressRegion: 'RS', addressCountry: 'BR' } }, seller: { '@type': 'RealEstateAgent', name: broker, telephone: phone ? `+${phone}` : undefined } };
   if (Number(imovel.preco) > 0) schema.offers = { '@type': 'Offer', price: Number(imovel.preco), priceCurrency: 'BRL', availability: 'https://schema.org/InStock', url: canonical };
   return `<!doctype html>
