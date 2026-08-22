@@ -38,13 +38,16 @@ export async function onRequest(context) {
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url,updated_at&limit=1`);
   if (!Array.isArray(sites) || !sites[0]) return new Response(JSON.stringify({ error: 'site_not_published' }), { status: 404, headers });
   const site = sites[0];
-  const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${site.id}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,updated_at,imovel:imoveis(id,slug,codigo,titulo,ref,cidade_end,bairro,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar)&order=destaque.desc,ordem.asc&limit=1000`);
+  const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${site.id}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,updated_at,imovel:imoveis(id,slug,codigo,titulo,ref,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar)&order=destaque.desc,ordem.asc&limit=1000`);
   const properties = (Array.isArray(rows) ? rows : []).filter(row => row.imovel && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido').map(row => ({
     id: row.imovel.id,
     code: row.imovel.codigo || row.imovel.ref || row.imovel.id,
     slug: row.imovel.slug || row.imovel.id,
     title: row.titulo_personalizado || row.imovel.titulo || 'Imóvel disponível',
     description: row.chamada_personalizada || row.imovel.descricao || null,
+    type: row.imovel.tipo || 'Imóvel',
+    outside: row.imovel.fora_condominio === true || String(row.imovel.fora_condominio).toLowerCase() === 'true',
+    condo_id: row.imovel.cond_id || null,
     city: row.imovel.cidade_end || null,
     neighborhood: row.imovel.bairro || null,
     price: row.imovel.preco || null,
