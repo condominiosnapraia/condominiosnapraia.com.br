@@ -1,1 +1,1 @@
-export { onRequest } from '../../../corretor/[slug]/contato.js';
+export { onRequest } from '../../corretor/[slug]/contato.js';
