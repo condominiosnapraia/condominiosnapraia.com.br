@@ -11,7 +11,7 @@ function lastmod(row) { const value = row?.updated_at || row?.created_at; if (!v
 async function getJson(path) { try { const response = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HEADERS }); return response.ok ? await response.json() : []; } catch (_) { return []; } }
 export async function onRequest() {
   const sites = await getJson('parceiros_sites?status=eq.active&select=id,slug,updated_at&limit=1000');
-  const urls = [];
+  const urls = [{ loc: `${SITE}/parceiros/`, lastmod: new Date().toISOString().slice(0, 10), priority: '0.9' }];
   for (const site of Array.isArray(sites) ? sites : []) {
     if (!site?.slug) continue;
     const publicSlug = publicSiteSlug(site.slug);
