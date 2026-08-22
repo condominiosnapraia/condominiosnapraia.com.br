@@ -7,7 +7,8 @@ const SITE = 'https://condominiosnapraia.com.br';
 const PUBLIC_SLUG_ALIASES = {
   'XAN-018': 'lote-a-venda-monaco-yacht-club-xangri-la',
   'XAN-019': 'lote-a-venda-monaco-yacht-club-xangri-la-2',
-  'XAN-277': 'apartamento-a-venda-livin-resort-02-dormitorios-01-suite-mobiliado-xan-277'
+  'XAN-277': 'apartamento-a-venda-livin-resort-02-dormitorios-01-suite-mobiliado-xan-277',
+  'XAN-278': '03-dormitorios-01-suite-03-mobiliado-e-decorado-xan-278'
 };
 function slugifyPublicImovel(value) {
   return String(value || '')

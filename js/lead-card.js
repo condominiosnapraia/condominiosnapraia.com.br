@@ -30,6 +30,9 @@
   '.ldc-msg{font-size:13px;margin-top:10px;text-align:center;display:none}'+
   '.ldc-msg.err{display:block;color:#c0392b}'+
   '.ldc-priv{font-size:11.5px;color:#456575;text-align:center;margin-top:12px}'+
+  '.ldc-consent{display:flex;align-items:flex-start;gap:8px;margin:12px 0 2px;color:#456575;font-size:11.5px;line-height:1.45;text-align:left}'+
+  '.ldc-consent input{width:16px;height:16px;flex:0 0 16px;margin:1px 0 0;accent-color:#0d3b54}'+
+  '.ldc-consent a{color:#0d3b54;font-weight:600}'+
   '.ldc-ok{display:none;text-align:center;padding:16px 4px}'+
   '.ldc-ok.on{display:block}'+
   '.ldc-ok-ico{font-size:36px;margin-bottom:8px}'+
@@ -57,9 +60,10 @@
           '<option>Outro</option>'+
         '</select>'+
       '</div>'+
+      '<label class="ldc-consent"><input id="ldc-consent" type="checkbox" required><span>Concordo em ser contatado sobre esta solicitação e li a <a href="/politica-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>'+
       '<button class="ldc-btn" id="ldc-btn">Quero receber opções</button>'+
       '<div class="ldc-msg" id="ldc-msg"></div>'+
-      '<div class="ldc-priv">Seus dados são usados para atendimento e podem ser compartilhados apenas quando necessário para viabilizar o serviço, conforme nossa <a href="/politica-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</div>'+
+      '<div class="ldc-priv">Seus dados serão usados apenas para atendimento e retorno sobre a solicitação.</div>'+
     '</div>'+
     '<div class="ldc-ok" id="ldc-ok">'+
       '<div class="ldc-ok-ico">✓</div>'+
@@ -102,6 +106,7 @@
     var tel   = document.getElementById('ldc-tel').value.trim();
     var email = document.getElementById('ldc-email').value.trim();
     var inter = document.getElementById('ldc-int').value;
+    var consent = document.getElementById('ldc-consent');
     var msg   = document.getElementById('ldc-msg');
     var btn   = document.getElementById('ldc-btn');
     msg.className = 'ldc-msg'; msg.textContent = '';
@@ -110,6 +115,7 @@
     if(nome.length < 2){ document.getElementById('ldc-nome').classList.add('erro'); msg.className='ldc-msg err'; msg.textContent='Digite seu nome.'; return; }
     if(dig(tel).length < 10){ document.getElementById('ldc-tel').classList.add('erro'); msg.className='ldc-msg err'; msg.textContent='Digite um WhatsApp válido com DDD.'; return; }
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ document.getElementById('ldc-email').classList.add('erro'); msg.className='ldc-msg err'; msg.textContent='Digite um e-mail válido.'; return; }
+    if(!consent || !consent.checked){ msg.className='ldc-msg err'; msg.textContent='Marque o consentimento para continuar.'; if(consent) consent.focus(); return; }
 
     btn.disabled = true; btn.textContent = 'Enviando...';
     try{

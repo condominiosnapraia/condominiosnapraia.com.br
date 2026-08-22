@@ -11,6 +11,10 @@ const PUBLIC_SLUG_ALIASES = new Map([
   ['condominio-xangri-la-villas-resort-', 'condominio-xangri-la-villas-resort'],
   ['condominio-maquine-la-marina-', 'condominio-maquine-la-marina']
 ]);
+// Registro ativo sem página pública 200; não deve ser exposto no sitemap até existir uma rota canônica.
+const UNSUPPORTED_PUBLIC_SLUGS = new Set([
+  'condominio-atlantida-green-square-xangri-la'
+]);
 
 function esc(s) {
   return String(s || '')
@@ -41,7 +45,7 @@ export async function onRequest(context) {
   const validos = (Array.isArray(condominios) ? condominios : []).filter(c => {
     if (c.ativo === false) return false;
     const slug = String(c.slug || '').trim().toLowerCase();
-    return Boolean(slug);
+    return Boolean(slug) && !UNSUPPORTED_PUBLIC_SLUGS.has(slug);
   });
 
   const vistos = new Set();

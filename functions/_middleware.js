@@ -16,6 +16,19 @@ export async function onRequest(context) {
   // O painel administrativo tem autenticação e scripts próprios; permanece isolado.
   if (path === '/crm' || path === '/crm.html' || path.startsWith('/crm/')) return next();
 
+  // Diagnóstico é uma ferramenta interna: não deve responder 200 anônimo.
+  // O endpoint público é removido da superfície de produção; o CRM continua intacto.
+  if (path === '/diagnostico.html' || path === '/diagnostico' || path.startsWith('/diagnostico/')) {
+    return new Response('Not Found', {
+      status: 404,
+      headers: {
+        'content-type': 'text/plain; charset=utf-8',
+        'cache-control': 'no-store',
+        'x-robots-tag': 'noindex, nofollow',
+      },
+    });
+  }
+
   // Favoritos só é necessário na página de favoritos e no detalhe de imóvel.
   // Evita injetar ~10 KiB e iniciar JS extra na homepage, listagens e páginas editoriais.
   const needsFavorites = path === '/favoritos' || path === '/favoritos/' || path === '/imovel' || path === '/imovel/' || path.startsWith('/imovel/');

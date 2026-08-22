@@ -97,7 +97,9 @@ img{max-width:100%;display:block}
 .section-rule{border:none;border-top:1px solid var(--border);margin:8px 0}
 .foto{margin:30px 0;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,var(--azulclaro),var(--espuma));aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--border);background-size:cover;background-position:center}
 .foto .ic{font-size:30px;opacity:.45}
-.foto .cap{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--om);margin-top:8px;opacity:.7;text-align:center;padding:0 12px}
+	.foto .cap{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--om);margin-top:8px;opacity:.7;text-align:center;padding:0 12px}
+	.foto>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+
 @media(max-width:560px){.foto{aspect-ratio:4/3}}
 .statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:30px 0}
 .stat{background:linear-gradient(135deg,var(--sl),#fff);border:1px solid var(--border);border-radius:14px;padding:22px}
@@ -453,7 +455,7 @@ img,video,iframe,svg{max-width:100%}
 <div class="hero-scroll">Role para explorar ↓</div>
 </section>
 <section class="intro-strip"><p>Viva ao redor de um oásis tropical de 1.700m² com piscina natural, em um condomínio boutique de apenas 88 sobrados com rooftops privativos. Fale agora e receba a tabela de valores.</p></section>
-<div class="foto-hero-wrap"><div class="foto foto-hero" data-fk="origem__1"><span class="ic">📷</span><span class="cap">Foto destaque — vista aérea do empreendimento</span></div></div>
+<div class="foto-hero-wrap"><div class="foto foto-hero" data-fk="origem__1" data-alt="Vista aérea do condomínio Origem Natureza Habitada, com oásis tropical em Xangri-lá, Rio Grande do Sul"></div></div>
 <div class="wrap">
 <nav class="crumb"><a href="/">Início</a> › <a href="/xangri-la/">Xangri-lá</a> › <span>Origem Natureza Habitada</span></nav>
 <div class="body-content">
@@ -478,7 +480,7 @@ img,video,iframe,svg{max-width:100%}
 </div>
 <h2>O Que é o Origem Natureza Habitada?</h2>
 <p>O <strong>Origem Natureza Habitada</strong> é um condomínio boutique da <strong>Construtora Raupp</strong> em Xangri-lá, inspirado na <strong>biofilia</strong>. Com apenas <strong>88 sobrados exclusivos</strong> (de 170m² a 245m², até 3 suítes, com rooftops privativos) ao redor de um oásis tropical de 1.700m² com piscina natural, oferece uma forma rara de viver em harmonia com a natureza.</p>
-<div class="foto" data-fk="origem__6"><span class="ic">📷</span><span class="cap">Foto — entrada principal</span></div>
+<div class="foto" data-fk="origem__6" data-alt="Entrada principal do condomínio boutique Origem Natureza Habitada, em Xangri-lá, no Litoral Norte Gaúcho"></div>
 <div class="proof-row"><div class="proof"><div class="pn">Construtora Raupp</div><div class="pd">25+ anos de mercado</div></div><div class="proof"><div class="pn">1.700m²</div><div class="pd">Oásis com piscina natural</div></div><div class="proof"><div class="pn">88 casas</div><div class="pd">Exclusividade boutique</div></div><div class="proof"><div class="pn">Rooftops</div><div class="pd">Privativos em cada sobrado</div></div></div>
 <h2>Localização</h2>
 <p>Xangri-lá é o balneário mais valorizado e sofisticado do Litoral Norte gaúcho. O Origem une essa localização premium a um conceito único no litoral: a biofilia, com a natureza no centro da experiência de morar.</p>
@@ -491,14 +493,14 @@ img,video,iframe,svg{max-width:100%}
 </div>
 <h2>Oásis Tropical e Piscina Natural</h2>
 <p>No centro do condomínio, um <strong>oásis tropical de 1.700m²</strong> com <strong>piscina natural</strong>, prainhas privativas, gazebos, ponte panorâmica e lounges. A água, o verde e a serenidade fazem parte do cotidiano — a biofilia em sua forma mais pura.</p>
-<div class="foto" data-fk="origem__2"><span class="ic">📷</span><span class="cap">Foto — oásis tropical</span></div>
-<div class="foto" data-fk="origem__3"><span class="ic">📷</span><span class="cap">Foto — piscina natural</span></div>
+<div class="foto" data-fk="origem__2" data-alt="Oásis tropical com piscina natural no condomínio Origem Natureza Habitada, em Xangri-lá"></div>
+<div class="foto" data-fk="origem__3" data-alt="Piscina natural do oásis tropical do condomínio Origem Natureza Habitada, em Xangri-lá"></div>
 <h2>Casas com Rooftop Privativo</h2>
 <p>São apenas <strong>88 sobrados</strong> (170m² a 245m², até 3 suítes), com <strong>rooftops privativos</strong> — terraços no topo de cada casa, com vista para o oásis. Arquitetura contemporânea e biofílica, que integra interior e natureza.</p>
-<div class="foto" data-fk="origem__4"><span class="ic">📷</span><span class="cap">Foto — sobrados e rooftops</span></div>
+<div class="foto" data-fk="origem__4" data-alt="Casas com sobrados e rooftops privativos no Origem Natureza Habitada, em Xangri-lá"></div>
 <h2>Wellness e Clube Social</h2>
 <p>Estrutura completa de bem-estar: <strong>piscina térmica, sauna, SPA e academia</strong>, além de clube social com rooftop lounge, espaço gourmet, parrilla e 2 quadras de beach tennis cobertas.</p>
-<div class="foto" data-fk="origem__5"><span class="ic">📷</span><span class="cap">Foto — wellness e clube</span></div>
+<div class="foto" data-fk="origem__5" data-alt="Área wellness e clube social do Origem Natureza Habitada, em Xangri-lá, no Litoral Norte Gaúcho"></div>
 <div id="bloco-mapa-implantacao" style="display:none">
 <h2>Mapa de Implantação do Condomínio</h2>
 <p>Veja a planta com a disposição dos lotes e as áreas de lazer — em alta resolução.</p>
@@ -676,7 +678,7 @@ img,video,iframe,svg{max-width:100%}
 <script>(function(){var SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co';var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 fetch(SB_URL+'/rest/v1/configuracoes?chave=eq.fotos_site&select=valor',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY}})
 .then(function(r){return r.ok?r.json():[];}).then(function(rows){if(!rows||!rows.length)return;var fotos=rows[0].valor||{};
-document.querySelectorAll('.foto[data-fk]').forEach(function(el){var k=el.getAttribute('data-fk');if(fotos[k]){el.style.backgroundImage="url('"+fotos[k]+"')";if(!el.classList.contains('foto-hero'))el.style.aspectRatio="16/9";el.innerHTML="";}else{el.style.display="none";var w=el.closest(".foto-hero-wrap");if(w)w.style.display="none";}});}).catch(function(){});})();</script>
+document.querySelectorAll('.foto[data-fk]').forEach(function(el){var k=el.getAttribute('data-fk');if(fotos[k]){if(!el.classList.contains('foto-hero'))el.style.aspectRatio="16/9";el.style.backgroundImage="none";el.innerHTML="";var img=document.createElement('img');img.src=fotos[k];img.alt=el.getAttribute('data-alt')||'Imagem do condomínio Origem Natureza Habitada em Xangri-lá';img.loading=el.classList.contains('foto-hero')?'eager':'lazy';img.decoding='async';el.appendChild(img);}else{el.style.display="none";var w=el.closest(".foto-hero-wrap");if(w)w.style.display="none";}});}).catch(function(){});})();</script>
 <script>
 function enviarLeadWpp(ev, emp){
   ev.preventDefault();
