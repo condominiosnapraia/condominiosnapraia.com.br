@@ -51,6 +51,12 @@ function isPublishedRow(row) { const im = row?.imovel || {}; return Boolean(im.i
 async function getJson(path) {
   try { const response = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HEADERS }); return response.ok ? await response.json() : []; } catch (_) { return []; }
 }
+async function getPartnerFeed(publicSlug) {
+  try {
+    const response = await fetch(`${BASE}/parceiro-feed/${encodeURIComponent(publicSlug)}`, { headers: { accept: 'application/json' } });
+    return response.ok ? await response.json() : null;
+  } catch (_) { return null; }
+}
 function notFound() { return new Response('<!doctype html><meta charset="utf-8"><title>Imóvel não encontrado</title><meta name="robots" content="noindex"><style>body{font-family:Arial;padding:48px;max-width:700px;margin:auto;color:#0d3b54}a{color:#0d5c86;font-weight:bold}</style><h1>Imóvel não encontrado</h1><p>Este imóvel pode ter sido removido ou não está publicado neste site parceiro.</p><a href="/">Voltar</a>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } }); }
 
 function relatedCard(item, contextLabel = '') {
@@ -130,23 +136,23 @@ export async function onRequest(context) {
   const { dbSlug, publicSlug } = siteSlugInfo(requestedSiteSlug);
   const requestPath = new URL(context.request.url).pathname;
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requestedSiteSlug !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/imovel/${encodeURIComponent(imovelRef)}/`, 301);
+  const feed = await getPartnerFeed(publicSlug);
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
-  if (!sites[0]) return notFound();
-  const site = sites[0];
-  const propertySelect = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
-  let row = null;
-  const selectors = [`slug=eq.${encodeURIComponent(imovelRef)}`, `codigo=eq.${encodeURIComponent(imovelRef.toUpperCase())}`, `ref=eq.${encodeURIComponent(imovelRef.toUpperCase())}`, `id=eq.${encodeURIComponent(imovelRef)}`];
-  for (const selector of selectors) {
-    const direct = await getJson(`imoveis?${selector}&select=${propertySelect}&limit=1`);
-    const candidate = Array.isArray(direct) ? direct.find((im) => im.publicar !== false && String(im.status || '').toLowerCase() !== 'vendido') : null;
-    if (!candidate) continue;
-    const allowed = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&imovel_id=eq.${encodeURIComponent(candidate.id)}&publicado=eq.true&select=imovel_id&limit=1`);
-    if (Array.isArray(allowed) && allowed[0]) { row = { id: candidate.id, titulo_personalizado: '', chamada_personalizada: '', imovel: candidate }; break; }
+  const site = sites[0] || (feed?.site ? { id: '', slug: dbSlug, nome: feed.site.name, creci: feed.site.creci, telefone: feed.site.phone, whatsapp: feed.site.whatsapp, email: feed.site.email, cidade: feed.site.city, bio: feed.site.bio, logo_url: feed.site.logo_url, capa_url: feed.site.cover_url } : null);
+  if (!site) return notFound();
+  const feedProperties = Array.isArray(feed?.properties) ? feed.properties : [];
+  const feedRows = feedProperties.map((item) => ({ id: item.id, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: item.id, slug: item.slug, codigo: item.code, ref: item.code, titulo: item.title, tipo: 'Imóvel', cidade_end: item.city, bairro: item.neighborhood, preco: item.price, quartos: item.bedrooms, suites: item.suites, area: item.area, descricao: item.description, fotos_no_site: item.cover_image ? [item.cover_image] : [], fotos_para_site: [], status: 'Disponível', publicar: true } }));
+  let rows = feedRows;
+  let row = feedRows.find((candidate) => { const im = candidate.imovel || {}; return [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
+  if (!row?.imovel && site.id) {
+    const propertySelect = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
+    rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${propertySelect})&order=destaque.desc,ordem.asc&limit=1000`);
+    row = (Array.isArray(rows) ? rows : []).find((candidate) => { const im = candidate.imovel || {}; return isPublishedRow(candidate) && [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
   }
-  let rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${propertySelect})&order=destaque.desc,ordem.asc&limit=1000`);
-  if (!row?.imovel) row = (Array.isArray(rows) ? rows : []).find((candidate) => { const im = candidate.imovel || {}; return isPublishedRow(candidate) && [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
   if (!row?.imovel) return notFound();
   let imovel = { ...row.imovel, titulo: row.titulo_personalizado || row.imovel.titulo, descricao: row.chamada_personalizada || row.imovel.descricao };
+  const media = await getJson(`imoveis?id=eq.${encodeURIComponent(imovel.id)}&select=id,slug,codigo,ref,titulo,tipo,fotos,fotos_no_site,fotos_para_site&limit=1`);
+  if (Array.isArray(media) && media[0]) imovel = { ...imovel, ...media[0] };
   const enrich = await getJson(`imoveis?id=eq.${encodeURIComponent(imovel.id)}&select=bairro_end,fora_condominio,cond_id,banheiros,vagas,area_privativa,area_construida,corretor,diferenciais&limit=1`);
   if (Array.isArray(enrich) && enrich[0]) imovel = { ...imovel, ...enrich[0] };
   let cond = null;
