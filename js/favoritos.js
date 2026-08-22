@@ -130,7 +130,7 @@
   }
   function modalHtml(){
     if(document.getElementById('pml-fav-overlay'))return;
-    const o=document.createElement('div');o.id='pml-fav-overlay';o.innerHTML='<div class="pml-fav-modal" role="dialog" aria-modal="true" aria-labelledby="pml-fav-title"><button type="button" class="pml-fav-close" data-fav-close aria-label="Fechar">×</button><div class="pml-fav-brand">Portal Meu Litoral</div><div class="pml-fav-kicker">Seus imóveis escolhidos</div><div id="pml-fav-modal-content"></div></div>';document.body.appendChild(o);state.modal=o;
+    const o=document.createElement('div');o.id='pml-fav-overlay';o.innerHTML='<div class="pml-fav-modal" role="dialog" aria-modal="true" aria-labelledby="pml-fav-title"><button type="button" class="pml-fav-close" data-fav-close aria-label="Fechar">×</button><div class="pml-fav-brand">Condomínios na Praia</div><div class="pml-fav-kicker">Seus imóveis escolhidos</div><div id="pml-fav-modal-content"></div></div>';document.body.appendChild(o);state.modal=o;
   }
   function msgHtml(id){return '<div class="pml-fav-msg" id="'+id+'"></div>';}
   function openModal(view){
@@ -168,7 +168,7 @@
     const select='id,slug,codigo,titulo,tipo,preco,status,publicar,fotos_no_site,fotos';
     const rows=await Promise.all(ids.slice(0,100).map(async id=>{try{const r=await fetch(SB_URL+'/rest/v1/imoveis?id=eq.'+encodeURIComponent(id)+'&select='+encodeURIComponent(select)+'&limit=1',{headers:{apikey:SB_KEY,Authorization:'Bearer '+(state.session?state.session.access_token:SB_KEY)}});const a=await r.json();return a&&a[0]||null;}catch(e){return null;}}));return rows.filter(Boolean);
   }
-  function sellerCallout(){return '<section class="pml-fav-sell-card" aria-labelledby="pml-fav-sell-title"><div><h2 id="pml-fav-sell-title">Tem um imóvel à venda?</h2><p>Cadastre seu imóvel aqui e conte com o Portal Meu Litoral para apresentar sua oportunidade.</p></div><a href="/exclusividade-imobiliaria/">Cadastrar meu imóvel</a></section>';}
+  function sellerCallout(){return '<section class="pml-fav-sell-card" aria-labelledby="pml-fav-sell-title"><div><h2 id="pml-fav-sell-title">Tem um imóvel à venda?</h2><p>Cadastre seu imóvel aqui e conte com o Condomínios na Praia para apresentar sua oportunidade.</p></div><a href="/exclusividade-imobiliaria/">Cadastrar meu imóvel</a></section>';}
   function showPageError(message){const el=document.getElementById('pml-fav-page-content');if(el)el.innerHTML='<div class="pml-fav-empty"><h2>Não foi possível carregar seus favoritos</h2><p>'+esc(message||'Tente novamente em instantes.')+'</p></div>';}
   async function renderFavoritesPage(){
     const root=document.getElementById('portal-favoritos-app');if(!root)return;
@@ -211,7 +211,7 @@
   function ensurePageShell(){
     if(!isFavoritesPage())return;
     const body=document.body;if(!body.classList.contains('pml-fav-page'))body.classList.add('pml-fav-page');
-    if(!document.getElementById('pml-fav-page-head')){const head=document.createElement('section');head.id='pml-fav-page-head';head.className='pml-fav-page-head';head.innerHTML='<div class="pml-fav-page-in"><div class="pml-fav-page-kicker">Portal Meu Litoral</div><h1>Seus imóveis <em>favoritos</em></h1><p class="pml-fav-page-sub">Uma seleção particular para você acompanhar as melhores oportunidades do litoral.</p></div>';body.insertBefore(head,body.firstChild);}
+    if(!document.getElementById('pml-fav-page-head')){const head=document.createElement('section');head.id='pml-fav-page-head';head.className='pml-fav-page-head';head.innerHTML='<div class="pml-fav-page-in"><div class="pml-fav-page-kicker">Condomínios na Praia</div><h1>Seus imóveis <em>favoritos</em></h1><p class="pml-fav-page-sub">Uma seleção particular para você acompanhar as melhores oportunidades do litoral.</p></div>';body.insertBefore(head,body.firstChild);}
   }
   function boot(){
     const style=document.createElement('style');style.id='pml-favoritos-css';style.textContent=css;document.head.appendChild(style);

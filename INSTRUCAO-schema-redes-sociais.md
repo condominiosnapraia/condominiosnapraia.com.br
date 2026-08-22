@@ -2,7 +2,7 @@
 
 O site já tem o schema Organization/RealEstateAgent completo (nome, CRECI via
 telefone, endereço, área de atuação). Falta só o "sameAs", que lista suas redes
-sociais oficiais — é o que mais ajuda o Google a entender que "Portal Meu Litoral"
+sociais oficiais — é o que mais ajuda o Google a entender que "Condomínios na Praia"
 (condominiosnapraia.com.br) é uma marca própria, diferente da concorrente
 "Condomínios da Praia".
 
@@ -15,7 +15,7 @@ sociais oficiais — é o que mais ajuda o Google a entender que "Portal Meu Lit
 2. Páginas âncora (casas-em-condominio, terrenos-em-condominio, imoveis-de-luxo):
    procure "sameAs":[ em cada index.html e cole os mesmos links.
 
-Use exatamente as URLs oficiais das redes, com o nome "Portal Meu Litoral".
+Use exatamente as URLs oficiais das redes, com o nome "Condomínios na Praia".
 
 ## Dica de marca
 Ao criar as redes, use @portalmeulitoral (ou similar consistente) e coloque o

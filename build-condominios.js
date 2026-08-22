@@ -34,7 +34,7 @@ const FOOTER_COMPLETO = `<footer>
   <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"/></svg></div>
   <div class="ftr-main">
     <div class="ftr-col ftr-col-brand">
-      <div class="ftr-logo"><img src="/img/logo-rodape.png" alt="Meu Litoral - O Portal do Litoral Gaúcho" class="ftr-logo-img" width="230" height="154" loading="lazy"></div>
+      <div class="ftr-logo"><img src="/img/logo-rodape.png" alt="Condomínios na Praia - O Portal do Litoral Gaúcho" class="ftr-logo-img" width="230" height="154" loading="lazy"></div>
       <p class="ftr-tag">Os melhores condomínios, imóveis e oportunidades de investimento no litoral norte gaúcho — de Osório a Maquiné.</p>
       <a class="ftr-wpp" href="https://wa.me/5551982868888"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 0 1 12 4z"/></svg> Falar no WhatsApp</a>
     </div>
@@ -124,7 +124,7 @@ footer:not(.cond-footer)>.ftr-main,footer:not(.cond-footer)>.ftr-bottom{position
 
 const HEADER_COMPLETO = `<header class="desk-header" id="desk-header">
   <div class="desk-header-inner">
-    <a class="dh-logo" href="/" aria-label="Portal Meu Litoral — início"></a>
+    <a class="dh-logo" href="/" aria-label="Condomínios na Praia — início"></a>
     <nav class="dh-nav">
       <a href="/" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
       <a href="/imoveis">Imóveis</a>
@@ -441,7 +441,7 @@ function preencherPagina(filerel, cond, imoveis) {
     }
   }
 
-  // Troca o footer simplificado pelo footer completo do site (com logo Meu Litoral)
+  // Troca o footer simplificado pelo footer completo do site (com logo Condomínios na Praia)
   if (h.indexOf('ftr-main') === -1) {
     h = h.replace(/<footer>[\s\S]*?<\/footer>/, FOOTER_COMPLETO);
     // injeta o CSS do footer antes do </style> (ou </head>) se ainda não houver

@@ -112,7 +112,7 @@ Evidência: `/home/ubuntu/screenshots/condominiosnapraia_b_2026-08-17_15-23-46_9
 
 ## Validação pós-PR #44
 
-A produção entregou os marcadores do PR #44 no HTML. A captura mobile carregou corretamente a hero, a marca Meu Litoral e o início da navegação rápida em 390 px. A captura desktop feita diretamente com a âncora `#guias-decisao` ficou branca, portanto não foi considerada evidência visual válida; a âncora não deve ser usada para concluir o teste desktop. A validação HTML e as capturas anteriores em desktop continuam sendo as evidências principais.
+A produção entregou os marcadores do PR #44 no HTML. A captura mobile carregou corretamente a hero, a marca Condomínios na Praia e o início da navegação rápida em 390 px. A captura desktop feita diretamente com a âncora `#guias-decisao` ficou branca, portanto não foi considerada evidência visual válida; a âncora não deve ser usada para concluir o teste desktop. A validação HTML e as capturas anteriores em desktop continuam sendo as evidências principais.
 
 ## Captura desktop final válida
 

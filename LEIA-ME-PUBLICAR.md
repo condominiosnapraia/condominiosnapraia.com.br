@@ -27,6 +27,6 @@ Depois de publicar:
 - Blog estático (build-blog.js) - listagem + artigos que o Google indexa
 - Logo nova (header azul + rodapé branco/ícone colorido) + favicon + og-image
 - Botão "Falar no WhatsApp" do rodapé alinhado (desktop e mobile)
-- Título "Portal Meu Litoral | ..." em todas as 396 páginas
+- Título "Condomínios na Praia | ..." em todas as 396 páginas
 - Removidas 3 seções da home (Financie 90%, Tem imóvel p/ vender, Venda Premium)
 - Tags og reforçadas para o preview de link funcionar melhor no WhatsApp

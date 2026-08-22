@@ -1,6 +1,6 @@
 # Atualização de Logo, Rodapé, Favicon e OG-image
 
-## Arquivos de imagem gerados (a partir da logo azul "Portal Meu Litoral")
+## Arquivos de imagem gerados (a partir da logo azul "Condomínios na Praia")
 - **img/logo-header.png** (+ .webp) — logo AZUL, fundo transparente → header (fundo branco).
 - **img/logo-rodape.png** — texto BRANCO + ícone COLORIDO (palmeira/casa clareadas
   para destacar no azul) → rodapé (fundo azul escuro).

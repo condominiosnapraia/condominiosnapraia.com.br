@@ -177,7 +177,7 @@ function schemaImovel(im, canonicalUrl, title, description, image, city) {
     itemOffered: item,
     seller: {
       '@type': 'RealEstateAgent',
-      name: 'Portal Meu Litoral',
+      name: 'Condomínios na Praia',
       url: `${SITE}/`
     }
   };
@@ -204,7 +204,7 @@ function ssrBlock(im, title, description, image, canonicalUrl, city) {
   return `<article id="ssr-imovel" class="ip-ssr" data-ssr="true">
     <nav class="crumb" aria-label="Breadcrumb"><a href="${SITE}/">Início</a> › <a href="${SITE}/imoveis/">Imóveis</a> › <span>${esc(city)}</span></nav>
     <h1 class="ip-title">${esc(title)}</h1>
-    <p class="ip-ssr-location">${esc(city)} · Portal Meu Litoral</p>
+    <p class="ip-ssr-location">${esc(city)} · Condomínios na Praia</p>
     <img class="ip-ssr-image" src="${esc(image)}" width="1200" height="800" loading="eager" fetchpriority="high" decoding="async" alt="${esc(title)}">
     ${facts ? `<div class="ip-ssr-facts" aria-label="Características do imóvel">${facts}</div>` : ''}
     ${price ? `<p class="ip-price"><span class="ip-price-lbl">Valor</span>${esc(price)}</p>` : ''}
@@ -251,7 +251,7 @@ export async function onRequest(context) {
   // O title da aba deve ser compacto; mantemos o título editorial completo no H1/OG/JSON-LD.
   const compactTitle = title.replace(/\bNO CONDOMÍNIO\b/gi, 'NO').replace(/\s{2,}/g, ' ').trim();
   const hasCityInTitle = city && compactTitle.toLocaleLowerCase('pt-BR').includes(city.toLocaleLowerCase('pt-BR'));
-  const htmlTitle = `${esc(compactTitle)}${city && !hasCityInTitle ? ` | ${esc(city)}` : ''} | Meu Litoral`;
+  const htmlTitle = `${esc(compactTitle)}${city && !hasCityInTitle ? ` | ${esc(city)}` : ''} | Condomínios na Praia`;
   const htmlDesc = esc(description);
   const htmlUrl = esc(canonicalUrl);
   const additions = `\n<meta property="og:image" content="${esc(image)}">` +

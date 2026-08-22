@@ -36,16 +36,16 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#0c4a6e" name="theme-color"/>
-<title>Condomínios fechados no Litoral Norte | Portal Meu Litoral</title>
+<title>Condomínios fechados no Litoral Norte | Condomínios na Praia</title>
 <meta content="Conheça condomínios fechados em Xangri-Lá, Capão da Canoa, Osório e Maquiné, com infraestrutura, localização e imóveis disponíveis no Litoral Norte Gaúcho." name="description"/>
 <link href="https://condominiosnapraia.com.br/condominio/" id="cond-canonical" rel="canonical"/>
 <meta content="website" property="og:type"/>
-<meta content="Condomínios fechados no Litoral Norte | Portal Meu Litoral" id="cond-og-title" property="og:title"/>
+<meta content="Condomínios fechados no Litoral Norte | Condomínios na Praia" id="cond-og-title" property="og:title"/>
 <meta content="Conheça condomínios fechados em Xangri-Lá, Capão da Canoa, Osório e Maquiné, com infraestrutura, localização e imóveis disponíveis no Litoral Norte Gaúcho." id="cond-og-desc" property="og:description"/>
 <meta content="https://condominiosnapraia.com.br/condominio/" id="cond-og-url" property="og:url"/>
 <meta content="https://condominiosnapraia.com.br/img/og-default.jpg" id="cond-og-image" property="og:image"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="Condomínios fechados no Litoral Norte | Portal Meu Litoral" name="twitter:title"/>
+<meta content="Condomínios fechados no Litoral Norte | Condomínios na Praia" name="twitter:title"/>
 <meta content="Conheça condomínios fechados em Xangri-Lá, Capão da Canoa, Osório e Maquiné, com infraestrutura, localização e imóveis disponíveis no Litoral Norte Gaúcho." name="twitter:description"/>
 <meta content="https://condominiosnapraia.com.br/img/og-default.jpg" id="cond-tw-image" name="twitter:image"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -444,7 +444,7 @@ body{padding-top:56px}
 
 .ftr-logo-img{width:230px;max-width:100%;height:auto;display:block}@media(max-width:600px){.ftr-logo-img{width:210px;margin:0 auto;height:auto}}
 
-/* === LAYOUT EDITORIAL DE CONDOMÍNIO — inspirado no Vientos, com identidade Portal Meu Litoral === */
+/* === LAYOUT EDITORIAL DE CONDOMÍNIO — inspirado no Vientos, com identidade Condomínios na Praia === */
 .hero-wrap{max-width:none;padding:0;position:relative;background:var(--ocean)}
 .gallery-section-head{display:none}
 .hero-gallery{height:min(72vh,720px);min-height:500px;aspect-ratio:auto;border-radius:0;background:#0d3b54}
@@ -626,7 +626,7 @@ img,video,iframe,svg{max-width:100%}
 <body>
 <header class="desk-header" id="desk-header">
 <div class="desk-header-inner">
-<a aria-label="Portal Meu Litoral — início" class="dh-logo" href="/"></a>
+<a aria-label="Condomínios na Praia — início" class="dh-logo" href="/"></a>
 <nav class="dh-nav">
 <a href="/" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
 <a href="/imoveis/">Imóveis</a>
@@ -838,13 +838,13 @@ img,video,iframe,svg{max-width:100%}
 </nav>
 <div data-contexto="h1" data-origem="pagina-condominio" id="lead-card"></div>
 <script defer="" src="/js/lead-card.js?v=20260821-a11y"></script>
-<footer aria-label="Rodapé Portal Meu Litoral" class="page-footer">
+<footer aria-label="Rodapé Condomínios na Praia" class="page-footer">
 <div class="ftr-wave"><svg aria-hidden="true" preserveaspectratio="none" viewbox="0 0 1440 60"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"></path></svg></div>
 <div class="ftr-main">
 <div class="ftr-col ftr-col-brand">
-<div aria-label="Portal Meu Litoral — Viva o melhor do litoral" class="ftr-logo ftr-brand-lockup" role="img">
+<div aria-label="Condomínios na Praia — Viva o melhor do litoral" class="ftr-logo ftr-brand-lockup" role="img">
 <div class="hero-brand-kicker ftr-brand-kicker"><span class="hero-brand-line"></span><span>PORTAL</span><span class="hero-brand-line"></span></div>
-<div class="hero-brand-name">Meu Litoral</div>
+<div class="hero-brand-name">Condomínios na Praia</div>
 <div aria-hidden="true" class="hero-brand-underline"></div>
 <div class="hero-brand-tagline">VIVA O MELHOR DO LITORAL</div>
 </div>
@@ -887,7 +887,7 @@ img,video,iframe,svg{max-width:100%}
 </div>
 </div>
 <div class="ftr-bottom">
-<span>© 2025 Portal Meu Litoral · Todos os direitos reservados</span>
+<span>© 2025 Condomínios na Praia · Todos os direitos reservados</span>
 <span class="ftr-bottom-r">Litoral Norte Gaúcho · RS</span>
 </div>
 </footer>
@@ -1159,7 +1159,7 @@ async function init() {
   }
 
   // SEO
-  document.title = cond.nome + ' — Portal Meu Litoral';
+  document.title = cond.nome + ' — Condomínios na Praia';
   const metaDesc = document.querySelector('meta[name="description"]');
   const descSeo = dynPublicString(cond.descricao || cond.nome || '').slice(0,155);
   if (metaDesc) metaDesc.content = descSeo;
@@ -1173,7 +1173,7 @@ async function init() {
   const setAttr = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
   setAttr('cond-canonical', 'href', condUrlAbs);
   setAttr('cond-og-url', 'content', condUrlAbs);
-  setAttr('cond-og-title', 'content', cond.nome + ' — Portal Meu Litoral');
+  setAttr('cond-og-title', 'content', cond.nome + ' — Condomínios na Praia');
   setAttr('cond-og-desc', 'content', descSeo);
   // foto de capa para a prévia (WhatsApp/Facebook)
   (function(){
@@ -1847,7 +1847,7 @@ function submitForm() {
   const faixa     = document.getElementById('f-faixa').value;
   const msg       = document.getElementById('f-msg').value;
   const wppMsg = encodeURIComponent(
-    `Olá! Venho do Portal Meu Litoral.\n\n` +
+    `Olá! Venho do Condomínios na Praia.\n\n` +
     `*Condomínio:* ${cond ? cond.nome : ''}\n` +
     `*Nome:* ${nome}\n*Telefone:* ${tel}\n` +
     (interesse ? `*Interesse:* ${interesse}\n` : '') +

@@ -14,7 +14,7 @@
 - **Supabase:** URL `https://cddgkhkzcnyzzcllgzoz.supabase.co` (a anon key pública
   está dentro do HTML e do script de build — é de leitura, sem risco)
 - **Marca:** o site chama "Condomínios na Praia" (767 menções). Existe um rebranding
-  PARCIAL em andamento para "Meu Litoral" — só a LOGO (rodapé) foi trocada; o nome
+  PARCIAL em andamento para "Condomínios na Praia" — só a LOGO (rodapé) foi trocada; o nome
   textual e o domínio continuam "Condomínios na Praia". Rebranding completo foi
   DELIBERADAMENTE adiado (risco de SEO + troca de domínio).
 
@@ -38,7 +38,7 @@ Correções já aplicadas nos arquivos:
 - Bairros movidos para /turismo
 - Ritmo de cores/ondas da home corrigido (era o maior problema visual recorrente)
 - Hero clareado (foto do mar mais visível)
-- Logo "Meu Litoral" no rodapé (311 páginas) + favicon + og:image novos
+- Logo "Condomínios na Praia" no rodapé (311 páginas) + favicon + og:image novos
 - Páginas órfãs: 126 → 48 (criado índice de condomínios com links internos)
 - Schema em 4 páginas institucionais; 855 schemas validados (todos OK)
 - Meta descriptions auditadas (só 1 sem, poucas duplicadas — corrigidas)

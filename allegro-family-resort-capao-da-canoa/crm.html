@@ -21,7 +21,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180.png"><link rel="shortcut icon" href="/img/favicon.ico">
-<title>Portal Meu Litoral | CRM</title>
+<title>Condomínios na Praia | CRM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
@@ -3403,7 +3403,7 @@ function sCDrw(id){
   document.getElementById('drw-title').textContent=c.nome;
   document.getElementById('drw-edit').onclick=()=>{cDrw();eCond(id)};
   document.getElementById('drw-body').innerHTML=`
-    ${c.fotos&&c.fotos[0]?`<img src="${c.fotos[0]}" style="width:100%;height:150px;object-fit:cover;border-radius:var(--r);margin-bottom:11px" alt="Foto do Portal Meu Litoral">`:''}
+    ${c.fotos&&c.fotos[0]?`<img src="${c.fotos[0]}" style="width:100%;height:150px;object-fit:cover;border-radius:var(--r);margin-bottom:11px" alt="Foto do Condomínios na Praia">`:''}
     <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px">
       ${c.padrao?`<span class="tag tgo">${c.padrao}</span>`:''}${c.tipo?`<span class="tag tbl">${c.tipo}</span>`:''}
       ${c.ativo!==false?'<span class="tag tgn">Publicado</span>':'<span class="tag trd">Oculto</span>'}
@@ -3418,7 +3418,7 @@ function sCDrw(id){
     <div class="drow"><span class="drl">Imóveis Cadastrados</span><span class="drv" style="color:var(--go)">${n}</span></div>
     ${c.descricao?`<div class="dsec">Descrição</div><p style="font-size:12.5px;color:var(--t2);line-height:1.6">${c.descricao}</p>`:''}
     ${c.amenidades&&c.amenidades.length?`<div class="dsec">Amenidades</div><div style="display:flex;flex-wrap:wrap;gap:5px">${c.amenidades.map(a=>`<span class="tag tbl">${a}</span>`).join('')}</div>`:''}
-    ${c.fotos&&c.fotos.length>1?`<div class="dsec">Fotos (${c.fotos.filter(f=>f).length})</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">${c.fotos.filter(f=>f).map(f=>`<img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`).join('')}</div>`:''}`;
+    ${c.fotos&&c.fotos.length>1?`<div class="dsec">Fotos (${c.fotos.filter(f=>f).length})</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">${c.fotos.filter(f=>f).map(f=>`<img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px" alt="Foto do Condomínios na Praia">`).join('')}</div>`:''}`;
   oDrw();
 }
 
@@ -3464,7 +3464,7 @@ function rImT(){
       return`<tr onclick="sIDrw('${x.id}')">
         <td>${x.codigo?`<span style="display:inline-block;background:#0e8a99;color:#ffffff;font-weight:700;letter-spacing:.03em;padding:3px 10px;border-radius:20px;font-size:11px;white-space:nowrap">${x.codigo}</span>`:'<span class="cs">—</span>'}</td>
         <td><div style="display:flex;align-items:center;gap:8px">
-          ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:42px;height:30px;object-fit:cover;border-radius:4px;flex-shrink:0" alt="Foto do Portal Meu Litoral">`:`<div style="width:42px;height:30px;background:var(--s4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px">🏠</div>`}
+          ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:42px;height:30px;object-fit:cover;border-radius:4px;flex-shrink:0" alt="Foto do Condomínios na Praia">`:`<div style="width:42px;height:30px;background:var(--s4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px">🏠</div>`}
           <div><div class="cm">${x.titulo||'—'}</div><div class="cs">${[x.quadra,x.lote].filter(Boolean).join(' · ')}</div></div>
         </div></td>
         <td><div style="font-size:12.5px">${c.nome}</div><div class="cs">${c.cidade}</div></td>
@@ -3736,7 +3736,7 @@ function sIDrw(id){
   document.getElementById('drw-title').textContent=x.titulo||'Imóvel';
   document.getElementById('drw-edit').onclick=()=>{cDrw();eImov(id)};
   document.getElementById('drw-body').innerHTML=`
-    ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:100%;height:145px;object-fit:cover;border-radius:var(--r);margin-bottom:11px" alt="Foto do Portal Meu Litoral">`:''}
+    ${x.fotos&&x.fotos[0]?`<img src="${x.fotos[0]}" style="width:100%;height:145px;object-fit:cover;border-radius:var(--r);margin-bottom:11px" alt="Foto do Condomínios na Praia">`:''}
     <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--go);margin-bottom:5px">${brl(x.preco)}</div>
     <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px">
       <span class="tag tbl">${x.tipo||'—'}</span><span class="tag ${sc[x.status]||'tbl'}">${x.status||'—'}</span>
@@ -3763,7 +3763,7 @@ function sIDrw(id){
     <div class="drow"><span class="drl">Comissão</span><span class="drv">${x.comissao?x.comissao+'%':'—'}</span></div>
     ${x.diferenciais&&x.diferenciais.length?`<div class="dsec">Diferenciais</div><div style="display:flex;flex-wrap:wrap;gap:5px">${x.diferenciais.map(d=>`<span class="tag tcy">${d}</span>`).join('')}</div>`:''}
     ${x.obs?`<div class="dsec">Obs. Internas</div><p style="font-size:12px;color:var(--t2);background:var(--s2);padding:8px;border-radius:var(--rs)">${x.obs}</p>`:''}
-    ${x.fotos&&x.fotos.length>1?`<div class="dsec">Fotos</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">${x.fotos.filter(f=>f).map(f=>`<img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`).join('')}</div>`:''}`;
+    ${x.fotos&&x.fotos.length>1?`<div class="dsec">Fotos</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">${x.fotos.filter(f=>f).map(f=>`<img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px" alt="Foto do Condomínios na Praia">`).join('')}</div>`:''}`;
   oDrw();
 }
 
@@ -4205,7 +4205,7 @@ function rFG(p){
     const isCapa = i === 0;
     return `
     <div style="position:relative;border-radius:var(--r);overflow:hidden;border:2px solid ${onSite?'var(--gn)':'var(--bd2)'}">
-      <img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;cursor:pointer" onclick="toggleSite('${p}',${i})" title="${onSite?'Publicar no site — clique para remover':'Não vai ao site — clique para incluir'}" alt="Foto do Portal Meu Litoral">
+      <img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;cursor:pointer" onclick="toggleSite('${p}',${i})" title="${onSite?'Publicar no site — clique para remover':'Não vai ao site — clique para incluir'}" alt="Foto do Condomínios na Praia">
       ${isCapa?`<div style="position:absolute;top:5px;left:5px;background:var(--go);color:#fff;font-size:9px;padding:2px 7px;border-radius:3px;font-weight:700;letter-spacing:.08em">CAPA</div>`:''}
       <div style="position:absolute;top:5px;right:5px;display:flex;gap:4px">
         <button onclick="toggleSite('${p}',${i})" style="background:${onSite?'var(--gn)':'var(--s4)'};border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center" title="${onSite?'Remove do site':'Inclui no site'}">${onSite?'✓':'○'}</button>
@@ -4368,7 +4368,7 @@ async function buildLancamentos(){
   el.innerHTML=aviso+`<table class="tbl"><thead><tr><th>Foto</th><th>Título</th><th>Cidade</th><th>Status</th><th>Ações</th></tr></thead><tbody>`+
   listaFinal.map(l=>{
     const ref = l.id ? `'${l.id}'` : `'seed:${l.seed}'`;
-    const thumb = l.foto ? `<img src="${l.foto}" style="width:54px;height:38px;object-fit:cover;border-radius:5px" alt="Foto do Portal Meu Litoral">` : `<div style="width:54px;height:38px;border-radius:5px;background:#eef3f5;display:flex;align-items:center;justify-content:center;font-size:16px">📷</div>`;
+    const thumb = l.foto ? `<img src="${l.foto}" style="width:54px;height:38px;object-fit:cover;border-radius:5px" alt="Foto do Condomínios na Praia">` : `<div style="width:54px;height:38px;border-radius:5px;background:#eef3f5;display:flex;align-items:center;justify-content:center;font-size:16px">📷</div>`;
     const ehSeed = !l.id;
     return `<tr>
     <td>${thumb}</td>
@@ -4398,7 +4398,7 @@ function lancFotoUpload(inp){
   const f=inp.files[0];if(!f)return;
   compressImgLanc(f,base64=>{
     const prev=document.getElementById('lanc-foto-prev');
-    prev.innerHTML=`<img src="${base64}" style="max-height:120px;border-radius:4px" alt="Foto do Portal Meu Litoral">`;
+    prev.innerHTML=`<img src="${base64}" style="max-height:120px;border-radius:4px" alt="Foto do Condomínios na Praia">`;
     prev.dataset.src=base64;
   });
   inp.value='';
@@ -4447,7 +4447,7 @@ function eLanc(id){
   document.getElementById('lanc-tag').value=l.tag||'Lançamento';
   document.getElementById('lanc-url').value=l.url||'';
   var prev=document.getElementById('lanc-foto-prev');
-  if(l.foto){ prev.innerHTML=`<img src="${l.foto}" style="max-height:120px;border-radius:4px" alt="Foto do Portal Meu Litoral">`; prev.dataset.src=l.foto; }
+  if(l.foto){ prev.innerHTML=`<img src="${l.foto}" style="max-height:120px;border-radius:4px" alt="Foto do Condomínios na Praia">`; prev.dataset.src=l.foto; }
   else { prev.innerHTML='📸 Clique para adicionar foto de capa'; prev.dataset.src=''; }
   var pdfp=document.getElementById('lanc-pdf-prev');
   var mpdf=l.mapa_pdf||l.mapaPdf||'';
@@ -4918,7 +4918,7 @@ function ePost(id){
   document.getElementById('post-cat').value=p.categoria||'Notícias';
   document.getElementById('post-pub').value=p.publicado!==false?'1':'0';
   const prev=document.getElementById('post-capa-prev');
-  if(p.capa){prev.innerHTML=`<img src="${p.capa}" style="max-height:120px;border-radius:4px" alt="Foto do Portal Meu Litoral">`;prev.dataset.src=p.capa;}
+  if(p.capa){prev.innerHTML=`<img src="${p.capa}" style="max-height:120px;border-radius:4px" alt="Foto do Condomínios na Praia">`;prev.dataset.src=p.capa;}
   else{prev.innerHTML='📸 Clique para adicionar foto de capa';prev.dataset.src='';}
   oMo('blog-mo');
 }
@@ -4967,7 +4967,7 @@ function postCapaUpload(inp){
   const f=inp.files[0];if(!f)return;
   compressImg(f,base64=>{
     const prev=document.getElementById('post-capa-prev');
-    prev.innerHTML=`<img src="${base64}" style="max-height:120px;border-radius:4px" alt="Foto do Portal Meu Litoral">`;
+    prev.innerHTML=`<img src="${base64}" style="max-height:120px;border-radius:4px" alt="Foto do Condomínios na Praia">`;
     prev.dataset.src=base64;
   });
   inp.value='';
@@ -5088,7 +5088,7 @@ async function carregarCarrossel(){
     const cards=itens.map(function(it){
       const slot=it[0], label=it[1], foto=mapa[slot];
       const prev=foto
-        ? `<img src="${foto}" style="width:100%;height:120px;object-fit:cover;border-radius:8px 8px 0 0" alt="Foto do Portal Meu Litoral">`
+        ? `<img src="${foto}" style="width:100%;height:120px;object-fit:cover;border-radius:8px 8px 0 0" alt="Foto do Condomínios na Praia">`
         : `<div style="width:100%;height:120px;background:linear-gradient(135deg,#0c4a6e,#0e8a99);border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px">Sem foto</div>`;
       return `<div style="background:#fff;border:1px solid var(--bd);border-radius:10px;overflow:hidden">
         ${prev}
@@ -5150,7 +5150,7 @@ async function carregarCapas(){
   body.innerHTML=CAPAS_DEFS.map(function(d){
     const foto=mapa[d.slug];
     const preview=foto
-      ? `<img src="${foto}" style="width:100%;height:150px;object-fit:cover;border-radius:10px 10px 0 0" alt="Foto do Portal Meu Litoral">`
+      ? `<img src="${foto}" style="width:100%;height:150px;object-fit:cover;border-radius:10px 10px 0 0" alt="Foto do Condomínios na Praia">`
       : `<div style="width:100%;height:150px;background:linear-gradient(135deg,#0c4a6e,#0e8a99);border-radius:10px 10px 0 0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px">Sem foto (usa degradê)</div>`;
     return `<div style="background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(13,59,84,.06)">
       ${preview}
@@ -5215,7 +5215,7 @@ async function buildUsuarios(){
     users.map(u=>`
       <div style="background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;display:flex;align-items:center;gap:12px">
         <div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:20px">
-          ${u.foto?`<img src="${u.foto}" style="width:100%;height:100%;object-fit:cover" alt="Foto do Portal Meu Litoral">`:'👤'}
+          ${u.foto?`<img src="${u.foto}" style="width:100%;height:100%;object-fit:cover" alt="Foto do Condomínios na Praia">`:'👤'}
         </div>
         <div style="flex:1;min-width:0">
           <div style="font-size:13px;font-weight:700;color:var(--tx)">${u.nome}</div>
@@ -5322,7 +5322,7 @@ function showMeuPerfil(){
   document.getElementById('perfil-email').value = prof.email||'';
   document.getElementById('perfil-pass').value = '';
   const fw = document.getElementById('perfil-foto-wrap');
-  if(fw) fw.innerHTML = prof.foto ? `<img src="${prof.foto}" style="width:100%;height:100%;object-fit:cover" alt="Foto do Portal Meu Litoral">` : '👤';
+  if(fw) fw.innerHTML = prof.foto ? `<img src="${prof.foto}" style="width:100%;height:100%;object-fit:cover" alt="Foto do Condomínios na Praia">` : '👤';
   _perfilFotoData = null;
   oMo('perfil-mo');
 }
@@ -5334,7 +5334,7 @@ function perfilFotoUpload(inp){
   reader.onload = e => {
     _perfilFotoData = e.target.result;
     const fw = document.getElementById('perfil-foto-wrap');
-    if(fw) fw.innerHTML = `<img src="${_perfilFotoData}" style="width:100%;height:100%;object-fit:cover" alt="Foto do Portal Meu Litoral">`;
+    if(fw) fw.innerHTML = `<img src="${_perfilFotoData}" style="width:100%;height:100%;object-fit:cover" alt="Foto do Condomínios na Praia">`;
   };
   reader.readAsDataURL(file);
 }
@@ -5445,7 +5445,7 @@ function buildAdmins(){
   grid.innerHTML = ADM_DATA.map(a => {
     const nCartas = CONT_DATA.filter(c=>c.adm_id===a.id).length;
     const logoHtml = a.logo
-      ? `<img src="${a.logo}" style="width:40px;height:40px;object-fit:contain;border-radius:6px;background:#fff;padding:2px;border:1px solid var(--bd)" alt="Portal Meu Litoral">`
+      ? `<img src="${a.logo}" style="width:40px;height:40px;object-fit:contain;border-radius:6px;background:#fff;padding:2px;border:1px solid var(--bd)" alt="Condomínios na Praia">`
       : `<div style="width:40px;height:40px;border-radius:6px;background:${a.cor};display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800">${a.abrev||'?'}</div>`;
     return `<div style="background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px;display:flex;align-items:center;gap:12px">
       ${logoHtml}
@@ -5500,7 +5500,7 @@ function admLogoUpload(inp){
   const reader = new FileReader();
   reader.onload = e => {
     _admLogoData = e.target.result;
-    document.getElementById('adm-logo-prev-wrap').innerHTML = `<img src="${_admLogoData}" style="max-height:60px;max-width:160px;object-fit:contain;border-radius:6px" alt="Portal Meu Litoral">`;
+    document.getElementById('adm-logo-prev-wrap').innerHTML = `<img src="${_admLogoData}" style="max-height:60px;max-width:160px;object-fit:contain;border-radius:6px" alt="Condomínios na Praia">`;
   };
   reader.readAsDataURL(file);
 }
@@ -5516,7 +5516,7 @@ function eAdm(id){
   document.getElementById('adm-cor-prev').textContent = a.abrev||'ABR';
   document.getElementById('adm-mo-title').textContent = 'Editar: '+a.nome;
   if(a.logo){
-    document.getElementById('adm-logo-prev-wrap').innerHTML = `<img src="${a.logo}" style="max-height:60px;max-width:160px;object-fit:contain;border-radius:6px" alt="Portal Meu Litoral">`;
+    document.getElementById('adm-logo-prev-wrap').innerHTML = `<img src="${a.logo}" style="max-height:60px;max-width:160px;object-fit:contain;border-radius:6px" alt="Condomínios na Praia">`;
     _admLogoData = a.logo;
   } else {
     document.getElementById('adm-logo-prev-wrap').innerHTML='<div style="font-size:32px;margin-bottom:6px">📷</div><div style="font-size:11px;color:var(--t3)">Clique para carregar logo</div>';
@@ -5613,7 +5613,7 @@ function renderContempladas(){
     +pagina.map(c=>{
       const adm=ADM_DATA.find(a=>a.id===c.adm_id)||{abrev:'?',cor:'#888',logo:null,nome:c.adm_id};
       const admIco = adm.logo
-        ? `<img src="${adm.logo}" style="width:24px;height:24px;object-fit:contain;border-radius:4px;background:#fff;padding:1px;border:1px solid var(--bd)" alt="Portal Meu Litoral">`
+        ? `<img src="${adm.logo}" style="width:24px;height:24px;object-fit:contain;border-radius:4px;background:#fff;padding:1px;border:1px solid var(--bd)" alt="Condomínios na Praia">`
         : `<div style="width:24px;height:24px;border-radius:4px;background:${adm.cor};color:#fff;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center">${adm.abrev||'?'}</div>`;
       const wppMsg = encodeURIComponent('Olá! Tenho interesse na carta '+adm.nome+' cód '+c.cod+' de '+brl(c.credito)+' com entrada de '+brl(c.entrada)+'. Pode me dar mais informações?');
       return `<tr>
@@ -5902,7 +5902,7 @@ async function gerarPaginasCondominios(){
 <meta name="description" content="${desc}">
 <link rel="canonical" href="${url}">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Portal Meu Litoral | ${esc(titulo)}">
+<meta property="og:title" content="Condomínios na Praia | ${esc(titulo)}">
 <meta property="og:description" content="${desc}">
 <meta property="og:url" content="${url}">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -7093,7 +7093,7 @@ function renderTurFotos(){
   if(!turFotos.length){el.innerHTML='<div style="color:var(--t3);font-size:12px">Nenhuma foto</div>';return;}
   el.innerHTML=turFotos.map((f,i)=>`
     <div style="position:relative;border-radius:var(--r);overflow:hidden;border:2px solid var(--gn)">
-      <img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block" alt="Foto do Portal Meu Litoral">
+      <img src="${f}" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block" alt="Foto do Condomínios na Praia">
       ${i===0?'<div style="position:absolute;top:5px;left:5px;background:var(--go);color:#fff;font-size:9px;padding:2px 7px;border-radius:3px;font-weight:700">HERO</div>':''}
       <button onclick="rmTurFoto(${i})" style="position:absolute;top:5px;right:5px;background:rgba(214,48,49,.85);border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:13px;font-weight:700">✕</button>
     </div>`).join('');
@@ -7261,8 +7261,8 @@ function edLoad(){
   sv('ed-rod-copy', c.rodCopy); sv('ed-logo-main', c.logoMain); sv('ed-logo-sub', c.logoSub);
   // Images
   const imgs = c.images || {};
-  if(imgs.heroBg){ const e=document.getElementById('ed-hero-prev'); if(e){ e.innerHTML=`<img src="${imgs.heroBg}" style="width:100%;height:60px;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`; } }
-  if(imgs.og){ const e=document.getElementById('ed-og-prev'); if(e){ e.innerHTML=`<img src="${imgs.og}" style="width:100%;height:50px;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`; } }
+  if(imgs.heroBg){ const e=document.getElementById('ed-hero-prev'); if(e){ e.innerHTML=`<img src="${imgs.heroBg}" style="width:100%;height:60px;object-fit:cover;border-radius:4px" alt="Foto do Condomínios na Praia">`; } }
+  if(imgs.og){ const e=document.getElementById('ed-og-prev'); if(e){ e.innerHTML=`<img src="${imgs.og}" style="width:100%;height:50px;object-fit:cover;border-radius:4px" alt="Foto do Condomínios na Praia">`; } }
   edPreview();
   edColorPreview();
 }
@@ -7328,8 +7328,8 @@ function edImgUpload(input, key){
     if(!c.images) c.images={};
     c.images[key]=e.target.result;
     edSaveConfig(c);
-    if(key==='heroBg'){const el=document.getElementById('ed-hero-prev');if(el) el.innerHTML=`<img src="${e.target.result}" style="width:100%;height:60px;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`;}
-    if(key==='og'){const el=document.getElementById('ed-og-prev');if(el) el.innerHTML=`<img src="${e.target.result}" style="width:100%;height:50px;object-fit:cover;border-radius:4px" alt="Foto do Portal Meu Litoral">`;}
+    if(key==='heroBg'){const el=document.getElementById('ed-hero-prev');if(el) el.innerHTML=`<img src="${e.target.result}" style="width:100%;height:60px;object-fit:cover;border-radius:4px" alt="Foto do Condomínios na Praia">`;}
+    if(key==='og'){const el=document.getElementById('ed-og-prev');if(el) el.innerHTML=`<img src="${e.target.result}" style="width:100%;height:50px;object-fit:cover;border-radius:4px" alt="Foto do Condomínios na Praia">`;}
     toast('Imagem salva!','success');
   };
   reader.readAsDataURL(file);

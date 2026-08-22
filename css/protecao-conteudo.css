@@ -17,7 +17,7 @@
 .conteudo-protegido .pdf-frame::after,
 .conteudo-protegido .pdf-mobile::after,
 .conteudo-protegido .map-embed::after {
-  content: "Portal Meu Litoral · conteúdo protegido";
+  content: "Condomínios na Praia · conteúdo protegido";
   position: absolute;
   left: 50%;
   top: 50%;

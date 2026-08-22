@@ -1,4 +1,4 @@
-/* Portal Meu Litoral — rodapé compartilhado */
+/* Condomínios na Praia — rodapé compartilhado */
 footer .ftr-main {
   width: min(1140px, 100%);
   margin: 0 auto;
@@ -127,7 +127,7 @@ footer .ftr-links-grid a {
 }
 
 
-/* Portal Meu Litoral — acabamento editorial compartilhado do WhatsApp */
+/* Condomínios na Praia — acabamento editorial compartilhado do WhatsApp */
 footer .ftr-wpp {
   display: inline-flex;
   align-items: center;

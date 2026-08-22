@@ -39,12 +39,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0c4a6e">
-<title>Portal Meu Litoral | Condomínios no Litoral Norte Gaúcho</title>
-<meta name="description" content="Condomínios de alto padrão no Litoral Norte Gaúcho: fechados, náuticos e frente-mar em Xangri-lá, Capão da Canoa, Osório e região. Filtre por cidade e perfil.">
+<title>Condomínios de alto padrão no Litoral Norte</title>
+<meta name="description" content="Encontre condomínios fechados, náuticos e frente-mar em Xangri-lá, Capão da Canoa, Osório e região.">
 <link rel="preload" as="image" href="/img/hero-condominios-768.webp" media="(max-width: 700px)" fetchpriority="high"><link rel="preload" as="image" href="/img/hero-condominios.webp" media="(min-width: 701px)" fetchpriority="high">
 <link rel="canonical" href="https://condominiosnapraia.com.br/condominios/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Portal Meu Litoral | Condominios no Litoral Norte Gaucho">
+<meta property="og:site_name" content="Condomínios na Praia">
+<meta property="og:title" content="Condomínios na Praia | Condominios no Litoral Norte Gaucho">
 <meta property="og:image" content="https://condominiosnapraia.com.br/img/og-home.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -365,6 +366,7 @@ body{padding-top:56px}
 /* ── botão de busca cor de praia (turquesa) ── */
 .cl-clear{background:linear-gradient(135deg,var(--ol),var(--om)) !important;border:none !important;color:#fff !important;font-weight:700 !important;font-size:13px !important;cursor:pointer;text-decoration:none !important;align-self:flex-end;padding:11px 22px !important;border-radius:100px !important;box-shadow:0 6px 18px rgba(31,181,196,.35);transition:transform .2s,box-shadow .2s}
 .cl-clear:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(31,181,196,.45)}
+.cl-card-img picture{display:block;width:100%;height:100%}.cl-card-img picture img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 </style>
 <style>
 .rf-hero{background:linear-gradient(150deg,#0c4a6e,#0891b2);color:#fff;padding:56px 22px 44px;text-align:center;border-radius:0 0 30px 30px;margin-bottom:36px}
@@ -487,7 +489,7 @@ details[open] .dec-faq-q:after{content:"−"}
 @media(max-width:560px){.cl-grid{grid-template-columns:1fr}}
 .cl-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(13,59,84,.06);transition:transform .22s,box-shadow .22s}
 .cl-card:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(13,59,84,.14)}
-.cl-card-img{aspect-ratio:16/11;background:linear-gradient(135deg,var(--ocean),var(--om));display:flex;align-items:center;justify-content:center;font-size:44px;color:rgba(255,255,255,.5);position:relative;overflow:hidden}
+.cl-card-img{aspect-ratio:16/9;background:linear-gradient(135deg,var(--ocean),var(--om));display:flex;align-items:center;justify-content:center;font-size:44px;color:rgba(255,255,255,.5);position:relative;overflow:hidden}
 .cl-card-img img{width:100%;height:100%;object-fit:cover}
 .cl-badge{position:absolute;top:12px;left:12px;background:rgba(12,74,110,.88);color:#fff;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:4px 11px;border-radius:100px}
 .cl-badge.perfil{right:12px;left:auto;background:rgba(224,179,77,.92);color:#3a2600}
@@ -730,13 +732,13 @@ details[open] .dec-faq-q:after{content:"−"}
 </div>
 </section>
 
-<footer class="page-footer" aria-label="Rodapé Portal Meu Litoral">
+<footer class="page-footer" aria-label="Rodapé Condomínios na Praia">
   <div class="ftr-wave"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0,30 C240,60 480,0 720,20 C960,40 1200,55 1440,25 L1440,60 L0,60 Z" fill="#0c4a6e"></path></svg></div>
   <div class="ftr-main">
     <div class="ftr-col ftr-col-brand">
-      <div class="ftr-logo ftr-brand-lockup" role="img" aria-label="Portal Meu Litoral — Viva o melhor do litoral">
+      <div class="ftr-logo ftr-brand-lockup" role="img" aria-label="Condomínios na Praia — Viva o melhor do litoral">
         <div class="hero-brand-kicker ftr-brand-kicker"><span class="hero-brand-line"></span><span>PORTAL</span><span class="hero-brand-line"></span></div>
-        <div class="hero-brand-name">Meu Litoral</div>
+        <div class="hero-brand-name">Condomínios na Praia</div>
         <div class="hero-brand-underline" aria-hidden="true"></div>
         <div class="hero-brand-tagline">VIVA O MELHOR DO LITORAL</div>
       </div>
@@ -779,7 +781,7 @@ details[open] .dec-faq-q:after{content:"−"}
     </div>
   </div>
   <div class="ftr-bottom">
-    <span>© 2025 Portal Meu Litoral · Todos os direitos reservados</span>
+    <span>© 2025 Condomínios na Praia · Todos os direitos reservados</span>
     <span class="ftr-bottom-r">Litoral Norte Gaúcho · RS</span>
   </div>
 </footer>
@@ -799,7 +801,7 @@ function fotoPublica(raw){
 }
 async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
 function fotos(a){return (a||[]).map(fotoPublica).filter(Boolean);}
-function thumb(u,w){
+function thumb(u,w,format){
   try{
     w=w||400;
     if(!u||typeof u!=='string'||u.startsWith('data:')||u.startsWith('blob:'))return u;
@@ -809,8 +811,13 @@ function thumb(u,w){
     else{var ip=u.indexOf('/storage/v1/object/public/');if(ip!==-1)path=u.slice(ip+'/storage/v1/object/public/'.length);}
     if(!path)return u;
     path=path.split('?')[0];
-    return SB_URL+'/storage/v1/render/image/public/'+path+'?width='+w+'&quality=60&format=webp';
+    return SB_URL+'/storage/v1/render/image/public/'+path+'?width='+w+'&quality=60&format='+(format||'webp');
   }catch(e){return u;}
+}
+function pictureCard(u,alt){
+  var sizes='(max-width:560px) calc(100vw - 48px), (max-width:900px) calc(50vw - 32px), 360px';
+  var set=function(fmt){return thumb(u,480,fmt)+' 480w, '+thumb(u,768,fmt)+' 768w, '+thumb(u,1280,fmt)+' 1280w';};
+  return '<picture class="cl-card-picture"><source type="image/avif" srcset="'+esc(set('avif'))+'" sizes="'+sizes+'"><source type="image/webp" srcset="'+esc(set('webp'))+'" sizes="'+sizes+'"><img src="'+esc(thumb(u,768,'jpeg'))+'" srcset="'+esc(set('jpeg'))+'" sizes="'+sizes+'" alt="'+esc(alt||'Imagem do condomínio')+'" loading="lazy" decoding="async" width="768" height="432"></picture>';
 }
 const PERFIL_LBL={mar:'Beira-mar',lagoa:'Beira da lagoa',cidade:'Cidade'};
 function norm(v){return String(v==null?'':v).normalize('NFD').replace(/\p{Diacritic}/gu,'').trim().toLowerCase();}
@@ -908,7 +915,7 @@ function render(lista){
   grid.innerHTML=visible.map(function(c){
     var cidade=publicCondoCity(c);
     var f=fotos(c.fotos_no_site||c.fotos);
-    var img=f.length?'<img src="'+esc(thumb(f[0],360))+'" srcset="'+esc(thumb(f[0],360))+' 1x, '+esc(thumb(f[0],720))+' 2x" sizes="(max-width:560px) calc(100vw - 48px), (max-width:900px) calc(50vw - 32px), 360px" alt="'+esc(c.nome||'Condomínio')+'" loading="lazy" decoding="async" width="360" height="248">':'&#127963;';
+    var img=f.length?pictureCard(f[0],(c.nome||'Condomínio')+' em '+(cidade||'Litoral Norte Gaúcho')):'&#127963;';
     var perfilBadge=c.perfil&&PERFIL_LBL[c.perfil]?'<span class="cl-badge perfil">'+esc(PERFIL_LBL[c.perfil])+'</span>':'';
     var oferta=imoveisVendaCount(c);
     var amen=(c.amenidades||[]).slice(0,3);
