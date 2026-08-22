@@ -133,15 +133,18 @@ export async function onRequest(context) {
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
   if (!sites[0]) return notFound();
   const site = sites[0];
-  let rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar)&order=destaque.desc,ordem.asc&limit=1000`);
-  if (!Array.isArray(rows) || !rows.length) rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar)&order=destaque.desc,ordem.asc&limit=1000`);
-  let row = (Array.isArray(rows) ? rows : []).find((candidate) => { const im = candidate.imovel || {}; return isPublishedRow(candidate) && [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
-  if (!row?.imovel) {
-    const direct = await getJson(`imoveis?or=(slug.eq.${encodeURIComponent(imovelRef)},id.eq.${encodeURIComponent(imovelRef)},codigo.eq.${encodeURIComponent(imovelRef.toUpperCase())},ref.eq.${encodeURIComponent(imovelRef.toUpperCase())})&select=id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar&limit=1`);
-    const fallback = Array.isArray(direct) ? direct.find((im) => im.publicar !== false && String(im.status || '').toLowerCase() !== 'vendido') : null;
-    const allowed = fallback ? await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&imovel_id=eq.${encodeURIComponent(fallback.id)}&publicado=eq.true&select=imovel_id&limit=1`) : [];
-    if (fallback && Array.isArray(allowed) && allowed[0]) row = { id: fallback.id, titulo_personalizado: '', chamada_personalizada: '', imovel: fallback };
+  const propertySelect = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
+  let row = null;
+  const selectors = [`slug=eq.${encodeURIComponent(imovelRef)}`, `codigo=eq.${encodeURIComponent(imovelRef.toUpperCase())}`, `ref=eq.${encodeURIComponent(imovelRef.toUpperCase())}`, `id=eq.${encodeURIComponent(imovelRef)}`];
+  for (const selector of selectors) {
+    const direct = await getJson(`imoveis?${selector}&select=${propertySelect}&limit=1`);
+    const candidate = Array.isArray(direct) ? direct.find((im) => im.publicar !== false && String(im.status || '').toLowerCase() !== 'vendido') : null;
+    if (!candidate) continue;
+    const allowed = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&imovel_id=eq.${encodeURIComponent(candidate.id)}&publicado=eq.true&select=imovel_id&limit=1`);
+    if (Array.isArray(allowed) && allowed[0]) { row = { id: candidate.id, titulo_personalizado: '', chamada_personalizada: '', imovel: candidate }; break; }
   }
+  let rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${propertySelect})&order=destaque.desc,ordem.asc&limit=1000`);
+  if (!row?.imovel) row = (Array.isArray(rows) ? rows : []).find((candidate) => { const im = candidate.imovel || {}; return isPublishedRow(candidate) && [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
   if (!row?.imovel) return notFound();
   let imovel = { ...row.imovel, titulo: row.titulo_personalizado || row.imovel.titulo, descricao: row.chamada_personalizada || row.imovel.descricao };
   const enrich = await getJson(`imoveis?id=eq.${encodeURIComponent(imovel.id)}&select=bairro_end,fora_condominio,cond_id,banheiros,vagas,area_privativa,area_construida,corretor,diferenciais&limit=1`);
