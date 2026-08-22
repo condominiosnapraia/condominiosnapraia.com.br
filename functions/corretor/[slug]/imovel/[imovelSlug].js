@@ -47,6 +47,16 @@ function cleanDescription(value) {
   return String(value || '').replace(/\b(?:quadra|lote|box|unidade|apartamento|torre|casa)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '').replace(/\s{2,}/g, ' ').trim();
 }
 function normalized(value) { return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(); }
+const CITY_NAMES = ['Xangri-Lá', 'Capão da Canoa', 'Atlântida', 'Tramandaí', 'Torres', 'Imbé', 'Cidreira', 'Balneário Pinhal', 'Osório', 'Porto Alegre', 'Canoas', 'Gramado', 'Canela'];
+function inferContext(item) {
+  const text = String(item?.title || item?.titulo || '') + ' ' + String(item?.description || item?.descricao || '');
+  const city = CITY_NAMES.find((name) => text.toLowerCase().includes(name.toLowerCase())) || '';
+  const typeMatch = text.match(/\b(apartamento|sobrado|casa|terreno|lote|loja|sala)\b/i);
+  const type = typeMatch ? typeMatch[1] : 'Imóvel';
+  const condoMatch = text.match(/\b(?:no|na|em)\s+([^—,\\n]+?)(?:\s+—|\s*,|\s+(?:XANGRI-LÁ|CAPÃO DA CANOA|ATLÂNTIDA|TRAMANDAÍ|TORRES|IMBÉ|CIDREIRA|OSÓRIO)|$)/i);
+  const condo = condoMatch ? condoMatch[1].replace(/^[^a-záàâãéêíóôõúç]+/i, '').replace(/\s+/g, ' ').trim() : '';
+  return { city, type, condo };
+}
 function isPublishedRow(row) { const im = row?.imovel || {}; return Boolean(im.id) && im.publicar !== false && String(im.status || '').toLowerCase() !== 'vendido'; }
 async function getJson(path) {
   try { const response = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HEADERS }); return response.ok ? await response.json() : []; } catch (_) { return []; }
@@ -74,21 +84,24 @@ function relatedSection(title, subtitle, items, contextLabel = '') {
   return `<section class="related-section"><div class="related-head"><div><span class="eyebrow">Mais oportunidades</span><h2>${esc(title)}</h2><p>${esc(subtitle)}</p></div><span class="related-count">${items.length} ${items.length === 1 ? 'opção' : 'opções'}</span></div><div class="related-grid">${items.map((item) => relatedCard(item, contextLabel)).join('')}</div></section>`;
 }
 function selectRelated(rows, target, cond, siteSlug) {
-  const candidates = (Array.isArray(rows) ? rows : []).filter(isPublishedRow).filter((row) => String(row.imovel.id) !== String(target.id)).map((row) => ({ ...row, url: propertyUrl(siteSlug, row.imovel) }));
-  const targetCity = normalized(target.cidade_end || target.cidade || cond?.cidade);
-  const targetType = normalized(target.tipo);
-  const targetCondo = String(target.cond_id || '');
+  const targetContext = inferContext(target);
+  const candidates = (Array.isArray(rows) ? rows : []).filter(isPublishedRow).filter((row) => String(row.imovel.id) !== String(target.id)).map((row) => ({ ...row, context: inferContext(row.imovel), url: propertyUrl(siteSlug, row.imovel) }));
+  const targetCity = normalized(target.cidade_end || target.cidade || cond?.cidade || targetContext.city);
+  const targetType = normalized(target.tipo || targetContext.type);
+  const targetCondo = normalized(target.cond_id || targetContext.condo);
   const used = new Set();
-  const pick = (predicate, limit) => candidates.filter((row) => !used.has(String(row.imovel.id)) && predicate(row.imovel)).slice(0, limit).map((row) => { used.add(String(row.imovel.id)); return row; });
-  const sameCondo = targetCondo ? pick((im) => String(im.cond_id || '') === targetCondo, 4) : [];
-  const similar = pick((im) => normalized(im.tipo) === targetType || (im.fora_condominio === target.fora_condominio && targetType), 4);
-  const sameCity = targetCity ? pick((im) => normalized(im.cidade_end || im.cidade) === targetCity, 4) : [];
-  return { sameCondo, similar, sameCity };
+  const pick = (predicate, limit) => candidates.filter((row) => !used.has(String(row.imovel.id)) && predicate(row.imovel, row.context)).slice(0, limit).map((row) => { used.add(String(row.imovel.id)); return row; });
+  const sameCondo = targetCondo ? pick((im, context) => normalized(im.cond_id || context.condo) === targetCondo, 4) : [];
+  const similar = pick((im, context) => normalized(im.tipo || context.type) === targetType, 4);
+  const sameCity = targetCity ? pick((im, context) => normalized(im.cidade_end || im.cidade || context.city) === targetCity, 4) : [];
+  return { sameCondo, similar, sameCity, targetContext };
 }
 
 function page({ site, imovel, cond, siteSlug, relatedRows }) {
   const title = imovel.titulo || 'Imóvel à venda';
-  const city = imovel.cidade_end || imovel.cidade || cond?.cidade || 'Rio Grande do Sul';
+  const context = inferContext(imovel);
+  const condoName = cond?.nome || context.condo || '';
+  const city = imovel.cidade_end || imovel.cidade || cond?.cidade || context.city || 'Rio Grande do Sul';
   const location = [imovel.bairro_end || imovel.bairro, city].filter(Boolean).join(' · ');
   const photos = photosOf(imovel);
   const openPhotos = photos.slice(0, 3);
@@ -105,14 +118,14 @@ function page({ site, imovel, cond, siteSlug, relatedRows }) {
   const imageMarkup = openPhotos.length ? openPhotos.map((photo, index) => `<figure class="photo-slide" data-lightbox="${esc(photo)}" tabindex="0" role="button" aria-label="Ampliar foto ${index + 1}"><img src="${esc(photo)}" alt="${esc(title)} — foto ${index + 1}" loading="${index === 0 ? 'eager' : 'lazy'}" decoding="async"${index === 0 ? ' fetchpriority="high"' : ''}><span class="photo-number">${index + 1}</span></figure>`).join('') : '<div class="photo-empty">Imagem em atualização</div>';
   const galleryGate = hiddenPhotoCount ? `<div class="gallery-gate" data-gallery-lock="property"><div><strong>+${hiddenPhotoCount} fotos disponíveis</strong><span>Faça login para acessar a galeria completa deste imóvel.</span></div><button type="button" class="unlock-button" data-gallery-auth>Fazer login para ver mais</button></div>` : '';
   const facts = [['Tipo', imovel.tipo], ['Quartos', imovel.quartos], ['Suítes', imovel.suites], ['Banheiros', imovel.banheiros], ['Vagas', imovel.vagas], ['Área', imovel.area || imovel.area_privativa || imovel.area_construida ? `${imovel.area || imovel.area_privativa || imovel.area_construida} m²` : '']].filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '');
-  const extras = [['Bairro', imovel.bairro_end || imovel.bairro], ['Código', imovel.codigo || imovel.ref], ['Condomínio', cond?.nome], ['Localização', imovel.fora_condominio ? 'Fora de condomínio' : cond?.nome ? 'Em condomínio' : 'Rio Grande do Sul']].filter(([, value]) => value);
+  const extras = [['Bairro', imovel.bairro_end || imovel.bairro], ['Código', imovel.codigo || imovel.ref], ['Condomínio', condoName], ['Localização', imovel.fora_condominio ? 'Fora de condomínio' : condoName ? 'Em condomínio' : city]].filter(([, value]) => value);
   const differences = toArray(imovel.diferenciais).map((item) => String(item).trim()).filter(Boolean).slice(0, 20);
   const condoAllPhotos = [...toArray(cond?.fotos_no_site), ...toArray(cond?.fotos)].map(publicPhoto).filter(Boolean);
   const condoPhotos = condoAllPhotos.slice(0, 3);
   const hiddenCondoPhotoCount = Math.max(0, condoAllPhotos.length - condoPhotos.length);
   const condoGalleryMarkup = condoPhotos.length ? `<div class="condo-gallery" id="condo-gallery">${condoPhotos.map((photo, index) => `<img src="${esc(photo)}" alt="${esc(cond?.nome || 'Empreendimento')} — infraestrutura ${index + 1}" loading="lazy" decoding="async">`).join('')}${hiddenCondoPhotoCount ? `<div class="gallery-gate condo-gate" data-gallery-lock="condo"><div><strong>+${hiddenCondoPhotoCount} fotos do empreendimento</strong><span>Faça login para ver a galeria completa.</span></div><button type="button" class="unlock-button" data-gallery-auth>Fazer login para ver mais</button></div>` : ''}</div>` : '';
-  const related = selectRelated(relatedRows, imovel, cond, siteSlug);
-  const relatedMarkup = relatedSection('Imóveis semelhantes', 'Outras oportunidades com características próximas a este imóvel.', related.similar) + (cond?.nome ? relatedSection(`Mais imóveis no ${cond.nome}`, 'Veja outras opções disponíveis no mesmo condomínio ou empreendimento.', related.sameCondo, cond.nome) : '') + relatedSection(`Imóveis em ${city}`, 'Encontre outras oportunidades na mesma cidade.', related.sameCity, city);
+  const related = selectRelated(relatedRows, { ...imovel, _derivedCondo: context.condo, _derivedCity: context.city, _derivedType: context.type }, cond, siteSlug);
+  const relatedMarkup = relatedSection('Imóveis semelhantes', 'Outras oportunidades com características próximas a este imóvel.', related.similar) + (condoName ? relatedSection(`Mais imóveis no ${condoName}`, 'Veja outras opções disponíveis no mesmo condomínio ou empreendimento.', related.sameCondo, condoName) : '') + relatedSection(`Imóveis em ${city}`, 'Encontre outras oportunidades na mesma cidade.', related.sameCity, city);
   const schema = { '@context': 'https://schema.org', '@type': 'RealEstateListing', name: title, description, url: canonical, image: photos.slice(0, 8), itemOffered: { '@type': /apartamento/i.test(imovel.tipo || '') ? 'Apartment' : 'Residence', name: title, address: { '@type': 'PostalAddress', addressLocality: city, addressRegion: 'RS', addressCountry: 'BR' } }, seller: { '@type': 'RealEstateAgent', name: broker, telephone: phone ? `+${phone}` : undefined } };
   if (Number(imovel.preco) > 0) schema.offers = { '@type': 'Offer', price: Number(imovel.preco), priceCurrency: 'BRL', availability: 'https://schema.org/InStock', url: canonical };
   return `<!doctype html>
