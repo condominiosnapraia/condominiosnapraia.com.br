@@ -90,12 +90,14 @@ function notFound() { return new Response('<!doctype html><meta charset="utf-8">
 function relatedCard(item, contextLabel = '') {
   const imovel = item.imovel || item;
   const title = item.titulo_personalizado || imovel.titulo || 'Imóvel disponível';
+  const context = inferContext(imovel);
   const photo = photosOf(imovel)[0];
-  const city = imovel.cidade_end || imovel.cidade || '';
+  const city = imovel.cidade_end || imovel.cidade || context.city || '';
+  const displayType = imovel.tipo && !/^(imovel|imóvel|disponivel|disponível)$/i.test(String(imovel.tipo)) ? imovel.tipo : context.type;
   const location = [imovel.bairro_end || imovel.bairro, city].filter(Boolean).join(' · ');
   const code = imovel.codigo || imovel.ref || '';
   const details = [imovel.quartos && `${imovel.quartos} ${Number(imovel.quartos) === 1 ? 'quarto' : 'quartos'}`, imovel.suites && `${imovel.suites} ${Number(imovel.suites) === 1 ? 'suíte' : 'suítes'}`, imovel.area && `${imovel.area} m²`].filter(Boolean).join(' · ');
-  return `<article class="related-card"><a class="related-photo-link" href="${esc(item.url)}" aria-label="Ver ${esc(title)}"><div class="related-photo">${photo ? `<img src="${esc(photo)}" alt="${esc(title)}" loading="lazy" decoding="async">` : '<div class="related-photo-empty">Imagem em atualização</div>'}</div></a><div class="related-body"><span class="related-type">${esc(imovel.tipo || 'Imóvel')}</span><h3><a href="${esc(item.url)}">${esc(title)}</a></h3><p>${esc(location || 'Rio Grande do Sul')}</p>${details ? `<p>${esc(details)}</p>` : ''}${code ? `<p class="related-code">Cód. ${esc(code)}</p>` : ''}${contextLabel ? `<p class="related-context">${esc(contextLabel)}</p>` : ''}<strong>${esc(money(imovel.preco))}</strong><a class="related-button" href="${esc(item.url)}">Ver imóvel</a></div></article>`;
+  return `<article class="related-card"><a class="related-photo-link" href="${esc(item.url)}" aria-label="Ver ${esc(title)}"><div class="related-photo">${photo ? `<img src="${esc(photo)}" alt="${esc(title)}" loading="lazy" decoding="async">` : '<div class="related-photo-empty">Imagem em atualização</div>'}</div></a><div class="related-body"><span class="related-type">${esc(displayType || 'Imóvel')}</span><h3><a href="${esc(item.url)}">${esc(title)}</a></h3><p>${esc(location || 'Rio Grande do Sul')}</p>${details ? `<p>${esc(details)}</p>` : ''}${code ? `<p class="related-code">Cód. ${esc(code)}</p>` : ''}${contextLabel ? `<p class="related-context">${esc(contextLabel)}</p>` : ''}<strong>${esc(money(imovel.preco))}</strong><a class="related-button" href="${esc(item.url)}">Ver imóvel</a></div></article>`;
 }
 function relatedSection(title, subtitle, items, contextLabel = '') {
   if (!items.length) return '';
@@ -197,7 +199,7 @@ export async function onRequest(context) {
   const site = sites[0] || (feed?.site ? { id: '', slug: dbSlug, nome: feed.site.name, creci: feed.site.creci, telefone: feed.site.phone, whatsapp: feed.site.whatsapp, email: feed.site.email, cidade: feed.site.city, bio: feed.site.bio, logo_url: feed.site.logo_url, capa_url: feed.site.cover_url } : null);
   if (!site) return notFound();
   const feedProperties = Array.isArray(feed?.properties) ? feed.properties : [];
-  const feedRows = feedProperties.map((item) => ({ id: item.id, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: item.id, slug: item.slug, codigo: item.code, ref: item.code, titulo: item.title, tipo: 'Imóvel', cidade_end: item.city, bairro: item.neighborhood, preco: item.price, quartos: item.bedrooms, suites: item.suites, area: item.area, descricao: item.description, fotos_no_site: item.cover_image ? [item.cover_image] : [], fotos_para_site: [], status: 'Disponível', publicar: true } }));
+  const feedRows = feedProperties.map((item) => ({ id: item.id, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: item.id, slug: item.slug, codigo: item.code, ref: item.code, titulo: item.title, tipo: 'Imóvel', cidade_end: item.city, bairro: item.neighborhood, preco: item.price, quartos: item.bedrooms, suites: item.suites, area: item.area, descricao: item.description, fotos_no_site: Array.isArray(item.photos) && item.photos.length ? item.photos : (item.cover_image ? [item.cover_image] : []), fotos: Array.isArray(item.photos) ? item.photos : [], fotos_para_site: [], status: 'Disponível', publicar: true } }));
   let rows = feedRows;
   let row = feedRows.find((candidate) => { const im = candidate.imovel || {}; return [im.slug, im.id, im.codigo, im.ref, propertySlug(im)].filter(Boolean).map((value) => String(value).toLowerCase()).includes(imovelRef); });
   if (!row?.imovel && site.id) {

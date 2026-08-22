@@ -17,7 +17,7 @@ function publicPhoto(value) {
 }
 function photoList(row) {
   const seen = new Set();
-  return [...toArray(row?.fotos_no_site), ...toArray(row?.fotos_para_site)].map(publicPhoto).filter((url) => url && !seen.has(url) && seen.add(url));
+  return [...toArray(row?.fotos_no_site), ...toArray(row?.fotos), ...toArray(row?.fotos_para_site)].map(publicPhoto).filter((url) => url && !seen.has(url) && seen.add(url));
 }
 async function getJson(path, headers = HEADERS) { try { const response = await fetch(`${SB_URL}/rest/v1/${path}`, { headers }); return response.ok ? await response.json() : []; } catch (_) { return []; } }
 async function authenticatedUser(token) { try { const response = await fetch(`${SB_URL}/auth/v1/user`, { headers: { apikey: SB_ANON, Authorization: `Bearer ${token}` } }); return response.ok ? await response.json() : null; } catch (_) { return null; } }
@@ -33,7 +33,7 @@ export async function onRequest(context) {
   if (!token || !(await authenticatedUser(token))) return json({ error: 'login_required', message: 'Faça login para ver as fotos adicionais.' }, 401, { 'www-authenticate': 'Bearer' });
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(siteSlug)}&status=eq.active&select=id&limit=1`);
   if (!sites[0]) return json({ error: 'site_not_published' }, 404);
-  const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(sites[0].id)}&imovel_id=eq.${encodeURIComponent(propertyId)}&publicado=eq.true&select=imovel:imoveis(id,cond_id,fotos_no_site,fotos_para_site)&limit=1`);
+  const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(sites[0].id)}&imovel_id=eq.${encodeURIComponent(propertyId)}&publicado=eq.true&select=imovel:imoveis(id,cond_id,fotos,fotos_no_site,fotos_para_site)&limit=1`);
   if (!rows[0]?.imovel) return json({ error: 'property_not_published' }, 404);
   const propertyPhotos = photoList(rows[0].imovel).slice(3);
   let condoPhotos = [];

@@ -15,14 +15,11 @@ function toArray(value) {
   return [];
 }
 
-function firstPhoto(imovel) {
-  const items = [...toArray(imovel?.fotos_no_site), ...toArray(imovel?.fotos), ...toArray(imovel?.fotos_para_site)];
-  for (const item of items) {
-    const url = typeof item === 'string' ? item : item?.url || item?.src || item?.publicUrl || item?.public_url;
-    if (url && /^https?:\/\//i.test(url)) return url;
-  }
-  return null;
+function photoList(imovel) {
+  const seen = new Set();
+  return [...toArray(imovel?.fotos_no_site), ...toArray(imovel?.fotos), ...toArray(imovel?.fotos_para_site)].map((item) => typeof item === 'string' ? item : item?.url || item?.src || item?.publicUrl || item?.public_url || '').filter((url) => /^https?:\/\//i.test(url) && !seen.has(url) && seen.add(url));
 }
+function firstPhoto(imovel) { return photoList(imovel)[0] || null; }
 
 export async function onRequest(context) {
   const requestedSlug = String(context.params?.slug || '').toLowerCase();
@@ -55,6 +52,8 @@ export async function onRequest(context) {
     suites: row.imovel.suites || null,
     area: row.imovel.area || null,
     cover_image: firstPhoto(row.imovel),
+    photos: photoList(row.imovel).slice(0, 3),
+    photo_count: photoList(row.imovel).length,
     featured: Boolean(row.destaque),
     public_url: `https://condominiosnapraia.com.br/corretor/${encodeURIComponent(publicSlug)}/imovel/${encodeURIComponent(row.imovel.slug || row.imovel.codigo || row.imovel.id)}/`,
   }));
