@@ -8,6 +8,7 @@
   const esc=(value)=>String(value??'').replace(/[&<>"']/g,(char)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
   const slugify=(value)=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70);
   const publicBase=()=>location.origin;
+  const publicPartnerSlug=(slug)=>String(slug||'').toLowerCase()==='fernando-trvisol'?'fernando-trevisol':String(slug||'');
   const currentProfile=()=>window._authProfile||JSON.parse(sessionStorage.getItem('cnp_crm_user')||'{}');
 
   window.parcOpenNew=function(){
@@ -28,7 +29,7 @@
       const drafts=parcSites.filter((site)=>site.status==='draft').length;
       const stats=document.getElementById('parc-stats');
       if(stats)stats.innerHTML=`<div class="parc-stat"><strong>${parcSites.length}</strong><span>Sites cadastrados</span></div><div class="parc-stat"><strong>${active}</strong><span>Publicados</span></div><div class="parc-stat"><strong>${drafts}</strong><span>Em rascunho</span></div><div class="parc-stat"><strong>${paused}</strong><span>Pausados</span></div>`;
-      list.innerHTML=parcSites.length?parcSites.map((site)=>`<button class="parc-site-row ${parcCurrent?.id===site.id?'on':''}" type="button" onclick="parcSelect('${esc(site.id)}')"><span><strong>${esc(site.nome)}</strong><small>/${esc(site.slug)} · ${esc(site.plano_slug||'inicial')}</small></span><span class="parc-site-status ${esc(site.status)}">${site.status==='active'?'Publicado':site.status==='suspended'?'Pausado':'Rascunho'}</span></button>`).join(''):'<div class="parc-empty">Nenhum site parceiro cadastrado. Crie o primeiro em modo rascunho.</div>';
+      list.innerHTML=parcSites.length?parcSites.map((site)=>`<button class="parc-site-row ${parcCurrent?.id===site.id?'on':''}" type="button" onclick="parcSelect('${esc(site.id)}')"><span><strong>${esc(site.nome)}</strong><small>/${esc(publicPartnerSlug(site.slug))} · ${esc(site.plano_slug||'inicial')}</small></span><span class="parc-site-status ${esc(site.status)}">${site.status==='active'?'Publicado':site.status==='suspended'?'Pausado':'Rascunho'}</span></button>`).join(''):'<div class="parc-empty">Nenhum site parceiro cadastrado. Crie o primeiro em modo rascunho.</div>';
       if(parcCurrent){const updated=parcSites.find((site)=>site.id===parcCurrent.id);if(updated)parcSelect(updated.id);else parcClearDetail();}
     }catch(error){list.innerHTML=`<div class="parc-empty">Não foi possível carregar sites: ${esc(error.message||error)}</div>`;}
   };
@@ -68,11 +69,13 @@
 
   function parcRenderDetail(){
     const site=parcCurrent;const detail=document.getElementById('parc-detail');if(!site||!detail)return;
-    const landing=`${publicBase()}/corretor/${encodeURIComponent(site.slug)}`;
-    const feed=`${publicBase()}/parceiro-feed/${encodeURIComponent(site.slug)}`;
+    const publicSlug=publicPartnerSlug(site.slug);
+    const landing=`${publicBase()}/corretor/${encodeURIComponent(publicSlug)}`;
+    const contact=`${landing}/contato/`;
+    const feed=`${publicBase()}/parceiro-feed/${encodeURIComponent(publicSlug)}`;
     const selected=parcRelations.filter((row)=>row.publicado).length;
     const leadCount=parcLeads.length;
-    detail.innerHTML=`<div class="parc-detail-body"><div class="parc-detail-head"><div><h3>${esc(site.nome)}</h3><p>/${esc(site.slug)} · <span class="parc-plan-badge">Plano ${esc(site.plano_slug||'inicial')}</span> · <span class="parc-plan-badge">Leads ${leadCount}</span></p></div><div class="parc-actions"><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(landing)}')">Abrir landing</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Copiar link</button>${site.status==='active'?`<button class="btn bd2b bsm" type="button" onclick="parcSetStatus('suspended')">Pausar</button>`:`<button class="btn bs bsm" type="button" onclick="parcSetStatus('active')">Publicar</button>`}</div></div><div class="parc-url"><input readonly value="${esc(landing)}"><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Landing</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(feed)}')">Feed JSON</button></div><div class="parc-section-title">Imóveis publicados (${selected})</div><div class="parc-property-list">${propertyRows()||'<div class="parc-empty">Nenhum imóvel disponível no catálogo atual.</div>'}</div><div class="parc-section-title">Observação</div><p style="font-size:12px;color:var(--t2);line-height:1.55;margin:0">Marque os imóveis autorizados. A landing só ficará acessível quando o site estiver publicado e nunca altera os dados centrais do imóvel.</p></div>`;
+    detail.innerHTML=`<div class="parc-detail-body"><div class="parc-detail-head"><div><h3>${esc(site.nome)}</h3><p>/${esc(site.slug)} · <span class="parc-plan-badge">Plano ${esc(site.plano_slug||'inicial')}</span> · <span class="parc-plan-badge">Leads ${leadCount}</span></p></div><div class="parc-actions"><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(landing)}')">Abrir landing</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Copiar link</button>${site.status==='active'?`<button class="btn bd2b bsm" type="button" onclick="parcSetStatus('suspended')">Pausar</button>`:`<button class="btn bs bsm" type="button" onclick="parcSetStatus('active')">Publicar</button>`}</div></div><div class="parc-url"><input readonly value="${esc(landing)}"><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Landing</button><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(contact)}')">Contato</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(feed)}')">Feed JSON</button></div><div class="parc-section-title">Imóveis publicados (${selected})</div><div class="parc-property-list">${propertyRows()||'<div class="parc-empty">Nenhum imóvel disponível no catálogo atual.</div>'}</div><div class="parc-section-title">Observação</div><p style="font-size:12px;color:var(--t2);line-height:1.55;margin:0">Marque os imóveis autorizados. A landing só ficará acessível quando o site estiver publicado e nunca altera os dados centrais do imóvel.</p></div>`;
   }
 
   window.parcToggleProperty=async function(imovelId,checked){

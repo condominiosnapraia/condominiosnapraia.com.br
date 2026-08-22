@@ -2,6 +2,7 @@ const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const BASE = 'https://condominiosnapraia.com.br';
 const HEADERS = { apikey: SB_ANON, Authorization: `Bearer ${SB_ANON}` };
+const SITE_SLUG_ALIASES = Object.freeze({ 'fernando-trevisol': 'fernando-trvisol' });
 const JSON_HEADERS = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'private, no-store', 'x-content-type-options': 'nosniff' };
 function json(value, status = 200, extra = {}) { return new Response(JSON.stringify(value), { status, headers: { ...JSON_HEADERS, ...extra } }); }
 function toArray(value) { if (Array.isArray(value)) return value; if (typeof value === 'string') { try { return JSON.parse(value); } catch (_) { return value ? [value] : []; } } return []; }
@@ -24,9 +25,10 @@ export async function onRequest(context) {
   if (context.request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...JSON_HEADERS, 'access-control-allow-origin': BASE, 'access-control-allow-methods': 'GET, OPTIONS', 'access-control-allow-headers': 'authorization, content-type' } });
   if (context.request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405, { allow: 'GET, OPTIONS' });
   const url = new URL(context.request.url);
-  const siteSlug = String(url.searchParams.get('site') || '').toLowerCase();
+  const requestedSiteSlug = String(url.searchParams.get('site') || '').toLowerCase();
+  const siteSlug = SITE_SLUG_ALIASES[requestedSiteSlug] || requestedSiteSlug;
   const propertyId = String(url.searchParams.get('imovel') || '');
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(siteSlug) || !/^[0-9a-f-]{8,}$/i.test(propertyId)) return json({ error: 'invalid_request' }, 400);
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSiteSlug) || !/^[0-9a-f-]{8,}$/i.test(propertyId)) return json({ error: 'invalid_request' }, 400);
   const token = String(context.request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '').trim();
   if (!token || !(await authenticatedUser(token))) return json({ error: 'login_required', message: 'Faça login para ver as fotos adicionais.' }, 401, { 'www-authenticate': 'Bearer' });
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(siteSlug)}&status=eq.active&select=id&limit=1`);
