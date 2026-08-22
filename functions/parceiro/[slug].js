@@ -134,9 +134,9 @@ function card(property, compact = false) {
 
 function layout({ site, properties, slug, requestPath }) {
   const name = site.nome || 'Corretor parceiro';
-  const pageTitle = site.slug === 'fernando-trvisol' ? 'Fernando Trevisol - Imóveis de Alto Padrão' : name;
+  const pageTitle = site.slug === 'fernando-trvisol' ? 'Fernando Trevisol - Imóveis de Alto Padrão' : `${name} - Corretor de imóveis`;
   const heroName = site.slug === 'fernando-trvisol' ? 'Fernando Trevisol' : name;
-  const heroClaim = site.slug === 'fernando-trvisol' ? 'Imóveis de Alto Padrão' : pageTitle;
+  const heroClaim = site.slug === 'fernando-trvisol' ? 'Imóveis de Alto Padrão' : 'Corretor há mais de 14 anos de experiência';
   const description = site.bio || `Imóveis selecionados por ${name} no Rio Grande do Sul.`;
   const phone = digits(site.whatsapp || site.telefone);
   const wpp = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
