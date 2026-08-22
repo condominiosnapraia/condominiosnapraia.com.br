@@ -575,6 +575,16 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   #view-home > #sec-condominios-verticais.sec-onda::before{top:-36px!important;height:72px!important}
 }
 </style>
+<style>
+/* Ajuste responsivo da capa: evita que a marca ultrapasse a viewport em telas estreitas. */
+@media(max-width:600px){
+  #view-home .hero{overflow:hidden}
+  #view-home .hero-brand-lockup{width:min(100%,calc(100vw - 32px));max-width:calc(100vw - 32px);box-sizing:border-box}
+  #view-home .hero-brand-name{max-width:100%;white-space:normal;overflow-wrap:normal;text-wrap:balance;font-size:clamp(40px,12.4vw,54px);line-height:.95}
+  #view-home .hero-brand-kicker,#view-home .hero-brand-tagline{max-width:100%;white-space:normal}
+}
+@media(max-width:420px){#view-home .hero-brand-name{font-size:clamp(36px,11.6vw,48px)}}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
