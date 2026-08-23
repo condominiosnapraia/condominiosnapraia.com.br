@@ -1,0 +1,33 @@
+========================================================================
+PACOTE COMPLETO - condominiosnapraia.com.br  (23/08/2026)
+7 arquivos corrigidos. Copie por cima dos existentes, mantendo os caminhos.
+========================================================================
+
+RAIZ DO PROJETO:
+  index.html    -> H1 da home melhorado (SEO)
+  _redirects    -> bloqueia páginas admin (crm, diagnostico, etc = 404)
+  _headers      -> CSP corrigida: libera upload de fotos no CRM
+  crm.html      -> CORRIGE O BUG DAS FOTOS (upload sem depender de CSP
+                   + agora avisa se uma foto falhar)
+
+functions/parceiro/[slug].js       -> páginas dos corretores (tudo)
+functions/parceiro/[slug]/imoveis.js -> filtro/etiqueta corrigidos
+blog/maquine-.../index.html        -> "valorização" corrigido
+
+------------------------------------------------------------------------
+IMPORTANTE - O BUG DAS FOTOS:
+Depois de publicar, faça HARD REFRESH no CRM (Ctrl+Shift+R) antes de
+testar. Sem isso, o navegador usa a política de segurança antiga (em
+cache) e o erro parece continuar.
+------------------------------------------------------------------------
+
+DEPOIS DO DEPLOY:
+1. git add . && git commit -m "Correções: fotos CRM, SEO, segurança" && git push
+2. Aguardar Cloudflare publicar (1-2 min)
+3. Ctrl+Shift+R no CRM
+4. Testar: subir foto num condomínio e salvar -> deve persistir
+5. Testar: abrir /crm.html em aba anônima -> deve dar 404
+
+PENDÊNCIA (opcional, no painel Cloudflare):
+  Variáveis de ambiente SB_URL e SB_ANON (o site funciona sem, tem fallback)
+========================================================================
