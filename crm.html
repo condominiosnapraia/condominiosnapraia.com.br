@@ -3272,9 +3272,19 @@ const sb = {
     return r.json();
   },
   async uploadFoto(path, base64){
-    // Converte base64 para blob
-    const res = await fetch(base64);
-    const blob = await res.blob();
+    // Converte base64 para blob SEM usar fetch() — evita bloqueio por Content Security Policy.
+    let blob;
+    if(typeof base64 === 'string' && base64.startsWith('data:')){
+      const [meta, b64] = base64.split(',');
+      const mime = (meta.match(/data:([^;]+)/) || [,'image/jpeg'])[1];
+      const bin = atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for(let i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+      blob = new Blob([bytes], { type: mime });
+    } else {
+      const res = await fetch(base64);
+      blob = await res.blob();
+    }
     // usa o token do usuário logado (o Storage também exige auth com RLS ativo)
     const _tk = sessionStorage.getItem('cnp_crm_token') || SUPABASE_KEY;
     const h = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + _tk, 'Content-Type': blob.type };
@@ -8658,7 +8668,7 @@ async function uploadFotos(fotosBase64, selecao, prefix, recordId, nomeSeo){
         urls.all.push(url);
         if(selecao[i]!==false) urls.site.push(url);
         toast(`📸 Foto ${i+1}/${fotosBase64.length} enviada...`, 'info');
-      }catch(e){ console.error('Upload foto erro:', e); }
+      }catch(e){ console.error('Upload foto erro:', e); toast(`⚠️ Falha ao enviar a foto ${i+1}. Ela não foi salva — tente novamente.`, 'error'); }
     }
   }
   return urls;
