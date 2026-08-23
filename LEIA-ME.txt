@@ -1,33 +1,59 @@
 ========================================================================
-PACOTE COMPLETO - condominiosnapraia.com.br  (23/08/2026)
-7 arquivos corrigidos. Copie por cima dos existentes, mantendo os caminhos.
+PACOTE FINAL COMPLETO - condominiosnapraia.com.br  (23/08/2026)
+Todas as melhorias desta sessão. Copie por cima dos existentes,
+mantendo EXATAMENTE os caminhos das pastas.
 ========================================================================
 
-RAIZ DO PROJETO:
-  index.html    -> H1 da home melhorado (SEO)
-  _redirects    -> bloqueia páginas admin (crm, diagnostico, etc = 404)
-  _headers      -> CSP corrigida: libera upload de fotos no CRM
-  crm.html      -> CORRIGE O BUG DAS FOTOS (upload sem depender de CSP
-                   + agora avisa se uma foto falhar)
+>> PÁGINAS DOS CORRETORES (valem para os 4: Marcos, Fernando,
+   Juliano e Rodrigo — é o mesmo código pra todos)
 
-functions/parceiro/[slug].js       -> páginas dos corretores (tudo)
-functions/parceiro/[slug]/imoveis.js -> filtro/etiqueta corrigidos
-blog/maquine-.../index.html        -> "valorização" corrigido
+functions/parceiro/[slug].js          (LANDING - código real)
+  - Hero com foto de fundo (usa capa_url do corretor), sem a "bola"
+  - Cabeçalho com nome do corretor (removido o "CN")
+  - Frase-título no hero
+  - Filtro premium: dropdown clean no desktop / bottom sheet no mobile
+  - Filtro "em/fora de condomínio" + seleção múltipla de tipo
+  - Etiqueta de status real (Disponível/Reservado/Vendido/Destaque)
+  - Filtro de preço corrigido
+  - Botão "Ver mais opções" no fim de cada seção
+  - Contador de imóveis removido das seções
+  - Chave Supabase via variável de ambiente (com fallback)
+  - Slug do Fernando limpo (gambiarra removida)
 
-------------------------------------------------------------------------
-IMPORTANTE - O BUG DAS FOTOS:
-Depois de publicar, faça HARD REFRESH no CRM (Ctrl+Shift+R) antes de
-testar. Sem isso, o navegador usa a política de segurança antiga (em
-cache) e o erro parece continuar.
-------------------------------------------------------------------------
+functions/parceiro/[slug]/imoveis.js  (LISTA DE IMÓVEIS - código real)
+  - Etiqueta de status real + filtro de preço corrigido
+  - Lê ?cat= da URL (o botão "Ver mais opções" abre já filtrado)
 
+functions/corretor/[slug]/imovel/[imovelSlug].js  (PÁGINA DO IMÓVEL - código real)
+  - Fotos LIBERADAS (sem bloqueio, sem login/cadastro)
+  - Galeria mosaico: 1 foto grande + 2 pequenas
+  - Lightbox navegável com todas as fotos (setas, teclado, swipe)
+
+ARQUIVOS-ESPELHO (não mudei, mas PRECISAM estar no deploy pras
+duas rotas /corretor/ e /parceiro/ funcionarem):
+  functions/corretor/[slug].js
+  functions/corretor/[slug]/imoveis.js
+  functions/parceiro/[slug]/imovel/[imovelSlug].js
+
+>> PORTAL PRINCIPAL
+
+index.html    -> H1 da home melhorado (SEO)
+_redirects    -> bloqueia páginas admin (crm, diagnostico... = 404)
+_headers      -> CSP corrigida (libera upload de fotos no CRM)
+crm.html      -> corrige bug das fotos + avisa se upload falhar
+blog/maquine-.../index.html -> "valorização" corrigido
+
+========================================================================
 DEPOIS DO DEPLOY:
-1. git add . && git commit -m "Correções: fotos CRM, SEO, segurança" && git push
-2. Aguardar Cloudflare publicar (1-2 min)
-3. Ctrl+Shift+R no CRM
-4. Testar: subir foto num condomínio e salvar -> deve persistir
-5. Testar: abrir /crm.html em aba anônima -> deve dar 404
+1. git add . && git commit -m "Melhorias corretores + correções portal" && git push
+2. Aguardar Cloudflare (1-2 min)
+3. HARD REFRESH (Ctrl+Shift+R) no CRM antes de testar fotos
+4. Testar:
+   - /corretor/juliano-machado  (galeria, filtro, botões)
+   - /corretor/marcos-selbach   (mesmas melhorias)
+   - /crm.html em aba anônima -> deve dar 404
+   - subir foto num condomínio no CRM -> deve salvar
 
-PENDÊNCIA (opcional, no painel Cloudflare):
-  Variáveis de ambiente SB_URL e SB_ANON (o site funciona sem, tem fallback)
+PENDÊNCIA OPCIONAL (painel Cloudflare):
+   Variáveis SB_URL e SB_ANON (site funciona sem, tem fallback)
 ========================================================================
