@@ -1,59 +1,54 @@
 ========================================================================
 PACOTE FINAL COMPLETO - condominiosnapraia.com.br  (23/08/2026)
-Todas as melhorias desta sessão. Copie por cima dos existentes,
-mantendo EXATAMENTE os caminhos das pastas.
+Copie TODOS por cima dos existentes, mantendo EXATAMENTE os caminhos.
 ========================================================================
 
->> PÁGINAS DOS CORRETORES (valem para os 4: Marcos, Fernando,
-   Juliano e Rodrigo — é o mesmo código pra todos)
+>>> PÁGINAS DOS CORRETORES (valem para os 4 corretores)
 
-functions/parceiro/[slug].js          (LANDING - código real)
-  - Hero com foto de fundo (usa capa_url do corretor), sem a "bola"
-  - Cabeçalho com nome do corretor (removido o "CN")
-  - Frase-título no hero
-  - Filtro premium: dropdown clean no desktop / bottom sheet no mobile
-  - Filtro "em/fora de condomínio" + seleção múltipla de tipo
-  - Etiqueta de status real (Disponível/Reservado/Vendido/Destaque)
-  - Filtro de preço corrigido
-  - Botão "Ver mais opções" no fim de cada seção
-  - Contador de imóveis removido das seções
-  - Chave Supabase via variável de ambiente (com fallback)
-  - Slug do Fernando limpo (gambiarra removida)
+CÓDIGO REAL (editados):
+  functions/parceiro/[slug].js
+    - Hero com foto, cabeçalho com nome, frase-título
+    - Filtro premium (dropdown desktop / bottom sheet mobile)
+    - Filtro em/fora de condomínio, seleção múltipla de tipo
+    - Etiqueta de status real, filtro de preço corrigido
+    - Botão "Ver mais opções" nas seções
+    - >>> SEÇÃO DE CONDOMÍNIOS na home (8 cards) + botão "Ver todos" <<<
+    - Correções de mobile (cabeçalho sem overflow)
+    - Chave via variável de ambiente (com fallback)
+  functions/parceiro/[slug]/imoveis.js
+    - Filtro por ?cat= na URL, etiqueta/preço corrigidos
+  functions/parceiro/[slug]/condominios.js   [NOVO]
+    - Página com TODOS os condomínios + filtro de busca
+  functions/parceiro/[slug]/condominio/[condoSlug].js   [NOVO]
+    - Página individual do condomínio (fotos, amenidades,
+      imóveis do corretor) vinculada à marca do corretor
+  functions/corretor/[slug]/imovel/[imovelSlug].js
+    - Fotos liberadas (sem login), galeria mosaico + lightbox
 
-functions/parceiro/[slug]/imoveis.js  (LISTA DE IMÓVEIS - código real)
-  - Etiqueta de status real + filtro de preço corrigido
-  - Lê ?cat= da URL (o botão "Ver mais opções" abre já filtrado)
-
-functions/corretor/[slug]/imovel/[imovelSlug].js  (PÁGINA DO IMÓVEL - código real)
-  - Fotos LIBERADAS (sem bloqueio, sem login/cadastro)
-  - Galeria mosaico: 1 foto grande + 2 pequenas
-  - Lightbox navegável com todas as fotos (setas, teclado, swipe)
-
-ARQUIVOS-ESPELHO (não mudei, mas PRECISAM estar no deploy pras
-duas rotas /corretor/ e /parceiro/ funcionarem):
+ESPELHOS (necessários pras rotas /corretor/ e /parceiro/):
   functions/corretor/[slug].js
   functions/corretor/[slug]/imoveis.js
+  functions/corretor/[slug]/condominios.js        [NOVO]
+  functions/corretor/[slug]/condominio/[condoSlug].js  [NOVO]
   functions/parceiro/[slug]/imovel/[imovelSlug].js
 
->> PORTAL PRINCIPAL
+>>> PORTAL PRINCIPAL
+  index.html   - H1 SEO
+  _redirects   - bloqueio admin (crm, diagnostico = 404)
+  _headers     - CSP corrigida (upload de fotos no CRM)
+  crm.html     - correção do bug das fotos
+  blog/maquine-.../index.html - "valorização" corrigido
 
-index.html    -> H1 da home melhorado (SEO)
-_redirects    -> bloqueia páginas admin (crm, diagnostico... = 404)
-_headers      -> CSP corrigida (libera upload de fotos no CRM)
-crm.html      -> corrige bug das fotos + avisa se upload falhar
-blog/maquine-.../index.html -> "valorização" corrigido
+------------------------------------------------------------------------
+DEPLOY (GitHub):
+1. Descompacte e copie TODOS por cima, respeitando os caminhos
+2. git add . && git commit -m "Condomínios + correções completas" && git push
+3. Aguardar Cloudflare Pages (1-2 min)
+4. HARD REFRESH (Ctrl+Shift+R) no navegador
 
-========================================================================
-DEPOIS DO DEPLOY:
-1. git add . && git commit -m "Melhorias corretores + correções portal" && git push
-2. Aguardar Cloudflare (1-2 min)
-3. HARD REFRESH (Ctrl+Shift+R) no CRM antes de testar fotos
-4. Testar:
-   - /corretor/juliano-machado  (galeria, filtro, botões)
-   - /corretor/marcos-selbach   (mesmas melhorias)
-   - /crm.html em aba anônima -> deve dar 404
-   - subir foto num condomínio no CRM -> deve salvar
-
-PENDÊNCIA OPCIONAL (painel Cloudflare):
-   Variáveis SB_URL e SB_ANON (site funciona sem, tem fallback)
+TESTAR APÓS PUBLICAR:
+- /corretor/juliano-machado/  -> seção "Condomínios" deve aparecer
+- /corretor/juliano-machado/condominios/  -> lista com filtro
+- clicar num card de condomínio -> página do condomínio
+- /crm.html em aba anônima -> 404
 ========================================================================
