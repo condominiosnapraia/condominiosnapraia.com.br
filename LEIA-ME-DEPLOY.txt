@@ -1,0 +1,60 @@
+========================================================================
+PACOTE DE DEPLOY - condominiosnapraia.com.br
+Gerado em: 23/08/2026
+========================================================================
+
+Este pacote contém os 5 arquivos modificados. A estrutura de pastas
+aqui é IDÊNTICA à do repositório - basta copiar por cima dos arquivos
+existentes, mantendo os caminhos.
+
+------------------------------------------------------------------------
+ARQUIVOS E O QUE MUDOU
+------------------------------------------------------------------------
+
+1. functions/parceiro/[slug].js
+   (Páginas dos corretores - Marcos, Fernando, Juliano, Rodrigo)
+   Acumula TODAS estas mudanças:
+   - Etiqueta do imóvel reflete status real (Disponível/Reservado/etc)
+   - Filtro de preço: imóveis "Consulte valor" só sem faixa selecionada
+   - Bottom sheet de Tipo de imóvel com seleção múltipla
+   - Filtro "Em/fora de condomínio" (igual ao site oficial)
+   - Hero com foto de fundo (usa capa_url do corretor)
+   - Cabeçalho com nome do corretor (removido o "CN")
+   - Frase-título no hero (removido nome do corretor de lá)
+   - Contador de imóveis removido das seções
+   - Chave Supabase via variável de ambiente (com fallback)
+   - Limpeza do slug do Fernando (removida gambiarra)
+
+2. functions/parceiro/[slug]/imoveis.js
+   (Página "todos os imóveis" dos corretores)
+   - Etiqueta reflete status real
+   - Filtro de preço corrigido
+
+3. index.html  (RAIZ - Home do portal)
+   - H1 da home melhorado para SEO (tagline com palavras-chave)
+
+4. _redirects  (RAIZ)
+   - BLOQUEIO de segurança: crm.html, diagnostico.html,
+     exportar-dados.html, restaurar.html, teste-fotos.html
+     agora retornam 404 público.
+
+5. blog/maquine-.../index.html
+   - Corrigida palavra "valorização" que estava truncada nas meta tags
+
+------------------------------------------------------------------------
+PENDÊNCIA APÓS O DEPLOY (fazer no painel da Cloudflare):
+------------------------------------------------------------------------
+Configurar variáveis de ambiente no projeto condominiosnapraia:
+  SB_URL  = https://cddgkhkzcnyzzcllgzoz.supabase.co
+  SB_ANON = (a chave anon do Supabase)
+
+Sem isso, o site funciona igual (tem fallback no código), mas o ideal
+é configurar para a chave sair do código-fonte.
+
+------------------------------------------------------------------------
+TESTAR APÓS PUBLICAR:
+------------------------------------------------------------------------
+- Abrir /crm.html em aba anônima -> deve dar 404
+- Abrir /corretor/rodrigo-carvalho -> deve carregar com layout novo
+- Conferir a home e a busca dos corretores
+========================================================================

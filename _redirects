@@ -1,3 +1,17 @@
+# === BLOQUEIO DE PÁGINAS ADMINISTRATIVAS (retornam 404 público) ===
+# Adicionado para impedir acesso público a interfaces internas.
+/diagnostico.html   /404.html   404
+/diagnostico        /404.html   404
+/crm.html           /404.html   404
+/crm                /404.html   404
+/exportar-dados.html   /404.html   404
+/exportar-dados        /404.html   404
+/restaurar.html     /404.html   404
+/restaurar          /404.html   404
+/teste-fotos.html   /404.html   404
+/teste-fotos        /404.html   404
+# === FIM DO BLOQUEIO ===
+
 /condominio-thera-santorini- /condominio-thera-santorini/ 301
 /condominio-thera-santorini-/ /condominio-thera-santorini/ 301
 /condominio-livin-resort-atlantida- /condominio-livin-resort-atlantida/ 301
