@@ -27,7 +27,7 @@ function siteSlugInfo(value) { const requested = String(value || '').toLowerCase
 async function getJson(path) { try { const response = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HEADERS }); return response.ok ? await response.json() : []; } catch (_) { return []; } }
 async function getPublicFeedProperties(siteSlug) {
   try {
-    const response = await fetch(`${BASE}/parceiro-feed/${encodeURIComponent(siteSlug)}`);
+    const response = await fetch(`${BASE}/parceiro-feed/${encodeURIComponent(siteSlug)}?format=json`, { headers: { accept: 'application/json' } });
     if (!response.ok) return [];
     const payload = await response.json();
     return (Array.isArray(payload?.properties) ? payload.properties : []).map((item) => {

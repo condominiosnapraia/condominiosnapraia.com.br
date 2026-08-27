@@ -257,6 +257,53 @@ export async function onRequest(context) {
   });
   const condoList = Object.values(condoStats).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
   const topCondos = condoList.slice(0, 8);
+  const requestUrl = new URL(context.request.url);
+  const wantsJson = requestUrl.searchParams.get('format') === 'json' || requestUrl.searchParams.get('sitemap') === 'individual' || /application\/json/i.test(context.request.headers.get('accept') || '');
+  if (wantsJson) {
+    const payload = {
+      site: {
+        id: site.id,
+        slug: site.slug || dbSlug,
+        name: site.nome || '',
+        creci: site.creci || '',
+        phone: site.telefone || '',
+        whatsapp: site.whatsapp || '',
+        email: site.email || '',
+        city: site.cidade || 'Rio Grande do Sul',
+        bio: site.bio || '',
+        logo_url: site.logo_url || '',
+        cover_url: site.capa_url || '',
+      },
+      properties: properties.map((property) => ({
+        id: property.id,
+        slug: property.slug,
+        public_url: property.url,
+        title: property.title,
+        description: property.description,
+        type: property.type,
+        category: property.category,
+        outside: property.outside,
+        city: property.city,
+        neighborhood: property.neighborhood,
+        price: property.price,
+        bedrooms: property.bedrooms,
+        suites: property.suites,
+        bathrooms: property.bathrooms,
+        parking: property.parking,
+        area: property.area,
+        cover_image: property.photo,
+        photos: property.photo ? [property.photo] : [],
+        featured: property.featured,
+        status: property.status,
+        code: property.code,
+        condo_id: property.condo?.id || '',
+        condo_name: property.condo?.name || '',
+        condo_city: property.condo?.city || '',
+        photo_count: property.photo ? 1 : 0,
+      })),
+    };
+    return new Response(JSON.stringify(payload), { headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600', 'x-content-type-options': 'nosniff' } });
+  }
   return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
 
