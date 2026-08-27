@@ -13,7 +13,18 @@ function propertySlug(imovel) { const stored = String(imovel?.slug || '').trim()
 function firstPhoto(imovel) { const l = photoList(imovel); return l[0] || ''; }
 function money(value) { if (value === null || value === undefined || value === '') return 'Consulte o valor'; if (typeof value === 'string' && /r\$|€|\$/i.test(value)) return value; const n = Number(String(value).replace(/[^0-9,.-]/g, '').replace(/\.(?=\d{3}(?:\D|$))/g, '').replace(',', '.')); return Number.isFinite(n) && n > 0 ? n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }) : 'Consulte o valor'; }
 function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; const publicSlug = Object.entries(SITE_SLUG_ALIASES).find(([, alias]) => alias === requested)?.[0] || requested; return { dbSlug, publicSlug }; }
-async function getJson(path, cfg) { const { url, headers } = cfg || sbConfig(null); try { const response = await fetch(`${url}/rest/v1/${path}`, { headers }); return response.ok ? await response.json() : []; } catch (_) { return []; } }
+async function getJson(path, cfg) {
+  const { url, headers } = cfg || sbConfig(null);
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const response = await fetch(`${url}/rest/v1/${path}`, { headers });
+      if (response.ok) return await response.json();
+      if (![408, 429, 500, 502, 503, 504].includes(response.status)) return [];
+    } catch (_) {}
+    if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 120));
+  }
+  return [];
+}
 function badgeLabel(p) { const s = String(p?.status || '').toLowerCase(); if (/reserv/.test(s)) return 'Reservado'; if (/vend/.test(s)) return 'Vendido'; return p?.featured ? 'Destaque' : 'Disponível'; }
 function propertyCard(p) {
   const details = [p.bedrooms && `${p.bedrooms} quartos`, p.suites && `${p.suites} suítes`, p.area && `${p.area} m²`].filter(Boolean).join(' · ');

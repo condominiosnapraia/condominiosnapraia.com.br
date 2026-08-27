@@ -14,7 +14,18 @@ function slugify(value) { return String(value || '').normalize('NFD').replace(/[
 function toArray(value) { if (Array.isArray(value)) return value; if (typeof value === 'string') { try { return JSON.parse(value); } catch (_) { return value ? [value] : []; } } return []; }
 function firstPhoto(obj) { const list = [...toArray(obj?.fotos_no_site), ...toArray(obj?.fotos), ...toArray(obj?.fotos_para_site)]; for (const item of list) { const url = typeof item === 'string' ? item : item?.url || item?.src || item?.publicUrl || item?.public_url; if (url && (/^https?:\/\//i.test(url) || String(url).startsWith('/cdn-fotos/'))) return url; } return ''; }
 function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; const publicSlug = Object.entries(SITE_SLUG_ALIASES).find(([, alias]) => alias === requested)?.[0] || requested; return { dbSlug, publicSlug }; }
-async function getJson(path, cfg) { const { url, headers } = cfg || sbConfig(null); try { const response = await fetch(`${url}/rest/v1/${path}`, { headers }); return response.ok ? await response.json() : []; } catch (_) { return []; } }
+async function getJson(path, cfg) {
+  const { url, headers } = cfg || sbConfig(null);
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const response = await fetch(`${url}/rest/v1/${path}`, { headers });
+      if (response.ok) return await response.json();
+      if (![408, 429, 500, 502, 503, 504].includes(response.status)) return [];
+    } catch (_) {}
+    if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 120));
+  }
+  return [];
+}
 
 function layout({ site, slug, condos }) {
   const segment = 'corretor';

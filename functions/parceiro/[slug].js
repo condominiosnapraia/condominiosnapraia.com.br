@@ -67,11 +67,15 @@ function categoryFor(imovel) {
 }
 async function getJson(path, cfg) {
   const { url, headers } = cfg || sbConfig(null);
-  try {
-    const response = await fetch(`${url}/rest/v1/${path}`, { headers });
-    if (!response.ok) return [];
-    return await response.json();
-  } catch (_) { return []; }
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const response = await fetch(`${url}/rest/v1/${path}`, { headers });
+      if (response.ok) return await response.json();
+      if (![408, 429, 500, 502, 503, 504].includes(response.status)) return [];
+    } catch (_) {}
+    if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 120));
+  }
+  return [];
 }
 function normalizeListing(row, condMap, siteSlug) {
   const imovel = row.imovel || {};
