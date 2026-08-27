@@ -832,20 +832,6 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 </div>
 </div>
 </section>
-<!-- ══ LOJAS E SALAS COMERCIAIS ══ -->
-<section class="dest-section sec-onda home-stock-section" id="sec-imoveis-comerciais" hidden>
-  <div class="dest-inner">
-    <div class="dest-header">
-      <div>
-        <p class="eyebrow">Imóveis Comerciais</p>
-        <h2 class="sectit sectit-stacked"><span class="sectit-main">Lojas e Salas Comerciais</span><span class="sectit-sub">Oportunidades para investir e empreender</span></h2>
-      </div>
-      <a class="dest-ver-btn" href="/imoveis/?tipo=Loja">Ver todos</a>
-    </div>
-    <div class="igrid" id="home-comercial-grid"></div>
-    <div class="dest-ver-all"><a class="dest-btn-all cta-section-all" href="/imoveis/?tipo=Loja">Ver todas as oportunidades comerciais <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></div>
-  </div>
-</section>
 <!-- ══ DESTAQUES TERRENOS ══ -->
 <section class="dest-section sec-onda" id="sec-terrenos">
 <div class="dest-inner">
@@ -859,25 +845,6 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 <div class="igrid" id="home-terreno-grid" style="min-height:200px"></div>
 <div class="dest-ver-all">
 <a class="dest-btn-all cta-section-all" href="/imoveis/?tipo=Terreno">
-          Ver todos os terrenos disponíveis
-          <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-</a>
-</div>
-</div>
-</section>
-<!-- ══ TERRENOS FORA DE CONDOMÍNIO ══ -->
-<section class="dest-section sec-onda" id="sec-terrenos-fora">
-<div class="dest-inner">
-<div class="dest-header">
-<div>
-<p class="eyebrow">Imóveis de rua</p>
-<h2 class="sectit sectit-stacked"><span class="sectit-main">Terrenos</span> <span class="sectit-sub">Fora de condomínio</span></h2>
-</div>
-<a class="dest-ver-btn" href="/imoveis/?fora=1&amp;tipo=Terreno">Ver todos</a>
-</div>
-<div class="igrid" id="home-terreno-fora-grid" style="min-height:200px"></div>
-<div class="dest-ver-all">
-<a class="dest-btn-all cta-section-all" href="/imoveis/?fora=1&amp;tipo=Terreno">
           Ver todos os terrenos disponíveis
           <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="16"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
 </a>
@@ -3170,20 +3137,12 @@ function buildHomeDestaques(){
     const apartamentos = allImov.filter(i=>!ehFora(i) && tipoCategoria(i)==='apartamento');
     const terrenosCondominio = allImov.filter(i=>!ehFora(i) && tipoCategoria(i)==='terreno');
     const casasFora = allImov.filter(i=>ehFora(i) && tipoCategoria(i)==='casa');
-    const terrenosFora = allImov.filter(i=>ehFora(i) && tipoCategoria(i)==='terreno');
     const destTerreno = _siteCache?.destTerreno||[];
     const toggleHomeStockSection = (id, visible) => {
       const section = document.getElementById(id);
       if(section) section.hidden = !visible;
     };
     const isVerticalCondo = c => /vertical/i.test(String(c.orientacao||'')) || /vertical/i.test(String(c.perfil||''));
-    const commercialType = i => {
-      const value = String(i.tipo||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-      return /loja|sala comercial|sala|ponto comercial|conjunto comercial/.test(value);
-    };
-    const comerciais = allImov.filter(commercialType).slice(0,6);
-    renderHomeGrid('home-comercial-grid', comerciais, '🏬', 'Cadastre lojas e salas comerciais no CRM para exibi-las aqui');
-    toggleHomeStockSection('sec-imoveis-comerciais', comerciais.length > 0);
     const verticalCondos = condos.filter(isVerticalCondo).sort(ordenarDestaques).slice(0,6);
     const verticalGrid = document.getElementById('home-cond-vertical-grid');
     if(verticalGrid){
@@ -3195,7 +3154,6 @@ function buildHomeDestaques(){
     renderHomeGrid('home-apartamento-grid', apartamentos.slice(0,8), '🏢', 'Nenhum apartamento publicado disponível no momento');
     renderHomeGrid('home-fora-grid', casasFora.slice(0,8), '🏡', 'Cadastre casas e sobrados fora de condomínio no CRM para exibi-los aqui');
     renderHomeGrid('home-terreno-grid', pickDestaques(terrenosCondominio, destTerreno, 6), '🌳', 'Cadastre terrenos em condomínio no CRM para exibi-los aqui');
-    renderHomeGrid('home-terreno-fora-grid', terrenosFora.slice(0,6), '📐', 'Ainda não há terrenos fora de condomínio publicados.');
     // Se a secção já estiver próxima, o observer pode ter disparado antes do render.
     const homePhotoSection=document.getElementById('sec-imoveis')||document.getElementById('sec-condominios');
     if(homePhotoSection && homePhotoSection.getBoundingClientRect().top < window.innerHeight+700 && typeof carregarFotosHomeCards==='function'){
