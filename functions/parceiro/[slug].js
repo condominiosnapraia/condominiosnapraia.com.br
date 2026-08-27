@@ -175,7 +175,8 @@ function layout({ site, properties, slug, requestPath, topCondos }) {
   const categoryNav = `<nav class="category-nav" aria-label="Categorias de imóveis">${SECTIONS.map((section) => `<a class="category-chip" href="#sec-${section.id}"><span>${section.icon}</span><strong>${section.title}</strong><small>${section.subtitle}</small></a>`).join('')}</nav>`;
   const featureStrip = `<section class="feature-strip" aria-label="Diferenciais do atendimento"><div class="feature-item"><span class="feature-icon">⌕</span><div><strong>Busca inteligente</strong><span>Encontre por cidade, condomínio ou tipo.</span></div></div><div class="feature-item"><span class="feature-icon">↗</span><div><strong>Atendimento direto</strong><span>Converse com ${esc(name)} pelo WhatsApp.</span></div></div><div class="feature-item"><span class="feature-icon">▦</span><div><strong>Detalhes do imóvel</strong><span>Fotos, características e informações do condomínio.</span></div></div></section>`;
   const condoCard = (c) => {
-    const url = `${BASE}/${segment}/${encodeURIComponent(slug)}/condominio/${encodeURIComponent(c.slug || c.id)}/`;
+    const condoPublicSlug = slugify(c.slug || c.name || c.id) || String(c.id);
+    const url = `${BASE}/${segment}/${encodeURIComponent(slug)}/condominio/${encodeURIComponent(condoPublicSlug)}/`;
     const ameniStr = (c.amenities || []).slice(0, 3).join(' · ');
     return `<a class="condo-card" href="${url}"><div class="condo-photo">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" decoding="async">` : '<div class="condo-photo-empty">Imagem em atualização</div>'}<span class="condo-count">${c.count} ${c.count === 1 ? 'imóvel' : 'imóveis'}</span></div><div class="condo-body"><h3>${esc(c.name)}</h3><p class="condo-city">📍 ${esc(c.city || 'Rio Grande do Sul')}</p>${ameniStr ? `<p class="condo-amenities">${esc(ameniStr)}</p>` : ''}</div></a>`;
   };
@@ -251,7 +252,7 @@ export async function onRequest(context) {
     if (!c || !c.id) return;
     if (!condoStats[c.id]) {
       const raw = condMap[c.id] || {};
-      condoStats[c.id] = { id: c.id, slug: c.slug || '', name: c.name || '', city: c.city || '', amenities: Array.isArray(c.amenities) ? c.amenities : [], photo: firstPhoto(raw), count: 0 };
+      condoStats[c.id] = { id: c.id, slug: slugify(c.slug || c.name || c.id) || String(c.id), name: c.name || '', city: c.city || '', amenities: Array.isArray(c.amenities) ? c.amenities : [], photo: firstPhoto(raw), count: 0 };
     }
     condoStats[c.id].count += 1;
   });

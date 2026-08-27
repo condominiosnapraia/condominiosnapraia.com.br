@@ -28,7 +28,8 @@ function layout({ site, slug, condos }) {
   const cities = [...new Set(condos.map((c) => cityLabel(c.city)).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
 
   const condoCard = (c) => {
-    const url = `${BASE}/${segment}/${encodeURIComponent(slug)}/condominio/${encodeURIComponent(c.slug || c.id)}/`;
+    const condoPublicSlug = slugify(c.slug || c.name || c.id) || String(c.id);
+    const url = `${BASE}/${segment}/${encodeURIComponent(slug)}/condominio/${encodeURIComponent(condoPublicSlug)}/`;
     const ameniStr = (c.amenities || []).slice(0, 3).join(' · ');
     return `<a class="condo-card" href="${url}" data-name="${esc(cityKey(c.name))}" data-city="${esc(cityKey(c.city))}" data-count="${c.count}"><div class="condo-photo">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" decoding="async">` : '<div class="condo-photo-empty">Imagem em atualização</div>'}<span class="condo-count">${c.count} ${c.count === 1 ? 'imóvel' : 'imóveis'}</span></div><div class="condo-body"><h3>${esc(c.name)}</h3><p class="condo-city">📍 ${esc(cityLabel(c.city) || 'Rio Grande do Sul')}</p>${ameniStr ? `<p class="condo-amenities">${esc(ameniStr)}</p>` : ''}</div></a>`;
   };
@@ -113,7 +114,7 @@ export async function onRequest(context) {
   const condosRaw = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,slug,nome,cidade,amenidades,fotos_no_site,fotos,fotos_para_site&limit=1000`, cfg);
   const condos = (Array.isArray(condosRaw) ? condosRaw : []).map((c) => ({
     id: c.id,
-    slug: c.slug || slugify(c.nome),
+    slug: slugify(c.slug || c.nome) || String(c.id),
     name: c.nome || 'Condomínio',
     city: c.cidade || '',
     amenities: Array.isArray(c.amenidades) ? c.amenidades : [],
