@@ -6,7 +6,7 @@ function sbConfig(env) {
   const key = (env && env.SB_ANON) || SB_ANON_FALLBACK;
   return { url, key, headers: { apikey: key, Authorization: `Bearer ${key}` } };
 }
-const SITE_SLUG_ALIASES = Object.freeze({ 'fernando-trevisol': 'fernando-trvisol' });
+const SITE_SLUG_ALIASES = Object.freeze({ 'fernando-trvisol': 'fernando-trevisol' });
 function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; const publicSlug = Object.entries(SITE_SLUG_ALIASES).find(([, alias]) => alias === requested)?.[0] || requested; return { requested, dbSlug, publicSlug }; }
 
 function esc(value) {
