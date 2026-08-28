@@ -736,6 +736,33 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   }
 }
 </style>
+<style id="capas-blog-ajuste-2026">
+/* Capas editoriais e cards de conteúdo: mais presença sem distorção. */
+#view-home > #guias-cidades .guia-card-top,
+#view-home > #guias-decisao .guia-card-top {
+  min-height: 218px !important;
+  aspect-ratio: 16 / 10;
+  background-size: cover !important;
+  background-position: center !important;
+}
+#view-home > #sec-blog-preview .bpcard-img {
+  display: block;
+  width: 100%;
+  height: 218px !important;
+  object-fit: cover;
+  object-position: center;
+}
+@media (max-width: 768px) {
+  #view-home > #guias-cidades .guia-card-top,
+  #view-home > #guias-decisao .guia-card-top {
+    min-height: 190px !important;
+    aspect-ratio: 16 / 10;
+  }
+  #view-home > #sec-blog-preview .bpcard-img {
+    height: 190px !important;
+  }
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
@@ -1674,6 +1701,17 @@ function fotoTag(raw, alt, options = {}) {
   const srcAttr = deferLoad ? ` data-lazy-src="${escapeAttr(src)}"` : ` src="${escapeAttr(src)}"`;
   const srcsetAttr = srcset ? `${deferLoad ? ' data-lazy-srcset' : ' srcset'}="${escapeAttr(srcset)}" sizes="${escapeAttr(sizes)}"` : '';
   return `<img class="${escapeAttr(className)}"${srcAttr}${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority} alt="${escapeAttr(alt)}">`;
+}
+
+function fotoTagBlog(raw, alt, options = {}) {
+  const value = String(raw || '').trim();
+  const fallback = '/img/og-home-social.jpg';
+  const isTemporarySessionUrl = /files\.manuscdn\.com\/user_upload_by_module\/session_file\//i.test(value);
+  if (!value || isTemporarySessionUrl) {
+    return `<img class="${escapeAttr(options.className || 'bpcard-img')}" src="${fallback}" width="${options.width || 640}" height="${options.height || 360}" loading="lazy" decoding="async" alt="${escapeAttr(alt)}">`;
+  }
+  const tag = fotoTag(value, alt, options);
+  return tag.replace(' alt="', ` onerror="this.onerror=null;this.src='${fallback}'" alt="`);
 }
 
 // Adia somente a transferência das imagens de cards que estão longe da viewport.
@@ -3361,7 +3399,7 @@ function buildHomeBlog(){
     const recent=(posts||[]).filter(p=>p.publicado!==false).slice(0,8);
     if(!recent.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">📰</div><p>Nenhum artigo publicado ainda.</p></div>';return;}
     grid.innerHTML=recent.map(p=>{
-      const img=p.capa?fotoTag(p.capa,p.titulo,{className:'bpcard-img',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 33vw, 320px',width:640,height:360}):'<div class="bpcard-img-ph">📰</div>';
+      const img=p.capa?fotoTagBlog(p.capa,p.titulo,{className:'bpcard-img',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 33vw, 320px',width:640,height:360}):'<div class="bpcard-img-ph">📰</div>';
       const data=(p.data||p.created_at)?new Date(p.data||p.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}):'';
       return`<div class="bpcard" onclick="window.location.href='/blog?id='+encodeURIComponent('${p.slug||p.id}')">
         ${img}
@@ -3468,7 +3506,7 @@ function rBlog(){
   fetchBlogPostsLeve().then(posts=>{
     if(!posts||!posts.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">📰</div><p>Nenhum artigo publicado.</p></div>';return;}
     grid.innerHTML=posts.map(p=>{
-      const img=p.capa?fotoTag(p.capa,p.titulo,{className:'bpcard-img',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 33vw, 320px',width:640,height:360}):'<div class="bpcard-img-ph">📰</div>';
+      const img=p.capa?fotoTagBlog(p.capa,p.titulo,{className:'bpcard-img',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 33vw, 320px',width:640,height:360}):'<div class="bpcard-img-ph">📰</div>';
       const dt=(p.data||p.created_at)?new Date(p.data||p.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}):'';
       return`<div class="bpcard" onclick="window.location.href='/blog?id='+encodeURIComponent('${p.slug||p.id}')">
         ${img}
