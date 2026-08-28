@@ -4530,10 +4530,33 @@ function dadosCompartilhamentoImovel(id){
   if(x.quartos)meta.push(x.quartos+' dorm.');
   if(x.suites)meta.push(x.suites+' suíte'+(Number(x.suites)>1?'s':''));
   if(x.area)meta.push(m2(x.area));
-  return {x,c,cidade,local,url,foto:fotos[0]||'',titulo,preco:x.preco?brl(x.preco):'Sob consulta',meta,descricao:descricao.slice(0,320)};
+  return {x,c,cidade,local,url,foto:fotos[0]||'',titulo,preco:x.preco?brl(x.preco):'Sob consulta',codigo:x.codigo||x.ref||'Não informado',meta,descricao:descricao.slice(0,420)};
 }
 function textoCompartilhamentoImovel(d){
-  return ['Olá! Separei um imóvel para você conhecer.','','CONDOMÍNIOS NA PRAIA',d.titulo,'','Valor: '+d.preco,'Localização: '+(d.local||d.cidade),d.meta.filter((v,i)=>i>1).join(' · '),'',d.descricao,'','Veja fotos e detalhes completos:',d.url,'','Se quiser, posso agendar uma visita e apresentar outras opções semelhantes.'].join('\n').replace(/\n{3,}/g,'\n\n').trim();
+  const separador='━━━━━━━━━━━━━━━━━━━━';
+  const destaques=d.meta.filter((v,i)=>i>1).join(' · ');
+  return [
+    'Olá! Separei uma oportunidade para você conhecer.',
+    '',
+    'CONDOMÍNIOS NA PRAIA',
+    separador,
+    d.titulo,
+    '',
+    'CÓDIGO DO IMÓVEL: '+d.codigo,
+    'VALOR: '+d.preco,
+    'LOCALIZAÇÃO: '+(d.local||d.cidade),
+    destaques?'DESTAQUES: '+destaques:'',
+    separador,
+    '',
+    'SOBRE O IMÓVEL',
+    d.descricao,
+    '',
+    d.foto?'FOTO DE CAPA: '+d.foto:'',
+    'VER PÁGINA COMPLETA COM FOTOS E DETALHES:',
+    d.url,
+    '',
+    'Se quiser, posso confirmar a disponibilidade, esclarecer as condições e agendar uma visita.'
+  ].filter(Boolean).join('\\n').replace(/\\n{3,}/g,'\\n\\n').trim();
 }
 function abrirCompartilhamentoImovel(id){
   const d=dadosCompartilhamentoImovel(id);if(!d){toast('Imóvel não encontrado.','error');return;}
