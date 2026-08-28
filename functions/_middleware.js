@@ -4,7 +4,27 @@ const LEGACY_REDIRECTS = {
   '/condominio-maquine-la-marina-/': '/condominio-maquine-la-marina/',
   '/condominio-xangri-la-villas-resort-': '/condominio-xangri-la-villas-resort/',
   '/condominio-xangri-la-villas-resort-/': '/condominio-xangri-la-villas-resort/',
+  '/politica-de-privacidade': '/politica-privacidade/',
+  '/politica-de-privacidade/': '/politica-privacidade/',
 };
+
+const BLOCKED_ADMIN_PATHS = new Set([
+  '/crm.html',
+  '/exportar-dados', '/exportar-dados.html',
+  '/restaurar', '/restaurar.html',
+  '/teste-fotos', '/teste-fotos.html',
+]);
+
+function adminNotFound() {
+  return new Response('Not Found', {
+    status: 404,
+    headers: {
+      'content-type': 'text/plain; charset=utf-8',
+      'cache-control': 'no-store',
+      'x-robots-tag': 'noindex, nofollow',
+    },
+  });
+}
 
 export async function onRequest(context) {
   const { request, next } = context;
@@ -13,20 +33,14 @@ export async function onRequest(context) {
   const legacyTarget = LEGACY_REDIRECTS[path];
   if (legacyTarget) return Response.redirect(new URL(legacyTarget, url), 301);
 
-  // O painel administrativo tem autenticação e scripts próprios; permanece isolado.
-  if (path === '/crm' || path === '/crm.html' || path.startsWith('/crm/')) return next();
+  // O CRM oficial continua disponível em /crm; a cópia legada /crm.html é bloqueada abaixo.
+  if (path === '/crm' || path.startsWith('/crm/')) return next();
+  if (BLOCKED_ADMIN_PATHS.has(path)) return adminNotFound();
 
   // Diagnóstico é uma ferramenta interna: não deve responder 200 anônimo.
   // O endpoint público é removido da superfície de produção; o CRM continua intacto.
   if (path === '/diagnostico.html' || path === '/diagnostico' || path.startsWith('/diagnostico/')) {
-    return new Response('Not Found', {
-      status: 404,
-      headers: {
-        'content-type': 'text/plain; charset=utf-8',
-        'cache-control': 'no-store',
-        'x-robots-tag': 'noindex, nofollow',
-      },
-    });
+    return adminNotFound();
   }
 
   // Favoritos só é necessário na página de favoritos e no detalhe de imóvel.
