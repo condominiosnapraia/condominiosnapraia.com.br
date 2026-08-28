@@ -672,6 +672,26 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   #view-home > #sec-condominios-verticais.sec-onda::before{top:-24px!important;height:48px!important}
 }
 </style>
+<style id="performance-below-fold">
+/* Reduz o trabalho de layout/paint inicial no mobile sem remover conteúdo do HTML. */
+#view-home > #lch-sec-sec,
+#view-home > #sec-imoveis,
+#view-home > #sec-apartamentos,
+#view-home > #sec-fora-cond,
+#view-home > #sec-terrenos,
+#view-home > #qfilter2,
+#view-home > #sec-condominios,
+#view-home > #sec-condominios-verticais,
+#view-home > #viver-intro-sec,
+#view-home > #pcred-sec-sec,
+#view-home > #cred-sol-sec-sec,
+#view-home > #guias-cidades,
+#view-home > #guias-decisao,
+#view-home > #sec-blog-preview{
+  content-visibility:auto;
+  contain-intrinsic-size:900px;
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
