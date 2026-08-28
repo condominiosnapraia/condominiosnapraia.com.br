@@ -579,7 +579,7 @@ details[open] .dec-faq-q:after{content:"−"}
 <div class="vv-lb" id="vv-lb">
   <button class="vv-lb-x" onclick="lbClose()">&times;</button>
   <button class="vv-lb-nav prev" onclick="lbNav(-1)">&#8249;</button>
-  <img id="vv-lb-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Foto ampliada" width="1" height="1">
+  <img id="vv-lb-img" src="" alt="Foto ampliada" width="1" height="1" hidden>
   <button class="vv-lb-nav next" onclick="lbNav(1)">&#8250;</button>
   <div class="vv-lb-cap" id="vv-lb-cap"></div>
 </div>
@@ -590,7 +590,7 @@ details[open] .dec-faq-q:after{content:"−"}
     <h2 class="vv-sec-title">Condomínios <em>à beira da lagoa</em></h2>
     <p class="vv-lead">Selecionamos os condomínios e imóveis com acesso à lagoa, marina privativa ou perfil náutico. Clique para conhecer cada um.</p>
     <div class="vv-cgrid" id="vv-cond-grid">
-      <div class="vv-empty"><div class="vv-empty-ico">&#127968;</div><p>Carregando...</p></div>
+      <div class="vv-empty"><div class="vv-empty-ico">&#127968;</div><p>Explore os empreendimentos náuticos disponíveis.</p></div>
     </div>
   </div>
 </section>
@@ -864,11 +864,13 @@ carregar();
 function lbShow(){
   const list=window.__lbList||[]; if(!list.length) return;
   const el=list[window.__lbIdx];
-  document.getElementById('vv-lb-img').src=el.getAttribute('data-url');
+  const image=document.getElementById('vv-lb-img');
+  image.src=el.getAttribute('data-url');
+  image.hidden=false;
   document.getElementById('vv-lb-cap').textContent=el.getAttribute('data-cap')||'';
   document.getElementById('vv-lb').classList.add('on');
 }
-function lbClose(){ document.getElementById('vv-lb').classList.remove('on'); }
+function lbClose(){ document.getElementById('vv-lb').classList.remove('on'); const image=document.getElementById('vv-lb-img'); image.hidden=true; image.removeAttribute('src'); }
 function lbNav(d){ const list=window.__lbList||[]; if(!list.length) return; window.__lbIdx=(window.__lbIdx+d+list.length)%list.length; lbShow(); }
 document.addEventListener('keydown',e=>{ if(!document.getElementById('vv-lb').classList.contains('on'))return; if(e.key==='Escape')lbClose(); if(e.key==='ArrowRight')lbNav(1); if(e.key==='ArrowLeft')lbNav(-1); });
 document.getElementById('vv-lb')?.addEventListener('click',e=>{ if(e.target.id==='vv-lb')lbClose(); });
