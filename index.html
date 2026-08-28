@@ -692,6 +692,28 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   contain-intrinsic-size:900px;
 }
 </style>
+<style id="condo-card-photo-size">
+/* Fotos maiores nos cards de condomínios: mais destaque sem alterar os dados. */
+#view-home #home-cond-grid .ccard .ci,
+#view-home #home-cond-grid .ccard .ci-carousel{
+  height:220px!important;
+  min-height:220px!important;
+}
+#view-home #home-cond-grid .ccard .ci > img,
+#view-home #home-cond-grid .ccard .ci .ci-slide,
+#view-home #home-cond-grid .ccard .ci .ci-slide img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+}
+@media(max-width:768px){
+  #view-home #home-cond-grid .ccard .ci,
+  #view-home #home-cond-grid .ccard .ci-carousel{
+    height:205px!important;
+    min-height:205px!important;
+  }
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
