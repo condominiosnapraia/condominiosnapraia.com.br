@@ -656,6 +656,15 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   #view-home > #sec-condominios{padding-bottom:16px!important}
 }
 </style>
+<style id="home-mobile-section-transition-fix">
+/* Correção da transição mobile: evita uma faixa vazia excessiva entre os cards e lançamentos. */
+@media (max-width: 768px){
+  #view-home > .qr-sec{padding-bottom:24px!important}
+  #view-home > #lch-sec-sec.sec-onda{padding-top:24px!important}
+  #view-home > #lch-sec-sec.sec-onda::before{top:-24px!important;height:48px!important}
+  #view-home > #lch-sec-sec .lch-head{margin-bottom:14px!important}
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
