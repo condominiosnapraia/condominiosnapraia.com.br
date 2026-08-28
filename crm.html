@@ -4583,14 +4583,28 @@ function compartilharImovelWhatsAppDireto(id){
   shareImovelAtual=d;
   window.open('https://wa.me/?text='+encodeURIComponent(textoCompartilhamentoImovel(d)),'_blank','noopener,noreferrer');
 }
-function compartilharImovelEmail(){
+async function compartilharImovelEmail(){
   if(!shareImovelAtual)return;
   const input=document.getElementById('share-imov-email');const email=(input?.value||'').trim();
   const partesEmail=email.split('@');
   const emailValido=email.length<=254&&partesEmail.length===2&&partesEmail[0].length>0&&partesEmail[1].includes('.')&&!partesEmail[1].startsWith('.')&&!partesEmail[1].endsWith('.')&&!email.includes(' ');
   if(!emailValido){toast('Informe um e-mail válido para compartilhar o imóvel.','error');input?.focus();return;}
-  const assunto='Imóvel selecionado para você | '+shareImovelAtual.titulo;
-  const href='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(assunto)+'&body='+encodeURIComponent(textoCompartilhamentoImovel(shareImovelAtual));
+  const d=shareImovelAtual;
+  const payload={to:email,imovel:{titulo:d.titulo,codigo:d.codigo,preco:d.preco,local:d.local,cidade:d.cidade,meta:d.meta,descricao:d.descricao,foto:d.foto,url:d.url}};
+  const token=sessionStorage.getItem('cnp_crm_token')||'';
+  if(token){
+    try{
+      const response=await fetch('/api/enviar-imovel-email',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(payload)});
+      const result=await response.json().catch(()=>({}));
+      if(response.ok&&result.ok){toast('E-mail HTML enviado com sucesso!','success');return;}
+      if(response.status===401){toast('Sessão expirada. Faça login novamente para enviar o e-mail.','error');return;}
+      if(response.status===503){toast('O remetente do e-mail HTML ainda precisa ser configurado no Resend.','info');}
+      else toast(result.error||'Não foi possível enviar o e-mail HTML.','error');
+      return;
+    }catch(e){toast('Não foi possível conectar ao envio HTML. Use o e-mail do aparelho como alternativa.','info');}
+  }
+  const assunto='Imóvel selecionado para você | '+d.titulo;
+  const href='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(assunto)+'&body='+encodeURIComponent(textoCompartilhamentoImovel(d));
   window.location.href=href;
 }
 async function copiarTextoLinkImovel(link,campo){
