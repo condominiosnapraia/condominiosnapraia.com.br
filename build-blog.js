@@ -39,7 +39,7 @@ const HDR = { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABA
 const STORAGE = SUPABASE_URL + '/storage/v1/object/public/';
 
 const SITE = 'https://condominiosnapraia.com.br';
-const WPP = '5551982868888';
+const WPP = '555197698450';
 const DEMO = process.argv.includes('--demo');
 
 // ---------------------------------------------------------------------------

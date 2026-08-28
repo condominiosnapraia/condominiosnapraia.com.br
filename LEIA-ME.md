@@ -6,7 +6,7 @@ pastas e substitui os arquivos certos). Depois: GitHub Desktop → Commit → Pu
 
 ## O que mudou nesta sessão
 
-1. **WhatsApp → Juliano Machado (51) 98286-8888** na maior parte do site (86 páginas + CRM).
+1. **WhatsApp → Juliano Machado (51) 9769-8450** na maior parte do site (86 páginas + CRM).
    MANTÊM o Felipe (51) 99944-2252:
    - CARTAS CONTEMPLADAS (contemplado-imoveis.html)
    - financiamento-imobiliario

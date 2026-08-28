@@ -1,4 +1,4 @@
-const WPP = '5551982868888';
+const WPP = '555197698450';
 const brl = n => { if(!n) return '—'; const num=Number(String(n).replace(/\./g,'').replace(',','.')); if(isNaN(num)) return '—'; return num.toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:2,maximumFractionDigits:2}); };
 const m2  = n => n ? Number(n).toLocaleString('pt-BR')+'m²' : '—';
 const mob = () => window.innerWidth <= 960;
@@ -914,7 +914,7 @@ function buildDetail(c){
       var sc2=document.createElement('script');sc2.type='application/ld+json';sc2.id='d-bc-schema';
       sc2.textContent=JSON.stringify(bc);document.head.appendChild(sc2);
 
-      var org={"@context":"https://schema.org","@type":"RealEstateAgent","name":"Condomínios na Praia","alternateName":"Condomínios na Praia","url":location.origin+"/","logo":location.origin+"/img/logo-header.png","image":location.origin+"/img/og-home.jpg","telephone":"+55-51-98286-8888","email":"napraiacondominios@gmail.com","areaServed":["Xangri-lá","Capão da Canoa","Osório","Maquiné","Atlântida","Litoral Norte Gaúcho"],"address":{"@type":"PostalAddress","addressRegion":"RS","addressCountry":"BR","addressLocality":"Litoral Norte Gaúcho"},"knowsAbout":["condomínios fechados","imóveis de alto padrão","casas na praia","terrenos em condomínio","crédito contemplado"],"sameAs":[/* AJUSTAR: cole aqui os links das redes ao criar, ex: "https://www.instagram.com/portalmeulitoral" */]};
+      var org={"@context":"https://schema.org","@type":"RealEstateAgent","name":"Condomínios na Praia","alternateName":"Condomínios na Praia","url":location.origin+"/","logo":location.origin+"/img/logo-header.png","image":location.origin+"/img/og-home.jpg","telephone":"+55-51-9769-8450","email":"napraiacondominios@gmail.com","areaServed":["Xangri-lá","Capão da Canoa","Osório","Maquiné","Atlântida","Litoral Norte Gaúcho"],"address":{"@type":"PostalAddress","addressRegion":"RS","addressCountry":"BR","addressLocality":"Litoral Norte Gaúcho"},"knowsAbout":["condomínios fechados","imóveis de alto padrão","casas na praia","terrenos em condomínio","crédito contemplado"],"sameAs":[/* AJUSTAR: cole aqui os links das redes ao criar, ex: "https://www.instagram.com/portalmeulitoral" */]};
       var sc3=document.createElement('script');sc3.type='application/ld+json';sc3.id='d-org-schema';
       sc3.textContent=JSON.stringify(org);document.head.appendChild(sc3);
     }catch(e){}
@@ -2088,7 +2088,7 @@ function simCalc(){
   // WhatsApp link
   const _bsel = document.getElementById('sim-banco'); const bancoNome = _bsel.options[_bsel.selectedIndex].text.split(' —')[0];
   const msg = `Olá! Fiz uma simulação no site:\n\n🏠 Imóvel: ${fmt(valor)}\n🏦 Banco: ${bancoNome}\n💰 Entrada: ${fmt(entrada)}\n📊 Financiado: ${fmt(financiado)}\n📅 Prazo: ${prazo} meses\n💵 1ª parcela: ${fmt(primeiraParcela)}\n\nGostaria de mais informações sobre financiamento.`;
-  document.getElementById('sim-wpp').href = 'https://wa.me/5551982868888?text=' + encodeURIComponent(msg);
+  document.getElementById('sim-wpp').href = 'https://wa.me/555197698450?text=' + encodeURIComponent(msg);
 }
 // Init on load
 setTimeout(()=>{ simPrazoLbl(); simCalc(); }, 500);
@@ -2132,7 +2132,7 @@ async function simGerarPDF(){
 
   // WhatsApp link with simulation data
   const msg = `Olá Felipe! Fiz uma simulação no site:\n\n🏠 Imóvel: ${fmt(valor)}\n🏦 Banco: ${bancoNome}\n💰 Entrada: ${fmt(entrada)}\n📊 Financiado: ${fmt(financiado)}\n📅 Prazo: ${prazo} meses\n💵 1ª parcela: ${fmt(primeiraParcela)}\n\nGostaria de mais informações.`;
-  const wppUrl = 'https://wa.me/5551982868888?text=' + encodeURIComponent(msg);
+  const wppUrl = 'https://wa.me/555197698450?text=' + encodeURIComponent(msg);
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -2205,7 +2205,7 @@ async function simGerarPDF(){
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(22, 163, 74);
-  doc.text('WhatsApp: (51) 98286-8888', 28, y+7);
+  doc.text('WhatsApp: (51) 9769-8450', 28, y+7);
   y += 22;
 
   // Section: Dados
@@ -2282,7 +2282,7 @@ async function simGerarPDF(){
   doc.text('FALAR COM FELIPE NO WHATSAPP', 105, y + 10, { align: 'center' });
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text('Clique aqui • (51) 98286-8888', 105, y + 18, { align: 'center' });
+  doc.text('Clique aqui • (51) 9769-8450', 105, y + 18, { align: 'center' });
   y += 34;
 
   // Disclaimer
@@ -2406,7 +2406,7 @@ async function renderContempladasCards(targetId){
     el.innerHTML = cartas.slice(0,3).map(c=>{
       const cor = c.cor || '#0c4a6e';
       const adm = c.adm || c.administradora || 'Carta';
-      const wpp = 'https://wa.me/5551982868888?text=' + encodeURIComponent(`Olá! Tenho interesse na carta ${adm} de ${fmt(c.credito)}.`);
+      const wpp = 'https://wa.me/555197698450?text=' + encodeURIComponent(`Olá! Tenho interesse na carta ${adm} de ${fmt(c.credito)}.`);
       return `<div class="ct-card" onclick="window.location='/contemplado-imoveis/'">
         <div class="ct-card-top">
           <div class="ct-card-adm"><div class="ct-card-logo" style="background:${cor}"><b style="font-size:9px;color:#fff">${adm.slice(0,3).toUpperCase()}</b></div>

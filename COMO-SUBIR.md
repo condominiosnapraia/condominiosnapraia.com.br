@@ -17,7 +17,7 @@ São arquivos de apoio, guarde no seu computador:
   material das avaliações (usar quando tiver avaliações reais coletadas).
 
 ## O que mudou nesta sessão
-1. WhatsApp Juliano (51) 98286-8888 no site (86 páginas) e CRM.
+1. WhatsApp Juliano (51) 9769-8450 no site (86 páginas) e CRM.
    Felipe (51) 99944-2252 mantido em: cartas contempladas, financiamento-imobiliario,
    refinanciamento-imobiliario, financiamento-ou-consorcio.
 2. Cartas contempladas: 1085 cartas de agosto com valor de entrada + logos das

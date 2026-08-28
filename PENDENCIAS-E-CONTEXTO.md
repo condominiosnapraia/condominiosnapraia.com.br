@@ -8,7 +8,7 @@
 
 ## 1. INFORMAÇÕES ESSENCIAIS (não perder)
 
-- **WhatsApp oficial:** (51) 98286-8888 → `wa.me/5551982868888`
+- **WhatsApp oficial:** (51) 9769-8450 → `wa.me/555197698450`
 - **E-mail oficial:** napraiacondominios@gmail.com
 - **CRECI:** CRECI-RS 72.386 (obrigatório por lei no rodapé — NÃO remover)
 - **Supabase:** URL `https://cddgkhkzcnyzzcllgzoz.supabase.co` (a anon key pública
@@ -28,7 +28,7 @@ Purge no Cloudflare) e conferir no ar.
 
 Correções já aplicadas nos arquivos:
 - Telefone falso (51) 99999-9999 → removido de tudo (era dado falso indexado no Google)
-- WhatsApp unificado (51) 98286-8888 em todas as páginas
+- WhatsApp unificado (51) 9769-8450 em todas as páginas
 - E-mail falso → napraiacondominios@gmail.com
 - Títulos dos imóveis únicos e ≤60 caracteres (eram todos "Casa em Litoral Norte")
 - Twitter Cards em todas as 391 páginas

@@ -91,7 +91,7 @@ def whatsapp_url(card: dict, base_url: str) -> str:
         f"{brl(card.get('parcela'))}. Pode confirmar a disponibilidade e me orientar?"
     )
     from urllib.parse import quote
-    return 'https://wa.me/5551982868888?text=' + quote(message)
+    return 'https://wa.me/555197698450?text=' + quote(message)
 
 
 def schema_for(card: dict, url: str, description: str, related_faq: list[tuple[str, str]]) -> str:
@@ -200,7 +200,7 @@ def page_html(card: dict, url_path: str, related: list[dict], paths: dict[str, s
       set('cc-live-term-stat', String(row.prazo || 0) + 'x');
       set('cc-live-balance', money(row.saldo_devedor));
       const msg = 'Olá! Tenho interesse na carta código ' + staticCode + ' de ' + money(row.credito) + ' com entrada de ' + money(row.entrada) + '. Pode me dar mais informações?';
-      document.querySelectorAll('[data-credit-wpp]').forEach(a => a.href = 'https://wa.me/5551982868888?text=' + encodeURIComponent(msg));
+      document.querySelectorAll('[data-credit-wpp]').forEach(a => a.href = 'https://wa.me/555197698450?text=' + encodeURIComponent(msg));
     }} catch (error) {{ console.warn('Dados ao vivo indisponíveis; mantendo conteúdo SEO estático.', error); }}
   }}
   refreshCredit();
@@ -453,7 +453,7 @@ async function carregarCartasSupabase(){
         <div class="carta-entrada">Entrada: <strong>${brl(c.entrada)}</strong></div>
         <div class="carta-footer">
           <a class="btn-ver" href="${landing}" style="text-decoration:none" onclick="event.stopPropagation()">Ver carta</a>
-          <a class="btn-wpp" href="https://wa.me/5551982868888?text=${encodeURIComponent('Olá! Tenho interesse na carta '+getAdm(c.adm_id).nome+' cód '+c.cod+' de '+brl(c.credito)+' com parcela de '+brl(c.parcela)+'. Pode me dar mais informações?')}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${wppSvg} WhatsApp</a>
+          <a class="btn-wpp" href="https://wa.me/555197698450?text=${encodeURIComponent('Olá! Tenho interesse na carta '+getAdm(c.adm_id).nome+' cód '+c.cod+' de '+brl(c.credito)+' com parcela de '+brl(c.parcela)+'. Pode me dar mais informações?')}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${wppSvg} WhatsApp</a>
         </div>
       </div>
     </article>`;

@@ -21,7 +21,7 @@ Consolidado de todas as correções aplicadas (base: auditoria SEO + bugs encont
   Todas corrigidas para usar os próprios dados de cada página.
 
 ### NAP / contato
-- **WhatsApp unificado** para (51) 98286-8888 em 390 páginas (antes havia dois
+- **WhatsApp unificado** para (51) 9769-8450 em 390 páginas (antes havia dois
   números; 99944-2252 foi substituído).
 - Placeholder "(51) 99999-9999" exibido no template de condomínio corrigido.
 

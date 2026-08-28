@@ -213,7 +213,7 @@ function ssrBlock(im, cond, title, description, image, canonicalUrl, city) {
     ${price ? `<p class="ip-price"><span class="ip-price-lbl">Valor</span>${esc(price)}</p>` : ''}
     <div class="ip-desc"><h2>Sobre este imóvel</h2><p>${esc(description)}</p></div>
     ${condName ? `<section class="ip-ssr-cond"><h2>Informações do condomínio</h2><p><strong>${esc(condName)}</strong>${condCity ? ` · ${esc(condCity)}` : ''}</p>${cond?.descricao ? `<p>${esc(descricaoPublica(cond.descricao))}</p>` : ''}${Array.isArray(cond?.amenidades) && cond.amenidades.length ? `<p><strong>Infraestrutura:</strong> ${esc(cond.amenidades.slice(0, 8).join(', '))}</p>` : ''}</section>` : ''}
-    <section class="ip-ssr-broker"><h2>Corretor responsável</h2><p><strong>${esc(broker)}</strong> · CRECI-RS 72.386</p><p>Atendimento personalizado para compra e visita ao imóvel.</p><p><a href="https://wa.me/5551982868888?text=${encodeURIComponent(`Olá! Tenho interesse no imóvel ${title}${condName ? ` no ${condName}` : ''}.`)}">Falar no WhatsApp</a></p></section>
+    <section class="ip-ssr-broker"><h2>Corretor responsável</h2><p><strong>${esc(broker)}</strong> · CRECI-RS 72.386</p><p>Atendimento personalizado para compra e visita ao imóvel.</p><p><a href="https://wa.me/555197698450?text=${encodeURIComponent(`Olá! Tenho interesse no imóvel ${title}${condName ? ` no ${condName}` : ''}.`)}">Falar no WhatsApp</a></p></section>
     <p class="ip-ssr-cta"><a href="${SITE}/contato/">Fale com um consultor</a></p>
   </article>`;
 }
