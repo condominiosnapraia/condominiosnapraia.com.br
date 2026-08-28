@@ -1734,7 +1734,7 @@ function openImModal(imId) {
     `<span style="display:inline-block;margin-right:12px">${d}</span>`).join('');
 
   // WPP
-  const wppMsg = encodeURIComponent(`Olá! Tenho interesse no imóvel *${im.titulo}* no condomínio *${cond.nome}*. Preço: ${brl(im.preco)}. Gostaria de mais informações.`);
+  const wppMsg = encodeURIComponent(`Olá! Gostaria de receber mais informações sobre este imóvel.\n\nCódigo: ${im.codigo || 'Não informado'}\nImóvel: ${im.titulo}\nCondomínio: ${cond.nome}\nPreço: ${brl(im.preco)}.\n\nPodem me informar a disponibilidade, as condições e as opções para agendar uma visita?`);
   document.getElementById('im-wpp-btn').href = `https://wa.me/${WPP_NUM}?text=${wppMsg}`;
 
   document.getElementById('im-overlay').classList.add('open');

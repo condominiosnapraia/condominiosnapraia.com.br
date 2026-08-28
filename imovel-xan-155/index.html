@@ -1311,8 +1311,7 @@ function render(im,cond){
       ctaHtml+
     '</div>';
   }
-
-  const wm=encodeURIComponent('Olá! Tenho interesse no imóvel '+(im.titulo||'')+(cond.nome?(' no '+cond.nome):'')+'. Preço: '+brl(im.preco)+'.');
+  const wm=encodeURIComponent('Olá! Gostaria de receber mais informações sobre este imóvel.\n\nCódigo: '+(im.codigo||'Não informado')+'\nImóvel: '+(im.titulo||'')+(cond.nome?'\nCondomínio: '+cond.nome:'')+'\nPreço: '+brl(im.preco)+'.\n\nPodem me informar a disponibilidade, as condições e as opções para agendar uma visita?');
 
   document.getElementById('ip-content').innerHTML =
     '<div class="ip-gal">'+galHtml+'</div>'+thumbs+

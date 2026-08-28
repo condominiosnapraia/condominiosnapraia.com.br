@@ -157,7 +157,7 @@ function page({ site, imovel, cond, siteSlug, relatedRows }) {
   const broker = imovel.corretor || site.nome || 'Corretor parceiro';
   const phone = digits(site.whatsapp || site.telefone);
   const wppBase = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
-  const wppText = encodeURIComponent(`Olá! Tenho interesse no imóvel ${title}${cond?.nome ? ` no ${cond.nome}` : ''}. ${imovel.codigo ? `Código: ${imovel.codigo}.` : ''}`);
+  const wppText = encodeURIComponent(`Olá! Gostaria de receber mais informações sobre este imóvel.\n\nCódigo: ${codeLabel || 'Não informado'}\nImóvel: ${title}${condoName ? `\nCondomínio: ${condoName}` : ''}\nPreço: ${money(imovel.preco)}.\n\nPodem me informar a disponibilidade, as condições e as opções para agendar uma visita?`);
   const canonical = propertyUrl(siteSlug, imovel);
   const contactUrl = `${BASE}/corretor/${encodeURIComponent(siteSlug)}/contato/`;
   const landingUrl = `${BASE}/corretor/${encodeURIComponent(siteSlug)}/`;

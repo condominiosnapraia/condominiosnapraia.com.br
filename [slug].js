@@ -128,7 +128,7 @@ function card(property, compact = false, interestBase = '', brokerName = '') {
     property.area && `${property.area} m²`,
   ].filter(Boolean).join(' · ');
   const location = [property.neighborhood, property.city].filter(Boolean).join(' · ');
-  const interestText = encodeURIComponent(`Olá${brokerName ? `, ${brokerName}` : ''}! Tenho interesse no imóvel ${property.title}${property.code ? `, código ${property.code}` : ''}. ${property.url}`);
+  const interestText = encodeURIComponent(`Olá${brokerName ? `, ${brokerName}` : ''}! Gostaria de receber mais informações sobre este imóvel.\n\nCódigo: ${property.code || 'Não informado'}\nImóvel: ${property.title}\nLink: ${property.url}\n\nPodem me informar a disponibilidade, as condições e as opções para agendar uma visita?`);
   const interestUrl = interestBase ? `${interestBase}?text=${interestText}` : '#contato';
   return `<article class="property-card${compact ? ' property-card-compact' : ''}">
     <a class="property-photo-link" href="${esc(property.url)}" aria-label="Ver ${esc(property.title)}">
