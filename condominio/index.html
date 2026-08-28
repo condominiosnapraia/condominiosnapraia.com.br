@@ -103,7 +103,7 @@ body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--text);o
 .cond-title em{font-style:italic;color:var(--gold)}
 .cond-location{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);letter-spacing:.08em;margin:0 0 18px}
 .cond-location span:first-child{font-size:15px}
-.cond-desc{font-size:15px;line-height:1.72;color:var(--text-muted);font-weight:300;margin:24px 0 22px;max-width:820px}
+.cond-desc{font-size:15px;line-height:1.72;color:var(--text-muted);font-weight:300;margin:24px 0 22px;max-width:820px}.cond-load-retry{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:10px 15px;border:0;border-radius:4px;background:var(--ocean);color:#fff;font:600 12px Outfit,sans-serif;cursor:pointer}.cond-load-retry:hover{background:var(--ocean-mid)}.cond-load-link{display:inline-block;margin-top:14px;color:var(--ocean-mid);font-weight:700;text-decoration:none}
 .cond-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 26px}
 .cond-primary-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:#fff;text-decoration:none;border-radius:999px;padding:12px 20px;font-size:12px;font-weight:700;letter-spacing:.05em;box-shadow:0 8px 18px rgba(37,211,102,.18);transition:transform .2s,box-shadow .2s}
 .cond-primary-cta:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(37,211,102,.25)}
@@ -652,7 +652,7 @@ img,video,iframe,svg{max-width:100%}
 </div>
 <div class="hero-cover" id="hero-cover" style="display:none"></div>
 <div class="cond-hero-copy">
-<div class="cond-eyebrow" id="cond-cidade">Carregando...</div>
+<div class="cond-eyebrow" id="cond-cidade">Consultando informações</div>
 <h1 class="cond-title" id="cond-title">—</h1>
 <div class="cond-location" id="cond-location"><span>📍</span><span id="cond-location-text">—</span></div>
 <div class="cond-hero-badge-row">
@@ -670,7 +670,7 @@ img,video,iframe,svg{max-width:100%}
 </div>
 </div>
 <!-- MAIN CONTENT -->
-<div class="content cond-intro-wrap"><p class="cond-desc cond-intro" id="cond-desc">Carregando informações...</p></div>
+<div class="content cond-intro-wrap"><p class="cond-desc cond-intro" id="cond-desc">Consultando informações do condomínio...</p></div>
 <div class="content">
 <!-- INFO + SIDE CARD -->
 <div class="info-section">
@@ -725,7 +725,7 @@ img,video,iframe,svg{max-width:100%}
 <div class="cond-gallery-modal-inner">
 <button aria-label="Fechar imagem ampliada" class="cond-gallery-modal-close" id="cond-gallery-modal-close" onclick="condGalleryClose()" type="button">×</button>
 <button aria-label="Foto anterior" class="cond-gallery-modal-arrow prev" onclick="condGalleryModalNav(-1)" type="button">‹</button>
-<img alt="Foto ampliada do condomínio" class="cond-gallery-modal-image" id="cond-gallery-modal-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/>
+<img alt="Foto ampliada do condomínio" class="cond-gallery-modal-image" id="cond-gallery-modal-image"/>
 <button aria-label="Próxima foto" class="cond-gallery-modal-arrow next" onclick="condGalleryModalNav(1)" type="button">›</button>
 <div class="cond-gallery-modal-caption" id="cond-gallery-modal-caption"></div>
 </div>
@@ -761,7 +761,7 @@ img,video,iframe,svg{max-width:100%}
 <p id="cond-implantacao-desc">Consulte a disposição dos lotes e das áreas de lazer do empreendimento.</p>
 </div>
 <a aria-label="Abrir mapa de implantação em tamanho ampliado" class="cond-implantacao-thumb" href="#" id="cond-implantacao-link" rel="noopener" target="_blank">
-<img alt="Miniatura do mapa de implantação do condomínio" decoding="async" height="900" id="cond-implantacao-img" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" width="1280"/>
+<img alt="Miniatura do mapa de implantação do condomínio" decoding="async" height="900" id="cond-implantacao-img" loading="lazy" width="1280"/>
 <span>Toque para abrir o mapa em tamanho ampliado ↗</span>
 </a>
 </div>
@@ -1070,6 +1070,7 @@ async function fetchCondImoveis(condId, HDR) {
 
 // O primeiro carregamento traz apenas o condomínio e um contador mínimo de imóveis.
 // A selecção completa dos cards só acontece quando a secção de imóveis se aproxima.
+let __condFetchFailed = false;
 async function getData() {
   const HDR = { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } };
   const ref = String(new URLSearchParams(location.search).get('id') || '').trim();
@@ -1080,6 +1081,7 @@ async function getData() {
         SUPABASE_URL + '/rest/v1/condominios?or=(id.eq.' + encoded + ',slug.eq.' + encoded +
         ')&select=' + encodeURIComponent(DYN_COND_SELECT) + '&limit=1', HDR
       );
+      if (!response.ok) __condFetchFailed = true;
       let rows = response.ok ? await response.json() : [];
       if (!Array.isArray(rows)) rows = [];
       const condo = rows[0];
@@ -1110,7 +1112,7 @@ async function getData() {
         return [condo];
       }
     }
-  } catch (_) { /* segue para o fallback */ }
+  } catch (_) { __condFetchFailed = true; /* segue para o fallback */ }
 
   try { return JSON.parse(localStorage.getItem('cnp_condominios') || '[]'); } catch { return []; }
 }
@@ -1153,8 +1155,15 @@ async function init() {
   // aceita id por campo 'id' ou 'slug' (mais amigável para URLs)
   cond = all.find(c => String(c.id) === String(condId) || c.slug === condId);
   if (!cond) {
-    document.querySelector('.cond-title').textContent = 'Condomínio não encontrado';
-    document.querySelector('.cond-desc').textContent = 'Este condomínio pode ter sido removido ou o link está incorreto.';
+    const titleEl = document.querySelector('.cond-title');
+    const descEl = document.querySelector('.cond-desc');
+    if (__condFetchFailed) {
+      titleEl.textContent = 'Não foi possível carregar este condomínio';
+      descEl.innerHTML = 'A consulta está temporariamente indisponível. Tente novamente em instantes.<br><button type="button" class="cond-load-retry" onclick="location.reload()">Tentar novamente</button><br><a class="cond-load-link" href="/condominios/">Ver catálogo de condomínios →</a>';
+    } else {
+      titleEl.textContent = 'Condomínio não encontrado';
+      descEl.textContent = 'Este condomínio pode ter sido removido ou o link está incorreto.';
+    }
     return;
   }
 

@@ -672,8 +672,8 @@ details[open] .dec-faq-q:after{content:"−"}
 @media(max-width:520px){.ip-lb-nav{width:42px;height:42px;font-size:22px}.ip-lb-nav.prev{left:10px}.ip-lb-nav.next{right:10px}}
 .ip-cond-galcount{font-size:13px;color:var(--tm);font-weight:400;font-family:'Outfit',sans-serif}
 .ip-notfound{text-align:center;padding:80px 20px}
-.ip-notfound h1{font-family:'Fraunces',serif;color:var(--ocean);font-size:28px;margin-bottom:10px}
-.ip-notfound a{color:var(--om);font-weight:700;text-decoration:none}
+.ip-notfound h1,.ip-notfound h2{font-family:'Fraunces',serif;color:var(--ocean);font-size:28px;margin-bottom:10px}
+.ip-notfound a{color:var(--om);font-weight:700;text-decoration:none}.ip-retry{border:0;background:var(--ocean);color:#fff;border-radius:4px;padding:10px 16px;font:600 12px Outfit,sans-serif;cursor:pointer;margin-right:8px}.ip-retry:hover{background:var(--om)}
 
 /* correções mobile */
 .ftr-wave svg{width:100%;height:100%;display:block}
@@ -923,7 +923,7 @@ details[open] .dec-faq-q:after{content:"−"}
 </nav>
 
 <div class="ip-wrap">
-  <div class="ip-back"><a href="/#imoveis">&larr; Voltar aos imóveis</a></div>
+  <div class="ip-back"><a href="/imoveis/">&larr; Voltar aos imóveis</a></div>
   <div id="ip-content">
     <div class="ip-loading"><div class="sp"></div>Carregando imóvel...</div>
   </div>
@@ -932,7 +932,7 @@ details[open] .dec-faq-q:after{content:"−"}
 <div class="ip-lb" id="ip-lb" onclick="if(event.target.id==='ip-lb')ipLbClose()">
   <button class="ip-lb-x" onclick="ipLbClose()">&times;</button>
   <button class="ip-lb-nav prev" onclick="lbNav(-1)">&#8249;</button>
-  <img id="ip-lb-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Foto ampliada do imóvel">
+  <img id="ip-lb-img" alt="Foto ampliada do imóvel">
   <button class="ip-lb-nav next" onclick="lbNav(1)">&#8250;</button>
 </div>
 
@@ -1022,6 +1022,8 @@ details[open] .dec-faq-q:after{content:"−"}
         <a href="/capao-da-canoa/">Capão da Canoa</a>
         <a href="/osorio/">Osório</a>
         <a href="/maquine/">Maquiné</a>
+        <a href="/xangri-la-atlantida/">Atlântida</a>
+        <a href="/capao-da-canoa-curumim/">Curumim</a>
       </div>
     </div>
   </div>
@@ -1092,7 +1094,8 @@ const DYN_COND_SELECT = [
 ].join(',');
 
 const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
-async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
+let __imovelFetchFailed=false;
+async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});if(!r.ok){__imovelFetchFailed=true;return [];}return await r.json();}catch(e){__imovelFetchFailed=true;return[];}}
 function qs(k){return new URLSearchParams(location.search).get(k);}
 // pega a referência do imóvel: do caminho (/imovel/CNP-042) OU da query (?id=CNP-042)
 function refImovel(){
@@ -1213,7 +1216,7 @@ async function init(){
       try{ imv=await sbGet('imoveis','?codigo=eq.'+encodeURIComponent(codeMatch[1].toUpperCase())+'&select='+encodeURIComponent(DYN_IMOV_SELECT)+'&limit=1'); }catch(e){ imv=[]; }
     }
   }
-  if(!Array.isArray(imv)||!imv.length){cont.innerHTML=notFound();return;}
+  if(!Array.isArray(imv)||!imv.length){cont.innerHTML=__imovelFetchFailed?loadError():notFound();return;}
   const im=imv[0];
   // Registros antigos sem fotos_no_site recebem somente o array legado sob demanda.
   if(!im.fotos_no_site && im.id){
@@ -1309,44 +1312,6 @@ function render(im,cond){
     // CANONICAL correto para este imóvel
     var can=document.querySelector('link[rel="canonical"]');
     if(can) can.setAttribute('href','https://condominiosnapraia.com.br'+urlPublicaImovel(im));
-
-    // ═══ SCHEMA.ORG — dados estruturados (o Google entende que é um imóvel à venda) ═══
-    try{
-      var fotos = (im.fotos_no_site||im.fotos||[]).filter(Boolean).slice(0,6);
-      var schema = {
-        "@context":"https://schema.org",
-        "@type":"RealEstateListing",
-        "name": tit,
-        "description": desc,
-        "url": 'https://condominiosnapraia.com.br' + urlPublicaImovel(im),
-        "datePosted": im.criado_em || undefined,
-        "image": fotos.length ? fotos : undefined,
-        "address": {
-          "@type":"PostalAddress",
-          "addressLocality": cid || undefined,
-          "addressRegion":"RS",
-          "addressCountry":"BR"
-        }
-      };
-      if(typeof im.preco==='number' && im.preco>0){
-        schema.offers = {
-          "@type":"Offer",
-          "price": im.preco,
-          "priceCurrency":"BRL",
-          "availability": (im.status==='Vendido') ? "https://schema.org/SoldOut" : "https://schema.org/InStock"
-        };
-      }
-      // detalhes do imóvel
-      var acc = [];
-      if(im.quartos) acc.push({"@type":"LocationFeatureSpecification","name":"Quartos","value":im.quartos});
-      if(im.suites)  acc.push({"@type":"LocationFeatureSpecification","name":"Suítes","value":im.suites});
-      if(im.vagas)   acc.push({"@type":"LocationFeatureSpecification","name":"Vagas","value":im.vagas});
-      if(acc.length) schema.amenityFeature = acc;
-      if(im.area) schema.floorSize = {"@type":"QuantitativeValue","value":im.area,"unitCode":"MTK"};
-
-      var ldEl=document.getElementById('ld-imovel');
-      if(ldEl) ldEl.textContent = JSON.stringify(schema);
-    }catch(e){}
   })();
   // OG dinâmico (para humanos; crawlers usam a Cloudflare Function)
   (function(){
@@ -1637,7 +1602,8 @@ async function carregarSimilares(im,cond){
   el.style.display='block';
 }
 
-function notFound(){return '<div class="ip-notfound"><h2>Imóvel não encontrado</h2><p>Este imóvel pode ter sido vendido ou removido.</p><br><a href="/#imoveis">Ver imóveis disponíveis →</a></div>';}
+function loadError(){return '<div class="ip-notfound" role="alert"><h2>Não foi possível carregar este imóvel</h2><p>O catálogo está temporariamente indisponível. Tente novamente em instantes.</p><br><button type="button" class="ip-retry" onclick="location.reload()">Tentar novamente</button> <a href="/imoveis/">Ver imóveis disponíveis →</a></div>';}
+function notFound(){return '<div class="ip-notfound"><h2>Imóvel não encontrado</h2><p>Este imóvel pode ter sido vendido ou removido.</p><br><a href="/imoveis/">Ver imóveis disponíveis →</a></div>';}
 // Compartilhamento sempre usa a URL canônica amigável quando o slug está disponível.
 function urlCompartilhar(){
   var im = window._imAtual;

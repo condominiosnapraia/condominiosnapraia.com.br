@@ -60,7 +60,7 @@
           '<option>Outro</option>'+
         '</select>'+
       '</div>'+
-      '<label class="ldc-consent"><input id="ldc-consent" type="checkbox" required><span>Concordo em ser contatado sobre esta solicitação e li a <a href="/politica-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>'+
+      '<label class="ldc-consent"><input id="ldc-consent" type="checkbox" required><span>Concordo em ser contatado sobre esta solicitação e li a <a href="/politica-privacidade/" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>'+
       '<button class="ldc-btn" id="ldc-btn">Quero receber opções</button>'+
       '<div class="ldc-msg" id="ldc-msg"></div>'+
       '<div class="ldc-priv">Seus dados serão usados apenas para atendimento e retorno sobre a solicitação.</div>'+
