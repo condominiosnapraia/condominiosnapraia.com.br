@@ -12,6 +12,10 @@
 /teste-fotos        /404.html   404
 # === FIM DO BLOQUEIO ===
 
+# Hub público de corretores: a página oficial de parceiros reúne os sites disponíveis.
+/corretores /parceiros/ 301
+/corretores/ /parceiros/ 301
+
 /condominio-thera-santorini- /condominio-thera-santorini/ 301
 /condominio-thera-santorini-/ /condominio-thera-santorini/ 301
 /condominio-livin-resort-atlantida- /condominio-livin-resort-atlantida/ 301
