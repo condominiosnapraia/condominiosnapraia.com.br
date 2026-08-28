@@ -473,6 +473,7 @@ details[open] .dec-faq-q:after{content:"−"}
 
 
 .cl-wrap{max-width:1200px;margin:0 auto;padding:24px}
+.catalog-intro{text-align:center;margin:0 auto 24px;max-width:760px}.catalog-intro .kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--om);font-weight:700;margin-bottom:8px}.catalog-intro h1{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,42px);line-height:1.15;color:var(--ocean);margin:0 0 10px}.catalog-intro p{font-size:16px;line-height:1.6;color:var(--tm);margin:0}
 .cl-filters{display:flex;flex-wrap:wrap;gap:12px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:24px;box-shadow:0 4px 18px rgba(13,59,84,.06);position:sticky;top:12px;z-index:20}
 .cl-fg{flex:1;min-width:150px}
 .cl-fg-nome{flex:1.6;min-width:200px}
@@ -569,8 +570,6 @@ details[open] .dec-faq-q:after{content:"−"}
 </nav>
 
 
-<h1 class="sr-h1">Condomínios fechados no Litoral Norte Gaúcho — Xangri-lá, Capão da Canoa e Osório</h1>
-
 <section class="pg-hero">
   <div class="pg-hero-in">
     <span class="pg-hero-eyebrow">Litoral Norte Gaúcho</span>
@@ -583,6 +582,11 @@ details[open] .dec-faq-q:after{content:"−"}
 </section>
 
 <div class="cl-wrap">
+  <div class="catalog-intro" aria-labelledby="catalog-condominios-title">
+    <div class="kicker">Guia de empreendimentos</div>
+    <h1 id="catalog-condominios-title">Condomínios no Litoral Norte</h1>
+    <p>Explore condomínios fechados, náuticos e frente-mar em Xangri-lá, Capão da Canoa, Osório e região.</p>
+  </div>
   <div class="cl-filters">
     <div class="cl-fg cl-fg-nome"><label for="f-nome">Buscar por nome</label><input type="text" id="f-nome" list="lista-condominios" placeholder="Digite ou selecione..." oninput="aplicar()" autocomplete="off"><datalist id="lista-condominios"></datalist></div>
     <div class="cl-fg"><label for="f-cidade">Cidade</label><select id="f-cidade" onchange="aplicar()" aria-label="Cidade"><option value="">Todas</option></select></div>
@@ -799,7 +803,7 @@ function fotoPublica(raw){
   if(v.startsWith(STORAGE_PUBLIC))return '/cdn-fotos/'+v.slice(STORAGE_PUBLIC.length).replace(/^\/+/, '');
   return v;
 }
-async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
+async function sbGet(t,p=''){const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});if(!r.ok)throw new Error('Supabase '+r.status);return await r.json();}
 function fotos(a){return (a||[]).map(fotoPublica).filter(Boolean);}
 function thumb(u,w,format){
   try{
@@ -838,6 +842,9 @@ let VISIBLE_LIMIT=12;
 const VISIBLE_STEP=12;
 
 async function carregar(){
+  const grid=document.getElementById('cl-grid');
+  const cnt=document.getElementById('cl-count');
+  try{
   var respostas=await Promise.all([
     sbGet('condominios','?ativo=eq.true&select='+encodeURIComponent(CAT_COND_SELECT)+'&order=nome.asc&limit=200'),
     sbGet('imoveis','?status=eq.Disponível&publicar=eq.true&select=id,cond_id,status,publicar&limit=2000')
@@ -874,6 +881,14 @@ async function carregar(){
   if(q.get('perfil'))selectLoose('f-perfil',q.get('perfil'));
   if(q.get('tipo'))selectLoose('f-tipo',q.get('tipo'));
   aplicar();
+  }catch(error){
+    console.warn('Falha ao carregar catálogo de condomínios',error);
+    TODOS=[]; RESULTADOS=[];
+    if(cnt)cnt.innerHTML='<span role="status">Não foi possível carregar os condomínios agora.</span>';
+    if(grid)grid.innerHTML='<div class="cl-empty cl-error" role="alert"><div class="em">⚠️</div><p>O catálogo está temporariamente indisponível.<br>Tente novamente em instantes.</p><button type="button" class="cl-load-more" id="cl-retry">Tentar novamente</button></div>';
+    const retry=document.getElementById('cl-retry');
+    if(retry)retry.addEventListener('click',carregar,{once:true});
+  }
 }
 
 function syncQuery(){

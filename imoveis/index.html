@@ -475,6 +475,7 @@ details[open] .dec-faq-q:after{content:"−"}
 
 
 .il-wrap{max-width:1200px;margin:0 auto;padding:24px}
+.catalog-intro{text-align:center;margin:0 auto 24px;max-width:760px}.catalog-intro .kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--om);font-weight:700;margin-bottom:8px}.catalog-intro h1{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,42px);line-height:1.15;color:var(--ocean);margin:0 0 10px}.catalog-intro p{font-size:16px;line-height:1.6;color:var(--tm);margin:0}
 .il-filters{display:flex;flex-wrap:wrap;gap:12px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:24px;box-shadow:0 4px 18px rgba(13,59,84,.06);position:sticky;top:12px;z-index:20}
 .il-fg{flex:1;min-width:150px}
 .il-fg label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);font-weight:700;margin-bottom:5px}
@@ -616,8 +617,6 @@ details[open] .dec-faq-q:after{content:"−"}
 </nav>
 
 
-<h1 class="sr-h1">Imóveis à venda no Litoral Norte Gaúcho — Xangri-lá, Capão da Canoa, Osório e Maquiné</h1>
-
 <section class="pg-hero">
   <div class="pg-hero-in">
     <span class="pg-hero-eyebrow">Litoral Norte Gaúcho</span>
@@ -630,6 +629,11 @@ details[open] .dec-faq-q:after{content:"−"}
 </section>
 
 <div class="il-wrap">
+  <div class="catalog-intro" aria-labelledby="catalog-imoveis-title">
+    <div class="kicker">Pesquisa imobiliária</div>
+    <h1 id="catalog-imoveis-title">Imóveis à venda no Litoral Norte</h1>
+    <p>Casas, apartamentos e terrenos publicados em Xangri-lá, Capão da Canoa, Osório e região.</p>
+  </div>
   <div class="il-filters">
     <div class="il-fg"><label for="f-cidade">Cidade</label><select id="f-cidade" onchange="aplicar()" aria-label="Cidade"><option value="">Todas</option></select></div>
     <div class="il-fg"><label for="f-cond">Condomínio</label><select id="f-cond" onchange="aplicar()" aria-label="Condomínio"><option value="">Todos</option><option value="em">Em condomínio</option><option value="fora">Fora de condomínio</option></select></div>
@@ -743,7 +747,7 @@ details[open] .dec-faq-q:after{content:"−"}
 const SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
 const CAT_IMOV_SELECT='id,slug,codigo,titulo,cond_id,fora_condominio,status,publicar,tipo,preco,quartos,suites,vagas,area,area_privativa,area_construida,cidade_end,bairro_end,fotos_no_site';
-async function sbGet(t,p=''){try{const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});return r.ok?await r.json():[];}catch(e){return[];}}
+async function sbGet(t,p=''){const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});if(!r.ok)throw new Error('Supabase '+r.status);return await r.json();}
 function brl(v){if(v==null||v==='')return 'Sob consulta';const n=Number(v);if(isNaN(n))return String(v);return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});}
 function escHtml(v){return String(v??'').replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];});}
 function fotos(a){return (a||[]).filter(f=>f&&(String(f).startsWith('http')||String(f).startsWith('data:')));}
@@ -752,6 +756,9 @@ const PAGE_SIZE=24;
 let VISIBLE_COUNT=PAGE_SIZE;
 
 async function carregar(){
+  const grid=document.getElementById('il-grid');
+  const cnt=document.getElementById('il-count');
+  try{
   // As duas consultas são independentes; executá-las juntas reduz uma viagem de rede.
   const [conds,imv]=await Promise.all([
     sbGet('condominios','?select=id,nome,cidade,latitude,longitude'),
@@ -782,6 +789,14 @@ async function carregar(){
   else if(q.get('fora')==='1'||q.get('cond')==='fora')fcond.value='fora';
   else if(q.get('cond')==='em')fcond.value='em';
   aplicar();
+  }catch(error){
+    console.warn('Falha ao carregar catálogo de imóveis',error);
+    TODOS=[]; CONDS={};
+    if(cnt)cnt.innerHTML='<span role="status">Não foi possível carregar os imóveis agora.</span>';
+    if(grid)grid.innerHTML='<div class="il-empty il-error" role="alert"><div class="em">⚠️</div><p>O catálogo está temporariamente indisponível.<br>Tente novamente em instantes.</p><button type="button" class="il-load-more" id="il-retry">Tentar novamente</button></div>';
+    const retry=document.getElementById('il-retry');
+    if(retry)retry.addEventListener('click',carregar,{once:true});
+  }
 }
 
 function syncQuery(){
