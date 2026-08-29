@@ -1093,7 +1093,19 @@ if(_savedToken && _savedUser){
     setTimeout(()=>updateSidebarUser(_authProfile),100);
     // renova o token logo ao abrir (se a aba ficou aberta muito tempo, ele pode ter expirado)
     // e reagenda a renovação periódica
-    if(typeof renovarToken === 'function'){ renovarToken(); }
+    if(typeof renovarToken === 'function'){
+      renovarToken().then((ok)=>{
+        if(!ok){
+          sessionStorage.removeItem('cnp_crm_token');
+          sessionStorage.removeItem('cnp_crm_refresh');
+          sessionStorage.removeItem('cnp_crm_user');
+          _authProfile=null;
+          document.getElementById('login-screen').style.display='flex';
+          showLoginView('lv-login');
+          loginAlert('login-warn','Sua sessão anterior expirou. Entre novamente com a senha nova.','');
+        }
+      });
+    }
     const reabrirRascunho=()=>{
       if(restaurarRascunhoImovelSessao()){
         oMo('imov-mo');

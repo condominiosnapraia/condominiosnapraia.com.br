@@ -34,7 +34,7 @@ export async function onRequest(context) {
   if (legacyTarget) return Response.redirect(new URL(legacyTarget, url), 301);
 
   // O CRM oficial é servido internamente em /crm; o arquivo legado /crm.html permanece bloqueado.
-  if (path === '/crm' || path === '/crm/') {
+  if (path === '/crm' || path === '/crm/' || path === '/crm-app' || path === '/crm-app/') {
     const assets = context.env && context.env.ASSETS;
     if (assets && typeof assets.fetch === 'function') {
       return assets.fetch(new Request(new URL('/crm-app.html', url), request));
