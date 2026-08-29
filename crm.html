@@ -4532,7 +4532,9 @@ function dadosCompartilhamentoImovel(id){
   const slugPersistido=String(x.slug||'').trim();
   const slugValido=slugPersistido&&!/^imovel-[a-z]+$/i.test(slugPersistido)?slugPersistido:slugDerivado;
   const url=/^https:\/\/condominiosnapraia\.com\.br\/imovel\/[^?#\s]+/i.test(canonical)?canonical.replace(/\/+$/,'')+'/':'https://condominiosnapraia.com.br/imovel/'+encodeURIComponent(slugValido)+'/';
-  const fotos=(x.fotos_no_site&&x.fotos_no_site.length?x.fotos_no_site:(x.fotos||[])).filter(f=>typeof f==='string'&&/^https?:/i.test(f));
+  const listaFotos=(entidade,limite)=>{const out=[],seen=new Set();[...(entidade?.fotos_no_site||[]),...(entidade?.fotos||[]),...(entidade?.fotos_para_site||[])].forEach(item=>{const raw=typeof item==='string'?item:(item?.url||item?.src||item?.publicUrl||item?.public_url||'');const url=String(raw||'').trim();if(!url||(!/^https?:/i.test(url)&&!url.startsWith('/cdn-fotos/'))||seen.has(url)||out.length>=limite)return;seen.add(url);out.push(url);});return out;};
+  const fotos=listaFotos(x,5);
+  const fotosCondominio=listaFotos(c,4);
   const limparTexto=s=>String(s||'').replace(/\r\n?/g,'\n').replace(/[ \t]+/g,' ').replace(/\n{2,}/g,'\n').trim();
   const removerEmoji=s=>limparTexto(s).replace(/[\u{2300}-\u{2BFF}\u{1F000}-\u{1FAFF}\uFE0F]/gu,'').replace(/[ \t]{2,}/g,' ').trim();
   let descricao=removerEmoji(seo.desc||x.descricao||'Confira este imóvel selecionado pelo Condomínios na Praia.');
@@ -4542,7 +4544,8 @@ function dadosCompartilhamentoImovel(id){
   if(x.quartos)meta.push(x.quartos+' dorm.');
   if(x.suites)meta.push(x.suites+' suíte'+(Number(x.suites)>1?'s':''));
   if(x.area)meta.push(m2(x.area));
-  return {x,c,cidade,local,url,foto:fotos[0]||'',titulo,preco:x.preco?brl(x.preco):'Sob consulta',codigo:x.codigo||x.ref||'Não informado',meta,descricao:descricao.slice(0,420)};
+  const condominio=c.id?{nome:c.nome||'',cidade:c.cidade||c.localizacao||'',bairro:c.bairro||'',descricao:String(c.descricao||'').trim().slice(0,1200),amenidades:Array.isArray(c.amenidades)?c.amenidades.slice(0,10):[],ano:c.ano||'',padrao:c.padrao||'',tipo:c.tipo||'',incorporadora:c.incorporadora||'',area_total_m2:c.area_total_m2||'',lotes:c.lotes||'',fotos:fotosCondominio}:null;
+  return {x,c,cidade,local,url,foto:fotos[0]||'',fotos,titulo,preco:x.preco?brl(x.preco):'Sob consulta',codigo:x.codigo||x.ref||'Não informado',meta,descricao:descricao.slice(0,1400),condominio};
 }
 function textoCompartilhamentoImovel(d){
   const separador='━━━━━━━━━━━━━━━━━━━━';
@@ -4602,7 +4605,7 @@ async function compartilharImovelEmail(){
   const emailValido=email.length<=254&&partesEmail.length===2&&partesEmail[0].length>0&&partesEmail[1].includes('.')&&!partesEmail[1].startsWith('.')&&!partesEmail[1].endsWith('.')&&!email.includes(' ');
   if(!emailValido){toast('Informe um e-mail válido para compartilhar o imóvel.','error');input?.focus();return;}
   const d=shareImovelAtual;
-  const payload={to:email,imovel:{titulo:d.titulo,codigo:d.codigo,preco:d.preco,local:d.local,cidade:d.cidade,meta:d.meta,descricao:d.descricao,foto:d.foto,url:d.url}};
+  const payload={to:email,imovel:{titulo:d.titulo,codigo:d.codigo,preco:d.preco,local:d.local,cidade:d.cidade,meta:d.meta,descricao:d.descricao,foto:d.foto,fotos:d.fotos,url:d.url,condominio:d.condominio}};
   const token=sessionStorage.getItem('cnp_crm_token')||'';
   if(token){
     try{
