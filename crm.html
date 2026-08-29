@@ -3000,6 +3000,9 @@ if(_savedToken && _savedUser){
           <button class="share-imov-action share-imov-whatsapp-action" type="button" onclick="compartilharImovelWhatsApp()" aria-label="Compartilhar via WhatsApp">
             <span class="share-imov-action-icon">💬</span><span class="share-imov-action-copy"><b>WhatsApp</b><small>Compartilhar agora</small></span>
           </button>
+          <button class="share-imov-action" type="button" onclick="abrirEnvioLoteImovel()" aria-label="Enviar apresentação para vários contatos">
+            <span class="share-imov-action-icon">📊</span><span class="share-imov-action-copy"><b>Enviar em lote</b><small>Excel ou CSV · até 20</small></span>
+          </button>
         </div>
         <div class="fsec share-imov-link-title">Link direto</div>
         <div class="share-imov-link-row">
@@ -3008,11 +3011,26 @@ if(_savedToken && _savedUser){
         </div>
         <div class="fsec" style="margin-top:15px">Prévia da mensagem</div>
         <textarea class="share-imov-text" id="share-imov-text" readonly aria-label="Prévia da mensagem de compartilhamento"></textarea>
-        <p class="share-imov-note">O botão de e-mail abre o aplicativo padrão do seu computador ou celular com destinatário, assunto e apresentação preenchidos. Nenhum e-mail é enviado automaticamente pelo CRM.</p>
+        <p class="share-imov-note">O e-mail HTML é enviado pelo servidor com autenticação. Para vários contatos, use Enviar em lote: a planilha será validada e o CRM enviará uma mensagem individual por vez, com limite e pausa de segurança.</p>
       </div>
     </div>
   </div>
   <div class="mf"><button class="btn bg" type="button" onclick="cMo('share-imov-mo')">Fechar</button></div>
+</div></div>
+
+<!-- MODAL ENVIO EM LOTE -->
+<div class="ov" id="bulk-email-mo">
+<div class="mo mo-lg">
+  <div class="mh"><div class="mt">Enviar apresentação em lote</div><button class="mx" onclick="cMo('bulk-email-mo')">✕</button></div>
+  <div class="mb">
+    <p class="share-imov-subtitle">Importe uma planilha com contatos autorizados a receber esta apresentação. O CRM valida, remove duplicados e limita cada operação a 20 destinatários.</p>
+    <div class="fg"><label class="fl" for="bulk-email-file">Planilha de contatos</label><input class="fi" id="bulk-email-file" type="file" accept=".xlsx,.xls,.csv,text/csv" onchange="carregarContatosLote(this)"><small style="display:block;margin-top:6px;color:var(--t3)">Colunas aceitas: <b>email</b> (obrigatória), nome (opcional). Uma linha por contato.</small></div>
+    <div id="bulk-email-status" class="fsec" style="margin-top:12px">Nenhum arquivo carregado.</div>
+    <div id="bulk-email-preview" style="max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:10px;display:none"></div>
+    <label style="display:flex;gap:8px;align-items:flex-start;margin-top:14px;font-size:12px;color:var(--t2)"><input id="bulk-email-consent" type="checkbox" style="margin-top:2px"><span>Confirmo que estes contatos autorizaram o recebimento desta apresentação e que o envio é relevante para cada destinatário.</span></label>
+    <div id="bulk-email-progress" style="margin-top:14px;display:none"><div style="height:8px;background:var(--line);border-radius:8px;overflow:hidden"><div id="bulk-email-bar" style="height:100%;width:0;background:var(--go);transition:width .2s"></div></div><div id="bulk-email-report" style="margin-top:8px;font-size:12px;color:var(--t2)"></div></div>
+  </div>
+  <div class="mf"><button class="btn bg" id="bulk-email-close" type="button" onclick="fecharOuPararLote()">Cancelar</button><button class="btn bp" id="bulk-email-send" type="button" onclick="enviarContatosLote()" disabled>Enviar lote</button></div>
 </div></div>
 
 <!-- MODAL PROPRIETÁRIO -->
@@ -4598,6 +4616,18 @@ function compartilharImovelWhatsAppDireto(id){
   shareImovelAtual=d;
   window.open('https://wa.me/?text='+encodeURIComponent(textoCompartilhamentoImovel(d)),'_blank','noopener,noreferrer');
 }
+let _bulkEmailRows=[];
+let _bulkEmailSending=false;
+let _bulkEmailStop=false;
+function emailValidoCRM(email){const e=String(email||'').trim().toLowerCase();return e.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function payloadEmailImovel(d,email){return {to:email,imovel:{titulo:d.titulo,codigo:d.codigo,preco:d.preco,local:d.local,cidade:d.cidade,meta:d.meta,descricao:d.descricao,foto:d.foto,fotos:d.fotos,url:d.url,condominio:d.condominio}};}
+function atualizarEstadoLote(){const ok=_bulkEmailRows.length>0&&document.getElementById('bulk-email-consent')?.checked&&!_bulkEmailSending;const btn=document.getElementById('bulk-email-send');if(btn)btn.disabled=!ok;}
+function renderContatosLote(meta){const box=document.getElementById('bulk-email-preview');if(!box)return;box.style.display=_bulkEmailRows.length?'block':'none';box.innerHTML=_bulkEmailRows.map((r,i)=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px"><span><b>${i+1}. ${clEsc(r.nome||'Contato')}</b><br><span style="color:var(--t3)">${clEsc(r.email)}</span></span><span style="color:var(--go)">Pronto</span></div>`).join('');const st=document.getElementById('bulk-email-status');if(st)st.textContent=`${_bulkEmailRows.length} contato(s) válido(s) pronto(s) para revisão. ${meta||''}`;atualizarEstadoLote();}
+function abrirEnvioLoteImovel(){if(!shareImovelAtual){toast('Abra um imóvel antes de enviar em lote.','error');return;}cMo('share-imov-mo');_bulkEmailRows=[];_bulkEmailStop=false;_bulkEmailSending=false;const file=document.getElementById('bulk-email-file');if(file)file.value='';const box=document.getElementById('bulk-email-preview');if(box){box.style.display='none';box.innerHTML='';}const st=document.getElementById('bulk-email-status');if(st)st.textContent='Nenhum arquivo carregado.';const consent=document.getElementById('bulk-email-consent');if(consent){consent.checked=false;consent.onchange=atualizarEstadoLote;}const p=document.getElementById('bulk-email-progress');if(p)p.style.display='none';const close=document.getElementById('bulk-email-close');if(close)close.textContent='Cancelar';oMo('bulk-email-mo');}
+function fecharOuPararLote(){if(_bulkEmailSending){_bulkEmailStop=true;const st=document.getElementById('bulk-email-status');if(st)st.textContent='Parando após a mensagem atual...';return;}cMo('bulk-email-mo');}
+async function carregarContatosLote(input){const file=input?.files?.[0];if(!file)return;const st=document.getElementById('bulk-email-status');if(st)st.textContent='Lendo planilha...';try{await clEnsureXLSX();const buf=await file.arrayBuffer();const wb=XLSX.read(buf,{type:'array'});const sheet=wb.Sheets[wb.SheetNames[0]];const rows=XLSX.utils.sheet_to_json(sheet,{defval:'',raw:false});const seen=new Set();const valid=[];let invalid=0;for(const row of rows){const normalized={};Object.entries(row).forEach(([k,v])=>{const key=String(k).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');normalized[key]=String(v||'').trim();});const email=(normalized.email||normalized.correioeletronico||normalized.emaildestinatario||'').toLowerCase();if(!emailValidoCRM(email)||seen.has(email)){invalid++;continue;}seen.add(email);valid.push({email,nome:normalized.nome||normalized.name||''});}if(valid.length>20){invalid+=valid.length-20;valid.length=20;}_bulkEmailRows=valid;renderContatosLote(`Linhas ignoradas: ${invalid}. Limite operacional: 20.`);}catch(e){_bulkEmailRows=[];if(st)st.textContent='Não foi possível ler a planilha. Use XLSX, XLS ou CSV com uma coluna email.';toast('Erro ao ler planilha: '+e.message,'error');atualizarEstadoLote();}}
+function esperarLote(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+async function enviarContatosLote(){if(!_bulkEmailRows.length||!shareImovelAtual)return;const consent=document.getElementById('bulk-email-consent');if(!consent?.checked){toast('Confirme a autorização dos contatos antes de enviar.','error');return;}if(_bulkEmailRows.length>20){toast('O lote foi limitado a 20 contatos.','error');return;}_bulkEmailSending=true;_bulkEmailStop=false;const send=document.getElementById('bulk-email-send');if(send){send.disabled=true;send.textContent='Enviando...';}const close=document.getElementById('bulk-email-close');if(close)close.textContent='Parar envio';const progress=document.getElementById('bulk-email-progress');if(progress)progress.style.display='block';const bar=document.getElementById('bulk-email-bar');const report=document.getElementById('bulk-email-report');const resultados=[];for(let i=0;i<_bulkEmailRows.length;i++){if(_bulkEmailStop)break;const row=_bulkEmailRows[i];if(report)report.textContent=`Enviando ${i+1} de ${_bulkEmailRows.length}: ${row.email}`;try{const response=await iaFetchComSessao('/api/enviar-imovel-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payloadEmailImovel(shareImovelAtual,row.email))});const result=await response.json().catch(()=>({}));if(response.ok&&result.ok){resultados.push({email:row.email,status:'Enviado'});}else{resultados.push({email:row.email,status:`Falhou: ${result.error||response.status}`});if([401,403,429,503].includes(response.status)){if(report)report.textContent=`Envio pausado por segurança em ${row.email}: ${result.error||response.status}`;break;}}}catch(e){resultados.push({email:row.email,status:'Falhou: conexão'});break;}if(bar)bar.style.width=Math.round(((i+1)/_bulkEmailRows.length)*100)+'%';if(i<_bulkEmailRows.length-1&&!_bulkEmailStop)await esperarLote(1400);}_bulkEmailSending=false;if(send){send.textContent='Enviar lote';send.disabled=true;}if(close)close.textContent='Fechar';const enviados=resultados.filter(x=>x.status==='Enviado').length;const falhas=resultados.length-enviados;const interrompido=_bulkEmailStop||resultados.length<_bulkEmailRows.length;if(report)report.textContent=`Concluído: ${enviados} enviado(s), ${falhas} falha(s). ${interrompido?'O lote foi interrompido ou pausado.':''}`;if(enviados)toast(`${enviados} e-mail(s) enviado(s).`,'success');}
 async function compartilharImovelEmail(){
   if(!shareImovelAtual)return;
   const input=document.getElementById('share-imov-email');const email=(input?.value||'').trim();
@@ -4605,7 +4635,7 @@ async function compartilharImovelEmail(){
   const emailValido=email.length<=254&&partesEmail.length===2&&partesEmail[0].length>0&&partesEmail[1].includes('.')&&!partesEmail[1].startsWith('.')&&!partesEmail[1].endsWith('.')&&!email.includes(' ');
   if(!emailValido){toast('Informe um e-mail válido para compartilhar o imóvel.','error');input?.focus();return;}
   const d=shareImovelAtual;
-  const payload={to:email,imovel:{titulo:d.titulo,codigo:d.codigo,preco:d.preco,local:d.local,cidade:d.cidade,meta:d.meta,descricao:d.descricao,foto:d.foto,fotos:d.fotos,url:d.url,condominio:d.condominio}};
+  const payload=payloadEmailImovel(d,email);
   const token=sessionStorage.getItem('cnp_crm_token')||'';
   if(token){
     try{
