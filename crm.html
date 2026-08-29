@@ -973,7 +973,7 @@ async function doForgot(){
   if(!email){loginAlert('forgot-error','Informe o e-mail');return;}
   btn.disabled=true;btn.textContent='Enviando...';
   try{
-    const data = await sbAuth('/recover',{email});
+    const data = await sbAuth('/recover',{email,redirect_to:window.location.origin+'/crm'});
     loginAlert('forgot-ok','✓ Link de recuperação enviado! Verifique seu e-mail.','ok');
     btn.disabled=false;btn.textContent='Enviar link de recuperação';
   }catch(e){
