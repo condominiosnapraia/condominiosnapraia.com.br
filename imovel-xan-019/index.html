@@ -241,5 +241,5 @@ function fecharLB(){document.getElementById('lb').classList.remove('on');documen
 function navLB(d){li=(li+d+FOTOS.length)%FOTOS.length;document.getElementById('lb-img').src=FOTOS[li];document.getElementById('lb-count').textContent=(li+1)+' / '+FOTOS.length;}
 document.addEventListener('keydown',function(e){if(!document.getElementById('lb').classList.contains('on'))return;if(e.key==='Escape')fecharLB();if(e.key==='ArrowLeft')navLB(-1);if(e.key==='ArrowRight')navLB(1);});
 </script>
-</body>
+<script data-condominio-origin-back>(function(){try{var q=new URLSearchParams(location.search);var slug=(q.get('origem')==='condominio'?q.get('condominio'):'')||'';if(!/^[a-z0-9-]+$/i.test(slug))return;var a=document.querySelector('.ip-back a');if(a){a.href='/'+slug+'/';a.textContent='← Voltar ao condomínio';}}catch(_){}})();</script></body>
 </html>

@@ -395,7 +395,8 @@ function blocoConteudo(cond, imoveis) {
       const preco = fmtPreco(im.preco || im.valor);
       const foto = fotoUrl((Array.isArray(im.fotos) ? im.fotos[0] : im.foto) || '');
       const slugImovel = slugPublicoImovel(im);
-      const href = slugImovel ? '/imovel/' + encodeURIComponent(slugImovel) + '/' : '#';
+      const condoOrigin = slugPublico(cond.slug || [cond.nome, cidade].filter(Boolean).join('-'));
+      const href = slugImovel ? '/imovel/' + encodeURIComponent(slugImovel) + '/?origem=condominio&condominio=' + encodeURIComponent(condoOrigin) : '#';
       partes.push(`<a href="${esc(href)}" data-condo-type-card="1" data-condo-type="${esc(tipo)}" style="display:block;border:1px solid #e5ded3;border-radius:12px;overflow:hidden;text-decoration:none;background:#fff">`);
       if (foto) partes.push(fotoTag(foto, `${tit} — ${cidade}`, {sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 260px', width:640, height:384}));
       partes.push(`<div style="padding:12px 14px"><div style="font-size:14px;color:#0d3b54;font-weight:600;line-height:1.35">${esc(tit)}</div>${preco ? `<div style="font-family:'Fraunces',serif;font-size:17px;color:#0c4a6e;margin-top:6px">${esc(preco)}</div>` : ''}</div>`);
