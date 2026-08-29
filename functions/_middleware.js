@@ -9,7 +9,6 @@ const LEGACY_REDIRECTS = {
 };
 
 const BLOCKED_ADMIN_PATHS = new Set([
-  '/crm.html',
   '/exportar-dados', '/exportar-dados.html',
   '/restaurar', '/restaurar.html',
   '/teste-fotos', '/teste-fotos.html',
@@ -33,20 +32,6 @@ export async function onRequest(context) {
   const legacyTarget = LEGACY_REDIRECTS[path];
   if (legacyTarget) return Response.redirect(new URL(legacyTarget, url), 301);
 
-  // O CRM oficial é servido internamente em /crm; o arquivo legado /crm.html permanece bloqueado.
-  if (path === '/crm' || path === '/crm/' || path === '/crm-app' || path === '/crm-app/') {
-    const assets = context.env && context.env.ASSETS;
-    if (assets && typeof assets.fetch === 'function') {
-      const asset = await assets.fetch(new Request(new URL('/crm-app.data', url), request));
-      if (!asset.ok) return asset;
-      const headers = new Headers(asset.headers);
-      headers.set('content-type', 'text/html; charset=utf-8');
-      headers.set('cache-control', 'no-store');
-      return new Response(asset.body, {status: asset.status, statusText: asset.statusText, headers});
-    }
-    return next();
-  }
-  if (path.startsWith('/crm/')) return next();
   if (BLOCKED_ADMIN_PATHS.has(path)) return adminNotFound();
 
   // Diagnóstico é uma ferramenta interna: não deve responder 200 anônimo.

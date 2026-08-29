@@ -2,7 +2,7 @@
 # Adicionado para impedir acesso público a interfaces internas.
 /diagnostico.html   /404.html   404
 /diagnostico        /404.html   404
-/crm.html           /404.html   404
+/crm                /crm.html   200
 /exportar-dados.html   /404.html   404
 /exportar-dados        /404.html   404
 /restaurar.html     /404.html   404
