@@ -4591,17 +4591,11 @@ async function compartilharImovelEmail(){
   if(!emailValido){toast('Informe um e-mail válido para compartilhar o imóvel.','error');input?.focus();return;}
   const d=shareImovelAtual;
   const payload={to:email,imovel:{titulo:d.titulo,codigo:d.codigo,preco:d.preco,local:d.local,cidade:d.cidade,meta:d.meta,descricao:d.descricao,foto:d.foto,url:d.url}};
-  let token=sessionStorage.getItem('cnp_crm_token')||'';
+  const token=sessionStorage.getItem('cnp_crm_token')||'';
   if(token){
     try{
-      const enviar=()=>fetch('/api/enviar-imovel-email',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(payload)});
-      let response=await enviar();
-      let result=await response.json().catch(()=>({}));
-      if(response.status===401 && await renovarToken()){
-        token=sessionStorage.getItem('cnp_crm_token')||'';
-        response=await enviar();
-        result=await response.json().catch(()=>({}));
-      }
+      const response=await iaFetchComSessao('/api/enviar-imovel-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const result=await response.json().catch(()=>({}));
       if(response.ok&&result.ok){toast('E-mail HTML enviado com sucesso!','success');return;}
       if(response.status===401){toast('Sessão expirada. Faça login novamente para enviar o e-mail.','error');return;}
       if(response.status===503){toast('O remetente do e-mail HTML ainda precisa ser configurado no Resend.','info');}
