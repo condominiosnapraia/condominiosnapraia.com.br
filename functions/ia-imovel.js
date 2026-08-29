@@ -29,12 +29,12 @@ function extractJson(raw) {
 }
 
 const SUPABASE_URL_FALLBACK = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
-const SUPABASE_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDUzMywiZXhwIjoyMDk1MzIwNTMwfQ.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+const SUPABASE_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 async function authenticate(request, env) {
   const auth = request.headers.get('authorization') || '';
   if (!/^Bearer\s+\S+/i.test(auth)) return null;
-  const base = env.SUPABASE_URL || SUPABASE_URL_FALLBACK;
-  const anon = env.SUPABASE_ANON_KEY || SUPABASE_ANON_FALLBACK;
+  const base = env.SUPABASE_URL || env.SB_URL || SUPABASE_URL_FALLBACK;
+  const anon = env.SUPABASE_ANON_KEY || env.SB_ANON || SUPABASE_ANON_FALLBACK;
   const r = await fetch(`${base}/auth/v1/user`, {
     headers: { apikey: anon, authorization: auth }
   });

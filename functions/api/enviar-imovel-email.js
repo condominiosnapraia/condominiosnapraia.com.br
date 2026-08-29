@@ -1,6 +1,6 @@
 const SITE = 'https://condominiosnapraia.com.br';
-const SUPABASE_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
-const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDUzMywiZXhwIjoyMDk1MzIwNTMwfQ.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+const SUPABASE_URL_FALLBACK = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
+const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4Lz3bIE';
 
 function esc(value) {
   return String(value ?? '')
@@ -35,7 +35,9 @@ export async function onRequestPost({ request, env }) {
   if (origin && origin !== SITE) return new Response(JSON.stringify({ error: 'Origem não autorizada.' }), { status: 403, headers: { 'content-type': 'application/json' } });
   const auth = request.headers.get('Authorization') || '';
   if (!/^Bearer\s+\S+/i.test(auth)) return new Response(JSON.stringify({ error: 'Sessão do CRM ausente.' }), { status: 401, headers: { 'content-type': 'application/json' } });
-  const user = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { apikey: SB_ANON, Authorization: auth } });
+  const supabaseUrl = env.SUPABASE_URL || env.SB_URL || SUPABASE_URL_FALLBACK;
+  const sbAnon = env.SUPABASE_ANON_KEY || env.SB_ANON || SB_ANON_FALLBACK;
+  const user = await fetch(`${supabaseUrl}/auth/v1/user`, { headers: { apikey: sbAnon, Authorization: auth } });
   if (!user.ok) return new Response(JSON.stringify({ error: 'Sessão do CRM inválida ou expirada.' }), { status: 401, headers: { 'content-type': 'application/json' } });
   if (!env.RESEND_API_KEY) return new Response(JSON.stringify({ error: 'RESEND_API_KEY ainda não está configurada.' }), { status: 503, headers: { 'content-type': 'application/json' } });
   if (!env.RESEND_FROM_EMAIL) return new Response(JSON.stringify({ error: 'Configure RESEND_FROM_EMAIL com um remetente de domínio verificado no Resend.' }), { status: 503, headers: { 'content-type': 'application/json' } });
