@@ -37,7 +37,12 @@ export async function onRequest(context) {
   if (path === '/crm' || path === '/crm/' || path === '/crm-app' || path === '/crm-app/') {
     const assets = context.env && context.env.ASSETS;
     if (assets && typeof assets.fetch === 'function') {
-      return assets.fetch(new Request(new URL('/crm-app.html', url), request));
+      const asset = await assets.fetch(new Request(new URL('/crm-app.data', url), request));
+      if (!asset.ok) return asset;
+      const headers = new Headers(asset.headers);
+      headers.set('content-type', 'text/html; charset=utf-8');
+      headers.set('cache-control', 'no-store');
+      return new Response(asset.body, {status: asset.status, statusText: asset.statusText, headers});
     }
     return next();
   }
