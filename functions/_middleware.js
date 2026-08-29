@@ -33,11 +33,11 @@ export async function onRequest(context) {
   const legacyTarget = LEGACY_REDIRECTS[path];
   if (legacyTarget) return Response.redirect(new URL(legacyTarget, url), 301);
 
-  // O CRM oficial é servido internamente em /crm; a cópia legada /crm.html permanece bloqueada.
+  // O CRM oficial é servido internamente em /crm; o arquivo legado /crm.html permanece bloqueado.
   if (path === '/crm' || path === '/crm/') {
     const assets = context.env && context.env.ASSETS;
     if (assets && typeof assets.fetch === 'function') {
-      return assets.fetch(new Request(new URL('/crm.html', url), request));
+      return assets.fetch(new Request(new URL('/crm-app.html', url), request));
     }
     return next();
   }
