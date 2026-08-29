@@ -2994,8 +2994,8 @@ if(_savedToken && _savedUser){
         <p class="share-imov-subtitle">Escolha uma opção para compartilhar este imóvel com o cliente.</p>
         <div class="fg"><label class="fl" for="share-imov-email">E-mail do destinatário</label><input class="fi" id="share-imov-email" type="email" placeholder="cliente@email.com" autocomplete="email"></div>
         <div class="share-imov-action-grid" aria-label="Ações de compartilhamento">
-          <button class="share-imov-action share-imov-email-action" type="button" onclick="compartilharImovelEmail()" aria-label="Abrir e-mail já preenchido">
-            <span class="share-imov-action-icon">📧</span><span class="share-imov-action-copy"><b>Abrir e-mail</b><small>Mensagem pronta</small></span>
+          <button class="share-imov-action share-imov-email-action" type="button" onclick="compartilharImovelEmail()" aria-label="Enviar apresentação HTML por e-mail">
+            <span class="share-imov-action-icon">📧</span><span class="share-imov-action-copy"><b>Enviar e-mail HTML</b><small>Apresentação visual pronta</small></span>
           </button>
           <button class="share-imov-action share-imov-whatsapp-action" type="button" onclick="compartilharImovelWhatsApp()" aria-label="Compartilhar via WhatsApp">
             <span class="share-imov-action-icon">💬</span><span class="share-imov-action-copy"><b>WhatsApp</b><small>Compartilhar agora</small></span>
@@ -4613,14 +4613,13 @@ async function compartilharImovelEmail(){
         pedirLoginPorSessaoExpirada();
         return;
       }
-      if(response.status===503){toast('O remetente do e-mail HTML ainda precisa ser configurado no Resend.','info');}
+      if(response.status===503){toast(result.error||'A configuração do envio HTML ainda não está disponível no ambiente de produção.','info');}
       else toast(result.error||'Não foi possível enviar o e-mail HTML.','error');
       return;
     }catch(e){toast('Não foi possível conectar ao envio HTML. Use o e-mail do aparelho como alternativa.','info');}
   }
-  const assunto='Imóvel selecionado para você | '+d.titulo;
-  const href='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(assunto)+'&body='+encodeURIComponent(textoCompartilhamentoImovel(d));
-  window.location.href=href;
+  toast('Sua sessão do CRM não está disponível. Faça login novamente para enviar o e-mail HTML.','info');
+  return;
 }
 async function copiarTextoLinkImovel(link,campo){
   if(!link)return false;
