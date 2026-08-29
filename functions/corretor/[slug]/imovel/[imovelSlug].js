@@ -185,6 +185,7 @@ function page({ site, imovel, cond, siteSlug, relatedRows, cfg }) {
   const heroImage = photos[0] || `${BASE}/img/og-home.jpg`;
   const description = qualityDescription(imovel.descricao, title, imovel.tipo, city);
   const broker = imovel.corretor || site.nome || 'Corretor parceiro';
+  const codeLabel = imovel.codigo || imovel.ref || '';
   const phone = digits(site.whatsapp || site.telefone);
   const wppBase = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
   const wppText = encodeURIComponent(`Olá! Gostaria de receber mais informações sobre este imóvel.\n\nCódigo: ${codeLabel || 'Não informado'}\nImóvel: ${title}${cond?.nome ? `\nCondomínio: ${cond.nome}` : ''}\nPreço: ${money(imovel.preco)}.\n\nPodem me informar a disponibilidade, as condições e as opções para agendar uma visita?`);
@@ -194,7 +195,6 @@ function page({ site, imovel, cond, siteSlug, relatedRows, cfg }) {
   const fullListingUrl = `${landingUrl}imoveis/`;
   const typeLabel = imovel.tipo && !/^(imovel|imóvel|disponivel|disponível)$/i.test(String(imovel.tipo)) ? imovel.tipo : (context.type || 'Imóvel');
   const statusLabel = imovel.status || 'Disponível';
-  const codeLabel = imovel.codigo || imovel.ref || '';
   const imageMarkup = openPhotos.length ? openPhotos.map((photo, index) => `<figure class="photo-slide${index === 0 ? ' is-active' : ''}" data-gallery-index="${index}" data-lightbox="${esc(photo)}" tabindex="0" role="button" aria-label="Ampliar foto ${index + 1}"><img src="${esc(photo)}" alt="${esc(title)} — foto ${index + 1}" loading="${index === 0 ? 'eager' : 'lazy'}" decoding="async"${index === 0 ? ' fetchpriority="high"' : ''}><span class="photo-number">${index + 1}</span></figure>`).join('') : '<div class="photo-empty">Imagem em atualização</div>';
   const galleryControls = openPhotos.length > 1 ? '<button type="button" class="gallery-arrow gallery-prev" data-gallery-prev aria-label="Foto anterior">‹</button><button type="button" class="gallery-arrow gallery-next" data-gallery-next aria-label="Próxima foto">›</button>' : '';
   const galleryCounter = totalPhotoCount > 1 ? `<span class="gallery-counter" data-gallery-counter data-total="${totalPhotoCount}">1/${totalPhotoCount}</span>` : '';
