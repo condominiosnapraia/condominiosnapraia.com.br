@@ -4597,7 +4597,10 @@ async function compartilharImovelEmail(){
       const response=await iaFetchComSessao('/api/enviar-imovel-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       const result=await response.json().catch(()=>({}));
       if(response.ok&&result.ok){toast('E-mail HTML enviado com sucesso!','success');return;}
-      if(response.status===401){toast('Sessão expirada. Faça login novamente para enviar o e-mail.','error');return;}
+      if(response.status===401){
+        pedirLoginPorSessaoExpirada();
+        return;
+      }
       if(response.status===503){toast('O remetente do e-mail HTML ainda precisa ser configurado no Resend.','info');}
       else toast(result.error||'Não foi possível enviar o e-mail HTML.','error');
       return;
