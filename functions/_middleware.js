@@ -33,8 +33,15 @@ export async function onRequest(context) {
   const legacyTarget = LEGACY_REDIRECTS[path];
   if (legacyTarget) return Response.redirect(new URL(legacyTarget, url), 301);
 
-  // O CRM oficial continua disponível em /crm; a cópia legada /crm.html é bloqueada abaixo.
-  if (path === '/crm' || path.startsWith('/crm/')) return next();
+  // O CRM oficial é servido internamente em /crm; a cópia legada /crm.html permanece bloqueada.
+  if (path === '/crm' || path === '/crm/') {
+    const assets = context.env && context.env.ASSETS;
+    if (assets && typeof assets.fetch === 'function') {
+      return assets.fetch(new Request(new URL('/crm.html', url), request));
+    }
+    return next();
+  }
+  if (path.startsWith('/crm/')) return next();
   if (BLOCKED_ADMIN_PATHS.has(path)) return adminNotFound();
 
   // Diagnóstico é uma ferramenta interna: não deve responder 200 anônimo.
