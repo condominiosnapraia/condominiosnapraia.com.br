@@ -9988,8 +9988,9 @@ function iaPanelInit(){
 // refresh token do CRM quando o access token expirou, sem apagar o rascunho.
 function iaForcarLogin(source){
   if(source) sessionStorage.setItem('cnp_ia_draft_text',source);
+  // Preserva o refresh token para que o usuário possa recuperar a sessão.
+  // O refresh só é removido se o login/servidor confirmar que ele é inválido.
   sessionStorage.removeItem('cnp_crm_token');
-  sessionStorage.removeItem('cnp_crm_refresh');
   const tela=document.getElementById('login-screen');
   if(tela) tela.style.display='flex';
   showLoginView('lv-login');
@@ -9999,7 +10000,12 @@ function iaForcarLogin(source){
 async function iaFetchComSessao(url, options){
   const opts={...(options||{})};
   const baseHeaders={...(opts.headers||{})};
-  const tokenAtual=sessionStorage.getItem('cnp_crm_token');
+  let tokenAtual=sessionStorage.getItem('cnp_crm_token');
+  // Se o access token não existe, tenta recuperar com o refresh token antes da chamada.
+  if(!tokenAtual && sessionStorage.getItem('cnp_crm_refresh')){
+    const recuperado=await renovarToken();
+    if(recuperado) tokenAtual=sessionStorage.getItem('cnp_crm_token');
+  }
   if(tokenAtual) baseHeaders.authorization='Bearer '+tokenAtual;
   opts.headers=baseHeaders;
   let response=await fetch(url,opts);
