@@ -1905,6 +1905,32 @@ if(_savedToken && _savedUser){
     </div>
   </div>
 </div>
+
+<!-- COMPARTILHAR CARTA CONTEMPLADA -->
+<style>@media (max-width:700px){.carta-share-layout{grid-template-columns:1fr!important}.carta-share-layout .btn{min-height:42px}.carta-share-preview{max-height:55vh;overflow:auto}}</style>
+<div class="ov" id="carta-share-mo">
+  <div class="mo" style="max-width:760px;width:95%;max-height:92vh;overflow-y:auto">
+    <div class="mh" style="position:sticky;top:0;background:var(--sf);z-index:1">
+      <div class="mht">Compartilhar carta contemplada</div>
+      <button class="btn bg bsm" onclick="cMo('carta-share-mo')">✕</button>
+    </div>
+    <div class="mb carta-share-layout" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px">
+      <div>
+        <div id="carta-share-preview" class="carta-share-preview" style="border:1px solid var(--bd);border-radius:14px;overflow:hidden;background:#edf3f4"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="padding:12px 14px;border-radius:12px;background:#f7f2e3;border:1px solid #e6d59f;color:#5f531f;font-size:12px;line-height:1.5">A apresentação usa somente os dados desta carta. Revise as condições antes de compartilhar.</div>
+        <div class="fg"><label class="fl" for="carta-share-dest">E-mail do destinatário</label><input class="fi" id="carta-share-dest" type="email" placeholder="cliente@exemplo.com.br" autocomplete="email"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="btn bs" onclick="sendCartaEmail()">📧 Enviar HTML</button>
+          <button class="btn bg" onclick="openCartaWhatsApp()">💬 WhatsApp</button>
+        </div>
+        <button class="btn bg" onclick="cMo('carta-share-mo')">Fechar</button>
+        <div id="carta-share-status" style="font-size:12px;color:var(--t2);min-height:18px"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <input type="file" id="cont-xls-inp" accept=".xlsx,.xls" style="display:none" onchange="contProcessXls(this)" aria-label="Cont Xls Inp">
 
 <!-- BLOG -->
@@ -6945,7 +6971,8 @@ function renderContempladas(){
         <td style="font-size:11px">${brl(c.transferencia)}</td>
         <td><div style="display:flex;gap:4px">
           <button class="btn bg bxs" onclick="eCarta('${c.id}')" title="Editar">✏</button>
-          <a class="btn bg bxs" href="https://wa.me/5551982868888?text=${wppMsg}" target="_blank" title="WhatsApp">💬</a>
+          <button class="btn bs bxs" onclick="shareCarta('${c.id}')" title="Enviar carta por e-mail HTML">📧</button>
+          <a class="btn bg bxs" href="https://wa.me/5551999442252?text=${wppMsg}" target="_blank" rel="noopener noreferrer" title="WhatsApp">💬</a>
           <button class="btn bd2b bxs" onclick="dCarta('${c.id}')" title="Excluir">🗑</button>
         </div></td>
       </tr>`;
@@ -7041,6 +7068,50 @@ async function dCarta(id){
     if(idx>=0) CONT_DATA.splice(idx,1);
     buildContempladas(); toast('Carta excluída','info');
   }catch(e){ toast('Erro: '+e.message,'error'); }
+}
+
+let _cartaShareAtual = null;
+function cartaShareBRL(v){ return (Number(v)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
+function cartaShareEsc(v){ return String(v??'').replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m])); }
+function cartaSharePayload(c){
+  const adm=ADM_DATA.find(a=>a.id===c.adm_id)||{nome:c.adm_id||'Administradora não informada'};
+  return {code:c.cod||'',administrator:adm.nome||'',credit:Number(c.credito)||0,entry:Number(c.entrada)||0,installment:Number(c.parcela)||0,term:Number(c.prazo)||0,entryPercent:Number(c.pct_entrada)||0,balance:Number(c.saldo_devedor)||0,transfer:Number(c.transferencia)||0,notes:c.obs||''};
+}
+function cartaSharePreview(c){
+  const d=cartaSharePayload(c);
+  const item=(label,value)=>value?`<div style="padding:9px 10px;background:#f7fafb;border:1px solid #e5ecee;border-radius:8px"><div style="font-size:9px;font-weight:800;letter-spacing:1px;color:#70858b;text-transform:uppercase">${label}</div><div style="margin-top:4px;font-size:13px;font-weight:800;color:#173b48">${value}</div></div>`:'';
+  const rows=[item('Crédito',cartaShareBRL(d.credit)),item('Entrada',cartaShareBRL(d.entry)),item('Parcela',cartaShareBRL(d.installment)),item('Prazo',d.term?d.term+' meses':''),item('Saldo devedor',cartaShareBRL(d.balance)),item('Transferência',cartaShareBRL(d.transfer))].filter(Boolean);
+  return `<div style="background:#fff;font-family:Arial,sans-serif;color:#173b48"><div style="padding:20px;background:#123d4b;color:#fff"><div style="font-size:9px;font-weight:800;letter-spacing:2px;color:#d7bb72">PORTAL MEU LITORAL</div><div style="margin-top:7px;font:700 24px/1.1 Georgia,serif">Carta contemplada<br><span style="color:#d7bb72">pronta para avançar</span></div></div><div style="padding:18px"><div style="font-size:9px;font-weight:800;letter-spacing:1px;color:#907022">OPORTUNIDADE RESERVADA</div><div style="margin-top:6px;font:700 20px Georgia,serif">${cartaShareEsc(d.administrator)}</div><div style="margin-top:4px;font-size:11px;color:#63787d">Código: <b>${cartaShareEsc(d.code||'não informado')}</b></div><div style="margin-top:14px;padding:14px;border-radius:10px;background:#fbf5e5"><div style="font-size:9px;font-weight:800;letter-spacing:1px;color:#907022">CRÉDITO DISPONÍVEL</div><div style="margin-top:4px;font:700 27px Georgia,serif;color:#123d4b">${cartaShareBRL(d.credit)}</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px">${rows.join('')}</div>${d.notes?`<div style="margin-top:12px;padding:10px;background:#fffaf0;border-left:3px solid #d6a646;font-size:11px;line-height:1.4"><b>Observações</b><br>${cartaShareEsc(d.notes).replace(/\n/g,'<br>')}</div>`:''}<div style="margin-top:15px;padding:10px 12px;background:#eef7f4;border-radius:9px;font-size:11px;line-height:1.45;color:#49666a">Condições sujeitas à confirmação com a administradora antes de qualquer contratação ou transferência.</div></div></div>`;
+}
+function shareCarta(id){
+  const c=CONT_DATA.find(x=>x.id==id||x.id===id); if(!c) return;
+  _cartaShareAtual=c;
+  document.getElementById('carta-share-preview').innerHTML=cartaSharePreview(c);
+  document.getElementById('carta-share-dest').value='';
+  document.getElementById('carta-share-status').textContent='';
+  oMo('carta-share-mo');
+}
+function cartaShareText(){
+  const d=cartaSharePayload(_cartaShareAtual||{});
+  return `Olá, Felipe! Tenho interesse na carta de crédito contemplada ${d.code} da ${d.administrator}. Crédito: ${cartaShareBRL(d.credit)}. Entrada: ${cartaShareBRL(d.entry)}. Gostaria de receber mais informações.`;
+}
+function openCartaWhatsApp(){
+  if(!_cartaShareAtual) return;
+  window.open('https://wa.me/5551999442252?text='+encodeURIComponent(cartaShareText()),'_blank','noopener,noreferrer');
+}
+async function sendCartaEmail(){
+  if(!_cartaShareAtual) return;
+  const dest=(document.getElementById('carta-share-dest').value||'').trim().toLowerCase();
+  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(dest)){ toast('Informe um e-mail válido','error'); return; }
+  const status=document.getElementById('carta-share-status'); status.textContent='Enviando apresentação HTML...';
+  const token=sessionStorage.getItem('cnp_crm_token');
+  if(!token){ status.textContent='Sessão expirada. Faça login novamente.'; toast('Sessão expirada','error'); return; }
+  try{
+    const res=await fetch('/api/enviar-carta-email',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({to:dest,carta:cartaSharePayload(_cartaShareAtual)})});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error||'Não foi possível enviar a carta em HTML.');
+    status.textContent='Apresentação enviada com sucesso.'; toast('Carta enviada por e-mail HTML!','success');
+  }catch(e){ status.textContent=e.message; toast(e.message,'error'); }
 }
 
 function contImportarXls(){ document.getElementById('cont-xls-inp').click(); }
