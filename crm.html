@@ -7114,7 +7114,7 @@ function openCartaWhatsApp(){
 async function sendCartaEmail(){
   if(!_cartaShareAtual) return;
   const dest=(document.getElementById('carta-share-dest').value||'').trim().toLowerCase();
-  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(dest)){ toast('Informe um e-mail válido','error'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dest)){ toast('Informe um e-mail válido','error'); return; }
   const status=document.getElementById('carta-share-status'); status.textContent='Enviando apresentação HTML...';
   const token=sessionStorage.getItem('cnp_crm_token');
   if(!token){ status.textContent='Sessão expirada. Faça login novamente.'; toast('Sessão expirada','error'); return; }
