@@ -1907,7 +1907,7 @@ if(_savedToken && _savedUser){
 </div>
 
 <!-- COMPARTILHAR CARTA CONTEMPLADA -->
-<style>@media (max-width:700px){.carta-share-layout{grid-template-columns:1fr!important}.carta-share-layout .btn{min-height:42px}.carta-share-preview{max-height:55vh;overflow:auto}}</style>
+<style>@media (max-width:700px){.carta-share-layout{grid-template-columns:1fr!important}.carta-share-layout .btn{min-height:42px}.carta-share-preview{max-height:55vh;overflow:auto}.cont-desktop-table{display:none!important}.cont-mobile-cards{display:grid!important;gap:10px}.cont-mobile-card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:12px}.cont-mobile-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px}.cont-mobile-actions .btn{min-height:40px}.cont-mobile-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.cont-mobile-meta div{padding:8px;background:var(--s3);border-radius:8px}.cont-mobile-meta small{display:block;color:var(--t3);font-size:9px;text-transform:uppercase;letter-spacing:.6px}.cont-mobile-meta strong{display:block;margin-top:3px;font-size:12px;color:var(--tx)}}.cont-mobile-cards{display:none}</style>
 <div class="ov" id="carta-share-mo">
   <div class="mo" style="max-width:760px;width:95%;max-height:92vh;overflow-y:auto">
     <div class="mh" style="position:sticky;top:0;background:var(--sf);z-index:1">
@@ -6951,7 +6951,7 @@ function renderContempladas(){
     return;
   }
 
-  grid.innerHTML='<table class="tbl"><thead><tr>'
+  grid.innerHTML='<div class="cont-desktop-table"><table class="tbl"><thead><tr>'
     +'<th>Adm.</th><th>Código</th><th>Crédito</th><th>Parcela</th><th>Prazo</th><th>Entrada</th><th>Saldo Dev.</th><th>Transferência</th><th>Ações</th>'
     +'</tr></thead><tbody>'
     +pagina.map(c=>{
@@ -6977,7 +6977,19 @@ function renderContempladas(){
         </div></td>
       </tr>`;
     }).join('')
-    +'</tbody></table>';
+    +'</tbody></table></div>'
+    +'<div class="cont-mobile-cards">'
+    +pagina.map(c=>{
+      const adm=ADM_DATA.find(a=>a.id===c.adm_id)||{abrev:'?',cor:'#888',nome:c.adm_id};
+      const wppMsg=encodeURIComponent('Olá! Tenho interesse na carta '+adm.nome+' cód '+c.cod+' de '+brl(c.credito)+' com entrada de '+brl(c.entrada)+'. Pode me dar mais informações?');
+      return `<article class="cont-mobile-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div><div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:1px">${adm.abrev||adm.nome}</div><strong style="display:block;margin-top:4px;color:var(--ac);font-size:13px">${c.cod||'Carta sem código'}</strong></div><strong style="font-size:18px;color:var(--gn)">${brl0(c.credito)}</strong></div>
+        <div class="cont-mobile-meta"><div><small>Parcela</small><strong>${brl0(c.parcela)}</strong></div><div><small>Entrada</small><strong>${brl0(c.entrada)}${c.pct_entrada?` · ${Number(c.pct_entrada).toFixed(1)}%`:''}</strong></div><div><small>Prazo</small><strong>${c.prazo||0} meses</strong></div><div><small>Transferência</small><strong>${brl0(c.transferencia)}</strong></div></div>
+        <div class="cont-mobile-actions"><button class="btn bs" onclick="shareCarta('${c.id}')">📧 Enviar HTML</button><a class="btn bg" href="https://wa.me/5551999442252?text=${wppMsg}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a></div>
+        <div style="display:flex;gap:7px;margin-top:8px"><button class="btn bg bxs" onclick="eCarta('${c.id}')">✏ Editar</button><button class="btn bd2b bxs" onclick="dCarta('${c.id}')">🗑 Excluir</button></div>
+      </article>`;
+    }).join('')
+    +'</div>';
 
   // Paginação
   const tot=Math.ceil(contFiltered.length/CONT_PER_PAGE);
