@@ -7119,7 +7119,8 @@ async function sendCartaEmail(){
   const token=sessionStorage.getItem('cnp_crm_token');
   if(!token){ status.textContent='Sessão expirada. Faça login novamente.'; toast('Sessão expirada','error'); return; }
   try{
-    const res=await fetch('/api/enviar-carta-email',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({to:dest,carta:cartaSharePayload(_cartaShareAtual)})});
+    const relatedCards=CONT_DATA.filter(x=>String(x.id)!==String(_cartaShareAtual.id)&&x.ativo!==false).sort((a,b)=>(Number(b.credito)||0)-(Number(a.credito)||0)).slice(0,6).map(cartaSharePayload);
+    const res=await fetch('/api/enviar-carta-email',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({to:dest,carta:cartaSharePayload(_cartaShareAtual),relatedCards})});
     const data=await res.json().catch(()=>({}));
     if(!res.ok) throw new Error(data.error||'Não foi possível enviar a carta em HTML.');
     status.textContent='Apresentação enviada com sucesso.'; toast('Carta enviada por e-mail HTML!','success');

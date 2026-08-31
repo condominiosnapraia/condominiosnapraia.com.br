@@ -793,6 +793,36 @@ body{padding-top:56px}
   </a>
 </div>
 
+<section class="carta-lead-section" id="solicitar-analise" aria-labelledby="carta-lead-title" style="padding:48px 20px;background:#f7f3e8">
+  <div style="max-width:720px;margin:0 auto;background:#fff;border:1px solid #e5d9b6;border-radius:18px;padding:28px;box-shadow:0 10px 30px rgba(23,59,72,.08)">
+    <p class="eyebrow" style="justify-content:center;color:#8b6b22">Encontre a opção certa</p>
+    <h2 id="carta-lead-title" style="margin:8px 0;text-align:center;font:700 clamp(24px,4vw,34px) Georgia,serif;color:#173b48">Solicite uma carta contemplada</h2>
+    <p style="margin:0 auto 20px;max-width:560px;text-align:center;font:14px/1.55 Arial,sans-serif;color:#63787d">Informe o crédito e a parcela que procura. Felipe retorna com opções compatíveis e condições para confirmação junto à administradora.</p>
+    <form id="carta-lead-form" onsubmit="enviarSolicitacaoCarta(event)" novalidate>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <label style="display:block;font:700 11px Arial,sans-serif;color:#526970">NOME<input id="lead-carta-nome" name="name" required maxlength="120" autocomplete="name" placeholder="Seu nome" style="display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:13px;border:1px solid #d9e2e4;border-radius:9px;font:14px Arial,sans-serif;color:#173b48"></label>
+        <label style="display:block;font:700 11px Arial,sans-serif;color:#526970">TELEFONE<input id="lead-carta-telefone" name="phone" required maxlength="50" autocomplete="tel" placeholder="(51) 99999-9999" style="display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:13px;border:1px solid #d9e2e4;border-radius:9px;font:14px Arial,sans-serif;color:#173b48"></label>
+        <label style="display:block;font:700 11px Arial,sans-serif;color:#526970">VALOR DO CRÉDITO<input id="lead-carta-credito" name="credit" required maxlength="80" placeholder="Ex.: R$ 300.000" style="display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:13px;border:1px solid #d9e2e4;border-radius:9px;font:14px Arial,sans-serif;color:#173b48"></label>
+        <label style="display:block;font:700 11px Arial,sans-serif;color:#526970">PARCELA APROXIMADA<input id="lead-carta-parcela" name="installment" required maxlength="80" placeholder="Ex.: R$ 2.000/mês" style="display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:13px;border:1px solid #d9e2e4;border-radius:9px;font:14px Arial,sans-serif;color:#173b48"></label>
+      </div>
+      <button type="submit" style="display:block;width:100%;margin-top:16px;padding:14px;border:0;border-radius:10px;background:#168c63;color:#fff;font:700 14px Arial,sans-serif;cursor:pointer">Solicitar análise por e-mail</button>
+      <div id="carta-lead-status" role="status" style="min-height:20px;margin-top:10px;text-align:center;font:12px Arial,sans-serif;color:#63787d"></div>
+      <p style="margin:10px 0 0;text-align:center;font:10px/1.45 Arial,sans-serif;color:#849397">Seus dados serão usados apenas para responder à sua solicitação de crédito.</p>
+    </form>
+  </div>
+</section>
+<script>
+async function enviarSolicitacaoCarta(event){
+  event.preventDefault();
+  const form=event.currentTarget, status=document.getElementById('carta-lead-status'), button=form.querySelector('button[type="submit"]');
+  const body=Object.fromEntries(new FormData(form).entries());
+  if(String(body.name||'').trim().length<2||String(body.phone||'').replace(/\D/g,'').length<8||!String(body.credit||'').trim()||!String(body.installment||'').trim()){status.textContent='Preencha todos os campos para continuar.';status.style.color='#a33b32';return;}
+  button.disabled=true;button.textContent='Enviando solicitação...';status.textContent='';
+  try{const res=await fetch('/api/solicitar-carta',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||'Não foi possível enviar.');form.reset();status.textContent='Solicitação enviada. Felipe entrará em contato.';status.style.color='#168c63';}catch(err){status.textContent=err.message;status.style.color='#a33b32';}finally{button.disabled=false;button.textContent='Solicitar análise por e-mail';}
+}
+</script>
+<style>@media(max-width:600px){.carta-lead-section{padding:32px 14px!important}.carta-lead-section>div{padding:22px 16px!important}.carta-lead-section form>div{grid-template-columns:1fr!important}}</style>
 
 <div id="lead-card" data-origem="conteudo" data-contexto="h1"></div>
 <script src="/js/lead-card.js?v=20260821-a11y" defer></script>

@@ -43,6 +43,10 @@ function field(label, value, className = '') {
 
 function buildHtml(carta) {
   const wa = waUrl(carta);
+  const formUrl = 'https://condominiosnapraia.com.br/contemplado-imoveis/?origem=email-carta&carta=' + encodeURIComponent(carta.code || '') + '#solicitar-analise';
+  const related = Array.isArray(carta.relatedCards) ? carta.relatedCards.filter(x => x && x.code && Number(x.credit) > 0).slice(0, 6) : [];
+  const relatedSection = related.length ? `<tr><td style="padding:22px 26px 8px;border-top:1px solid #e4ebec"><div style="font:700 16px Georgia,serif;color:#173b48">Outras cartas de crédito contempladas</div><div style="margin-top:5px;font:12px/1.45 Arial,sans-serif;color:#63787d">Veja outras opções disponíveis no catálogo e confirme as condições com o consultor.</div></td></tr><tr><td style="padding:8px 26px 18px"><table role="presentation" width="100%" cellspacing="6" cellpadding="0">${related.map((x, i) => `<tr><td style="width:50%;padding:12px;background:${i % 2 ? '#f7fafb' : '#fbf5e5'};border:1px solid #e5ecee;border-radius:8px;vertical-align:top"><div style="font:700 9px Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#70858b">${esc(x.administrator || 'Carta contemplada')}</div><div style="margin-top:5px;font:700 15px Georgia,serif;color:#173b48">${esc(x.code)}</div><div style="margin-top:5px;font:700 14px Arial,sans-serif;color:#168c63">${esc(brl(x.credit))}</div><div style="margin-top:3px;font:11px Arial,sans-serif;color:#63787d">Parcela: ${esc(brl(x.installment))}</div></td>${i % 2 ? '</tr>' : ''}`).join('')}${related.length % 2 ? '<td style="width:50%;padding:12px"></td></tr>' : ''}</table><div style="padding-top:12px;text-align:center"><a href="https://condominiosnapraia.com.br/contemplado-imoveis/" style="display:inline-block;padding:11px 16px;border-radius:9px;background:#123d4b;color:#fff;text-decoration:none;font:700 12px Arial,sans-serif">Ver mais opções</a></div></td></tr>` : '';
+  const formSection = `<tr><td style="padding:20px 26px;background:#eef7f4;border-top:1px solid #d9ebe3"><div style="font:700 16px Georgia,serif;color:#173b48">Quer comparar outras opções?</div><div style="margin-top:6px;font:12px/1.5 Arial,sans-serif;color:#49666a">Informe seu nome, telefone, valor de crédito e parcela aproximada. O consultor retorna com opções compatíveis.</div><a href="${formUrl}" style="display:inline-block;margin-top:12px;padding:12px 17px;border-radius:9px;background:#168c63;color:#fff;text-decoration:none;font:700 12px Arial,sans-serif">Solicitar análise</a><div style="margin-top:8px;font:10px/1.4 Arial,sans-serif;color:#6c817f">O formulário abre no site para funcionar corretamente no Gmail e no celular.</div></td></tr>`;
   const credit = brl(carta.credit);
   const entry = brl(carta.entry);
   const parcel = brl(carta.installment);
@@ -68,7 +72,7 @@ function buildHtml(carta) {
 <tr><td style="padding:8px 26px 14px"><table role="presentation" width="100%" cellspacing="6" cellpadding="0">${grid}${notes}</table></td></tr>
 <tr><td style="padding:4px 26px 22px"><div style="font:700 15px Georgia,serif;color:#173b48">Por que esta carta pode fazer sentido</div><p style="margin:7px 0 0;font:13px/1.55 Arial,sans-serif;color:#5e7278">A carta já contemplada pode facilitar o planejamento de aquisição de imóvel, construção ou finalidade permitida pelo contrato. As condições devem ser conferidas com a administradora antes de qualquer decisão.</p></td></tr>
 <tr><td style="padding:4px 26px 26px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding-right:6px"><a href="${wa}" style="display:block;padding:13px 10px;border-radius:10px;background:#168c63;color:#fff;text-decoration:none;font:700 13px Arial,sans-serif">Falar pelo WhatsApp</a></td><td align="center" style="padding-left:6px"><a href="mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Olá! Segue a carta ${carta.code || ''} para sua análise.`)}" style="display:block;padding:13px 10px;border-radius:10px;background:#123d4b;color:#fff;text-decoration:none;font:700 13px Arial,sans-serif">Encaminhar</a></td></tr></table></td></tr>
-<tr><td style="padding:18px 26px;background:#f5f8f8;border-top:1px solid #e4ebec"><div style="font:700 15px Georgia,serif;color:#173b48">Felipe Ranzolin</div><div style="margin-top:4px;font:12px/1.5 Arial,sans-serif;color:#62767b">Corretor de Imóveis · CRECI-RS 72.386<br>Portal Meu Litoral · Condomínios na Praia<br>WhatsApp: +55 51 99944-2252</div><div style="margin-top:12px;font:10px/1.45 Arial,sans-serif;color:#849397">Apresentação informativa. Confirme disponibilidade, valores, saldo, taxas e regras de utilização diretamente com a administradora antes de qualquer contratação ou transferência.</div></td></tr>
+${relatedSection}${formSection}<tr><td style="padding:18px 26px;background:#f5f8f8;border-top:1px solid #e4ebec"><div style="font:700 15px Georgia,serif;color:#173b48">Felipe Ranzolin</div><div style="margin-top:4px;font:12px/1.5 Arial,sans-serif;color:#62767b">Corretor de Imóveis · CRECI-RS 72.386<br>Portal Meu Litoral · Condomínios na Praia<br>WhatsApp: +55 51 99944-2252</div><div style="margin-top:12px;font:10px/1.45 Arial,sans-serif;color:#849397">Apresentação informativa. Confirme disponibilidade, valores, saldo, taxas e regras de utilização diretamente com a administradora antes de qualquer contratação ou transferência.</div></td></tr>
 </table></td></tr></table></body></html>`;
 }
 
@@ -100,13 +104,14 @@ export async function onRequestPost({ request, env }) {
       code: String(carta.code).slice(0, 80), administrator: String(carta.administrator || '').slice(0, 180),
       credit: Number(carta.credit), entry: Number(carta.entry) || 0, installment: Number(carta.installment) || 0,
       term: Number(carta.term) || 0, entryPercent: Number(carta.entryPercent), balance: Number(carta.balance) || 0,
-      transfer: Number(carta.transfer) || 0, notes: String(carta.notes || '').slice(0, 3000),
+      transfer: Number(carta.transfer) || 0,       notes: String(carta.notes || '').slice(0, 3000),
+      relatedCards: Array.isArray(body.relatedCards) ? body.relatedCards.slice(0, 6).map(x => ({ code: String(x.code || '').slice(0, 80), administrator: String(x.administrator || '').slice(0, 180), credit: Number(x.credit) || 0, installment: Number(x.installment) || 0 })) : [],
     });
     const subject = `Carta de crédito contemplada · ${String(carta.code).slice(0, 80)}`;
     const resend = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ from: env.RESEND_FROM_EMAIL || 'Felipe Ranzolin <felipe@condominiosnapraia.com.br>', to: [to], subject, html }) });
     const result = await resend.json().catch(() => ({}));
     if (!resend.ok) return json({ error: result?.message || result?.name || 'Resend recusou o envio.', providerStatus: resend.status }, resend.status >= 500 ? 502 : 400, origin);
-    return json({ ok: true, id: result.id, message: 'Carta enviada em HTML.' }, 200, origin);
+    return json({ ok: true, id: result.id, message: 'Carta enviada em HTML com opções complementares.' }, 200, origin);
   } catch (error) { return json({ error: 'Falha interna ao preparar o e-mail HTML.' }, 500, origin); }
 }
 
