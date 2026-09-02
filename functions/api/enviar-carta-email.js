@@ -55,7 +55,7 @@ function buildHtml(carta) {
   const percent = num(carta.entryPercent);
   const term = num(carta.term);
   const admin = carta.administrator || 'Administradora não informada';
-  const subject = carta.code ? `Carta de crédito contemplada · ${carta.code}` : 'Carta de crédito contemplada';
+  const subject = carta.code ? `Crédito Contemplado imóvel · ${carta.code}` : 'Crédito Contemplado imóvel';
   const rows = [
     field('Valor do crédito', credit), field('Entrada', entry),
     field('Parcela mensal', parcel), field('Prazo restante', term ? `${term} meses` : ''),
@@ -107,7 +107,7 @@ export async function onRequestPost({ request, env }) {
       transfer: Number(carta.transfer) || 0,       notes: String(carta.notes || '').slice(0, 3000),
       relatedCards: Array.isArray(body.relatedCards) ? body.relatedCards.slice(0, 6).map(x => ({ code: String(x.code || '').slice(0, 80), administrator: String(x.administrator || '').slice(0, 180), credit: Number(x.credit) || 0, installment: Number(x.installment) || 0 })) : [],
     });
-    const subject = `Carta de crédito contemplada · ${String(carta.code).slice(0, 80)}`;
+    const subject = `Crédito Contemplado imóvel · ${String(carta.code).slice(0, 80)}`;
     const resend = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ from: env.RESEND_FROM_EMAIL || 'Felipe Ranzolin <felipe@condominiosnapraia.com.br>', to: [to], subject, html }) });
     const result = await resend.json().catch(() => ({}));
     if (!resend.ok) return json({ error: result?.message || result?.name || 'Resend recusou o envio.', providerStatus: resend.status }, resend.status >= 500 ? 502 : 400, origin);
