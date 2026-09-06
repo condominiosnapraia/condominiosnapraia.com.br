@@ -395,7 +395,7 @@ function blocoConteudo(cond, imoveis) {
       const preco = fmtPreco(im.preco || im.valor);
       const foto = fotoUrl((Array.isArray(im.fotos) ? im.fotos[0] : im.foto) || '');
       const slugImovel = slugPublicoImovel(im);
-      const condoOrigin = slugPublico(cond.slug || [cond.nome, cidade].filter(Boolean).join('-'));
+      const condoOrigin = slugifyPublico(cond.slug || [cond.nome, cidade].filter(Boolean).join('-'));
       const href = slugImovel ? '/imovel/' + encodeURIComponent(slugImovel) + '/?origem=condominio&condominio=' + encodeURIComponent(condoOrigin) : '#';
       partes.push(`<a href="${esc(href)}" data-condo-type-card="1" data-condo-type="${esc(tipo)}" style="display:block;border:1px solid #e5ded3;border-radius:12px;overflow:hidden;text-decoration:none;background:#fff">`);
       if (foto) partes.push(fotoTag(foto, `${tit} — ${cidade}`, {sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 260px', width:640, height:384}));
