@@ -813,8 +813,12 @@ function thumb(u,w,format){
     if(!u||typeof u!=='string'||u.startsWith('data:')||u.startsWith('blob:'))return u;
     var path='';
     var ix=u.indexOf('/cdn-fotos/');
-    if(ix!==-1) path=u.slice(ix+'/cdn-fotos/'.length);
-    else{var ip=u.indexOf('/storage/v1/object/public/');if(ip!==-1)path=u.slice(ip+'/storage/v1/object/public/'.length);}
+    if(ix!==-1){
+      path=u.slice(ix+'/cdn-fotos/'.length).split('?')[0];
+      return '/cdn-fotos/'+path+'?w='+w+'&q=60&fmt='+(format||'webp');
+    }
+    var ip=u.indexOf('/storage/v1/object/public/');
+    if(ip!==-1)path=u.slice(ip+'/storage/v1/object/public/'.length);
     if(!path)return u;
     path=path.split('?')[0];
     return SB_URL+'/storage/v1/render/image/public/'+path+'?width='+w+'&quality=60&format='+(format||'webp');
