@@ -296,6 +296,10 @@ export async function onRequest(context) {
     if (directProperty?.id) {
       const directLinks = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&imovel_id=eq.${encodeURIComponent(directProperty.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada&limit=1`, cfg);
       if (directLinks[0]) row = { ...directLinks[0], imovel: directProperty };
+      // A página do Felipe usa o catálogo geral publicado como vitrine. Permitir a abertura dos anúncios públicos mesmo sem vínculo exclusivo, sem alterar a autoria no CRM.
+      if (!row?.imovel && dbSlug === 'felipe-ranzolin' && directProperty.publicar !== false && String(directProperty.status || '').toLowerCase() !== 'vendido') {
+        row = { id: `catalogo-${directProperty.id}`, ordem: 0, destaque: false, titulo_personalizado: '', chamada_personalizada: '', imovel: directProperty };
+      }
     }
   }
   if (!row?.imovel) {
