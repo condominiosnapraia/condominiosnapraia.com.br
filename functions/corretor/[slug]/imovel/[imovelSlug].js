@@ -302,6 +302,11 @@ export async function onRequest(context) {
       }
     }
   }
+  if (!row?.imovel && dbSlug === 'felipe-ranzolin' && site.id) {
+    const generalRows = await getJson(`imoveis?publicar=eq.true&status=neq.Vendido&select=${propertySelect}&limit=1000`, cfg);
+    const generalProperty = (Array.isArray(generalRows) ? generalRows : []).find((candidate) => candidate && candidate.publicar !== false && String(candidate.status || '').toLowerCase() !== 'vendido' && propertySlug(candidate) === imovelRef);
+    if (generalProperty?.id) row = { id: `catalogo-${generalProperty.id}`, ordem: 0, destaque: false, titulo_personalizado: '', chamada_personalizada: '', imovel: generalProperty };
+  }
   if (!row?.imovel) {
     feed = feed || await getPartnerFeed(publicSlug);
     const feedProperties = Array.isArray(feed?.properties) ? feed.properties : [];
