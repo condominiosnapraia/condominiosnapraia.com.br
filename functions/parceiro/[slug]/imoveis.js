@@ -94,7 +94,11 @@ export async function onRequest(context) {
   if (!site) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><h1>Site ainda não publicado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
   const select = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
   const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${select})&order=destaque.desc,ordem.asc&limit=1000`);
-  const listingRows = (Array.isArray(rows) ? rows : []).filter((row) => row.imovel && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido');
+  let listingRows = (Array.isArray(rows) ? rows : []).filter((row) => row.imovel && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido');
+  if (dbSlug === 'felipe-ranzolin') {
+    const generalRows = await getJson(`imoveis?publicar=eq.true&status=neq.Vendido&select=${select}&order=updated_at.desc&limit=1000`);
+    listingRows = (Array.isArray(generalRows) ? generalRows : []).filter((imovel) => imovel && imovel.publicar !== false && String(imovel.status || '').toLowerCase() !== 'vendido').map((imovel, index) => ({ id: `catalogo-${imovel.id}`, ordem: index, destaque: false, titulo_personalizado: '', chamada_personalizada: '', imovel }));
+  }
   const condIds = [...new Set(listingRows.map((row) => row.imovel?.cond_id).filter(Boolean))];
   const condMap = {};
   if (condIds.length) { const condos = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,nome,cidade&limit=1000`); (Array.isArray(condos) ? condos : []).forEach((cond) => { condMap[cond.id] = cond; }); }
