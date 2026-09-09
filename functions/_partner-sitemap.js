@@ -37,9 +37,12 @@ async function getJson(path) {
   } catch (_) { return []; }
 }
 async function partnerExists(slug) {
-  const dbSlug = SITE_SLUG_ALIASES[slug] || slug;
-  const rows = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,updated_at&limit=1`);
-  return Array.isArray(rows) && rows[0] ? rows[0] : null;
+  const candidates = [slug, SITE_SLUG_ALIASES[slug]].filter(Boolean);
+  for (const candidate of candidates) {
+    const rows = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(candidate)}&status=eq.active&select=id,slug,updated_at&limit=1`);
+    if (Array.isArray(rows) && rows[0]) return rows[0];
+  }
+  return null;
 }
 
 export async function onRequest(context) {
