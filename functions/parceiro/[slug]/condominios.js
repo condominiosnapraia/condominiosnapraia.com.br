@@ -60,6 +60,22 @@ footer{background:#092f47;color:#fff;padding:40px 24px 18px;border-top:5px solid
 @media(max-width:1000px){.condos-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.filter-panel{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.nav{padding:9px 12px;gap:8px}.brand-name{font-size:14px}.nav-links{gap:6px;font-size:11px;margin-left:auto}.nav-cta{padding:7px 9px;font-size:10px}.main{padding:20px 16px 80px}.filter-panel{position:static;grid-template-columns:1fr;gap:8px}.condos-grid{grid-template-columns:1fr 1fr;gap:12px}}
 @media(max-width:420px){.brand-sub{display:none}.condos-grid{grid-template-columns:1fr}}
+
+/* Rodapé parceiro: padrão tipográfico comum desktop/mobile */
+.footer{font-family:Outfit,Arial,sans-serif;font-size:13px;line-height:1.5}
+.footer-inner{width:min(1180px,100%);margin:0 auto}
+.footer-grid{align-items:start}
+.footer-brand{font-family:Fraunces,Georgia,serif;font-size:28px;line-height:1.08;font-weight:600;letter-spacing:-.02em}
+.footer-copy{font-family:Outfit,Arial,sans-serif;font-size:13px;line-height:1.55}
+.footer-title,.footer-quick strong{font-family:Outfit,Arial,sans-serif;font-size:10px;line-height:1.2;font-weight:700;letter-spacing:.17em;text-transform:uppercase}
+.footer-col a,.footer-quick a{font-family:Outfit,Arial,sans-serif;font-size:13px;line-height:1.45;font-weight:400}
+.footer-wpp{font-family:Outfit,Arial,sans-serif;font-size:13px;line-height:1;font-weight:700}
+.footer-bottom{font-family:Outfit,Arial,sans-serif;font-size:11px;line-height:1.45}
+.footer-rich{font-family:Outfit,Arial,sans-serif}
+.footer-rich .footer-brand{font-size:24px}
+.footer-rich small{font-family:Outfit,Arial,sans-serif;font-size:12px;line-height:1.45}
+@media (min-width:801px){.footer{padding-top:42px;padding-bottom:20px}.footer-grid{gap:32px}.footer-col a,.footer-quick a{padding:4px 0}.footer-title,.footer-quick strong{margin-bottom:10px}}
+@media (max-width:800px){.footer{font-size:13px}.footer-brand,.footer-rich .footer-brand{font-size:24px}.footer-col a,.footer-quick a{font-size:13px}}
 </style></head><body>
 <header class="site-header"><nav class="nav"><a class="brand" href="${landingUrl}">${logo}</a><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><div class="footer-title footer-quick-title">Acesso rápido</div><div class="footer-quick-links"><a href="${landingUrl}">Início do corretor</a><a href="${landingUrl}imoveis/?cat=casa-condominio">Casas e sobrados</a><a href="${landingUrl}imoveis/?cat=terreno-condominio">Lotes em condomínio</a><a href="${landingUrl}imoveis/?cat=apartamento">Apartamentos</a><a href="${landingUrl}imoveis/?cat=comercial">Lojas e salas</a></div><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
 <section class="page-hero"><div class="page-hero-inner"><nav class="crumb"><a href="${landingUrl}">Início</a> › <span>Condomínios</span></nav><span class="eyebrow">🏛 Empreendimentos</span><h1>Condomínios</h1><p>Todos os condomínios e empreendimentos com imóveis disponíveis na carteira de ${esc(name)}.</p></div></section>
