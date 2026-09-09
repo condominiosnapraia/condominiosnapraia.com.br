@@ -442,7 +442,7 @@ function imageTransform(u,w,format){
   else{var ip=value.indexOf('/storage/v1/object/public/');if(ip!==-1)path=value.slice(ip+'/storage/v1/object/public/'.length);}
   if(!path)return value;
   path=path.split('?')[0];
-  return SB_URL+'/storage/v1/render/image/public/'+path+'?width='+w+'&quality=70&format='+(format||'webp');
+  return '/cdn-fotos/'+path+'?w='+w+'&q=70&fmt='+(format||'webp');
 }
 function pictureMarkup(url,alt){
   var sizes='(max-width:560px) 100vw, (max-width:900px) 50vw, 33vw';

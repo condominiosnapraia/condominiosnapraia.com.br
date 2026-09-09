@@ -862,7 +862,7 @@ function thumb(u,w,format){
     }
     if(!path)return u;
     path=path.split('?')[0];
-    return SB+'/storage/v1/render/image/public/'+path+'?width='+w+'&quality=60&format='+(format||'webp');
+    return '/cdn-fotos/'+path+'?w='+w+'&q=60&fmt='+(format||'webp');
   }catch(e){return u;}
 }
 function pictureCard(u,alt){
