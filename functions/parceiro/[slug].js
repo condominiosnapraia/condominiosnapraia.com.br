@@ -245,13 +245,18 @@ export async function onRequest(context) {
   const site = sites[0];
   const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${site.id}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,updated_at,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,bairro_end,fora_condominio,cond_id,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,corretor,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar)&order=destaque.desc,ordem.asc&limit=1000`, cfg);
   const listingRows = (Array.isArray(rows) ? rows : []).filter((row) => row.imovel && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido');
-  const condIds = [...new Set(listingRows.map((row) => row.imovel?.cond_id).filter(Boolean))];
+  let sourceRows = listingRows;
+  if (dbSlug === 'felipe-ranzolin') {
+    const generalRows = await getJson('imoveis?publicar=eq.true&status=neq.Vendido&select=id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,bairro_end,fora_condominio,cond_id,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,corretor,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar&order=updated_at.desc&limit=1000', cfg);
+    sourceRows = (Array.isArray(generalRows) ? generalRows : []).map((imovel, index) => ({ id: `catalogo-${imovel.id}`, ordem: index, destaque: false, titulo_personalizado: '', chamada_personalizada: '', updated_at: null, imovel }));
+  }
+  const condIds = [...new Set(sourceRows.map((row) => row.imovel?.cond_id).filter(Boolean))];
   const condMap = {};
   if (condIds.length) {
     const condos = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,slug,nome,cidade,descricao,amenidades,fotos_no_site,fotos,fotos_para_site&limit=1000`, cfg);
     (Array.isArray(condos) ? condos : []).forEach((cond) => { condMap[cond.id] = cond; });
   }
-  const properties = listingRows.map((row) => normalizeListing(row, condMap, publicSlug));
+  const properties = sourceRows.map((row) => normalizeListing(row, condMap, publicSlug));
   const condoStats = {};
   properties.forEach((property) => {
     const c = property.condo;
