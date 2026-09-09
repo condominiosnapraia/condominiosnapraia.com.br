@@ -130,7 +130,11 @@ export async function onRequest(context) {
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('Corretor não encontrado', { status: 404 });
 
-  const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=imovel:imoveis(cond_id,status,publicar)&limit=1000`, cfg);
+  let rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=imovel:imoveis(cond_id,status,publicar)&limit=1000`, cfg);
+  if (dbSlug === 'felipe-ranzolin') {
+    const generalRows = await getJson('imoveis?publicar=eq.true&status=neq.Vendido&select=cond_id,status,publicar&limit=5000', cfg);
+    rows = (Array.isArray(generalRows) ? generalRows : []).map((imovel) => ({ imovel }));
+  }
   const listingRows = (Array.isArray(rows) ? rows : []).filter((row) => row.imovel && row.imovel.publicar !== false && !/vendid/i.test(String(row.imovel.status || '')));
 
   const counts = {};

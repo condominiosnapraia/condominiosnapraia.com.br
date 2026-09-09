@@ -19,7 +19,11 @@ export async function onRequest() {
     urls.push({ loc: landing, lastmod: lastmod(site), priority: '0.8' });
     urls.push({ loc: `${landing}contato/`, lastmod: lastmod(site), priority: '0.7' });
     urls.push({ loc: `${landing}imoveis/`, lastmod: lastmod(site), priority: '0.8' });
-    const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=updated_at,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,status,publicar,updated_at)&limit=1000`);
+    let rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=updated_at,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,status,publicar,updated_at)&limit=1000`);
+    if (site.slug === 'felipe-ranzolin') {
+      const generalRows = await getJson('imoveis?publicar=eq.true&status=neq.Vendido&select=id,slug,codigo,ref,titulo,tipo,status,publicar,updated_at&limit=5000');
+      rows = (Array.isArray(generalRows) ? generalRows : []).map((imovel) => ({ updated_at: imovel.updated_at, imovel }));
+    }
     (Array.isArray(rows) ? rows : []).forEach((row) => {
       const im = row?.imovel;
       if (!im || im.publicar === false || String(im.status || '').toLowerCase() === 'vendido') return;

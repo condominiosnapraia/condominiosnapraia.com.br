@@ -59,7 +59,11 @@ export async function onRequest(context) {
   add(`${root}condominios/`, site, '0.8');
   add(`${root}contato/`, site, '0.7');
 
-  const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=updated_at,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,status,publicar,updated_at,cond_id,condominio:condominios(id,slug,nome,updated_at))&limit=5000`);
+  let rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=updated_at,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,status,publicar,updated_at,cond_id,condominio:condominios(id,slug,nome,updated_at))&limit=5000`);
+  if (site.slug === 'felipe-ranzolin') {
+    const generalRows = await getJson('imoveis?publicar=eq.true&status=neq.Vendido&select=id,slug,codigo,ref,titulo,tipo,status,publicar,updated_at,cond_id,condominio:condominios(id,slug,nome,updated_at)&limit=5000');
+    rows = (Array.isArray(generalRows) ? generalRows : []).map((imovel) => ({ updated_at: imovel.updated_at, imovel }));
+  }
   for (const row of Array.isArray(rows) ? rows : []) {
     const property = row?.imovel;
     if (!property || property.publicar === false || /vendido|inativo/i.test(String(property.status || ''))) continue;
