@@ -13,6 +13,7 @@ function notFound() { return new Response('<!doctype html><meta charset="utf-8">
 function page({ site, slug }) {
   const isRodrigo = slug === 'rodrigo-carvalho';
   const isJuliano = slug === 'juliano-machado';
+  const isMarcos = slug === 'marcos-selbach';
   const pageTitle = site.slug === 'fernando-trvisol' ? 'Fernando Trevisol - Imóveis de Alto Padrão' : (isRodrigo ? 'Rodrigo Carvalho - Corretor de Imóveis' : (site.nome || 'Corretor parceiro'));
   const name = isRodrigo ? 'Rodrigo Carvalho' : (site.nome || 'Corretor parceiro');
   const bio = isRodrigo ? 'Atuando no mercado imobiliário desde 2012, Rodrigo Carvalho possui ampla experiência e conhecimento nas principais regiões do Rio Grande do Sul, com destaque para a Região Metropolitana, Serra Gaúcha e Litoral.\n\nSeu trabalho é pautado por atendimento personalizado, conhecimento de mercado, segurança e transparência, auxiliando clientes na escolha do imóvel ideal, seja para morar, investir ou realizar um novo negócio.\n\nExperiência que gera confiança. Conhecimento regional que faz a diferença.' : (site.bio || `Atendimento personalizado para compra e venda de imóveis no Rio Grande do Sul.`);
@@ -22,7 +23,7 @@ function page({ site, slug }) {
   const landing = `${BASE}/corretor/${encodeURIComponent(slug)}/`;
   const contactUrl = `${landing}contato/`;
   const cover = site.capa_url || DEFAULT_COVER;
-  const profileImage = isRodrigo ? `${BASE}/img/corretores/rodrigo-carvalho-perfil.jpeg` : (isJuliano ? `${BASE}/img/corretores/juliano-machado-perfil.jpeg` : (site.logo_url || ''));
+  const profileImage = isRodrigo ? `${BASE}/img/corretores/rodrigo-carvalho-perfil.jpeg` : (isJuliano ? `${BASE}/img/corretores/juliano-machado-perfil.jpeg` : (isMarcos ? `${BASE}/img/corretores/marcos-selbach-perfil.jpeg` : (site.logo_url || '')));
   const listingUrl = `${landing}imoveis/`;
   const propertyTypeCards = `<section class="contact-property-cards" aria-labelledby="contact-property-title"><div class="contact-property-head"><div class="eyebrow">Encontre seu imóvel</div><h2 id="contact-property-title">Escolha por tipo de imóvel</h2><p>Veja as oportunidades disponíveis neste site parceiro e fale diretamente com ${esc(name)}.</p></div><div class="contact-property-grid"><a class="contact-property-card" href="${listingUrl}"><span class="contact-property-icon">🏡</span><strong>Casas e sobrados</strong><small>Em e fora de condomínio</small><span class="contact-property-arrow">Ver imóveis →</span></a><a class="contact-property-card" href="${listingUrl}?cat=terreno-condominio"><span class="contact-property-icon">📐</span><strong>Lotes em condomínio</strong><small>Terrenos para construir</small><span class="contact-property-arrow">Ver lotes →</span></a><a class="contact-property-card" href="${listingUrl}?cat=apartamento"><span class="contact-property-icon">🏢</span><strong>Apartamentos</strong><small>Opções disponíveis</small><span class="contact-property-arrow">Ver apartamentos →</span></a></div></section>`;
   const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase() || 'CP';
