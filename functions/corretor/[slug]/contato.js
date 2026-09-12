@@ -53,7 +53,10 @@ export async function onRequest(context) {
   const { dbSlug, publicSlug } = siteSlugInfo(requested);
   const requestPath = new URL(context.request.url).pathname;
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requested !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/contato/`, 301);
-  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
+  let sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
+  if (!sites[0] && requested !== dbSlug) {
+    sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(requested)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
+  }
   if (!sites[0]) return notFound();
   return new Response(page({ site: sites[0], slug: publicSlug }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
