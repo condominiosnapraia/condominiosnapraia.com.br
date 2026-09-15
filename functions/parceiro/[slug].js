@@ -161,7 +161,7 @@ function layout({ site, properties, slug, requestPath, topCondos }) {
   const wpp = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
   const accent = /^#[0-9a-f]{6}$/i.test(site.accent_color || '') ? site.accent_color : '#d5aa57';
   const brand = /^#[0-9a-f]{6}$/i.test(site.brand_color || '') ? site.brand_color : '#0d5c86';
-  const cover = site.capa_url || site.logo_url || `${BASE}/img/parceiro-capa-padrao.webp`;
+  const cover = site.capa_url || `${BASE}/img/parceiro-capa-padrao.webp`;
   const profileImage = isRodrigo ? `${BASE}/img/corretores/rodrigo-carvalho-perfil.jpeg` : (site.logo_url || '');
   const heroStyle = cover ? ` style="background-image:url('${esc(cover)}')"` : '';
   const segment = requestPath.startsWith('/corretor/') ? 'corretor' : 'parceiro';
