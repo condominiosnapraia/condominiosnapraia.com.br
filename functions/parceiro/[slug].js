@@ -218,7 +218,7 @@ function layout({ site, properties, slug, requestPath, topCondos }) {
 .footer-rich small{font-family:Outfit,Arial,sans-serif;font-size:12px;line-height:1.45}
 @media (min-width:801px){.footer{padding-top:42px;padding-bottom:20px}.footer-grid{gap:32px}.footer-col a,.footer-quick a{padding:4px 0}.footer-title,.footer-quick strong{margin-bottom:10px}}
 @media (max-width:800px){.footer{font-size:13px}.footer-brand,.footer-rich .footer-brand{font-size:24px}.footer-col a,.footer-quick a{font-size:13px}}
-@media(max-width:760px){.hero-whatsapp,.floating-wpp{display:none!important}}</style>
+@media(max-width:760px){.site-header,.header,.topbar{display:none!important}.hero-whatsapp,.floating-wpp{display:none!important}.mobile-dock{display:grid!important;visibility:visible!important;opacity:1!important}}</style>
 </head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>

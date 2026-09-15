@@ -115,7 +115,7 @@ async function getPartnerFeed(publicSlug) {
     return response.ok ? await response.json() : null;
   } catch (_) { return null; }
 }
-function notFound() { return new Response('<!doctype html><meta charset="utf-8"><title>Imóvel não encontrado</title><meta name="robots" content="noindex"><style>body{font-family:Arial;padding:48px;max-width:700px;margin:auto;color:#0d3b54}a{color:#0d5c86;font-weight:bold}@media(max-width:760px){.hero-whatsapp,.floating-wpp{display:none!important}}</style><h1>Imóvel não encontrado</h1><p>Este imóvel pode ter sido removido ou não está publicado neste site parceiro.</p><a href="/">Voltar</a>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } }); }
+function notFound() { return new Response('<!doctype html><meta charset="utf-8"><title>Imóvel não encontrado</title><meta name="robots" content="noindex"><style>body{font-family:Arial;padding:48px;max-width:700px;margin:auto;color:#0d3b54}a{color:#0d5c86;font-weight:bold}@media(max-width:760px){.site-header,.header,.topbar{display:none!important}.hero-whatsapp,.floating-wpp{display:none!important}.mobile-dock{display:grid!important;visibility:visible!important;opacity:1!important}}</style><h1>Imóvel não encontrado</h1><p>Este imóvel pode ter sido removido ou não está publicado neste site parceiro.</p><a href="/">Voltar</a>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } }); }
 
 function relatedCard(item, contextLabel = '', storageBase = '') {
   const imovel = item.imovel || item;
