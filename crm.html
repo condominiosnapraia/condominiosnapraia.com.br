@@ -925,23 +925,9 @@ async function doLogin(){
     const profs = await profResp.json();
     const prof = profs[0];
     if(!prof){
-      // Profile missing - create basic one
-      await fetch(SB_URL+'/rest/v1/usuarios',{
-        method:'POST',
-        headers:{'apikey':SB_ANON,'Authorization':'Bearer '+data.access_token,'Content-Type':'application/json','Prefer':'return=minimal'},
-        body:JSON.stringify({id:data.user.id,nome:data.user.email,email:data.user.email,role:'admin',ativo:true})
-      });
-      const prof2={id:data.user.id,nome:data.user.email,email:data.user.email,role:'admin',ativo:true};
-      _authUser=data.user; _authProfile=prof2;
-      sessionStorage.setItem('cnp_crm_token',data.access_token);
-      if(data.refresh_token) sessionStorage.setItem('cnp_crm_refresh',data.refresh_token);
-      agendarRenovacao();
-      sessionStorage.setItem('cnp_crm_user',JSON.stringify(prof2));
-      document.getElementById('login-screen').style.display='none';
-      updateSidebarUser(prof2);
+      // Perfil inexistente nunca recebe privilégios automaticamente.
+      showLoginView('lv-pending');
       btn.disabled=false;btn.textContent='Entrar';
-      // Recarrega com o token autenticado; a primeira tentativa pode ter ocorrido como anônima.
-      await loadAllData();
       return;
     }
     if(!prof.ativo){
@@ -1198,6 +1184,7 @@ if(_savedToken && _savedUser){
   <button class="ni" onclick="go('admins',this)" data-p="admins"><span class="ic">🏦</span>Administradoras</button>
   <div class="nsec">Sistema</div>
   <button class="ni" onclick="go('usuarios',this)" data-p="usuarios"><span class="ic">👥</span>Usuários</button>
+  <button class="ni" onclick="go('permissoes',this)" data-p="permissoes"><span class="ic">🔐</span>Permissões</button>
   <button class="ni" onclick="go('atividades',this)" data-p="atividades"><span class="ic">📋</span>Atividades</button>
   <button class="ni" onclick="go('parceiros',this)" data-p="parceiros"><span class="ic">🌐</span>Sites de Corretores</button>
   <div class="sfooter">
@@ -1520,6 +1507,31 @@ if(_savedToken && _savedUser){
   </div>
   <div id="capas-body" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:4px">
     <div class="empty"><div class="empty-ico">🖼️</div><p>Carregando...</p></div>
+  </div>
+</div>
+
+<!-- PERMISSÕES -->
+<div class="panel" id="panel-permissoes">
+  <div class="ph">
+    <div><div class="pht">🔐 Permissões</div><div class="phs">Escolha quem pode visualizar e alterar cada área do CRM</div></div>
+    <div class="phr"><button class="btn bg" onclick="carregarPermissoes()">↻ Atualizar</button><button class="btn bp" onclick="salvarPermissoes()">💾 Salvar permissões</button></div>
+  </div>
+  <div class="tw" style="padding:14px;margin-bottom:14px">
+    <div class="fgg">
+      <div class="fg"><label class="fl" for="perm-alvo-tipo">Configurar por</label>
+        <select class="fse" id="perm-alvo-tipo" onchange="carregarPermissoes()"><option value="role">Perfil</option><option value="user">Usuário específico</option></select>
+      </div>
+      <div class="fg"><label class="fl" for="perm-alvo-id">Perfil / usuário</label>
+        <select class="fse" id="perm-alvo-id" onchange="carregarAlvoPermissoes()"></select>
+      </div>
+    </div>
+    <div class="parc-notice" style="margin:12px 0 0">Administrador sempre mantém acesso total. As permissões específicas de usuário têm prioridade sobre as permissões do perfil.</div>
+  </div>
+  <div class="tw" style="overflow:auto">
+    <table id="permissoes-grid">
+      <thead><tr><th>Módulo</th><th>Visualizar</th><th>Criar</th><th>Editar</th><th>Excluir</th><th>Publicar</th><th>Exportar</th><th>Enviar</th></tr></thead>
+      <tbody></tbody>
+    </table>
   </div>
 </div>
 
@@ -3498,6 +3510,7 @@ function mobGoMore(id,btn){
   if(more) more.classList.add('on');
 }
 function go(id,btn){
+  if(id !== 'dashboard' && id !== 'permissoes' && !crmCan(id,'ver')){ toast('Acesso não autorizado para este módulo.','error'); return; }
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.rb').forEach(b=>b.classList.remove('on'));
@@ -3506,7 +3519,7 @@ function go(id,btn){
   if(btn)btn.classList.add('on');
   const h={dashboard:buildDash,condominios:rCond,imoveis:()=>{pCS();rImV()},
     proprietarios:rProp,clientes:buildClientes,'clientes-import':clImpInit,negociacoes:()=>{pIS();rKb()},
-    agenda:()=>{pIS();rCal()},relatorios:buildRel,editor:edLoad,destaques:buildDestaques,fotos:buildFotos,blog:buildBlog,lancamentos:buildLancamentos,contempladas:buildContempladas,admins:buildAdmins,usuarios:buildUsuarios,atividades:buildAtividades,parceiros:parcLoad,'cadastro-ia':iaPanelInit,capas:carregarCapas,carrossel:carregarCarrossel,leads:carregarLeads,leadsfotos:carregarLeadsFotos,leadscampanha:carregarLeadsCampanha};
+    agenda:()=>{pIS();rCal()},relatorios:buildRel,editor:edLoad,destaques:buildDestaques,fotos:buildFotos,blog:buildBlog,lancamentos:buildLancamentos,contempladas:buildContempladas,admins:buildAdmins,usuarios:buildUsuarios,permissoes:carregarPermissoes,atividades:buildAtividades,parceiros:parcLoad,'cadastro-ia':iaPanelInit,capas:carregarCapas,carrossel:carregarCarrossel,leads:carregarLeads,leadsfotos:carregarLeadsFotos,leadscampanha:carregarLeadsCampanha};
   if(h[id])h[id]();
   upB();
 }
@@ -3928,6 +3941,7 @@ function gerarConteudo(){
 
 // ── DEPLOY HOOK ──
 async function dispararDeploy(){
+  if(!requireCrmPermission('editor', 'publicar')) return;
   const st=document.getElementById('cm-deploy-status');
   if(!CNP_DEPLOY_HOOK){
     if(st){ st.textContent='⚠ Configure CNP_DEPLOY_HOOK no código.'; st.style.color='var(--or)'; }
@@ -4003,6 +4017,7 @@ function cmBindEvents(){
 document.addEventListener('DOMContentLoaded', cmBindEvents);
 
 async function savCond(){
+  if(!requireCrmPermission('condominios', document.getElementById('cm-id')?.value ? 'editar' : 'criar')) return;
   const nome=document.getElementById('cm-nome').value.trim(),cidade=document.getElementById('cm-cid').value;
   if(!nome||!cidade){toast('Preencha Nome e Cidade','error');return}
   const eid=document.getElementById('cm-id').value,id=eid||(sl(nome)+'-'+uid().slice(0,4));
@@ -4479,6 +4494,7 @@ function toggleForaCond(){
 }
 
 async function savImov(){
+  if(!requireCrmPermission('imoveis', document.getElementById('im-id')?.value ? 'editar' : 'criar')) return;
   const gv=n=>{const e=document.getElementById(n);return e?e.value:'';};
   const gc=n=>{const e=document.getElementById(n);return e?e.checked:false;};
   const foraCond=gc('im-fora-cond');
@@ -4653,7 +4669,8 @@ function abrirEnvioLoteImovel(){if(!shareImovelAtual){toast('Abra um imóvel ant
 function fecharOuPararLote(){if(_bulkEmailSending){_bulkEmailStop=true;const st=document.getElementById('bulk-email-status');if(st)st.textContent='Parando após a mensagem atual...';return;}cMo('bulk-email-mo');}
 async function carregarContatosLote(input){const file=input?.files?.[0];if(!file)return;const st=document.getElementById('bulk-email-status');if(st)st.textContent='Lendo planilha...';try{await clEnsureXLSX();const buf=await file.arrayBuffer();const wb=XLSX.read(buf,{type:'array'});const sheet=wb.Sheets[wb.SheetNames[0]];const rows=XLSX.utils.sheet_to_json(sheet,{defval:'',raw:false});const seen=new Set();const valid=[];let invalid=0;for(const row of rows){const normalized={};Object.entries(row).forEach(([k,v])=>{const key=String(k).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');normalized[key]=String(v||'').trim();});const email=(normalized.email||normalized.correioeletronico||normalized.emaildestinatario||'').toLowerCase();if(!emailValidoCRM(email)||seen.has(email)){invalid++;continue;}seen.add(email);valid.push({email,nome:normalized.nome||normalized.name||''});}if(valid.length>20){invalid+=valid.length-20;valid.length=20;}_bulkEmailRows=valid;renderContatosLote(`Linhas ignoradas: ${invalid}. Limite operacional: 20.`);}catch(e){_bulkEmailRows=[];if(st)st.textContent='Não foi possível ler a planilha. Use XLSX, XLS ou CSV com uma coluna email.';toast('Erro ao ler planilha: '+e.message,'error');atualizarEstadoLote();}}
 function esperarLote(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
-async function enviarContatosLote(){if(!_bulkEmailRows.length||!shareImovelAtual)return;const consent=document.getElementById('bulk-email-consent');if(!consent?.checked){toast('Confirme a autorização dos contatos antes de enviar.','error');return;}if(_bulkEmailRows.length>20){toast('O lote foi limitado a 20 contatos.','error');return;}_bulkEmailSending=true;_bulkEmailStop=false;const send=document.getElementById('bulk-email-send');if(send){send.disabled=true;send.textContent='Enviando...';}const close=document.getElementById('bulk-email-close');if(close)close.textContent='Parar envio';const progress=document.getElementById('bulk-email-progress');if(progress)progress.style.display='block';const bar=document.getElementById('bulk-email-bar');const report=document.getElementById('bulk-email-report');const resultados=[];for(let i=0;i<_bulkEmailRows.length;i++){if(_bulkEmailStop)break;const row=_bulkEmailRows[i];if(report)report.textContent=`Enviando ${i+1} de ${_bulkEmailRows.length}: ${row.email}`;try{const response=await iaFetchComSessao('/api/enviar-imovel-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payloadEmailImovel(shareImovelAtual,row.email))});const result=await response.json().catch(()=>({}));if(response.ok&&result.ok){resultados.push({email:row.email,status:'Enviado'});}else{resultados.push({email:row.email,status:`Falhou: ${result.error||response.status}`});if([401,403,429,503].includes(response.status)){if(report)report.textContent=`Envio pausado por segurança em ${row.email}: ${result.error||response.status}`;break;}}}catch(e){resultados.push({email:row.email,status:'Falhou: conexão'});break;}if(bar)bar.style.width=Math.round(((i+1)/_bulkEmailRows.length)*100)+'%';if(i<_bulkEmailRows.length-1&&!_bulkEmailStop)await esperarLote(1400);}_bulkEmailSending=false;if(send){send.textContent='Enviar lote';send.disabled=true;}if(close)close.textContent='Fechar';const enviados=resultados.filter(x=>x.status==='Enviado').length;const falhas=resultados.length-enviados;const interrompido=_bulkEmailStop||resultados.length<_bulkEmailRows.length;if(report)report.textContent=`Concluído: ${enviados} enviado(s), ${falhas} falha(s). ${interrompido?'O lote foi interrompido ou pausado.':''}`;if(enviados)toast(`${enviados} e-mail(s) enviado(s).`,'success');}
+async function enviarContatosLote(){
+  if(!requireCrmPermission('imoveis', 'enviar')) return;if(!_bulkEmailRows.length||!shareImovelAtual)return;const consent=document.getElementById('bulk-email-consent');if(!consent?.checked){toast('Confirme a autorização dos contatos antes de enviar.','error');return;}if(_bulkEmailRows.length>20){toast('O lote foi limitado a 20 contatos.','error');return;}_bulkEmailSending=true;_bulkEmailStop=false;const send=document.getElementById('bulk-email-send');if(send){send.disabled=true;send.textContent='Enviando...';}const close=document.getElementById('bulk-email-close');if(close)close.textContent='Parar envio';const progress=document.getElementById('bulk-email-progress');if(progress)progress.style.display='block';const bar=document.getElementById('bulk-email-bar');const report=document.getElementById('bulk-email-report');const resultados=[];for(let i=0;i<_bulkEmailRows.length;i++){if(_bulkEmailStop)break;const row=_bulkEmailRows[i];if(report)report.textContent=`Enviando ${i+1} de ${_bulkEmailRows.length}: ${row.email}`;try{const response=await iaFetchComSessao('/api/enviar-imovel-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payloadEmailImovel(shareImovelAtual,row.email))});const result=await response.json().catch(()=>({}));if(response.ok&&result.ok){resultados.push({email:row.email,status:'Enviado'});}else{resultados.push({email:row.email,status:`Falhou: ${result.error||response.status}`});if([401,403,429,503].includes(response.status)){if(report)report.textContent=`Envio pausado por segurança em ${row.email}: ${result.error||response.status}`;break;}}}catch(e){resultados.push({email:row.email,status:'Falhou: conexão'});break;}if(bar)bar.style.width=Math.round(((i+1)/_bulkEmailRows.length)*100)+'%';if(i<_bulkEmailRows.length-1&&!_bulkEmailStop)await esperarLote(1400);}_bulkEmailSending=false;if(send){send.textContent='Enviar lote';send.disabled=true;}if(close)close.textContent='Fechar';const enviados=resultados.filter(x=>x.status==='Enviado').length;const falhas=resultados.length-enviados;const interrompido=_bulkEmailStop||resultados.length<_bulkEmailRows.length;if(report)report.textContent=`Concluído: ${enviados} enviado(s), ${falhas} falha(s). ${interrompido?'O lote foi interrompido ou pausado.':''}`;if(enviados)toast(`${enviados} e-mail(s) enviado(s).`,'success');}
 async function compartilharImovelEmail(){
   if(!shareImovelAtual)return;
   const input=document.getElementById('share-imov-email');const email=(input?.value||'').trim();
@@ -4840,6 +4857,7 @@ function eProp(id){
   document.getElementById('pm-nome').value=p.nome||'';document.getElementById('pm-tipo').value=p.tipo||'PF';document.getElementById('pm-doc').value=p.doc||'';document.getElementById('pm-rg').value=p.rg||'';document.getElementById('pm-ec').value=p.estadoCivil||'Solteiro(a)';document.getElementById('pm-prof').value=p.profissao||'';document.getElementById('pm-tel').value=p.telefone||'';document.getElementById('pm-wpp').value=p.whatsapp||'';document.getElementById('pm-email').value=p.email||'';document.getElementById('pm-email2').value=p.email2||'';document.getElementById('pm-obs').value=p.obs||'';tDL();oMo('prop-mo');
 }
 async function savProp(){
+  if(!requireCrmPermission('proprietarios', document.getElementById('pr-id')?.value ? 'editar' : 'criar')) return;
   const nome=document.getElementById('pm-nome').value.trim();if(!nome){toast('Informe o nome','error');return}
   const eid=document.getElementById('pm-id').value,id=eid||uid();
   const gv = id => { const e=document.getElementById(id); return e?e.value:''; };
@@ -4948,6 +4966,7 @@ function rKb(){
 function rNF(){document.getElementById('nm-id').value='';document.getElementById('nm-title').textContent='Nova Negociação';['nm-cli','nm-val','nm-tel','nm-email','nm-obs'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});document.getElementById('nm-et').value='lead';pIS()}
 function eNeg(id){const n=DB.ne.find(x=>x.id===id);if(!n)return;rNF();document.getElementById('nm-id').value=id;document.getElementById('nm-title').textContent='Editar Negociação';document.getElementById('nm-cli').value=n.cli||'';document.getElementById('nm-imov').value=n.imovId||'';document.getElementById('nm-et').value=n.etapa||'lead';document.getElementById('nm-val').value=n.val||'';document.getElementById('nm-tel').value=n.tel||'';document.getElementById('nm-email').value=n.email||'';document.getElementById('nm-obs').value=n.obs||'';oMo('neg-mo')}
 async function savNeg(){
+  if(!requireCrmPermission('negociacoes', document.getElementById('ne-id')?.value ? 'editar' : 'criar')) return;
   const cli=document.getElementById('nm-cli').value.trim();if(!cli){toast('Informe o cliente','error');return}
   const eid=document.getElementById('nm-id').value,id=eid||uid();
   const o={id,titulo:cli,cliente:cli,imov_id:document.getElementById('nm-imov').value,status:document.getElementById('nm-et').value,valor:document.getElementById('nm-val').value,tel:document.getElementById('nm-tel').value,email:document.getElementById('nm-email').value,obs:document.getElementById('nm-obs').value,updated_at:new Date().toISOString()};
@@ -5016,6 +5035,7 @@ function rDE(){
 function rEF(){document.getElementById('em-id').value='';document.getElementById('em-title').textContent='Novo Evento';['em-tit','em-cli','em-obs'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});document.getElementById('em-data').value=sD;document.getElementById('em-hora').value='09:00';document.getElementById('em-tipo').value='visita';document.getElementById('em-imov').value=''}
 function eEv(id){const e=DB.ev.find(x=>x.id===id);if(!e)return;document.getElementById('em-id').value=id;document.getElementById('em-title').textContent='Editar Evento';document.getElementById('em-tit').value=e.titulo||'';document.getElementById('em-tipo').value=e.tipo||'visita';document.getElementById('em-data').value=e.data||sD;document.getElementById('em-hora').value=e.hora||'09:00';document.getElementById('em-cli').value=e.cli||'';document.getElementById('em-imov').value=e.imovId||'';document.getElementById('em-obs').value=e.obs||'';oMo('ev-mo')}
 async function savEv(){
+  if(!requireCrmPermission('agenda', document.getElementById('ev-id')?.value ? 'editar' : 'criar')) return;
   const titulo=document.getElementById('em-tit').value.trim(),data=document.getElementById('em-data').value;
   if(!titulo||!data){toast('Preencha título e data','error');return}
   const eid=document.getElementById('em-id').value,id=eid||uid();
@@ -5333,6 +5353,7 @@ let iFS = []; // seleção fotos imóvel: true = vai ao site
 
 // ── EXPORT ──
 async function exportSite(){
+  if(!requireCrmPermission('exportacoes', 'publicar')) return;
   toast('Publicando site...','info');
   // Com Supabase, o site lê direto do banco — só precisa salvar configurações
   const destaquesCond = JSON.parse(localStorage.getItem('cnp_featured_cond')||'[]');
@@ -5350,6 +5371,7 @@ async function exportSite(){
   }catch(e){toast('Erro ao publicar: '+e.message,'error');}
 }
 function exportCSV(){
+  if(!requireCrmPermission('exportacoes', 'exportar')) return;
   const im=DB.im,co=DB.co,pr=DB.pr;
   let csv='\uFEFF'+'Imóvel,Condomínio,Cidade,Tipo,Área m²,Quartos,Suítes,Vagas,Preço,Status,Proprietário,CPF/CNPJ,Telefone,Matrícula,Publicado\n';
   im.forEach(x=>{const c=co.find(y=>y.id===x.condId)||{nome:'—',cidade:'—'};const p=pr.find(y=>y.id===x.propId)||{nome:'—',doc:'—',telefone:'—'};
@@ -6012,6 +6034,7 @@ function ePost(id){
 }
 
 async function savPost(){
+  if(!requireCrmPermission('blog', 'editar')) return;
   const titulo=document.getElementById('post-titulo').value.trim();
   if(!titulo){toast('Título obrigatório','error');return;}
   const eid=document.getElementById('post-id').value;
@@ -6110,6 +6133,100 @@ async function logAtividade(acao, entidade, entidade_id, entidade_nome, detalhes
       created_at: new Date().toISOString()
     });
   }catch(e){ console.warn('Log atividade error:', e); }
+}
+
+// ── PAINEL DE PERMISSÕES ──
+const CRM_PERMISSION_MODULES = [
+  ['dashboard','Dashboard'], ['condominios','Condomínios'], ['imoveis','Imóveis'], ['proprietarios','Proprietários'],
+  ['clientes','Clientes'], ['leads','Leads do Site'], ['leadsfotos','Leads Fotos'], ['leadscampanha','Leads Campanha'],
+  ['negociacoes','Negociações'], ['agenda','Agenda'], ['relatorios','Relatórios'], ['editor','Editor do Site'],
+  ['capas','Capas dos Guias'], ['carrossel','Carrossel da Home'], ['fotos','Fotos do Site'], ['lancamentos','Lançamentos'],
+  ['destaques','Destaques'], ['blog','Blog'], ['contempladas','Cartas Contempladas'], ['admins','Administradoras'],
+  ['atividades','Atividades'], ['parceiros','Sites de Corretores'], ['exportacoes','Exportações e Backup']
+];
+const CRM_PERMISSION_ACTIONS = ['ver','criar','editar','excluir','publicar','exportar','enviar'];
+let _crmPermCache = [];
+function isCrmAdmin(){ return (_authProfile || {}).role === 'admin'; }
+function exigirAdminPermissoes(){ if(!isCrmAdmin()){ toast('Apenas administradores podem alterar permissões.','error'); return false; } return true; }
+function permissaoPadrao(role, action){
+  if(role === 'admin') return true;
+  if(role === 'visualizador') return action === 'ver';
+  if(role === 'consultor') return ['ver','criar','editar','enviar'].includes(action);
+  return false;
+}
+function escHtml(value){ return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+async function carregarPermissoes(){
+  if(!exigirAdminPermissoes()) return;
+  const tipo = document.getElementById('perm-alvo-tipo');
+  const alvo = document.getElementById('perm-alvo-id');
+  if(!tipo || !alvo) return;
+  const usuarios = await sb.get('usuarios','?select=id,nome,email,role,ativo&order=nome.asc');
+  alvo.innerHTML = tipo.value === 'role'
+    ? ['admin','consultor','visualizador'].map(r=>`<option value="${r}">${r === 'admin' ? 'Administrador' : r === 'consultor' ? 'Consultor' : 'Visualizador'}</option>`).join('')
+    : (usuarios || []).map(u=>`<option value="${u.id}">${escHtml(u.nome || u.email)} — ${escHtml(u.role || '')}</option>`).join('');
+  await carregarAlvoPermissoes();
+}
+async function carregarAlvoPermissoes(){
+  if(!exigirAdminPermissoes()) return;
+  const tipo = document.getElementById('perm-alvo-tipo').value;
+  const alvo = document.getElementById('perm-alvo-id').value;
+  const tbody = document.querySelector('#permissoes-grid tbody');
+  if(!tbody || !alvo) return;
+  _crmPermCache = await sb.get(`crm_permissoes?alvo_tipo=eq.${encodeURIComponent(tipo)}&alvo_id=eq.${encodeURIComponent(alvo)}&select=modulo,ver,criar,editar,excluir,publicar,exportar,enviar`);
+  const byModule = Object.fromEntries((_crmPermCache || []).map(row => [row.modulo, row]));
+  tbody.innerHTML = CRM_PERMISSION_MODULES.map(([module,label]) => {
+    const row = byModule[module] || {};
+    return `<tr data-perm-module="${module}"><td><strong>${label}</strong></td>${CRM_PERMISSION_ACTIONS.map(action => `<td><input type="checkbox" data-perm-action="${action}" ${row[action] === true || (!byModule[module] && permissaoPadrao(alvo, action)) ? 'checked' : ''} aria-label="${label} ${action}"></td>`).join('')}</tr>`;
+  }).join('');
+}
+function crmPermissionDefault(role, module, action){
+  if(role === 'admin') return true;
+  if(action === 'ver') return true;
+  if(role === 'visualizador') return false;
+  if(role === 'consultor') return ['criar','editar','enviar'].includes(action);
+  return false;
+}
+function crmCan(module, action='ver'){
+  const prof = _authProfile || {};
+  if(prof.role === 'admin') return true;
+  const userRow = _crmPermCache.find(x => x.alvo_tipo === 'user' && x.alvo_id === prof.id && x.modulo === module);
+  const roleRow = _crmPermCache.find(x => x.alvo_tipo === 'role' && x.alvo_id === prof.role && x.modulo === module);
+  const row = userRow || roleRow;
+  return row && Object.prototype.hasOwnProperty.call(row, action) ? !!row[action] : crmPermissionDefault(prof.role, module, action);
+}
+async function loadCurrentPermissions(){
+  try{
+    const prof = _authProfile || {};
+    if(!prof.id) return;
+    _crmPermCache = await sb.get(`crm_permissoes?or=(alvo_tipo.eq.role.alvo_id.eq.${encodeURIComponent(prof.role || '')},alvo_tipo.eq.user.alvo_id.eq.${encodeURIComponent(prof.id)})&select=alvo_tipo,alvo_id,modulo,ver,criar,editar,excluir,publicar,exportar,enviar`);
+    applyPermissionUi();
+  }catch(e){ console.warn('Permissões não carregadas:', e); }
+}
+function applyPermissionUi(){
+  document.querySelectorAll('[data-p]').forEach(btn => {
+    const module = btn.dataset.p;
+    if(module === 'permissoes') btn.style.display = isCrmAdmin() ? '' : 'none'; else if(module) btn.style.display = crmCan(module,'ver') ? '' : 'none';
+  });
+}
+function requireCrmPermission(module, action){
+  if(crmCan(module, action)) return true;
+  toast('Você não tem permissão para esta ação.','error');
+  return false;
+}
+
+async function salvarPermissoes(){
+  if(!exigirAdminPermissoes()) return;
+  const tipo = document.getElementById('perm-alvo-tipo').value;
+  const alvo = document.getElementById('perm-alvo-id').value;
+  const rows = [...document.querySelectorAll('#permissoes-grid tbody tr')];
+  try{
+    for(const row of rows){
+      const data = {alvo_tipo:tipo, alvo_id:alvo, modulo:row.dataset.permModule, updated_by:_authProfile.id, updated_at:new Date().toISOString()};
+      CRM_PERMISSION_ACTIONS.forEach(action => { data[action] = !!row.querySelector(`[data-perm-action="${action}"]`)?.checked; });
+      await sb.upsert('crm_permissoes', data);
+    }
+    toast('Permissões salvas com sucesso.','success');
+  }catch(e){ toast('Não foi possível salvar: '+(e.message || e),'error'); }
 }
 
 // ── USUÁRIOS ──
@@ -6615,6 +6732,7 @@ function eAdm(id){
 }
 
 async function savAdm(){
+  if(!requireCrmPermission('admins', 'editar')) return;
   const nome = document.getElementById('adm-nome').value.trim();
   if(!nome){ toast('Nome obrigatório','error'); return; }
   const eid = document.getElementById('adm-id').value;
@@ -7043,6 +7161,7 @@ function eCarta(id){
 }
 
 async function savCarta(){
+  if(!requireCrmPermission('contempladas', 'editar')) return;
   const adm=document.getElementById('carta-adm-sel').value;
   const credito=parseBRL(document.getElementById('carta-credito').value);
   const parcela=parseBRL(document.getElementById('carta-parcela').value);
@@ -7112,6 +7231,7 @@ function openCartaWhatsApp(){
   window.open('https://wa.me/5551999442252?text='+encodeURIComponent(cartaShareText()),'_blank','noopener,noreferrer');
 }
 async function sendCartaEmail(){
+  if(!requireCrmPermission('contempladas', 'enviar')) return;
   if(!_cartaShareAtual) return;
   const dest=(document.getElementById('carta-share-dest').value||'').trim().toLowerCase();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dest)){ toast('Informe um e-mail válido','error'); return; }
@@ -7267,6 +7387,7 @@ async function destSave(){
 // Gera um HTML real por condomínio (conteúdo no HTML = indexável pelo Google)
 // e empacota num ZIP para o usuário baixar e subir no Cloudflare.
 async function gerarPaginasCondominios(){
+  if(!requireCrmPermission('editor', 'publicar')) return;
   const BASE='https://condominiosnapraia.com.br';
   toast('Gerando páginas… aguarde','info');
   if(typeof JSZip==='undefined'){
@@ -7433,6 +7554,7 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
 // Motivo: as fichas de imovel so existiam atras do JavaScript, invisiveis para o Google.
 // A pagina traz titulo, preco, caracteristicas, fotos com alt, schema e link para o condominio.
 async function gerarPaginasImoveis(){
+  if(!requireCrmPermission('editor', 'publicar')) return;
   const BASE='https://condominiosnapraia.com.br';
   toast('Gerando paginas de imoveis… aguarde','info');
   if(typeof JSZip==='undefined'){
@@ -7786,6 +7908,7 @@ document.addEventListener('keydown',function(e){if(!document.getElementById('lb'
 
 // ── GERADOR DE SITEMAP (inclui condomínios dinâmicos para indexação SEO) ──
 async function gerarSitemap(){
+  if(!requireCrmPermission('editor', 'publicar')) return;
   const BASE='https://condominiosnapraia.com.br';
   // URLs estáticas do site (páginas fixas)
   const estaticas=[
@@ -8115,6 +8238,7 @@ function ctReset(){
 
 // ── BACKUP & RESTORE ──
 function backupJSON(){
+  if(!requireCrmPermission('exportacoes', 'exportar')) return;
   // Remove fotos base64 para não pesar o arquivo
   const cleanFotos = (arr) => (arr||[]).map(item => {
     const c = {...item};
@@ -8145,6 +8269,7 @@ function backupJSON(){
 }
 
 function restoreJSON(input){
+  if(!requireCrmPermission('exportacoes', 'editar')) return;
   const file=input.files[0];
   if(!file)return;
   const reader=new FileReader();
@@ -9753,6 +9878,7 @@ async function clEdit(id){
   oMo('cli-mo');
 }
 async function savCliente(){
+  if(!requireCrmPermission('clientes', document.getElementById('cl-id')?.value ? 'editar' : 'criar')) return;
   const gv=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
   const nome=gv('clm-nome');
   if(!nome){toast('Informe o nome do cliente','error');return;}
