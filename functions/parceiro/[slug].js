@@ -115,7 +115,6 @@ const SECTIONS = [
   { id: 'casa-fora', category: 'casa-fora', title: 'Sobrados e casas', subtitle: 'Fora de condomínio', limit: 8, icon: '🏠', empty: 'Ainda não há casas ou sobrados fora de condomínio publicados.' },
   { id: 'terreno-condominio', category: 'terreno-condominio', title: 'Terrenos', subtitle: 'Em condomínio', limit: 8, icon: '📐', empty: 'Ainda não há terrenos em condomínio publicados.' },
   { id: 'apartamento', category: 'apartamento', title: 'Apartamentos', subtitle: 'À venda', limit: 8, icon: '🏢', empty: 'Ainda não há apartamentos publicados.' },
-  { id: 'comercial', category: 'comercial', title: 'Lojas e salas', subtitle: 'Comerciais', limit: 4, icon: '🏬', empty: 'Ainda não há lojas ou salas comerciais publicadas.' },
 ];
 
 function badgeLabel(property) {
