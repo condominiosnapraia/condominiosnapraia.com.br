@@ -237,7 +237,7 @@ body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.24;ba
 <style>
 /* FOOTER ALIGNMENT + CONTACT DATA FORMAT */
 footer{position:relative;overflow:hidden}
-.footer-main{align-items:start;grid-template-columns:minmax(250px,1.35fr) minmax(190px,1fr) minmax(190px,.9fr) minmax(180px,.9fr);gap:42px}
+.footer-main{align-items:start;grid-template-columns:minmax(280px,1.35fr) minmax(220px,1fr) minmax(220px,.95fr);gap:42px}
 .footer-col{display:flex;flex-direction:column;align-items:flex-start;min-width:0;gap:9px}
 .footer-col .footer-title{width:100%;margin:0 0 5px;line-height:1.2}
 .footer-col a,.footer-col span{display:block;width:100%;line-height:1.45}
