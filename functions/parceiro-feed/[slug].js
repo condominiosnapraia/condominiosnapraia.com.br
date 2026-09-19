@@ -274,6 +274,18 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 #sec-imoveis-semana .property-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}#sec-imoveis-semana .property-card{box-shadow:0 12px 28px rgba(23,49,58,.08);border-color:rgba(183,123,63,.16);transition:transform .2s ease,box-shadow .2s ease}#sec-imoveis-semana .property-card:hover{transform:translateY(-4px);box-shadow:0 18px 34px rgba(23,49,58,.14)}#sec-imoveis-semana .property-body h3{font-size:16px;line-height:1.16}
 @media(max-width:1050px){#sec-imoveis-semana .property-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){#sec-imoveis-semana{margin:26px 0 8px;padding:28px 16px 25px;border-radius:20px}#sec-imoveis-semana .property-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#sec-imoveis-semana .property-body h3{font-size:14px}}@media(max-width:430px){#sec-imoveis-semana .property-grid{grid-template-columns:1fr}}
 </style>
+
+<style id="partner-mobile-hero-scale">
+@media(max-width:760px){
+  .partner-hero .hero-broker-photo-wrap{width:min(40vw,145px)!important;height:min(50vw,185px)!important;margin-bottom:14px!important;padding:5px!important;border-radius:18px!important}
+  .partner-hero .hero-broker-photo-wrap:after{inset:5px!important;border-radius:13px!important}
+  .partner-hero .hero-broker-photo,.partner-hero .hero-broker-photo-empty{border-radius:13px!important}
+  .partner-hero .hero-broker-name{font-size:clamp(21px,7.2vw,34px)!important;line-height:1.06!important;margin-top:8px!important}
+  .partner-hero .hero-broker-meta{font-size:9px!important;letter-spacing:.1em!important;margin-top:6px!important}
+  .partner-hero .hero-kicker{font-size:9px!important;letter-spacing:.16em!important}
+  .partner-hero .hero-title-clean{font-size:clamp(17px,5.7vw,25px)!important;line-height:1.12!important;max-width:270px!important;gap:4px!important;margin-top:8px!important}
+}
+</style>
 </head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
