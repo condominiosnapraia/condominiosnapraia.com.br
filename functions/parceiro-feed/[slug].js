@@ -158,7 +158,7 @@ function layout({ site, properties, slug, requestPath, topCondos }) {
   const brand = /^#[0-9a-f]{6}$/i.test(site.brand_color || '') ? site.brand_color : '#0d5c86';
   const cover = site.capa_url || `${BASE}/img/parceiro-capa-desktop.jpg`;
   const mobileCover = `${BASE}/img/parceiro-capa-mobile.jpg`;
-  const heroStyle = cover ? ` style="background-image:url('${esc(cover)}');--partner-cover-mobile:url('${esc(mobileCover)}')"` : '';
+  const heroStyle = cover ? ` style="background-image:url('${esc(cover)}');--partner-cover-desktop:url('${esc(cover)}');--partner-cover-mobile:url('${esc(mobileCover)}')"` : '';
   const segment = requestPath.startsWith('/corretor/') ? 'corretor' : 'parceiro';
   const canonical = `${BASE}/${segment}/${encodeURIComponent(slug)}/`;
   const landingUrl = canonical;
@@ -325,6 +325,11 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
   .mobile-dock a:first-child{background:#f4bf61;border-color:#f4bf61;color:#173743!important}
   .mobile-dock-icon{display:inline-grid!important;place-items:center;width:17px;height:17px;font-size:15px;line-height:1}
 }
+</style>
+
+<style id="partner-cover-force-visible">
+.partner-hero{background-image:var(--partner-cover-desktop)!important;background-color:#173a46!important;background-size:cover!important;background-repeat:no-repeat!important}
+@media(max-width:760px){.partner-hero{background-image:var(--partner-cover-mobile)!important;background-position:left center!important}}
 </style>
 </head>
 <body>
