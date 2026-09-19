@@ -330,6 +330,13 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 <style id="partner-cover-responsive">
 @media(max-width:760px){.partner-hero{background-image:var(--partner-cover-mobile)!important;background-position:center center!important}}
 </style>
+
+<style id="partner-mobile-cover-focus">
+@media(max-width:760px){
+  .partner-hero{background-position:center 30%!important}
+  .partner-hero .hero-broker-meta{text-align:center!important;margin-left:auto!important;margin-right:auto!important;width:100%!important}
+}
+</style>
 </head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
