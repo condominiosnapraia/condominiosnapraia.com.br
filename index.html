@@ -1960,7 +1960,7 @@ async function fetchSiteData(){
     const imovSelect = hashLegado ? HOME_IMOV_SELECT : HOME_IMOV_SELECT_MIN;
     const [condominiosRaw, imoveisRaw] = await Promise.all([
       sbSite.get('condominios', `?ativo=eq.true&select=${encodeURIComponent(condSelect)}&order=nome.asc`),
-      sbSite.get('imoveis', `?status=eq.Disponível&publicar=eq.true&select=${encodeURIComponent(imovSelect)}&order=created_at.asc`)
+      sbSite.get('imoveis', `?status=neq.Vendido&publicar=eq.true&select=${encodeURIComponent(imovSelect)}&order=created_at.desc`)
     ]);
     // Registros antigos que ainda não têm fotos_no_site recebem apenas o campo
     // legado em uma segunda consulta enxuta; no cadastro atual essa leva é zero.
@@ -3394,12 +3394,10 @@ async function carregarCapasDecisao(){
 function renderImoveisDaSemana(lista){
   const grid=document.getElementById('home-week-grid');
   if(!grid)return;
-  const agora=Date.now();
-  const limite=agora-(7*24*60*60*1000);
+  // A seção mantém o nome “Imóveis da Semana”, mas exibe sempre os 12
+  // imóveis publicados e cadastrados mais recentemente, sem depender da data atual.
   const recentes=(Array.isArray(lista)?lista:[]).filter(i=>{
-    if(!i || i.publicar===false || i.status!=='Disponível')return false;
-    const criado=Date.parse(i.created_at||'');
-    return Number.isFinite(criado) && criado>=limite && criado<=agora;
+    return i && i.publicar!==false && String(i.status||'').toLowerCase()!=='vendido';
   }).sort((a,b)=>Date.parse(b.created_at||0)-Date.parse(a.created_at||0)).slice(0,12);
   grid.innerHTML=recentes.length ? recentes.map(buildImovCard).join('') : '<div class="week-empty"><div class="empty-ico">✦</div><p>Novos imóveis serão exibidos aqui assim que entrarem no catálogo.</p></div>';
 }
