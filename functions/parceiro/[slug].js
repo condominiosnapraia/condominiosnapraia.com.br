@@ -333,7 +333,7 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 
 <style id="partner-mobile-cover-focus">
 @media(max-width:760px){
-  .partner-hero{background-position:center 30%!important}
+  .partner-hero{background-position:left center!important}
   .partner-hero .hero-broker-meta{text-align:center!important;margin-left:auto!important;margin-right:auto!important;width:100%!important}
 }
 </style>
