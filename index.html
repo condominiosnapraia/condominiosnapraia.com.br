@@ -785,6 +785,13 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 @media(max-width:700px){#home-week-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#home-week-grid .icard-title{font-size:14px}}
 @media(max-width:430px){#home-week-grid{grid-template-columns:1fr}}
 </style>
+
+<style id="home-no-section-waves">
+/* Divisórias retas: o layout atual não utiliza transições onduladas entre seções. */
+#view-home > .sec-onda::before,
+#view-home > .sec-onda-areia::before{content:none!important;display:none!important;visibility:hidden!important}
+#view-home > .sec-onda,#view-home > .sec-onda-areia{overflow:hidden!important}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
