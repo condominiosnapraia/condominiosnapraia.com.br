@@ -309,6 +309,14 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
   .partner-hero .hero-title-clean{font-size:clamp(17px,5.7vw,25px)!important;line-height:1.12!important;max-width:270px!important;gap:4px!important;margin-top:8px!important}
 }
 </style>
+
+<style id="partner-mobile-card-title-scale">
+@media(max-width:760px){
+  .property-card .property-body h3{font-size:15px!important;line-height:1.14!important;letter-spacing:-.015em!important}
+  .property-card .property-body{padding:13px 12px!important}
+  .condo-card .condo-body h3{font-size:15px!important;line-height:1.14!important;letter-spacing:-.015em!important}
+}
+</style>
 </head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
