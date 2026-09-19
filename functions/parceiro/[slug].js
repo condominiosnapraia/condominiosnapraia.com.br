@@ -161,9 +161,10 @@ function layout({ site, properties, slug, requestPath, topCondos }) {
   const wpp = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
   const accent = /^#[0-9a-f]{6}$/i.test(site.accent_color || '') ? site.accent_color : '#d5aa57';
   const brand = /^#[0-9a-f]{6}$/i.test(site.brand_color || '') ? site.brand_color : '#0d5c86';
-  const cover = site.capa_url || `${BASE}/img/parceiro-capa-padrao.webp`;
+  const cover = site.capa_url || `${BASE}/img/parceiro-capa-desktop.jpg`;
+  const mobileCover = `${BASE}/img/parceiro-capa-mobile.jpg`;
   const profileImage = isRodrigo ? `${BASE}/img/corretores/rodrigo-carvalho-perfil.jpeg` : (site.logo_url || '');
-  const heroStyle = cover ? ` style="background-image:url('${esc(cover)}')"` : '';
+  const heroStyle = cover ? ` style="background-image:url('${esc(cover)}');--partner-cover-mobile:url('${esc(mobileCover)}')"` : '';
   const segment = requestPath.startsWith('/corretor/') ? 'corretor' : 'parceiro';
   const canonical = `${BASE}/${segment}/${encodeURIComponent(slug)}/`;
   const landingUrl = canonical;
@@ -324,6 +325,10 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
   .partner-hero .hero-broker-photo-wrap{width:min(100%,260px)!important;height:325px!important}
   .partner-hero .hero-broker-name{font-size:clamp(29px,3.5vw,48px)!important;line-height:1.04!important}
 }
+</style>
+
+<style id="partner-cover-responsive">
+@media(max-width:760px){.partner-hero{background-image:var(--partner-cover-mobile)!important;background-position:center center!important}}
 </style>
 </head>
 <body>
