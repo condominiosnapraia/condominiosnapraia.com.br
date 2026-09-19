@@ -354,6 +354,10 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 .partner-hero{background-image:var(--partner-cover-desktop)!important;background-color:#173a46!important;background-size:cover!important;background-repeat:no-repeat!important}
 @media(max-width:760px){.partner-hero{background-image:var(--partner-cover-mobile)!important;background-position:left center!important}}
 </style>
+
+<style id="partner-hero-photo-visible">
+.partner-hero:after{display:none!important}
+</style>
 </head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
