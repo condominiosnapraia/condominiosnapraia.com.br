@@ -318,6 +318,13 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
   .condo-card .condo-body h3{font-size:15px!important;line-height:1.14!important;letter-spacing:-.015em!important}
 }
 </style>
+
+<style id="partner-desktop-hero-scale">
+@media(min-width:761px){
+  .partner-hero .hero-broker-photo-wrap{width:min(100%,260px)!important;height:325px!important}
+  .partner-hero .hero-broker-name{font-size:clamp(29px,3.5vw,48px)!important;line-height:1.04!important}
+}
+</style>
 </head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
