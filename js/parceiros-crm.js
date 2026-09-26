@@ -62,8 +62,10 @@
       const rel=relById.get(String(imovel.id));
       const checked=Boolean(rel?.publicado);
       const title=imovel.titulo||'Imóvel sem título';
-      const meta=[imovel.cidade_end||imovel.cidade,imovel.preco&&`R$ ${imovel.preco}`,imovel.status].filter(Boolean).join(' · ');
-      return `<label class="parc-property"><input type="checkbox" ${checked?'checked':''} onchange="parcToggleProperty('${esc(imovel.id)}',this.checked)"><span><strong>${esc(title)}</strong><span>${esc(meta||'Sem informações complementares')}</span></span></label>`;
+      const meta=[imovel.cidade_end||imovel.cidade,imovel.preco&&`R$ ${Number(imovel.preco).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}`,imovel.status].filter(Boolean).join(' · ');
+      const highlighted=Boolean(rel?.destaque);
+      const order=Number.isFinite(Number(rel?.ordem))?Number(rel.ordem):0;
+      return `<div class="parc-property"><label><input type="checkbox" ${checked?'checked':''} onchange="parcToggleProperty('${esc(imovel.id)}',this.checked)"><span><strong>${esc(title)}</strong><span>${esc(meta||'Sem informações complementares')}</span></span></label><div class="parc-property-controls"><label title="Mostrar primeiro nesta categoria"><input type="checkbox" ${highlighted?'checked':''} ${checked?'':'disabled'} onchange="parcSetPropertyMeta('${esc(imovel.id)}','destaque',this.checked)"> ⭐ Destaque</label><label title="Menor número aparece primeiro">Ordem <input type="number" min="0" step="1" value="${order}" ${checked?'':'disabled'} onchange="parcSetPropertyMeta('${esc(imovel.id)}','ordem',this.value)"></label></div></div>`;
     }).join('');
   }
 
@@ -77,7 +79,7 @@
     const selected=parcRelations.filter((row)=>row.publicado).length;
     const leadCount=parcLeads.length;
     const statusAction=admin?(site.status==='active'?`<button class="btn bd2b bsm" type="button" onclick="parcSetStatus('suspended')">Pausar</button>`:`<button class="btn bs bsm" type="button" onclick="parcSetStatus('active')">Publicar</button>`):`<span class="parc-plan-badge">Publicação pelo administrador</span>`;
-    detail.innerHTML=`<div class="parc-detail-body"><div class="parc-detail-head"><div><h3>${esc(site.nome)}</h3><p>/${esc(site.slug)} · <span class="parc-plan-badge">Plano ${esc(site.plano_slug||'inicial')}</span> · <span class="parc-plan-badge">Leads ${leadCount}</span></p></div><div class="parc-actions"><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(landing)}')">Abrir landing</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Copiar link</button>${statusAction}</div></div><div class="parc-url"><input readonly value="${esc(landing)}"><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Landing</button><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(contact)}')">Contato</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(feed)}')">Feed JSON</button></div><div class="parc-section-title">Imóveis publicados (${selected})</div><div class="parc-property-list">${propertyRows()||'<div class="parc-empty">Nenhum imóvel disponível no catálogo atual.</div>'}</div><div class="parc-section-title">Observação</div><p style="font-size:12px;color:var(--t2);line-height:1.55;margin:0">Marque os imóveis autorizados. A landing só ficará acessível quando o site estiver publicado e nunca altera os dados centrais do imóvel.</p></div>`;
+    detail.innerHTML=`<div class="parc-detail-body"><div class="parc-detail-head"><div><h3>${esc(site.nome)}</h3><p>/${esc(site.slug)} · <span class="parc-plan-badge">Plano ${esc(site.plano_slug||'inicial')}</span> · <span class="parc-plan-badge">Leads ${leadCount}</span></p></div><div class="parc-actions"><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(landing)}')">Abrir landing</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Copiar link</button>${statusAction}</div></div><div class="parc-url"><input readonly value="${esc(landing)}"><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Landing</button><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(contact)}')">Contato</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(feed)}')">Feed JSON</button></div><div class="parc-section-title">Imóveis publicados (${selected})</div><p style="font-size:12px;color:var(--t2);line-height:1.55;margin:0 0 10px">Marque os imóveis autorizados. Em cada imóvel publicado, use <b>Destaque</b> para colocá-lo no início da categoria e ajuste a <b>Ordem</b> para definir a sequência.</p><div class="parc-property-list">${propertyRows()||'<div class="parc-empty">Nenhum imóvel disponível no catálogo atual.</div>'}</div><div class="parc-section-title">Observação</div><p style="font-size:12px;color:var(--t2);line-height:1.55;margin:0">Os destaques respeitam a categoria automática: sobrados/casas em condomínio, fora de condomínio, terrenos, apartamentos e comerciais. A landing nunca altera os dados centrais do imóvel.</p></div>`;
   }
 
   window.parcToggleProperty=async function(imovelId,checked){
@@ -94,6 +96,14 @@
       parcRenderDetail();
       toast(checked?'Imóvel incluído na landing.':'Imóvel retirado da landing.','success');
     }catch(error){toast('Não foi possível atualizar a publicação: '+(error.message||error),'error');parcRenderDetail();}
+  };
+
+  window.parcSetPropertyMeta=async function(imovelId,field,value){
+    if(!parcCurrent)return;
+    const existing=parcRelations.find((row)=>String(row.imovel_id)===String(imovelId));
+    if(!existing){toast('Publique o imóvel antes de configurar destaque ou ordem.','info');parcRenderDetail();return;}
+    const patch=field==='destaque'?{destaque:Boolean(value)}:{ordem:Math.max(0,Number(value)||0)};
+    try{const result=await sb.patch('parceiros_sites_imoveis',existing.id,patch);Object.assign(existing,Array.isArray(result)?(result[0]||patch):(result||patch));parcRenderDetail();toast(field==='destaque'?(patch.destaque?'Destaque ativado.':'Destaque removido.'):'Ordem atualizada.','success');}catch(error){toast('Não foi possível salvar a configuração: '+(error.message||error),'error');parcRenderDetail();}
   };
 
   window.parcSetStatus=async function(status){
