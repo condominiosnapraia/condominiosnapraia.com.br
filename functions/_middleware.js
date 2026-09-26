@@ -22,6 +22,8 @@ const PORTAL_MEULITORAL_HOSTS = new Set([
 const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral{--home-ocean:#0b5368;--home-ink:#123f53;--home-gold:#d1a048}
   .portal-meu-litoral .hero-brand-name{letter-spacing:-.055em}
+  .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
+  .portal-meu-litoral .desk-header .dh-logo img{display:none}
   .portal-meu-litoral .hero-brand-tagline{color:#f5d994}
   .portal-meu-litoral .desk-header .dh-logo{filter:saturate(.88)}
   .portal-meu-litoral .desk-header .dh-cta{border-color:rgba(209,160,72,.58)!important}
