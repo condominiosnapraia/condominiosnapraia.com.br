@@ -20,7 +20,18 @@ const PORTAL_MEULITORAL_HOSTS = new Set([
 ]);
 
 const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
-  .portal-meu-litoral .hero-brand-name{letter-spacing:-.06em}
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+  .portal-meu-litoral{--portal-navy:#071d49;--portal-blue:#0c78a4;--portal-gold:#b8872e;--portal-sand:#fbf8f0;font-family:'Montserrat',Outfit,Arial,sans-serif}
+  .portal-meu-litoral .hero-brand-name,.portal-meu-litoral .sectit,.portal-meu-litoral .lch-tit,.portal-meu-litoral .ictit,.portal-meu-litoral .ctit,.portal-meu-litoral .navq-t,.portal-meu-litoral .pcred-t,.portal-meu-litoral .bcid-nome,.portal-meu-litoral .vpc2-body h3{font-family:'Cormorant Garamond',Fraunces,Georgia,serif;color:var(--portal-navy)}
+  .portal-meu-litoral .hero-brand-name{letter-spacing:-.025em;font-weight:600;color:#fff7e8}
+  .portal-meu-litoral .hero-brand-tagline,.portal-meu-litoral .hero-brand-kicker,.portal-meu-litoral .eyebrow,.portal-meu-litoral .sectit-sub{font-family:'Montserrat',Outfit,Arial,sans-serif}
+  .portal-meu-litoral .hero-brand-tagline{color:#f1d18a}
+  .portal-meu-litoral .sectit-sub,.portal-meu-litoral .eyebrow{color:var(--portal-gold)}
+  .portal-meu-litoral .dh-nav a{font-family:'Montserrat',Outfit,Arial,sans-serif;color:var(--portal-navy)}
+  .portal-meu-litoral .dh-nav a:hover{color:var(--portal-blue);background:rgba(12,120,164,.1)}
+  .portal-meu-litoral .vpc2-btn,.portal-meu-litoral .dest-ver-btn{background:var(--portal-gold);border-color:var(--portal-gold);color:#fff}
+  .portal-meu-litoral .navq-arrow,.portal-meu-litoral .bcid-go,.portal-meu-litoral .pcred-go{color:var(--portal-blue)}
+  .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
   .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
   .portal-meu-litoral .desk-header .dh-logo img{display:none}
 </style>`;
