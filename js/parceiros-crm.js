@@ -69,13 +69,15 @@
 
   function parcRenderDetail(){
     const site=parcCurrent;const detail=document.getElementById('parc-detail');if(!site||!detail)return;
+    const admin=typeof crmIsAdmin==='function'?crmIsAdmin():String((currentProfile()||{}).role||'')==='admin';
     const publicSlug=publicPartnerSlug(site.slug);
     const landing=`${publicBase()}/corretor/${encodeURIComponent(publicSlug)}`;
     const contact=`${landing}/contato/`;
     const feed=`${publicBase()}/parceiro-feed/${encodeURIComponent(publicSlug)}`;
     const selected=parcRelations.filter((row)=>row.publicado).length;
     const leadCount=parcLeads.length;
-    detail.innerHTML=`<div class="parc-detail-body"><div class="parc-detail-head"><div><h3>${esc(site.nome)}</h3><p>/${esc(site.slug)} · <span class="parc-plan-badge">Plano ${esc(site.plano_slug||'inicial')}</span> · <span class="parc-plan-badge">Leads ${leadCount}</span></p></div><div class="parc-actions"><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(landing)}')">Abrir landing</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Copiar link</button>${site.status==='active'?`<button class="btn bd2b bsm" type="button" onclick="parcSetStatus('suspended')">Pausar</button>`:`<button class="btn bs bsm" type="button" onclick="parcSetStatus('active')">Publicar</button>`}</div></div><div class="parc-url"><input readonly value="${esc(landing)}"><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Landing</button><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(contact)}')">Contato</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(feed)}')">Feed JSON</button></div><div class="parc-section-title">Imóveis publicados (${selected})</div><div class="parc-property-list">${propertyRows()||'<div class="parc-empty">Nenhum imóvel disponível no catálogo atual.</div>'}</div><div class="parc-section-title">Observação</div><p style="font-size:12px;color:var(--t2);line-height:1.55;margin:0">Marque os imóveis autorizados. A landing só ficará acessível quando o site estiver publicado e nunca altera os dados centrais do imóvel.</p></div>`;
+    const statusAction=admin?(site.status==='active'?`<button class="btn bd2b bsm" type="button" onclick="parcSetStatus('suspended')">Pausar</button>`:`<button class="btn bs bsm" type="button" onclick="parcSetStatus('active')">Publicar</button>`):`<span class="parc-plan-badge">Publicação pelo administrador</span>`;
+    detail.innerHTML=`<div class="parc-detail-body"><div class="parc-detail-head"><div><h3>${esc(site.nome)}</h3><p>/${esc(site.slug)} · <span class="parc-plan-badge">Plano ${esc(site.plano_slug||'inicial')}</span> · <span class="parc-plan-badge">Leads ${leadCount}</span></p></div><div class="parc-actions"><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(landing)}')">Abrir landing</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Copiar link</button>${statusAction}</div></div><div class="parc-url"><input readonly value="${esc(landing)}"><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(landing)}')">Landing</button><button class="btn bg bsm" type="button" onclick="parcOpenUrl('${esc(contact)}')">Contato</button><button class="btn bg bsm" type="button" onclick="parcCopy('${esc(feed)}')">Feed JSON</button></div><div class="parc-section-title">Imóveis publicados (${selected})</div><div class="parc-property-list">${propertyRows()||'<div class="parc-empty">Nenhum imóvel disponível no catálogo atual.</div>'}</div><div class="parc-section-title">Observação</div><p style="font-size:12px;color:var(--t2);line-height:1.55;margin:0">Marque os imóveis autorizados. A landing só ficará acessível quando o site estiver publicado e nunca altera os dados centrais do imóvel.</p></div>`;
   }
 
   window.parcToggleProperty=async function(imovelId,checked){
@@ -96,6 +98,7 @@
 
   window.parcSetStatus=async function(status){
     if(!parcCurrent)return;
+    if(typeof crmIsAdmin==='function'&&!crmIsAdmin()){toast('Somente administradores podem publicar ou pausar sites parceiros.','error');return;}
     if(status==='active'&&!parcRelations.some((row)=>row.publicado)){toast('Publique pelo menos um imóvel antes de ativar o site.','info');return;}
     try{await sb.patch('parceiros_sites',parcCurrent.id,{status,updated_at:new Date().toISOString()});toast(status==='active'?'Site publicado.':'Site pausado.','success');await parcLoad();}catch(error){toast('Não foi possível alterar o status: '+(error.message||error),'error');}
   };

@@ -795,9 +795,34 @@ tr:hover td{background:rgba(255,255,255,.015);cursor:pointer}
 </div>
 <script>
 const SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co';
-const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
+const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDA1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 let _authUser = null;
 let _authProfile = null;
+
+// Controle de acesso centralizado: a interface apenas reflete estas regras;
+// a proteção definitiva fica nas políticas RLS do Supabase.
+const CRM_ROLE_LABELS={admin:'Administrador',consultor:'Consultor',visualizador:'Visualizador',parceiro:'Parceiro'};
+const CRM_ROLE_PANELS={
+  admin:['dashboard','condominios','imoveis','proprietarios','clientes','leads','leadsfotos','leadscampanha','negociacoes','agenda','relatorios','editor','capas','carrossel','fotos','lancamentos','destaques','blog','contempladas','admins','usuarios','atividades','parceiros'],
+  consultor:['dashboard','condominios','imoveis','proprietarios','clientes','leads','leadsfotos','leadscampanha','negociacoes','agenda','relatorios','parceiros'],
+  visualizador:['dashboard','condominios','imoveis','relatorios'],
+  parceiro:['dashboard','condominios','imoveis','parceiros']
+};
+function crmRole(){return String((_authProfile||{}).role||'').toLowerCase();}
+function crmIsAdmin(){return crmRole()==='admin';}
+function crmCanPanel(id){return (CRM_ROLE_PANELS[crmRole()]||[]).includes(id);}
+function crmApplyPermissions(){
+  const allowed=new Set(CRM_ROLE_PANELS[crmRole()]||[]);
+  document.querySelectorAll('[data-p]').forEach(el=>{el.hidden=!allowed.has(el.dataset.p);});
+  const railMap={dashboard:'da',condominios:'co',imoveis:'im',proprietarios:'pr',negociacoes:'ne',agenda:'ag',relatorios:'re',usuarios:'usuarios',atividades:'ativ',admins:'admins',contempladas:'cont',blog:'blog',lancamentos:'lanc',destaques:'dest',editor:'ed',fotos:'fotos'};
+  Object.entries(railMap).forEach(([panel,id])=>{const el=document.getElementById('r-'+id);if(el)el.hidden=!allowed.has(panel);});
+  document.querySelectorAll('.mob-more-item').forEach(el=>{const action=el.getAttribute('onclick')||'';const match=action.match(/mobGoMore\('([^']+)'/);if(match)el.hidden=!allowed.has(match[1]);});
+  const mobMap={'mn-da':'dashboard','mn-co':'condominios','mn-im':'imoveis','mn-ld':'leads','mn-pr':'proprietarios'};
+  Object.entries(mobMap).forEach(([id,panel])=>{const el=document.getElementById(id);if(el)el.hidden=!allowed.has(panel);});
+  document.querySelectorAll('.mob-top-actions button').forEach(el=>{el.hidden=crmRole()==='parceiro' && /Imóvel|Condô/.test(el.textContent||'');});
+  document.querySelectorAll('.tbr .tbb').forEach(el=>{el.hidden=crmRole()==='parceiro' && !/Backup|Restaurar/.test(el.textContent);});
+  const footer=document.querySelector('.sfooter>div');if(footer)footer.textContent=CRM_ROLE_LABELS[crmRole()]||'Acesso restrito';
+}
 
 function showLoginView(id){
   document.querySelectorAll('.login-view').forEach(v=>v.style.display='none');
@@ -925,23 +950,10 @@ async function doLogin(){
     const profs = await profResp.json();
     const prof = profs[0];
     if(!prof){
-      // Profile missing - create basic one
-      await fetch(SB_URL+'/rest/v1/usuarios',{
-        method:'POST',
-        headers:{'apikey':SB_ANON,'Authorization':'Bearer '+data.access_token,'Content-Type':'application/json','Prefer':'return=minimal'},
-        body:JSON.stringify({id:data.user.id,nome:data.user.email,email:data.user.email,role:'admin',ativo:true})
-      });
-      const prof2={id:data.user.id,nome:data.user.email,email:data.user.email,role:'admin',ativo:true};
-      _authUser=data.user; _authProfile=prof2;
-      sessionStorage.setItem('cnp_crm_token',data.access_token);
-      if(data.refresh_token) sessionStorage.setItem('cnp_crm_refresh',data.refresh_token);
-      agendarRenovacao();
-      sessionStorage.setItem('cnp_crm_user',JSON.stringify(prof2));
-      document.getElementById('login-screen').style.display='none';
-      updateSidebarUser(prof2);
+      // Nunca elevar um usuário sem perfil para administrador. O perfil deve
+      // ser criado/aprovado pelo fluxo de administração.
+      loginAlert('login-error','Seu usuário ainda não possui um perfil aprovado no CRM. Solicite a liberação ao administrador.');
       btn.disabled=false;btn.textContent='Entrar';
-      // Recarrega com o token autenticado; a primeira tentativa pode ter ocorrido como anônima.
-      await loadAllData();
       return;
     }
     if(!prof.ativo){
@@ -955,6 +967,7 @@ async function doLogin(){
     agendarRenovacao();
     sessionStorage.setItem('cnp_crm_user',JSON.stringify(prof));
     document.getElementById('login-screen').style.display='none';
+    crmApplyPermissions();
     logAtividade('logou',null,null,null);
     updateSidebarUser(prof);
     btn.disabled=false;btn.textContent='Entrar';
@@ -1018,6 +1031,7 @@ function updateSidebarUser(prof){
   if(nameEl) nameEl.textContent=prof.nome||'Usuário';
   if(emailEl) emailEl.textContent=prof.email||'';
   if(avatarEl&&prof.foto) avatarEl.src=prof.foto;
+  crmApplyPermissions();
 }
 
 async function doLogout(){
@@ -1090,6 +1104,7 @@ if(_savedToken && _savedUser){
   try{
     _authProfile = JSON.parse(_savedUser);
     document.getElementById('login-screen').style.display='none';
+    crmApplyPermissions();
     setTimeout(()=>updateSidebarUser(_authProfile),100);
     // renova o token logo ao abrir (se a aba ficou aberta muito tempo, ele pode ter expirado)
     // e reagenda a renovação periódica
@@ -1610,6 +1625,7 @@ if(_savedToken && _savedUser){
           <select class="fse" id="usu-role" aria-label="Usu Role">
             <option value="visualizador">Visualizador</option>
             <option value="consultor">Consultor</option>
+            <option value="parceiro">Parceiro — acesso limitado</option>
             <option value="admin">Administrador</option>
           </select>
         </div>
@@ -1644,6 +1660,7 @@ if(_savedToken && _savedUser){
           <select class="fse" id="nu-role" aria-label="Nu Role">
             <option value="consultor">Consultor</option>
             <option value="visualizador">Visualizador</option>
+            <option value="parceiro">Parceiro — acesso limitado</option>
             <option value="admin">Administrador</option>
           </select>
         </div>
@@ -3364,13 +3381,14 @@ async function loadAllData(){
   try {
     // Cada tabela falha de forma independente: uma indisponibilidade transitória
     // não pode esconder proprietários, imóveis ou condomínios na primeira carga.
+    const parceiro=crmRole()==='parceiro';
     const [co, im, pr, ne, ev, cl] = await Promise.all([
       carregar('condominios', '?order=nome.asc'),
       carregar('imoveis', '?order=created_at.asc'),
-      carregar('proprietarios', '?order=nome.asc'),
-      carregar('negociacoes', '?order=created_at.desc'),
-      carregar('eventos', '?order=data.asc'),
-      carregar('clientes', '?order=created_at.desc', true), // tabela nova — não quebra se ainda não existir
+      parceiro?Promise.resolve([]):carregar('proprietarios', '?order=nome.asc'),
+      parceiro?Promise.resolve([]):carregar('negociacoes', '?order=created_at.desc'),
+      parceiro?Promise.resolve([]):carregar('eventos', '?order=data.asc'),
+      parceiro?Promise.resolve([]):carregar('clientes', '?order=created_at.desc', true), // tabela nova — não quebra se ainda não existir
     ]);
     DB._cache = {
       co: { data: co, ts: Date.now() },
@@ -3454,6 +3472,11 @@ function mobGoMore(id,btn){
   if(more) more.classList.add('on');
 }
 function go(id,btn){
+  if(!crmCanPanel(id)){
+    toast('Seu perfil não tem acesso a este módulo.','error');
+    id='dashboard';
+    btn=document.querySelector('[data-p="dashboard"]')||document.getElementById('r-da');
+  }
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.rb').forEach(b=>b.classList.remove('on'));
@@ -6242,7 +6265,7 @@ async function buildUsuarios(){
       users.forEach(u=>{ const o=document.createElement('option'); o.value=u.id; o.textContent=u.nome; sel.appendChild(o); });
     }
 
-    const roleLabel = {admin:'🔴 Admin', consultor:'🟡 Consultor', visualizador:'🔵 Visualizador'};
+    const roleLabel = {admin:'🔴 Admin', consultor:'🟡 Consultor', visualizador:'🔵 Visualizador', parceiro:'🟣 Parceiro'};
     body.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">' +
     users.map(u=>`
       <div style="background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;display:flex;align-items:center;gap:12px">
