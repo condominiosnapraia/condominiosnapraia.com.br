@@ -821,6 +821,9 @@ function crmApplyPermissions(){
   Object.entries(mobMap).forEach(([id,panel])=>{const el=document.getElementById(id);if(el)el.hidden=!allowed.has(panel);});
   document.querySelectorAll('.mob-top-actions button').forEach(el=>{el.hidden=crmRole()==='parceiro' && /Imóvel|Condô/.test(el.textContent||'');});
   document.querySelectorAll('.tbr .tbb').forEach(el=>{el.hidden=crmRole()==='parceiro' && !/Backup|Restaurar/.test(el.textContent);});
+  if(['parceiro','visualizador'].includes(crmRole())){
+    document.querySelectorAll('#panel-imoveis .phr button,#panel-condominios .phr button').forEach(el=>{el.hidden=true;});
+  }
   const footer=document.querySelector('.sfooter>div');if(footer)footer.textContent=CRM_ROLE_LABELS[crmRole()]||'Acesso restrito';
 }
 
