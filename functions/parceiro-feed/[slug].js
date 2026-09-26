@@ -395,7 +395,21 @@ export async function onRequest(context) {
     const condos = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,slug,nome,cidade,descricao,amenidades,fotos_no_site,fotos,fotos_para_site&limit=1000`, cfg);
     (Array.isArray(condos) ? condos : []).forEach((cond) => { condMap[cond.id] = cond; });
   }
-  const properties = listingRows.map((row) => normalizeListing(row, condMap, publicSlug));
+  let properties = listingRows.map((row) => normalizeListing(row, condMap, publicSlug));
+  // Os destaques globais do CRM são a fonte comum do portal principal e dos
+  // parceiros. O destaque local do parceiro continua válido para imóveis
+  // exclusivos, mas não pode apagar uma escolha global do administrador.
+  const globalConfig = await getJson('configuracoes?chave=in.(destaques_imov,destaques_terreno)&select=chave,valor&limit=10', cfg);
+  const globalIds = new Map();
+  (Array.isArray(globalConfig) ? globalConfig : []).forEach((item) => {
+    let selected = item?.valor;
+    if (typeof selected === 'string') { try { selected = JSON.parse(selected); } catch (_) { selected = []; } }
+    if (!Array.isArray(selected)) selected = [];
+    selected.forEach((id, index) => globalIds.set(String(id), index));
+  });
+  properties = properties.map((property) => globalIds.has(String(property.id))
+    ? { ...property, featured: true, displayOrder: globalIds.get(String(property.id)) }
+    : property);
   const condoStats = {};
   properties.forEach((property) => {
     const c = property.condo;
