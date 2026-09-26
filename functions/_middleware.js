@@ -32,9 +32,20 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral .vpc2-btn,.portal-meu-litoral .dest-ver-btn{background:var(--portal-gold);border-color:var(--portal-gold);color:#fff}
   .portal-meu-litoral .navq-arrow,.portal-meu-litoral .bcid-go,.portal-meu-litoral .pcred-go{color:var(--portal-blue)}
   .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
-  .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
   .portal-meu-litoral .desk-header .dh-logo img{display:none}
 </style>`;
+
+const PORTAL_MEULITORAL_HOME_ORDER = `<script id="portal-meu-litoral-home-order">
+  (function(){
+    function arrangePortalHome(){
+      var home=document.getElementById('view-home');
+      if(!home) return;
+      var order=['qr-sec','qfilter2','pcred-sec-sec','sec-imoveis','sec-fora-cond','sec-condominios','sec-imoveis-semana','sec-apartamentos','sec-terrenos','sec-condominios-verticais','viver-intro-sec','viver-lagoa','viver-mar','viver-cidade','guias-cidades','guias-decisao','sec-blog-preview','lch-sec-sec'];
+      order.forEach(function(id){var section=document.getElementById(id);if(section&&section.parentElement===home)home.appendChild(section);});
+    }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',arrangePortalHome,{once:true});else arrangePortalHome();
+  }());
+</script>`;
 
 function adminNotFound() {
   return new Response('Not Found', {
@@ -102,6 +113,9 @@ export async function onRequest(context) {
       },
     });
   if (isPortalMeuLitoral(url)) applyPortalMeuLitoralBrand(rewriter);
+  if (isPortalMeuLitoral(url) && (path === '/' || path === '/index.html')) {
+    rewriter.on('body', { element(element) { element.append(PORTAL_MEULITORAL_HOME_ORDER, { html: true }); } });
+  }
   if (needsFavorites) {
     rewriter.on('head', {
       element(element) {
