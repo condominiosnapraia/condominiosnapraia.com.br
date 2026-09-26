@@ -14,6 +14,20 @@ const BLOCKED_ADMIN_PATHS = new Set([
   '/teste-fotos', '/teste-fotos.html',
 ]);
 
+const PORTAL_MEULITORAL_HOSTS = new Set([
+  'portalmeulitoral.com.br',
+  'www.portalmeulitoral.com.br',
+]);
+
+const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
+  .portal-meu-litoral{--home-ocean:#0b5368;--home-ink:#123f53;--home-gold:#d1a048}
+  .portal-meu-litoral .hero-brand-name{letter-spacing:-.055em}
+  .portal-meu-litoral .hero-brand-tagline{color:#f5d994}
+  .portal-meu-litoral .desk-header .dh-logo{filter:saturate(.88)}
+  .portal-meu-litoral .desk-header .dh-cta{border-color:rgba(209,160,72,.58)!important}
+  .portal-meu-litoral .page-footer{border-top-color:rgba(209,160,72,.32)}
+</style>`;
+
 function adminNotFound() {
   return new Response('Not Found', {
     status: 404,
@@ -23,6 +37,25 @@ function adminNotFound() {
       'x-robots-tag': 'noindex, nofollow',
     },
   });
+}
+
+function isPortalMeuLitoral(url) {
+  return PORTAL_MEULITORAL_HOSTS.has(url.hostname.toLowerCase());
+}
+
+function applyPortalMeuLitoralBrand(rewriter) {
+  rewriter
+    .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} portal-meu-litoral`.trim()); } })
+    .on('title', { element(element) { element.setInnerContent('Portal Meu Litoral | Imóveis no Litoral Norte Gaúcho'); } })
+    .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Portal Meu Litoral'); } })
+    .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Portal Meu Litoral | Imóveis no Litoral Norte Gaúcho'); } })
+    .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', 'https://portalmeulitoral.com.br/'); } })
+    .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', 'https://portalmeulitoral.com.br/'); } })
+    .on('.hero-brand-name', { element(element) { element.setInnerContent('Portal Meu Litoral'); } })
+    .on('.hero-brand-tagline', { element(element) { element.setInnerContent('Imóveis e oportunidades no Litoral Norte Gaúcho'); } })
+    .on('.ftr-brand-lockup .hero-brand-name', { element(element) { element.setInnerContent('Portal Meu Litoral'); } })
+    .on('.dh-logo', { element(element) { element.setAttribute('aria-label', 'Portal Meu Litoral — início'); } })
+    .on('head', { element(element) { element.append(PORTAL_MEULITORAL_STYLE, { html: true }); } });
 }
 
 export async function onRequest(context) {
@@ -60,6 +93,7 @@ export async function onRequest(context) {
         element.setAttribute('aria-label', 'Falar com um consultor pelo WhatsApp sobre esta oportunidade');
       },
     });
+  if (isPortalMeuLitoral(url)) applyPortalMeuLitoralBrand(rewriter);
   if (needsFavorites) {
     rewriter.on('head', {
       element(element) {
