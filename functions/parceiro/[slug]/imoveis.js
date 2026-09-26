@@ -136,7 +136,7 @@ export async function onRequest(context) {
   const select = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
   const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${select})&order=destaque.desc,ordem.asc&limit=1000`);
   let listingRows = (Array.isArray(rows) ? rows : []).filter((row) => row.imovel && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido');
-  if (dbSlug === 'felipe-ranzolin') {
+  if (site && dbSlug) {
     const generalRows = await getJson(`imoveis?publicar=eq.true&status=neq.Vendido&select=${select}&order=updated_at.desc&limit=1000`);
     listingRows = (Array.isArray(generalRows) ? generalRows : []).filter((imovel) => imovel && imovel.publicar !== false && String(imovel.status || '').toLowerCase() !== 'vendido').map((imovel, index) => ({ id: `catalogo-${imovel.id}`, ordem: index, destaque: false, titulo_personalizado: '', chamada_personalizada: '', imovel }));
   }

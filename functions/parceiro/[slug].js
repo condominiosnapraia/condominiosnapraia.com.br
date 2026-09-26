@@ -403,9 +403,13 @@ export async function onRequest(context) {
   const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${site.id}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,updated_at,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,bairro_end,fora_condominio,cond_id,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,corretor,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar,created_at)&order=destaque.desc,ordem.asc&limit=1000`, cfg);
   const listingRows = (Array.isArray(rows) ? rows : []).filter((row) => row.imovel && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido');
   let sourceRows = listingRows;
-  if (dbSlug === 'felipe-ranzolin') {
-    const generalRows = await getJson('imoveis?publicar=eq.true&status=neq.Vendido&select=id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,bairro_end,fora_condominio,cond_id,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,corretor,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar,created_at&order=updated_at.desc&limit=1000', cfg);
-    sourceRows = (Array.isArray(generalRows) ? generalRows : []).map((imovel, index) => ({ id: `catalogo-${imovel.id}`, ordem: index, destaque: false, titulo_personalizado: '', chamada_personalizada: '', updated_at: null, imovel }));
+  if (site && dbSlug) {
+    const generalRows = await getJson('imoveis?publicar=eq.true&status=neq.Vendido&select=id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,bairro_end,fora_condominio,cond_id,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,corretor,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar,created_at,updated_at&order=updated_at.desc&limit=1000', cfg);
+    const assignedIds = new Set(sourceRows.map((row) => row.imovel?.id).filter(Boolean));
+    const fallbackRows = (Array.isArray(generalRows) ? generalRows : [])
+      .filter((imovel) => !assignedIds.has(imovel.id))
+      .map((imovel, index) => ({ id: `catalogo-${imovel.id}`, ordem: 100000 + index, destaque: false, titulo_personalizado: '', chamada_personalizada: '', updated_at: imovel.updated_at || null, imovel }));
+    sourceRows = [...sourceRows, ...fallbackRows];
   }
   const condIds = [...new Set(sourceRows.map((row) => row.imovel?.cond_id).filter(Boolean))];
   const condMap = {};

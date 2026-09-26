@@ -156,7 +156,7 @@ export async function onRequest(context) {
   if (!site) return new Response('Corretor não encontrado', { status: 404 });
 
   let rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=imovel:imoveis(cond_id,status,publicar)&limit=1000`, cfg);
-  if (dbSlug === 'felipe-ranzolin') {
+  if (site && dbSlug) {
     const generalRows = await getJson('imoveis?publicar=eq.true&status=neq.Vendido&select=cond_id,status,publicar&limit=5000', cfg);
     rows = (Array.isArray(generalRows) ? generalRows : []).map((imovel) => ({ imovel }));
   }
