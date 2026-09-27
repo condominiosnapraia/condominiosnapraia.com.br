@@ -164,8 +164,8 @@ function layout({ site, properties, slug, requestPath, topCondos }) {
   const wpp = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
   const accent = /^#[0-9a-f]{6}$/i.test(site.accent_color || '') ? site.accent_color : '#d5aa57';
   const brand = /^#[0-9a-f]{6}$/i.test(site.brand_color || '') ? site.brand_color : '#0d5c86';
-  const cover = site.capa_url || `${BASE}/img/parceiro-capa-desktop.jpg`;
-  const mobileCover = `${BASE}/img/parceiro-capa-mobile.jpg`;
+  const cover = isAlisson ? `${BASE}/img/branding/atlantida-negocios-hero.jpg` : (site.capa_url || `${BASE}/img/parceiro-capa-desktop.jpg`);
+  const mobileCover = isAlisson ? `${BASE}/img/branding/atlantida-negocios-hero.jpg` : `${BASE}/img/parceiro-capa-mobile.jpg`;
   const profileImage = isRodrigo ? `${BASE}/img/corretores/rodrigo-carvalho-perfil.jpeg` : (site.logo_url || '');
   const heroStyle = cover ? ` style="background-image:url('${esc(cover)}');--partner-cover-desktop:url('${esc(cover)}');--partner-cover-mobile:url('${esc(mobileCover)}')"` : '';
   const segment = requestPath.startsWith('/corretor/') ? 'corretor' : 'parceiro';
@@ -362,6 +362,11 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 
 <style id="partner-hero-photo-visible">
 .partner-hero:after{display:none!important}
+</style>
+<style id="partner-navigation-centered">
+.category-nav-heading{align-items:center!important;text-align:center!important}.category-nav-heading .eyebrow{display:block;text-align:center}.category-nav-heading strong{display:block;text-align:center}.category-nav-links{justify-content:center!important}
+@media(max-width:760px){.category-nav{width:100%;margin-left:auto!important;margin-right:auto!important;text-align:center!important}.category-nav-links{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px!important;overflow:visible!important;width:100%;align-items:stretch}.category-nav-links .category-chip{min-width:0!important;width:100%;min-height:78px;padding:10px 8px!important;grid-template-columns:26px 1fr;column-gap:7px}.category-nav-links .category-chip>span{width:26px;height:26px;font-size:14px}.category-nav-links .category-chip strong{font-size:11px;line-height:1.12;text-align:left}.category-nav-links .category-chip small{font-size:9px;text-align:left}}
+@media(max-width:380px){.category-nav-links{gap:8px!important}.category-nav-links .category-chip{padding-left:6px!important;padding-right:6px!important}.category-nav-links .category-chip strong{font-size:10px}}
 </style>
 </head>
 <body>
