@@ -54,8 +54,8 @@ const PORTAL_MEULITORAL_HOME_ORDER = `<script id="portal-meu-litoral-home-order"
     function arrangePortalHome(){
       var home=document.getElementById('view-home');
       if(!home) return;
-      ['qr-sec','pcred-sec-sec','sec-blog-preview'].forEach(function(id){var section=document.getElementById(id);if(section&&section.parentElement===home)section.remove();});
-      var order=['qr-sec','qfilter2','pcred-sec-sec','sec-imoveis','sec-fora-cond','sec-condominios','sec-imoveis-semana','sec-apartamentos','sec-terrenos','sec-condominios-verticais','viver-intro-sec','viver-lagoa','viver-mar','viver-cidade','guias-cidades','guias-decisao','sec-blog-preview','lch-sec-sec'];
+      ['qr-sec','pcred-sec-sec','sec-blog-preview','viver-intro-sec','viver-lagoa','viver-mar','viver-cidade','guias-cidades','guias-decisao'].forEach(function(id){var section=document.getElementById(id);if(section&&section.parentElement===home)section.remove();});
+      var order=['qfilter2','sec-apartamentos','sec-imoveis','sec-fora-cond','sec-terrenos','sec-condominios','sec-condominios-verticais','sec-imoveis-semana','lch-sec-sec'];
       order.forEach(function(id){var section=document.getElementById(id);if(section&&section.parentElement===home)home.appendChild(section);});
     }
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',arrangePortalHome,{once:true});else arrangePortalHome();
