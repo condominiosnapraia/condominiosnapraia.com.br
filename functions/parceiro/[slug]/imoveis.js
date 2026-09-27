@@ -18,7 +18,7 @@ const CITY_LABELS = Object.freeze({ 'xangri la': 'Xangri-Lá', 'capao da canoa':
 function cityLabel(value) { const clean = String(value || '').trim().replace(/\s+/g, ' '); return CITY_LABELS[cityKey(clean)] || clean; }
 function slugify(value) { return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-'); }
 function propertySlug(imovel) { const stored = String(imovel?.slug || '').trim().replace(/^\/+|\/+$/g, ''); if (stored) return stored; const base = slugify(imovel?.titulo || imovel?.tipo || 'imovel'); const code = slugify(imovel?.codigo || imovel?.ref || ''); return code && !base.endsWith(code) ? `${base}-${code}` : base || slugify(imovel?.id) || 'imovel'; }
-function propertyUrl(siteSlug, imovel) { return `${BASE}/corretor/${encodeURIComponent(siteSlug)}/imovel/${encodeURIComponent(propertySlug(imovel))}/`; }
+function propertyUrl(siteSlug, imovel, publicBase = BASE, publicPrefix = '') { const prefix = publicPrefix || `/corretor/${encodeURIComponent(siteSlug)}`; return `${publicBase}${prefix}/imovel/${encodeURIComponent(propertySlug(imovel))}/`; }
 function toArray(value) { if (Array.isArray(value)) return value; if (typeof value === 'string') { try { return JSON.parse(value); } catch (_) { return value ? [value] : []; } } return []; }
 function firstPhoto(imovel) { const list = [...toArray(imovel?.fotos_no_site), ...toArray(imovel?.fotos), ...toArray(imovel?.fotos_para_site)]; for (const item of list) { const url = typeof item === 'string' ? item : item?.url || item?.src || item?.publicUrl || item?.public_url; if (url && /^https?:\/\//i.test(url)) return url; } return ''; }
 function money(value) { if (value === null || value === undefined || value === '') return 'Consulte o valor'; if (typeof value === 'string' && /r\$|€|\$/i.test(value)) return value; const normalized = String(value).replace(/[^0-9,.-]/g, '').replace(/\.(?=\d{3}(?:\D|$))/g, '').replace(',', '.'); const number = Number(normalized); return Number.isFinite(number) && number > 0 ? number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'Consulte o valor'; }
@@ -56,14 +56,14 @@ async function getPublicFeedProperties(siteSlug) {
     });
   } catch (_) { return []; }
 }
-function normalizeListing(row, condMap, siteSlug) { const imovel = row.imovel || {}; const cond = imovel.cond_id ? condMap[imovel.cond_id] || null : null; const city = imovel.cidade_end || imovel.cidade || cond?.cidade || 'Rio Grande do Sul'; return { id: imovel.id || row.imovel_id, slug: propertySlug(imovel), url: propertyUrl(siteSlug, imovel), title: row.titulo_personalizado || imovel.titulo || 'Imóvel disponível', description: row.chamada_personalizada || imovel.descricao || '', type: imovel.tipo || 'Imóvel', category: categoryFor(imovel), city, neighborhood: imovel.bairro_end || imovel.bairro || '', price: imovel.preco, bedrooms: imovel.quartos, suites: imovel.suites, bathrooms: imovel.banheiros, parking: imovel.vagas, area: imovel.area || imovel.area_privativa || imovel.area_construida, photo: firstPhoto(imovel), featured: Boolean(row.destaque), status: String(imovel.status || '').trim().toLowerCase(), code: imovel.codigo || imovel.ref || '', condo: cond ? { id: cond.id, name: cond.nome || '', city: cond.cidade || '' } : null }; }
+function normalizeListing(row, condMap, siteSlug, publicBase = BASE, publicPrefix = '') { const imovel = row.imovel || {}; const cond = imovel.cond_id ? condMap[imovel.cond_id] || null : null; const city = imovel.cidade_end || imovel.cidade || cond?.cidade || 'Rio Grande do Sul'; return { id: imovel.id || row.imovel_id, slug: propertySlug(imovel), url: propertyUrl(siteSlug, imovel, publicBase, publicPrefix), title: row.titulo_personalizado || imovel.titulo || 'Imóvel disponível', description: row.chamada_personalizada || imovel.descricao || '', type: imovel.tipo || 'Imóvel', category: categoryFor(imovel), city, neighborhood: imovel.bairro_end || imovel.bairro || '', price: imovel.preco, bedrooms: imovel.quartos, suites: imovel.suites, bathrooms: imovel.banheiros, parking: imovel.vagas, area: imovel.area || imovel.area_privativa || imovel.area_construida, photo: firstPhoto(imovel), featured: Boolean(row.destaque), status: String(imovel.status || '').trim().toLowerCase(), code: imovel.codigo || imovel.ref || '', condo: cond ? { id: cond.id, name: cond.nome || '', city: cond.cidade || '' } : null }; }
 function badgeLabel(p) { const s = String(p?.status || '').toLowerCase(); if (/reserv/.test(s)) return 'Reservado'; if (/vend/.test(s)) return 'Vendido'; return p?.featured ? 'Destaque' : 'Disponível'; }
 function clientCardMarkup(property) { const location = [property.neighborhood, property.city].filter(Boolean).join(' · '); const details = [property.bedrooms && `${property.bedrooms} quartos`, property.suites && `${property.suites} suítes`, property.area && `${property.area} m²`].filter(Boolean).join(' · '); return `<article class="listing-card"><a class="listing-photo-link" href="${esc(property.url)}" aria-label="Ver ${esc(property.title)}"><div class="listing-photo">${property.photo ? `<img src="${esc(property.photo)}" alt="${esc(property.title)}" loading="lazy" decoding="async">` : '<div class="listing-photo-empty">Imagem em atualização</div>'}<span class="listing-status">${badgeLabel(property)}</span></div></a><div class="listing-body"><span class="listing-type">${esc(property.type)}</span><h2><a href="${esc(property.url)}">${esc(property.title)}</a></h2><p class="listing-location">${esc(location || 'Rio Grande do Sul')}</p>${details ? `<p class="listing-details">${esc(details)}</p>` : ''}${property.code ? `<p class="listing-code">Código ${esc(property.code)}</p>` : ''}${property.cond?.name ? `<p class="listing-condo">${esc(property.cond.name)}</p>` : ''}<strong>${esc(money(property.price))}</strong><a class="listing-button" href="${esc(property.url)}">Ver imóvel</a></div></article>`; }
-function page({ site, properties, slug }) {
+function page({ site, properties, slug, publicBase = BASE, publicPrefix = '' }) {
   const name = site.nome || 'Corretor parceiro';
   const phone = digits(site.whatsapp || site.telefone);
   const wpp = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
-  const landingUrl = `${BASE}/corretor/${encodeURIComponent(slug)}/`;
+  const landingUrl = `${publicBase}${publicPrefix || `/corretor/${encodeURIComponent(slug)}`}/`;
   const contactUrl = `${landingUrl}contato/`;
   const canonical = `${landingUrl}imoveis/`;
   const cityMap = new Map(); properties.forEach((property) => { const raw = String(property.city || '').trim(); const key = cityKey(raw); if (raw && key !== cityKey('Rio Grande do Sul') && !cityMap.has(key)) cityMap.set(key, cityLabel(raw)); });
@@ -130,6 +130,9 @@ export async function onRequest(context) {
   const requested = String(context.params?.slug || '').toLowerCase();
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requested)) return new Response('Not Found', { status: 404 });
   const { dbSlug, publicSlug } = siteSlugInfo(requested);
+  const requestUrl = new URL(context.request.url);
+  const publicBase = requestUrl.origin;
+  const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><h1>Site ainda não publicado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
@@ -143,7 +146,7 @@ export async function onRequest(context) {
   const condIds = [...new Set(listingRows.map((row) => row.imovel?.cond_id).filter(Boolean))];
   const condMap = {};
   if (condIds.length) { const condos = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,nome,cidade&limit=1000`); (Array.isArray(condos) ? condos : []).forEach((cond) => { condMap[cond.id] = cond; }); }
-  let properties = listingRows.map((row) => normalizeListing(row, condMap, publicSlug));
+  let properties = listingRows.map((row) => normalizeListing(row, condMap, publicSlug, publicBase, publicPrefix));
   if (!properties.length) properties = await getPublicFeedProperties(publicSlug);
-  return new Response(page({ site, properties, slug: publicSlug }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+  return new Response(page({ site, properties, slug: publicSlug, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
