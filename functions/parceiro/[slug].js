@@ -383,6 +383,10 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 .category-nav-heading{margin-bottom:22px!important;padding-bottom:2px}.category-nav-links{padding-top:4px!important}
 @media(max-width:760px){.category-nav-heading{margin-bottom:20px!important;padding-bottom:3px}.category-nav-links{row-gap:12px!important;padding-top:4px!important}}
 </style>
+<style id="alisson-contact-premium">
+.contact-profile{align-items:center!important;gap:18px!important;margin-bottom:28px!important;padding:14px 16px;border:1px solid rgba(229,184,120,.24);border-radius:18px;background:linear-gradient(120deg,rgba(255,255,255,.09),rgba(255,255,255,.035));box-shadow:0 14px 30px rgba(0,0,0,.12)}.contact-profile .profile-photo{flex:0 0 112px!important;width:112px!important;height:142px!important;border-radius:18px!important;object-fit:cover!important;object-position:center 18%!important;border:2px solid rgba(229,184,120,.9)!important;box-shadow:0 14px 28px rgba(0,0,0,.24)!important}.contact-profile strong{font-size:22px!important;line-height:1.08!important}.contact-profile small{font-size:11px!important;line-height:1.45!important}.contact-form{border-radius:20px!important;background:rgba(255,255,255,.12)!important;box-shadow:0 20px 46px rgba(0,0,0,.18)!important;padding:28px!important}.contact-form input,.contact-form textarea{border-radius:11px!important;background:rgba(255,255,255,.96)!important}.contact-form .form-submit{border-radius:11px!important;min-height:50px!important}
+@media(max-width:800px){.contact-profile{padding:12px!important;gap:14px!important}.contact-profile .profile-photo{flex-basis:92px!important;width:92px!important;height:118px!important;border-radius:15px!important}.contact-profile strong{font-size:19px!important}.contact-form{padding:20px 16px!important;border-radius:17px!important}}
+</style>
 </head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
