@@ -29,6 +29,7 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral .sectit-sub,.portal-meu-litoral .eyebrow{color:var(--portal-gold)}
   .portal-meu-litoral .dh-nav a{font-family:'Montserrat',Outfit,Arial,sans-serif;color:var(--portal-navy)}
   .portal-meu-litoral .dh-nav a:hover{color:var(--portal-blue);background:rgba(12,120,164,.1)}
+  @media(min-width:981px){.portal-meu-litoral .desk-header-inner{justify-content:center;position:relative}.portal-meu-litoral .desk-header .dh-logo{display:none!important}.portal-meu-litoral .desk-header .dh-nav{flex:0 1 auto}.portal-meu-litoral .desk-header .dh-cta{position:absolute;right:24px}.portal-meu-litoral .page-footer .ftr-col-brand .ftr-brand-lockup{align-items:center;margin-left:auto;margin-right:auto;text-align:center}}
   .portal-meu-litoral .vpc2-btn,.portal-meu-litoral .dest-ver-btn{background:var(--portal-gold);border-color:var(--portal-gold);color:#fff}
   .portal-meu-litoral .navq-arrow,.portal-meu-litoral .bcid-go,.portal-meu-litoral .pcred-go{color:var(--portal-blue)}
   .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
@@ -44,7 +45,8 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral #view-home .qfilter-lbl{font-size:24px!important;line-height:1.12}
   .portal-meu-litoral #view-home .qfilter-lbl{font-family:'Cormorant Garamond',Fraunces,Georgia,serif;font-weight:500!important;letter-spacing:.01em;text-shadow:0 2px 6px rgba(0,0,0,.82),0 1px 16px rgba(0,0,0,.5)}
   .portal-meu-litoral #view-home .qfilter-go{font-family:'Montserrat',Outfit,Arial,sans-serif;font-size:15px!important;font-weight:500!important;letter-spacing:.02em}
-  .portal-meu-litoral #view-home .qfilter-body{text-align:center!important}
+  .portal-meu-litoral #view-home .qfilter-eyebrow,.portal-meu-litoral #view-home .qfilter-title,.portal-meu-litoral #view-home .qfilter-body{text-align:center!important}
+  .portal-meu-litoral #view-home .qfilter-lbl{display:block;width:100%;text-align:center!important}
   .portal-meu-litoral #view-home .qfilter-go{margin-left:auto;margin-right:auto}
   .portal-meu-litoral #view-home .lch-tag{display:none!important}
   @media(max-width:768px){.portal-meu-litoral #view-home .hero{background-position:center 58%;background-size:cover}.portal-meu-litoral #view-home .qfilter-lbl{font-size:20px!important}.portal-meu-litoral #view-home .qfilter-go{font-size:13.5px!important}}
