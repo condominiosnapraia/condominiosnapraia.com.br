@@ -187,7 +187,17 @@ export async function onRequest(context) {
     const forwarded = new Request(target, request);
     const headers = new Headers(forwarded.headers);
     headers.set('x-public-partner-prefix', alissonAlias);
-    return fetch(new Request(target, { method: forwarded.method, headers }));
+    const response = await fetch(new Request(target, { method: forwarded.method, headers }));
+    const internalPrefix = 'https://condominiosnapraia.com.br/corretor/alisson-portella';
+    const publicPrefix = `${url.origin}${alissonAlias}`;
+    const mobileStyle = `<style id="atlantida-partner-mobile-parity">.mob-footer-btn,.mobile-dock a{background:rgba(13,59,84,.08)!important;color:#0c4a6e!important;border:1px solid rgba(13,59,84,.14)!important}.mob-footer-btn:nth-child(1),.mobile-dock a:first-child{background:#f4bf61!important;color:#173743!important;border-color:#f4bf61!important}.mob-footer-btn:nth-child(2),.mobile-dock a:nth-child(2){background:#1fb5c4!important;color:#fff!important;border-color:#1fb5c4!important}.mob-footer-btn:nth-child(3),.mobile-dock a:nth-child(3){background:#0e7490!important;color:#fff!important;border-color:#0e7490!important}.mob-footer-btn:nth-child(4),.mobile-dock a:nth-child(4){background:#0d3b54!important;color:#fff!important;border-color:#0d3b54!important}.mob-footer-btn.wpp-btn,.mobile-dock a:nth-child(5){background:#25d366!important;color:#fff!important;border-color:#25d366!important}</style>`;
+    return new HTMLRewriter()
+      .on('a', { element(element) { const href = element.getAttribute('href'); if (href && href.startsWith(internalPrefix)) element.setAttribute('href', `${publicPrefix}${href.slice(internalPrefix.length)}`); } })
+      .on('link[rel="canonical"]', { element(element) { const href = element.getAttribute('href'); if (href && href.startsWith(internalPrefix)) element.setAttribute('href', `${publicPrefix}${href.slice(internalPrefix.length)}`); } })
+      .on('meta[property="og:url"]', { element(element) { const content = element.getAttribute('content'); if (content && content.startsWith(internalPrefix)) element.setAttribute('content', `${publicPrefix}${content.slice(internalPrefix.length)}`); } })
+      .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | Alisson Portella'); } })
+      .on('head', { element(element) { element.append(mobileStyle, { html: true }); } })
+      .transform(response);
   }
   if (isAtlantidaNegocios(url) && new Set(['/alison-portela', '/alison-portela/', '/alisson-portela', '/alisson-portela/', '/alisson-portella', '/alisson-portella/']).has(path)) {
     const target = new URL('/corretor/alisson-portella/', url);
