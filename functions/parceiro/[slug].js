@@ -13,7 +13,7 @@ const LAUNCH_SEEDS = [
   ['Mônaco Grand Marina','Maquiné','/monaco-grand-marina-maquine/','monaco'],
   ['Vientos Resort','Xangri-lá','/vientos-resort-xangri-la/','vientos'],
   ['Condomínio Alegro','Curumim · Capão da Canoa','/condominio-alegro-curumim/','alegro']
-].map(([titulo, cidade, url, foto]) => ({ titulo, cidade, url, foto: `/img/mapas/${foto}-mapa.webp`, resumo: 'Novo empreendimento no Litoral Norte.' }));
+].map(([titulo, cidade, url, foto]) => ({ titulo, cidade, url, foto: '/img/hero-lancamentos.jpg', resumo: 'Novo empreendimento no Litoral Norte.' }));
 function sbConfig(env) {
   const url = (env && env.SB_URL) || SB_URL_FALLBACK;
   const key = (env && env.SB_ANON) || SB_ANON_FALLBACK;
@@ -213,7 +213,8 @@ function layout({ site, properties, slug, requestPath, topCondos, verticalCondos
   };
   const launchCard = (item) => {
     const href = String(item.url || '').startsWith('http') ? item.url : `${publicBase}/${String(item.url || '').replace(/^\/+/, '')}`;
-    const photo = item.foto || item.imagem || '';
+    const candidatePhoto = item.foto || item.imagem || '';
+    const photo = /mapa|mapas/i.test(String(candidatePhoto)) ? '/img/hero-lancamentos.jpg' : candidatePhoto;
     return `<a class="condo-card launch-card" href="${esc(href)}"><div class="condo-photo">${photo ? `<img src="${esc(photo)}" alt="${esc(item.titulo || 'Lançamento')}" loading="lazy" decoding="async">` : '<div class="condo-photo-empty">Imagem em atualização</div>'}<span class="condo-count">Lançamento</span></div><div class="condo-body"><p class="condo-city">${esc(item.cidade || '')}</p><h3>${esc(item.titulo || 'Novo lançamento')}</h3><p class="condo-amenities">${esc(item.resumo || '')}</p><p class="section-more-btn">Ver oportunidade →</p></div></a>`;
   };
   const condosSection = (!isAlisson && topCondos && topCondos.length) ? `<section class="condos-section" id="condominios"><div class="section-head"><div><span class="eyebrow">🏛 Empreendimentos</span><h2>Condomínios<small>Os mais procurados da carteira</small></h2></div></div><div class="condos-grid">${topCondos.map(condoCard).join('')}</div><div class="section-more"><a class="section-more-btn" href="${condosUrl}">Ver todos os condomínios<span aria-hidden="true">→</span></a></div></section>` : '';
@@ -418,6 +419,9 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 /* Onda Atlântida entre a capa e o conteúdo. */
 .alisson-hero-wave{position:relative!important;overflow:visible!important;margin-bottom:42px!important;z-index:2;background-position:center 56%!important;background-size:cover!important}.alisson-hero-wave::after{content:"";position:absolute;z-index:3;left:0;right:0;bottom:-42px;height:84px;background:#f7f1e8;pointer-events:none;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 H1440 V46 C1325 2 1200 -4 1090 44 C970 102 850 98 720 50 C590 4 470 -2 350 46 C230 100 110 96 0 48 Z' fill='black'/%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 H1440 V46 C1325 2 1200 -4 1090 44 C970 102 850 98 720 50 C590 4 470 -2 350 46 C230 100 110 96 0 48 Z' fill='black'/%3E%3C/svg%3E") center/100% 100% no-repeat}
 @media(max-width:760px){.alisson-hero-wave{margin-bottom:28px!important;background-position:center 58%!important}.alisson-hero-wave::after{bottom:-28px;height:56px}}
+#sec-lancamentos .launch-card .condo-photo{background:#e8f0ee}
+#sec-lancamentos .launch-card .condo-body{min-height:138px}
+@media(max-width:760px){#sec-lancamentos .condos-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#sec-lancamentos .launch-card{border-radius:14px}#sec-lancamentos .launch-card .condo-photo{aspect-ratio:1.18}#sec-lancamentos .launch-card .condo-count{right:7px;bottom:7px;padding:4px 7px;font-size:9px}#sec-lancamentos .launch-card .condo-body{min-height:126px;padding:11px 10px;gap:4px}#sec-lancamentos .launch-card .condo-body h3{font-size:15px;line-height:1.12}#sec-lancamentos .launch-card .condo-city{font-size:10px}#sec-lancamentos .launch-card .condo-amenities{font-size:10px;line-height:1.25}#sec-lancamentos .launch-card .section-more-btn{font-size:10px;margin-top:auto}}
 </style></head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
