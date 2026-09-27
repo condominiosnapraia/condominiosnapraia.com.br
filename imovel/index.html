@@ -659,9 +659,14 @@ details[open] .dec-faq-q:after{content:"−"}
 .ip-simcard:hover{transform:translateY(-4px)}
 .ip-simcard-img{height:200px;background:var(--sl);display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden}
 .ip-simcard-img img{width:100%;height:100%;object-fit:cover}
-.ip-simcard-b{padding:14px}
-.ip-simcard-t{font-family:'Fraunces',serif;font-size:15px;color:var(--ocean);font-weight:600;line-height:1.25;margin:4px 0}
-.ip-simcard-p{font-family:'Fraunces',serif;font-size:16px;color:var(--ocean);font-weight:600;margin-top:4px}
+.ip-simcard-b{padding:16px;display:flex;flex-direction:column;min-height:154px}
+.ip-simcard-t{font-family:'Fraunces',serif;font-size:17px;color:var(--ocean);font-weight:600;line-height:1.25;margin:4px 0 7px}
+.ip-simcard-meta{font-size:12px;color:var(--tm);line-height:1.35;min-height:16px}
+.ip-simcard-info{font-size:12px;color:var(--tm);line-height:1.4;min-height:17px}
+.ip-simcard-code{font-size:10px;color:var(--tm);letter-spacing:.04em;margin-top:7px}
+.ip-simcard-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:auto;padding-top:10px}
+.ip-simcard-p{font-family:'Fraunces',serif;font-size:17px;color:var(--ocean);font-weight:600}
+.ip-simcard-link{font-size:11px;color:var(--om);font-weight:700;white-space:nowrap}
 /* lightbox */
 .ip-lb{position:fixed;inset:0;background:rgba(6,22,34,.95);z-index:9999;display:none;align-items:center;justify-content:center}
 .ip-lb.on{display:flex}
@@ -1085,7 +1090,7 @@ const DYN_IMOV_SELECT = [
 
 const DYN_SIM_SELECT = [
   'id','slug','codigo','titulo','cond_id','status','publicar','tipo','preco',
-  'quartos','suites','fotos_no_site'
+  'quartos','suites','area','area_privativa','area_construida','cidade_end','bairro_end','fora_condominio','fotos_no_site'
 ].join(',');
 
 const DYN_COND_SELECT = [
@@ -1596,7 +1601,13 @@ async function carregarSimilares(im,cond){
   el.innerHTML='<div class="ip-sec-h">Imóveis semelhantes</div><div class="ip-sim-grid">'+lista.map(function(x){
     const f=fotosValidas(x.fotos_no_site||x.fotos);
     const img=f.length?dynFotoTag(f[0],x.titulo||'',{sizes:'(max-width: 700px) 90vw, 320px',width:640,height:420}):'🏠';
-    return '<a class="ip-simcard" href="'+urlPublicaImovel(x)+'"><div class="ip-simcard-img">'+img+'</div><div class="ip-simcard-b"><div class="ip-eyebrow">'+(x.tipo||'Imóvel')+'</div><div class="ip-simcard-t">'+(x.titulo||'—')+'</div><div class="ip-simcard-p">'+brl(x.preco)+'</div></div></a>';
+    const local=[x.bairro_end,x.cidade_end].filter(Boolean).join(' · ');
+    const area=x.area||x.area_privativa||x.area_construida;
+    const info=[x.quartos&&x.quartos+' quartos',x.suites&&x.suites+' suítes',area&&area+' m²'].filter(Boolean).join(' · ');
+    const tipo=x.tipo||'Imóvel';
+    const regime=x.fora_condominio?'Fora de condomínio':'Em condomínio';
+    const codigo=x.codigo?'Código '+x.codigo:'';
+    return '<a class="ip-simcard" href="'+urlPublicaImovel(x)+'"><div class="ip-simcard-img">'+img+'</div><div class="ip-simcard-b"><div class="ip-eyebrow">'+dynEsc(tipo)+' · '+regime+'</div><div class="ip-simcard-t">'+dynEsc(x.titulo||'—')+'</div><div class="ip-simcard-meta">'+dynEsc(local||'Litoral Norte Gaúcho')+'</div><div class="ip-simcard-info">'+dynEsc(info||'Consulte características')+'</div>'+(codigo?'<div class="ip-simcard-code">'+dynEsc(codigo)+'</div>':'')+'<div class="ip-simcard-foot"><div class="ip-simcard-p">'+brl(x.preco)+'</div><span class="ip-simcard-link">Ver imóvel →</span></div></div></a>';
   }).join('')+'</div>';
   el.style.display='block';
 }
