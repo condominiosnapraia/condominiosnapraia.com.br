@@ -19,6 +19,11 @@ const PORTAL_MEULITORAL_HOSTS = new Set([
   'www.portalmeulitoral.com.br',
 ]);
 
+const ATLANTIDA_NEGOCIOS_HOSTS = new Set([
+  'atlantidanegocios.com.br',
+  'www.atlantidanegocios.com.br',
+]);
+
 const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
   .portal-meu-litoral{--portal-navy:#071d49;--portal-blue:#0c78a4;--portal-gold:#b8872e;--portal-sand:#fbf8f0;font-family:'Montserrat',Outfit,Arial,sans-serif}
@@ -68,6 +73,19 @@ const PORTAL_MEULITORAL_HOME_ORDER = `<script id="portal-meu-litoral-home-order"
   }());
 </script>`;
 
+const ATLANTIDA_NEGOCIOS_STYLE = `<style id="atlantida-negocios-theme">
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+  .atlantida-negocios{--atl-navy:#25313a;--atl-gold:#b58b45;font-family:'Montserrat',Outfit,Arial,sans-serif}
+  .atlantida-negocios .desk-header .dh-logo{width:220px;height:54px;background:url('/assets/atlantida-negocios-logo-crop.png') center/contain no-repeat;background-color:#fff;border-radius:8px}
+  .atlantida-negocios .desk-header .dh-logo img{display:none}
+  .atlantida-negocios #view-home .hero-brand-lockup{background:rgba(255,255,255,.94);border-radius:18px;padding:18px 28px 16px;box-shadow:0 12px 32px rgba(0,0,0,.18);width:min(520px,calc(100vw - 34px));height:154px;box-sizing:border-box;background-image:url('/assets/atlantida-negocios-logo-crop.png');background-repeat:no-repeat;background-position:center;background-size:contain}
+  .atlantida-negocios #view-home .hero-brand-lockup>*{visibility:hidden}
+  .atlantida-negocios .page-footer .ftr-brand-lockup{background:#fff;border-radius:10px;padding:12px 18px;width:250px;box-sizing:border-box;background-image:url('/assets/atlantida-negocios-logo-crop.png');background-repeat:no-repeat;background-position:center;background-size:contain;min-height:88px}
+  .atlantida-negocios .page-footer .ftr-brand-lockup>*{visibility:hidden}
+  .atlantida-negocios .sectit-sub,.atlantida-negocios .eyebrow{color:var(--atl-gold)}
+  @media(max-width:600px){.atlantida-negocios #view-home .hero-brand-lockup{height:112px;padding:12px 18px}.atlantida-negocios .page-footer .ftr-brand-lockup{width:220px;min-height:76px}}
+</style>`;
+
 function adminNotFound() {
   return new Response('Not Found', {
     status: 404,
@@ -81,6 +99,10 @@ function adminNotFound() {
 
 function isPortalMeuLitoral(url) {
   return PORTAL_MEULITORAL_HOSTS.has(url.hostname.toLowerCase());
+}
+
+function isAtlantidaNegocios(url) {
+  return ATLANTIDA_NEGOCIOS_HOSTS.has(url.hostname.toLowerCase());
 }
 
 function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
@@ -97,6 +119,22 @@ function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
     .on('.ftr-brand-lockup .hero-brand-name', { element(element) { element.setInnerContent('Portal Meu Litoral'); } })
     .on('.dh-logo', { element(element) { element.setAttribute('aria-label', 'Portal Meu Litoral — início'); } })
     .on('head', { element(element) { element.append(PORTAL_MEULITORAL_STYLE, { html: true }); } });
+}
+
+function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
+  const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
+  rewriter
+    .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} atlantida-negocios`.trim()); } })
+    .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | Imóveis no Litoral Norte'); } })
+    .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Atlântida Negócios'); } })
+    .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Atlântida Negócios | Imóveis no Litoral Norte'); } })
+    .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', canonicalUrl); } })
+    .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', canonicalUrl); } })
+    .on('.hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
+    .on('.hero-brand-tagline', { element(element) { element.setInnerContent('Imóveis e oportunidades no Litoral Norte'); } })
+    .on('.ftr-brand-lockup .hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
+    .on('.dh-logo', { element(element) { element.setAttribute('aria-label', 'Atlântida Negócios — início'); } })
+    .on('head', { element(element) { element.append(ATLANTIDA_NEGOCIOS_STYLE, { html: true }); } });
 }
 
 export async function onRequest(context) {
@@ -137,6 +175,10 @@ export async function onRequest(context) {
     });
   if (isPortalMeuLitoral(url)) applyPortalMeuLitoralBrand(rewriter, url);
   if (isPortalMeuLitoral(url) && (path === '/' || path === '/index.html')) {
+    rewriter.on('body', { element(element) { element.append(PORTAL_MEULITORAL_HOME_ORDER, { html: true }); } });
+  }
+  if (isAtlantidaNegocios(url)) applyAtlantidaNegociosBrand(rewriter, url);
+  if (isAtlantidaNegocios(url) && (path === '/' || path === '/index.html')) {
     rewriter.on('body', { element(element) { element.append(PORTAL_MEULITORAL_HOME_ORDER, { html: true }); } });
   }
   if (needsFavorites) {
