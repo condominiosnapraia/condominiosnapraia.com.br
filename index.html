@@ -3451,12 +3451,13 @@ function buildHomeDestaques(){
 
     // Categorias editoriais: sempre baseadas no tipo e no vínculo real do imóvel.
     const tipoCategoria = i => {
-      const t=String(i.tipo||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const t=[i.tipo,i.titulo].filter(Boolean).join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
       if(/apart|loft|kitnet|flat|studio/.test(t)) return 'apartamento';
       if(/terreno|lote/.test(t)) return 'terreno';
-      return 'casa';
+      if(/casa|sobrado/.test(t)) return 'casa';
+      return 'outro';
     };
-    const ehFora = i => i.fora_condominio===true || i.foraCondominio===true;
+    const ehFora = i => i.fora_condominio===true || i.foraCondominio===true || String(i.fora_condominio||i.foraCondominio||'').toLowerCase()==='true';
     const pickDestaques = (lista, ids, limite) => {
       const escolhidos = Array.isArray(ids) && ids.length ? lista.filter(i=>ids.includes(i.id)) : [];
       const resto = lista.filter(i=>!escolhidos.includes(i));
