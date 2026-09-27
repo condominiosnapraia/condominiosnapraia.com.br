@@ -78,14 +78,15 @@ function isPortalMeuLitoral(url) {
   return PORTAL_MEULITORAL_HOSTS.has(url.hostname.toLowerCase());
 }
 
-function applyPortalMeuLitoralBrand(rewriter) {
+function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
+  const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
   rewriter
     .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} portal-meu-litoral`.trim()); } })
     .on('title', { element(element) { element.setInnerContent('Portal Meu Litoral | Imóveis no Litoral Norte Gaúcho'); } })
     .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Portal Meu Litoral'); } })
     .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Portal Meu Litoral | Imóveis no Litoral Norte Gaúcho'); } })
-    .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', 'https://portalmeulitoral.com.br/'); } })
-    .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', 'https://portalmeulitoral.com.br/'); } })
+    .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', canonicalUrl); } })
+    .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', canonicalUrl); } })
     .on('.hero-brand-name', { element(element) { element.setInnerContent('Portal Meu Litoral'); } })
     .on('.hero-brand-tagline', { element(element) { element.setInnerContent('Imóveis e oportunidades no Litoral Norte Gaúcho'); } })
     .on('.ftr-brand-lockup .hero-brand-name', { element(element) { element.setInnerContent('Portal Meu Litoral'); } })
@@ -128,7 +129,7 @@ export async function onRequest(context) {
         element.setAttribute('aria-label', 'Falar com um consultor pelo WhatsApp sobre esta oportunidade');
       },
     });
-  if (isPortalMeuLitoral(url)) applyPortalMeuLitoralBrand(rewriter);
+  if (isPortalMeuLitoral(url)) applyPortalMeuLitoralBrand(rewriter, url);
   if (isPortalMeuLitoral(url) && (path === '/' || path === '/index.html')) {
     rewriter.on('body', { element(element) { element.append(PORTAL_MEULITORAL_HOME_ORDER, { html: true }); } });
   }

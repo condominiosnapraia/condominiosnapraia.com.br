@@ -1620,7 +1620,7 @@ function urlCompartilhar(){
   if(im){
     // prioridade: slug estável → código legado → id
     var ref = im.slug || im.codigo || im.id;
-    if(ref) return 'https://condominiosnapraia.com.br/imovel/' + encodeURIComponent(ref) + '/';
+    if(ref) return window.location.origin + '/imovel/' + encodeURIComponent(ref) + '/';
   }
   return window.location.href;
 }
