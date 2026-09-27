@@ -34,7 +34,7 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
   .portal-meu-litoral .desk-header .dh-logo img{display:none}
   .portal-meu-litoral #view-home .hero{background-image:url('/img/branding/portal-meu-litoral-hero.jpg')!important;background-position:center 56%;background-size:cover}
-  .portal-meu-litoral #view-home > .qr-sec,.portal-meu-litoral #view-home > #pcred-sec-sec{display:none!important}
+  .portal-meu-litoral #view-home > .qr-sec,.portal-meu-litoral #view-home > #pcred-sec-sec,.portal-meu-litoral #view-home > #sec-blog-preview{display:none!important}
   .portal-meu-litoral #view-home .qfilter-bg[data-foto-card="filtro-fora-condominio"]{background-image:url('https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/fotos/imov/mu8c0o0olaj/imovel-casa-a-venda-em-capao-da-canoa-bairro-girassol-1-1789819206047.jpg')!important;background-size:cover!important;background-position:center!important}
   .portal-meu-litoral #view-home .qfilter-bg[data-foto-card="filtro-apartamentos"]{background-image:url('https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/fotos/imov/msl4qaucz7k/imovel-xangri-la-rossi-atlantida-apartamento-giardino-a-vend-1-1786239337162.jpg')!important;background-size:cover!important;background-position:center!important}
   .portal-meu-litoral #view-home .qfilter-card::after{background:linear-gradient(180deg,rgba(7,29,73,.12) 0%,rgba(7,29,73,.5) 42%,rgba(7,29,73,.94) 100%)!important}
@@ -51,7 +51,7 @@ const PORTAL_MEULITORAL_HOME_ORDER = `<script id="portal-meu-litoral-home-order"
     function arrangePortalHome(){
       var home=document.getElementById('view-home');
       if(!home) return;
-      ['qr-sec','pcred-sec-sec'].forEach(function(id){var section=document.getElementById(id);if(section&&section.parentElement===home)section.remove();});
+      ['qr-sec','pcred-sec-sec','sec-blog-preview'].forEach(function(id){var section=document.getElementById(id);if(section&&section.parentElement===home)section.remove();});
       var order=['qr-sec','qfilter2','pcred-sec-sec','sec-imoveis','sec-fora-cond','sec-condominios','sec-imoveis-semana','sec-apartamentos','sec-terrenos','sec-condominios-verticais','viver-intro-sec','viver-lagoa','viver-mar','viver-cidade','guias-cidades','guias-decisao','sec-blog-preview','lch-sec-sec'];
       order.forEach(function(id){var section=document.getElementById(id);if(section&&section.parentElement===home)home.appendChild(section);});
     }
