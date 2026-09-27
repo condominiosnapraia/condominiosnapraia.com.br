@@ -23,6 +23,29 @@ const ATLANTIDA_NEGOCIOS_HOSTS = new Set([
   'atlantidanegocios.com.br',
   'www.atlantidanegocios.com.br',
 ]);
+const ATLANTIDA_WHATSAPP = '5551981348907';
+const ATLANTIDA_WHATSAPP_SCRIPT = `<script id="atlantida-whatsapp-routing">
+  (function(){
+    var numero='${ATLANTIDA_WHATSAPP}';
+    function corrigir(root){
+      (root||document).querySelectorAll('a[href]').forEach(function(a){
+        var href=a.getAttribute('href');
+        if(!href) return;
+        var novo=href
+          .replace(/(wa\\.me\\/)\\d+/ig,'$1'+numero)
+          .replace(/([?&]phone=)\\d+/ig,'$1'+numero)
+          .replace(/^tel:\\+?\\d+/i,'tel:+'+numero);
+        if(novo!==href) a.setAttribute('href',novo);
+      });
+    }
+    function iniciar(){
+      corrigir(document);
+      if(!document.documentElement || !window.MutationObserver) return;
+      new MutationObserver(function(){corrigir(document);}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['href']});
+    }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',iniciar,{once:true}); else iniciar();
+  }());
+</script>`;
 
 const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
@@ -155,6 +178,15 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
   const isPartnerPage = /^\/(?:corretor|parceiro)\//.test(pageUrl.pathname);
   rewriter
     .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} atlantida-negocios`.trim()); } })
+    .on('a', { element(element) {
+      const href = element.getAttribute('href');
+      if (!href) return;
+      const updated = href
+        .replace(/(wa\.me\/)\d+/ig, `$1${ATLANTIDA_WHATSAPP}`)
+        .replace(/([?&]phone=)\d+/ig, `$1${ATLANTIDA_WHATSAPP}`)
+        .replace(/^tel:\+?\d+/i, `tel:+${ATLANTIDA_WHATSAPP}`);
+      if (updated !== href) element.setAttribute('href', updated);
+    } })
     .on('.hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
     .on('.hero-brand-tagline', { element(element) { element.setInnerContent('Imóveis e oportunidades no Litoral Norte'); } })
     .on('.ftr-brand-lockup .hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
@@ -164,7 +196,8 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
     .on('a.navq-card[href="/financiamento-imobiliario/"]', { element(element) { element.remove(); } })
     .on('a.navq-card[href="/contemplado-imoveis/"]', { element(element) { element.remove(); } })
     .on('a.navq-card[href="/refinanciamento-imobiliario/"]', { element(element) { element.remove(); } })
-    .on('head', { element(element) { element.append(ATLANTIDA_NEGOCIOS_STYLE, { html: true }); } });
+    .on('head', { element(element) { element.append(ATLANTIDA_NEGOCIOS_STYLE, { html: true }); } })
+    .on('body', { element(element) { element.append(ATLANTIDA_WHATSAPP_SCRIPT, { html: true }); } });
   if (!isPartnerPage) {
     rewriter
       .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | Imóveis no Litoral Norte'); } })
