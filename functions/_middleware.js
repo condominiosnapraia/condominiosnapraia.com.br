@@ -99,7 +99,7 @@ const ATLANTIDA_NEGOCIOS_STYLE = `<style id="atlantida-negocios-theme">
   .atlantida-negocios #view-home .hero-brand-lockup{background:transparent;box-shadow:none;width:max-content;height:auto;padding:0}
   .atlantida-negocios #view-home .hero-brand-lockup>*{visibility:visible}
   .atlantida-negocios #view-home .hero-brand-name{font-family:'Cormorant Garamond',Fraunces,Georgia,serif;font-size:clamp(58px,9vw,110px);font-weight:600;letter-spacing:-.025em;color:#fff7e8;text-shadow:0 3px 18px rgba(7,40,62,.45),0 1px 3px rgba(7,40,62,.55)}
-  .atlantida-negocios .page-footer .ftr-brand-lockup{align-items:center;width:220px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center;background:#fff;border-radius:8px;padding:10px 14px;box-sizing:border-box;background-image:url('/assets/atlantida-logo-alternative.png');background-repeat:no-repeat;background-position:center;background-size:contain;min-height:76px}
+  .atlantida-negocios .page-footer .ftr-brand-lockup{align-items:center;width:220px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center;background:transparent;border-radius:0;padding:10px 14px;box-sizing:border-box;background-image:url('/assets/atlantida-logo-alternative.png');background-repeat:no-repeat;background-position:center;background-size:contain;min-height:76px}
   .atlantida-negocios .page-footer .ftr-brand-lockup>*{visibility:hidden}
   .atlantida-negocios .sectit-sub,.atlantida-negocios .eyebrow{color:var(--atl-gold)}
   @media(min-width:981px){.atlantida-negocios .page-footer .ftr-col-brand .ftr-brand-lockup{align-items:center;width:220px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center}}
