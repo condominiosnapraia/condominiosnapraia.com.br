@@ -152,13 +152,9 @@ function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
 
 function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
+  const isPartnerPage = /^\/(?:corretor|parceiro)\//.test(pageUrl.pathname);
   rewriter
     .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} atlantida-negocios`.trim()); } })
-    .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | Imóveis no Litoral Norte'); } })
-    .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Atlântida Negócios'); } })
-    .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Atlântida Negócios | Imóveis no Litoral Norte'); } })
-    .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', canonicalUrl); } })
-    .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', canonicalUrl); } })
     .on('.hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
     .on('.hero-brand-tagline', { element(element) { element.setInnerContent('Imóveis e oportunidades no Litoral Norte'); } })
     .on('.ftr-brand-lockup .hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
@@ -169,6 +165,14 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
     .on('a.navq-card[href="/contemplado-imoveis/"]', { element(element) { element.remove(); } })
     .on('a.navq-card[href="/refinanciamento-imobiliario/"]', { element(element) { element.remove(); } })
     .on('head', { element(element) { element.append(ATLANTIDA_NEGOCIOS_STYLE, { html: true }); } });
+  if (!isPartnerPage) {
+    rewriter
+      .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | Imóveis no Litoral Norte'); } })
+      .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Atlântida Negócios'); } })
+      .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Atlântida Negócios | Imóveis no Litoral Norte'); } })
+      .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', canonicalUrl); } })
+      .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', canonicalUrl); } });
+  }
 }
 
 export async function onRequest(context) {
