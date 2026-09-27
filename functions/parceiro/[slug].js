@@ -46,8 +46,8 @@ function propertySlug(imovel) {
   const code = slugify(imovel?.codigo || imovel?.ref || '');
   return code && !base.endsWith(code) ? `${base}-${code}` : base || slugify(imovel?.id) || 'imovel';
 }
-function propertyUrl(siteSlug, imovel) {
-  return `${BASE}/corretor/${encodeURIComponent(siteSlug)}/imovel/${encodeURIComponent(propertySlug(imovel))}/`;
+function propertyUrl(siteSlug, imovel, base = BASE) {
+  return `${base}/corretor/${encodeURIComponent(siteSlug)}/imovel/${encodeURIComponent(propertySlug(imovel))}/`;
 }
 const SITE_SLUG_ALIASES = Object.freeze({});
 function siteSlugInfo(value) {
@@ -76,7 +76,7 @@ async function getJson(path, cfg) {
   }
   return [];
 }
-function normalizeListing(row, condMap, siteSlug) {
+function normalizeListing(row, condMap, siteSlug, base = BASE) {
   const imovel = row.imovel || {};
   const cond = imovel.cond_id ? condMap[imovel.cond_id] || null : null;
   const title = row.titulo_personalizado || imovel.titulo || 'Imóvel disponível';
@@ -86,7 +86,7 @@ function normalizeListing(row, condMap, siteSlug) {
   return {
     id: imovel.id || row.imovel_id,
     slug: propertySlug(imovel),
-    url: propertyUrl(siteSlug, imovel),
+    url: propertyUrl(siteSlug, imovel, base),
     title,
     description: row.chamada_personalizada || imovel.descricao || '',
     type: imovel.tipo || 'Imóvel',
@@ -153,7 +153,7 @@ function card(property, compact = false, interestBase = '', brokerName = '') {
   </article>`;
 }
 
-function layout({ site, properties, slug, requestPath, topCondos }) {
+function layout({ site, properties, slug, requestPath, topCondos, publicBase = BASE }) {
   const isRodrigo = slug === 'rodrigo-carvalho';
   const isAlisson = slug === 'alisson-portella';
   const name = isRodrigo ? 'Rodrigo Carvalho' : (site.nome || 'Corretor parceiro');
@@ -161,7 +161,7 @@ function layout({ site, properties, slug, requestPath, topCondos }) {
   const heroName = name;
   const description = isAlisson ? 'Alisson Portella. As melhores opções de investimento do mercado imobiliário.' : (isRodrigo ? 'Atuando no mercado imobiliário desde 2012, Rodrigo Carvalho possui ampla experiência e conhecimento nas principais regiões do Rio Grande do Sul, com destaque para a Região Metropolitana, Serra Gaúcha e Litoral.\n\nSeu trabalho é pautado por atendimento personalizado, conhecimento de mercado, segurança e transparência, auxiliando clientes na escolha do imóvel ideal, seja para morar, investir ou realizar um novo negócio.\n\nExperiência que gera confiança. Conhecimento regional que faz a diferença.' : (site.bio || `Imóveis selecionados por ${name} no Rio Grande do Sul.`));
   const phone = digits(site.whatsapp || site.telefone);
-  const wpp = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
+  const wpp = phone ? `https://wa.me/${phone}` : `${publicBase}/contato/`;
   const accent = /^#[0-9a-f]{6}$/i.test(site.accent_color || '') ? site.accent_color : '#d5aa57';
   const brand = /^#[0-9a-f]{6}$/i.test(site.brand_color || '') ? site.brand_color : '#0d5c86';
   const cover = isAlisson ? `${BASE}/img/branding/atlantida-negocios-hero.jpg` : (site.capa_url || `${BASE}/img/parceiro-capa-desktop.jpg`);
@@ -169,14 +169,14 @@ function layout({ site, properties, slug, requestPath, topCondos }) {
   const profileImage = isRodrigo ? `${BASE}/img/corretores/rodrigo-carvalho-perfil.jpeg` : (site.logo_url || '');
   const heroStyle = cover ? ` style="background-image:url('${esc(cover)}');--partner-cover-desktop:url('${esc(cover)}');--partner-cover-mobile:url('${esc(mobileCover)}')"` : '';
   const segment = requestPath.startsWith('/corretor/') ? 'corretor' : 'parceiro';
-  const canonical = `${BASE}/${segment}/${encodeURIComponent(slug)}/`;
+  const canonical = `${publicBase}/${segment}/${encodeURIComponent(slug)}/`;
   const landingUrl = canonical;
-  const contactUrl = `${BASE}/${segment}/${encodeURIComponent(slug)}/contato/`;
-  const fullListingUrl = `${BASE}/${segment}/${encodeURIComponent(slug)}/imoveis/`;
+  const contactUrl = `${publicBase}/${segment}/${encodeURIComponent(slug)}/contato/`;
+  const fullListingUrl = `${publicBase}/${segment}/${encodeURIComponent(slug)}/imoveis/`;
   const ogSlugs = new Set(['cassio-lopes','felipe-ranzolin','fernando-trevisol','jeferson-gimenez','juliano-machado','marcelo-bereta','marcia-anzolin','marcos-selbach','rodrigo-carvalho']);
   const ogSlug = ogSlugs.has(slug) ? slug : 'parceiro-padrao';
   const socialImage = isAlisson ? `${BASE}/img/corretores/alisson-portella-perfil.jpg?v=20260927` : `${BASE}/img/corretores/og/${encodeURIComponent(ogSlug)}.jpg?v=20260919-photos`;
-  const condosUrl = `${BASE}/${segment}/${encodeURIComponent(slug)}/condominios/`;
+  const condosUrl = `${publicBase}/${segment}/${encodeURIComponent(slug)}/condominios/`;
   const logo = `<span class="brand-name">${esc(heroName)}</span><span class="brand-sub">Corretor de imóveis${site.creci ? ` · CRECI ${esc(site.creci)}` : ''}</span>`;
   const orderedSections = isAlisson ? [SECTIONS[1], SECTIONS[4], SECTIONS[0], SECTIONS[2], SECTIONS[3], SECTIONS[5]] : SECTIONS;
   const totalProperties = properties.length;
@@ -368,6 +368,9 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 @media(max-width:760px){.category-nav{width:100%;margin-left:auto!important;margin-right:auto!important;text-align:center!important}.category-nav-links{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px!important;overflow:visible!important;width:100%;align-items:stretch}.category-nav-links .category-chip{min-width:0!important;width:100%;min-height:78px;padding:10px 8px!important;grid-template-columns:26px 1fr;column-gap:7px}.category-nav-links .category-chip>span{width:26px;height:26px;font-size:14px}.category-nav-links .category-chip strong{font-size:11px;line-height:1.12;text-align:left}.category-nav-links .category-chip small{font-size:9px;text-align:left}}
 @media(max-width:380px){.category-nav-links{gap:8px!important}.category-nav-links .category-chip{padding-left:6px!important;padding-right:6px!important}.category-nav-links .category-chip strong{font-size:10px}}
 </style>
+<style id="partner-mobile-footer-colors">
+@media(max-width:980px){.mob-footer-items{gap:4px;padding:5px 4px}.mob-footer-btn{margin:0!important;border-radius:13px!important;background:#173f4c!important;border:1px solid rgba(255,255,255,.22)!important;color:#fff!important}.mob-footer-btn:nth-child(1),.mob-footer-btn:nth-child(2){background:#f4bf61!important;border-color:#f4bf61!important;color:#173743!important}.mob-footer-btn:nth-child(3){background:#0c78a4!important;border-color:#0c78a4!important;color:#fff!important}.mob-footer-btn:nth-child(4){background:#238f8c!important;border-color:#238f8c!important;color:#fff!important}.mob-footer-btn:nth-child(5){background:#25d366!important;border-color:#25d366!important;color:#fff!important}.mob-footer-btn:hover,.mob-footer-btn.active{filter:brightness(1.06);transform:translateY(-1px)}}
+</style>
 </head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
@@ -403,7 +406,9 @@ export async function onRequest(context) {
   const requestedSlug = String(context.params?.slug || '').toLowerCase();
   if (!requestedSlug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSlug)) return new Response('Not Found', { status: 404 });
   const { dbSlug, publicSlug } = siteSlugInfo(requestedSlug);
-  const requestPath = new URL(context.request.url).pathname;
+  const requestUrl = new URL(context.request.url);
+  const requestPath = requestUrl.pathname;
+  const publicBase = requestUrl.origin;
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requestedSlug !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/`, 301);
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url,brand_color,accent_color&limit=1`, cfg);
   if (!Array.isArray(sites) || !sites[0]) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><style>body{font-family:Arial;padding:48px;max-width:680px;margin:auto;color:#0d3b54}a{color:#0d5c86}.mobile-dock{display:none}@media(max-width:760px){body{padding-bottom:76px}.mobile-dock{position:fixed;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;left:12px;right:12px;bottom:12px;z-index:100;padding:8px;border:1px solid rgba(255,255,255,.22);border-radius:22px;background:rgba(7,35,48,.94);box-shadow:0 14px 40px rgba(0,0,0,.28);backdrop-filter:blur(16px)}.mobile-dock a{display:flex;min-height:48px;align-items:center;justify-content:center;gap:6px;border:1px solid rgba(255,255,255,.22);border-radius:15px;color:#fff!important;font:700 11px/1 Outfit,Arial,sans-serif;text-decoration:none;text-align:center}.mobile-dock a:first-child{background:#f4bf61;border-color:#f4bf61;color:#173743!important}.mobile-dock a:hover{transform:translateY(-1px)}.mobile-dock-icon{font-size:16px;line-height:1}.site-header,.header,.topbar{padding-bottom:0}}</style><h1>Site ainda não publicado</h1><p>Esta landing não está ativa ou o endereço foi digitado incorretamente.</p><a href="https://condominiosnapraia.com.br/">Voltar para Condomínios na Praia</a>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
@@ -425,7 +430,7 @@ export async function onRequest(context) {
     const condos = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,slug,nome,cidade,descricao,amenidades,fotos_no_site,fotos,fotos_para_site&limit=1000`, cfg);
     (Array.isArray(condos) ? condos : []).forEach((cond) => { condMap[cond.id] = cond; });
   }
-  let properties = sourceRows.map((row) => normalizeListing(row, condMap, publicSlug));
+  let properties = sourceRows.map((row) => normalizeListing(row, condMap, publicSlug, publicBase));
   const globalConfig = await getJson('configuracoes?chave=in.(destaques_imov,destaques_terreno)&select=chave,valor&limit=10', cfg);
   const globalIds = new Map();
   (Array.isArray(globalConfig) ? globalConfig : []).forEach((item) => {
@@ -449,7 +454,7 @@ export async function onRequest(context) {
   });
   const condoList = Object.values(condoStats).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
   const topCondos = condoList.slice(0, 8);
-  return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+  return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos, publicBase }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
 
 export { propertySlug, propertyUrl, normalizeListing, card, siteSlugInfo, cityKey, cityLabel, getJson };
