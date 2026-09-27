@@ -99,6 +99,7 @@ const ATLANTIDA_NEGOCIOS_STYLE = `<style id="atlantida-negocios-theme">
   .atlantida-negocios #view-home .hero-brand-lockup{background:transparent;box-shadow:none;width:max-content;height:auto;padding:0}
   .atlantida-negocios #view-home .hero-brand-lockup>*{visibility:visible}
   .atlantida-negocios #view-home .hero-brand-name{font-family:'Cormorant Garamond',Fraunces,Georgia,serif;font-size:clamp(58px,9vw,110px);font-weight:600;letter-spacing:-.025em;color:#fff7e8;text-shadow:0 3px 18px rgba(7,40,62,.45),0 1px 3px rgba(7,40,62,.55)}
+  .atlantida-negocios #view-home .hero{background-image:url('/img/branding/atlantida-negocios-hero.jpg')!important;background-position:center 56%;background-size:cover}
   .atlantida-negocios .page-footer .ftr-brand-lockup{align-items:center;width:220px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center;background:transparent;border-radius:0;padding:10px 14px;box-sizing:border-box;background-image:url('/assets/atlantida-logo-alternative.png');background-repeat:no-repeat;background-position:center;background-size:contain;min-height:76px}
   .atlantida-negocios .page-footer .ftr-brand-lockup>*{visibility:hidden}
   .atlantida-negocios .sectit-sub,.atlantida-negocios .eyebrow{color:var(--atl-gold)}
@@ -166,6 +167,11 @@ export async function onRequest(context) {
   const { request, next } = context;
   const url = new URL(request.url);
   const path = url.pathname;
+  if (isAtlantidaNegocios(url) && (path === '/alison-portela' || path === '/alison-portela/')) {
+    const target = new URL('/corretor/alisson-portella/', url);
+    target.search = url.search;
+    return fetch(new Request(target, request));
+  }
   if ((isPortalMeuLitoral(url) || isAtlantidaNegocios(url)) && (path === '/sobre' || path === '/sobre/')) return Response.redirect(new URL('/', url), 301);
   const legacyTarget = LEGACY_REDIRECTS[path];
   if (legacyTarget) return Response.redirect(new URL(legacyTarget, url), 301);
