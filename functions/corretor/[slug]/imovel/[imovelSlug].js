@@ -39,7 +39,7 @@ function propertySlug(imovel) {
   const code = slugify(imovel?.codigo || imovel?.ref || '');
   return code && !base.endsWith(code) ? `${base}-${code}` : base || slugify(imovel?.id) || 'imovel';
 }
-function propertyUrl(siteSlug, imovel) { return `${BASE}/corretor/${encodeURIComponent(siteSlug)}/imovel/${encodeURIComponent(propertySlug(imovel))}/`; }
+function propertyUrl(siteSlug, imovel, publicBase = BASE, publicPrefix = '') { return publicPrefix ? `${publicBase}${publicPrefix}/imovel/${encodeURIComponent(propertySlug(imovel))}/` : `${publicBase}/corretor/${encodeURIComponent(siteSlug)}/imovel/${encodeURIComponent(propertySlug(imovel))}/`; }
 function normalizedPropertyRef(value) { return String(value || '').trim().toLowerCase().replace(/^\/+|\/+$/g, ''); }
 function propertyRefs(imovel) {
   return [imovel?.slug, imovel?.id, imovel?.codigo, imovel?.ref, propertySlug(imovel)]
@@ -133,7 +133,7 @@ function relatedSection(title, subtitle, items, contextLabel = '', storageBase =
   if (!items.length) return '';
   return `<section class="related-section"><div class="related-head"><div><span class="eyebrow">Mais oportunidades</span><h2>${esc(title)}</h2><p>${esc(subtitle)}</p></div><span class="related-count">${items.length} ${items.length === 1 ? 'opção' : 'opções'}</span></div><div class="related-grid">${items.map((item) => relatedCard(item, contextLabel, storageBase)).join('')}</div></section>`;
 }
-function selectRelated(rows, target, cond, siteSlug) {
+function selectRelated(rows, target, cond, siteSlug, publicBase = BASE, publicPrefix = '') {
   const targetContext = inferContext(target);
   const targetFamily = propertyFamily(target);
   const targetCity = normalized(target.cidade_end || target.cidade || cond?.cidade || targetContext.city);
@@ -141,7 +141,7 @@ function selectRelated(rows, target, cond, siteSlug) {
   const targetPrice = numericValue(target.preco);
   const targetCondoId = String(cond?.id || target.cond_id || '').trim();
   const targetCondo = normalized(cond?.nome || target.cond?.name || target._derivedCondo || targetContext.condo);
-  const candidates = (Array.isArray(rows) ? rows : []).filter(isPublishedRow).filter((row) => String(row.imovel.id) !== String(target.id)).map((row) => ({ ...row, context: inferContext(row.imovel), family: propertyFamily(row.imovel), url: propertyUrl(siteSlug, row.imovel) }));
+  const candidates = (Array.isArray(rows) ? rows : []).filter(isPublishedRow).filter((row) => String(row.imovel.id) !== String(target.id)).map((row) => ({ ...row, context: inferContext(row.imovel), family: propertyFamily(row.imovel), url: propertyUrl(siteSlug, row.imovel, publicBase, publicPrefix) }));
   const contextCity = (im, context) => normalized(im.cidade_end || im.cidade || context.city);
   const contextCondo = (im, context) => normalized(im.cond_id || im.cond?.name || context.condo);
   const scoreFor = (row) => {
@@ -173,7 +173,7 @@ function selectRelated(rows, target, cond, siteSlug) {
   return { sameCondo, similar, sameCity, targetContext };
 }
 
-function page({ site, imovel, cond, siteSlug, relatedRows, cfg, requestUrl }) {
+function page({ site, imovel, cond, siteSlug, relatedRows, cfg, requestUrl, publicBase = BASE, publicPrefix = '' }) {
   const storageBase = `${cfg.url}/storage/v1/object/public/`;
   const title = imovel.titulo || 'Imóvel à venda';
   const context = inferContext(imovel);
@@ -190,9 +190,9 @@ function page({ site, imovel, cond, siteSlug, relatedRows, cfg, requestUrl }) {
   const phone = digits(site.whatsapp || site.telefone);
   const wppBase = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
   const wppText = encodeURIComponent(`Olá! Gostaria de receber mais informações sobre este imóvel.\n\nCódigo: ${codeLabel || 'Não informado'}\nImóvel: ${title}${cond?.nome ? `\nCondomínio: ${cond.nome}` : ''}\nPreço: ${money(imovel.preco)}.\n\nPodem me informar a disponibilidade, as condições e as opções para agendar uma visita?`);
-  const canonical = propertyUrl(siteSlug, imovel);
-  const contactUrl = `${BASE}/corretor/${encodeURIComponent(siteSlug)}/contato/`;
-  const landingUrl = `${BASE}/corretor/${encodeURIComponent(siteSlug)}/`;
+  const canonical = propertyUrl(siteSlug, imovel, publicBase, publicPrefix);
+  const contactUrl = `${publicBase}${publicPrefix}/contato/`;
+  const landingUrl = `${publicBase}${publicPrefix}/`;
   const fullListingUrl = `${landingUrl}imoveis/`;
   let backHref = fullListingUrl;
   let backLabel = '← Voltar aos imóveis';
@@ -216,7 +216,7 @@ function page({ site, imovel, cond, siteSlug, relatedRows, cfg, requestUrl }) {
   const condoAllPhotos = [...toArray(cond?.fotos_no_site), ...toArray(cond?.fotos)].map((value) => publicPhoto(value, storageBase)).filter(Boolean);
   const condoPhotos = condoAllPhotos;
   const condoGalleryMarkup = condoPhotos.length ? `<div class="condo-gallery-shell" id="condo-gallery" aria-label="Fotos de ${esc(cond?.nome || 'Empreendimento')}"><div class="condo-gallery-track">${condoPhotos.map((photo, index) => `<figure class="condo-gallery-slide${index === 0 ? ' is-active' : ''}" data-condo-gallery-index="${index}"><img src="${esc(photo)}" alt="${esc(cond?.nome || 'Empreendimento')} — infraestrutura ${index + 1}" loading="${index === 0 ? 'eager' : 'lazy'}" decoding="async"></figure>`).join('')}</div>${condoPhotos.length > 1 ? `<button type="button" class="gallery-arrow condo-gallery-prev" data-condo-gallery-prev aria-label="Foto anterior do empreendimento">‹</button><button type="button" class="gallery-arrow condo-gallery-next" data-condo-gallery-next aria-label="Próxima foto do empreendimento">›</button><span class="gallery-counter condo-gallery-counter" data-condo-gallery-counter>1/${condoPhotos.length}</span>` : ''}</div>` : '';
-  const related = selectRelated(relatedRows, { ...imovel, _derivedCondo: context.condo, _derivedCity: context.city, _derivedType: context.type }, cond, siteSlug);
+  const related = selectRelated(relatedRows, { ...imovel, _derivedCondo: context.condo, _derivedCity: context.city, _derivedType: context.type }, cond, siteSlug, publicBase, publicPrefix);
   const relatedMarkup = (condoName ? relatedSection(`Mais imóveis no ${condoName}`, 'Opções da mesma tipologia dentro deste condomínio ou empreendimento.', related.sameCondo, condoName, storageBase) : '') + relatedSection('Imóveis semelhantes', 'Mesma tipologia, com dormitórios e valores próximos ao imóvel consultado.', related.similar, '', storageBase) + relatedSection(`Imóveis em ${city}`, 'Outras oportunidades da mesma tipologia na mesma cidade.', related.sameCity, city, storageBase);
   const schema = { '@context': 'https://schema.org', '@type': 'RealEstateListing', name: title, description, url: canonical, image: photos.slice(0, 8), itemOffered: { '@type': /apartamento/i.test(imovel.tipo || '') ? 'Apartment' : 'Residence', name: title, address: { '@type': 'PostalAddress', addressLocality: city, addressRegion: 'RS', addressCountry: 'BR' } }, seller: { '@type': 'RealEstateAgent', name: broker, telephone: phone ? `+${phone}` : undefined } };
   if (Number(imovel.preco) > 0) schema.offers = { '@type': 'Offer', price: Number(imovel.preco), priceCurrency: 'BRL', availability: 'https://schema.org/InStock', url: canonical };
@@ -440,7 +440,10 @@ export async function onRequest(context) {
     const condos = await getJson(`condominios?id=eq.${encodeURIComponent(imovel.cond_id)}&select=id,slug,nome,cidade,descricao,amenidades,fotos_no_site,fotos&limit=1`, cfg);
     cond = Array.isArray(condos) ? condos[0] || null : null;
   }
-  return new Response(page({ site, imovel, cond, siteSlug: publicSlug, relatedRows: rows, cfg, requestUrl: context.request.url }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+  const publicRequest = new URL(context.request.url);
+  const publicBase = publicRequest.origin;
+  const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
+  return new Response(page({ site, imovel, cond, siteSlug: publicSlug, relatedRows: rows, cfg, requestUrl: context.request.url, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
 
 export { propertySlug, propertyUrl };
