@@ -37,6 +37,10 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral #view-home > .qr-sec,.portal-meu-litoral #view-home > #pcred-sec-sec{display:none!important}
   .portal-meu-litoral #view-home .qfilter-bg[data-foto-card="filtro-fora-condominio"]{background-image:url('https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/fotos/imov/mu8c0o0olaj/imovel-casa-a-venda-em-capao-da-canoa-bairro-girassol-1-1789819206047.jpg')!important;background-size:cover!important;background-position:center!important}
   .portal-meu-litoral #view-home .qfilter-bg[data-foto-card="filtro-apartamentos"]{background-image:url('https://cddgkhkzcnyzzcllgzoz.supabase.co/storage/v1/object/public/fotos/imov/msl4qaucz7k/imovel-xangri-la-rossi-atlantida-apartamento-giardino-a-vend-1-1786239337162.jpg')!important;background-size:cover!important;background-position:center!important}
+  .portal-meu-litoral #view-home .qfilter-card::after{background:linear-gradient(180deg,rgba(7,29,73,.12) 0%,rgba(7,29,73,.5) 42%,rgba(7,29,73,.94) 100%)!important}
+  .portal-meu-litoral #view-home .qfilter-body{text-shadow:0 2px 5px rgba(0,0,0,.78),0 1px 14px rgba(0,0,0,.48)}
+  .portal-meu-litoral #view-home .qfilter-lbl{color:#fff!important}
+  .portal-meu-litoral #view-home .qfilter-go{color:#ffe09a!important;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.8)}
   @media(max-width:768px){.portal-meu-litoral #view-home .hero{background-position:center 58%;background-size:cover}}
 </style>`;
 
