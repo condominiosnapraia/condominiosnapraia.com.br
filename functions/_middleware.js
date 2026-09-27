@@ -154,6 +154,7 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
     .on('.hero-brand-tagline', { element(element) { element.setInnerContent('Imóveis e oportunidades no Litoral Norte'); } })
     .on('.ftr-brand-lockup .hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
     .on('.dh-logo', { element(element) { element.setAttribute('aria-label', 'Atlântida Negócios — início'); } })
+    .on('#qfilter2', { element(element) { element.remove(); } })
     .on('#sec-condominios-verticais', { element(element) { element.removeAttribute('hidden'); } })
     .on('a.navq-card[href="/financiamento-imobiliario/"]', { element(element) { element.remove(); } })
     .on('a.navq-card[href="/contemplado-imoveis/"]', { element(element) { element.remove(); } })
