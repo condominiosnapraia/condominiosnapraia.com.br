@@ -179,6 +179,15 @@ export async function onRequest(context) {
   const { request, next } = context;
   const url = new URL(request.url);
   const path = url.pathname;
+  if (isAtlantidaNegocios(url) && (path === '/alisonportela' || path === '/alisonportela/' || path === '/alisonportela/imoveis' || path === '/alisonportela/imoveis/' || path === '/alisonportela/contato' || path === '/alisonportela/contato/' || path === '/alisonportela/condominios' || path === '/alisonportela/condominios/' || path.startsWith('/alisonportela/imovel/'))) {
+    const suffix = path.startsWith('/alisonportela/imovel/') ? path.slice('/alisonportela'.length) : path.slice('/alisonportela'.length) || '/';
+    const target = new URL(`/corretor/alisson-portella${suffix}`, url);
+    target.search = url.search;
+    const forwarded = new Request(target, request);
+    const headers = new Headers(forwarded.headers);
+    headers.set('x-public-partner-prefix', '/alisonportela');
+    return fetch(new Request(target, { method: forwarded.method, headers }));
+  }
   if (isAtlantidaNegocios(url) && new Set(['/alison-portela', '/alison-portela/', '/alisson-portela', '/alisson-portela/', '/alisson-portella', '/alisson-portella/']).has(path)) {
     const target = new URL('/corretor/alisson-portella/', url);
     target.search = url.search;

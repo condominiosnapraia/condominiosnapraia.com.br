@@ -46,8 +46,9 @@ function propertySlug(imovel) {
   const code = slugify(imovel?.codigo || imovel?.ref || '');
   return code && !base.endsWith(code) ? `${base}-${code}` : base || slugify(imovel?.id) || 'imovel';
 }
-function propertyUrl(siteSlug, imovel, base = BASE) {
-  return `${base}/corretor/${encodeURIComponent(siteSlug)}/imovel/${encodeURIComponent(propertySlug(imovel))}/`;
+function propertyUrl(siteSlug, imovel, base = BASE, publicPrefix = '') {
+  const prefix = publicPrefix || `/corretor/${encodeURIComponent(siteSlug)}`;
+  return `${base}${prefix}/imovel/${encodeURIComponent(propertySlug(imovel))}/`;
 }
 const SITE_SLUG_ALIASES = Object.freeze({});
 function siteSlugInfo(value) {
@@ -76,7 +77,7 @@ async function getJson(path, cfg) {
   }
   return [];
 }
-function normalizeListing(row, condMap, siteSlug, base = BASE) {
+function normalizeListing(row, condMap, siteSlug, base = BASE, publicPrefix = '') {
   const imovel = row.imovel || {};
   const cond = imovel.cond_id ? condMap[imovel.cond_id] || null : null;
   const title = row.titulo_personalizado || imovel.titulo || 'Imóvel disponível';
@@ -86,7 +87,7 @@ function normalizeListing(row, condMap, siteSlug, base = BASE) {
   return {
     id: imovel.id || row.imovel_id,
     slug: propertySlug(imovel),
-    url: propertyUrl(siteSlug, imovel, base),
+    url: propertyUrl(siteSlug, imovel, base, publicPrefix),
     title,
     description: row.chamada_personalizada || imovel.descricao || '',
     type: imovel.tipo || 'Imóvel',
@@ -153,7 +154,7 @@ function card(property, compact = false, interestBase = '', brokerName = '') {
   </article>`;
 }
 
-function layout({ site, properties, slug, requestPath, topCondos, publicBase = BASE }) {
+function layout({ site, properties, slug, requestPath, topCondos, publicBase = BASE, publicPrefix = '' }) {
   const isRodrigo = slug === 'rodrigo-carvalho';
   const isAlisson = slug === 'alisson-portella';
   const name = isRodrigo ? 'Rodrigo Carvalho' : (site.nome || 'Corretor parceiro');
@@ -169,14 +170,15 @@ function layout({ site, properties, slug, requestPath, topCondos, publicBase = B
   const profileImage = isRodrigo ? `${BASE}/img/corretores/rodrigo-carvalho-perfil.jpeg` : (site.logo_url || '');
   const heroStyle = cover ? ` style="background-image:url('${esc(cover)}');--partner-cover-desktop:url('${esc(cover)}');--partner-cover-mobile:url('${esc(mobileCover)}')"` : '';
   const segment = requestPath.startsWith('/corretor/') ? 'corretor' : 'parceiro';
-  const canonical = `${publicBase}/${segment}/${encodeURIComponent(slug)}/`;
+  const routePrefix = publicPrefix || `/${segment}/${encodeURIComponent(slug)}`;
+  const canonical = `${publicBase}${routePrefix}/`;
   const landingUrl = canonical;
-  const contactUrl = `${publicBase}/${segment}/${encodeURIComponent(slug)}/contato/`;
-  const fullListingUrl = `${publicBase}/${segment}/${encodeURIComponent(slug)}/imoveis/`;
+  const contactUrl = `${publicBase}${routePrefix}/contato/`;
+  const fullListingUrl = `${publicBase}${routePrefix}/imoveis/`;
   const ogSlugs = new Set(['cassio-lopes','felipe-ranzolin','fernando-trevisol','jeferson-gimenez','juliano-machado','marcelo-bereta','marcia-anzolin','marcos-selbach','rodrigo-carvalho']);
   const ogSlug = ogSlugs.has(slug) ? slug : 'parceiro-padrao';
   const socialImage = isAlisson ? `${BASE}/img/corretores/alisson-portella-perfil.jpg?v=20260927` : `${BASE}/img/corretores/og/${encodeURIComponent(ogSlug)}.jpg?v=20260919-photos`;
-  const condosUrl = `${publicBase}/${segment}/${encodeURIComponent(slug)}/condominios/`;
+  const condosUrl = `${publicBase}${routePrefix}/condominios/`;
   const logo = `<span class="brand-name">${esc(heroName)}</span><span class="brand-sub">Corretor de imóveis${site.creci ? ` · CRECI ${esc(site.creci)}` : ''}</span>`;
   const orderedSections = isAlisson ? [SECTIONS[1], SECTIONS[4], SECTIONS[0], SECTIONS[2], SECTIONS[3], SECTIONS[5]] : SECTIONS;
   const totalProperties = properties.length;
@@ -413,6 +415,7 @@ export async function onRequest(context) {
   const requestUrl = new URL(context.request.url);
   const requestPath = requestUrl.pathname;
   const publicBase = requestUrl.origin;
+  const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requestedSlug !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/`, 301);
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url,brand_color,accent_color&limit=1`, cfg);
   if (!Array.isArray(sites) || !sites[0]) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><style>body{font-family:Arial;padding:48px;max-width:680px;margin:auto;color:#0d3b54}a{color:#0d5c86}.mobile-dock{display:none}@media(max-width:760px){body{padding-bottom:76px}.mobile-dock{position:fixed;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;left:12px;right:12px;bottom:12px;z-index:100;padding:8px;border:1px solid rgba(255,255,255,.22);border-radius:22px;background:rgba(7,35,48,.94);box-shadow:0 14px 40px rgba(0,0,0,.28);backdrop-filter:blur(16px)}.mobile-dock a{display:flex;min-height:48px;align-items:center;justify-content:center;gap:6px;border:1px solid rgba(255,255,255,.22);border-radius:15px;color:#fff!important;font:700 11px/1 Outfit,Arial,sans-serif;text-decoration:none;text-align:center}.mobile-dock a:first-child{background:#f4bf61;border-color:#f4bf61;color:#173743!important}.mobile-dock a:hover{transform:translateY(-1px)}.mobile-dock-icon{font-size:16px;line-height:1}.site-header,.header,.topbar{padding-bottom:0}}</style><h1>Site ainda não publicado</h1><p>Esta landing não está ativa ou o endereço foi digitado incorretamente.</p><a href="https://condominiosnapraia.com.br/">Voltar para Condomínios na Praia</a>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
@@ -434,7 +437,7 @@ export async function onRequest(context) {
     const condos = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,slug,nome,cidade,descricao,amenidades,fotos_no_site,fotos,fotos_para_site&limit=1000`, cfg);
     (Array.isArray(condos) ? condos : []).forEach((cond) => { condMap[cond.id] = cond; });
   }
-  let properties = sourceRows.map((row) => normalizeListing(row, condMap, publicSlug, publicBase));
+  let properties = sourceRows.map((row) => normalizeListing(row, condMap, publicSlug, publicBase, publicPrefix));
   const globalConfig = await getJson('configuracoes?chave=in.(destaques_imov,destaques_terreno)&select=chave,valor&limit=10', cfg);
   const globalIds = new Map();
   (Array.isArray(globalConfig) ? globalConfig : []).forEach((item) => {
@@ -458,7 +461,7 @@ export async function onRequest(context) {
   });
   const condoList = Object.values(condoStats).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
   const topCondos = condoList.slice(0, 8);
-  return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos, publicBase }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+  return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
 
 export { propertySlug, propertyUrl, normalizeListing, card, siteSlugInfo, cityKey, cityLabel, getJson };
