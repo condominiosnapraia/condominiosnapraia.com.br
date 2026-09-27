@@ -42,7 +42,8 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral #view-home .qfilter-lbl{color:#fff!important}
   .portal-meu-litoral #view-home .qfilter-go{color:#ffe09a!important;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.8)}
   .portal-meu-litoral #view-home .qfilter-lbl{font-size:24px!important;line-height:1.12}
-  .portal-meu-litoral #view-home .qfilter-go{font-size:15px!important}
+  .portal-meu-litoral #view-home .qfilter-lbl{font-family:'Cormorant Garamond',Fraunces,Georgia,serif;font-weight:500!important;letter-spacing:.01em;text-shadow:0 2px 6px rgba(0,0,0,.82),0 1px 16px rgba(0,0,0,.5)}
+  .portal-meu-litoral #view-home .qfilter-go{font-family:'Montserrat',Outfit,Arial,sans-serif;font-size:15px!important;font-weight:500!important;letter-spacing:.02em}
   .portal-meu-litoral #view-home .qfilter-body{text-align:center!important}
   .portal-meu-litoral #view-home .qfilter-go{margin-left:auto;margin-right:auto}
   @media(max-width:768px){.portal-meu-litoral #view-home .hero{background-position:center 58%;background-size:cover}.portal-meu-litoral #view-home .qfilter-lbl{font-size:20px!important}.portal-meu-litoral #view-home .qfilter-go{font-size:13.5px!important}}
