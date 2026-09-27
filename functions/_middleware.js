@@ -29,7 +29,8 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral .sectit-sub,.portal-meu-litoral .eyebrow{color:var(--portal-gold)}
   .portal-meu-litoral .dh-nav a{font-family:'Montserrat',Outfit,Arial,sans-serif;color:var(--portal-navy)}
   .portal-meu-litoral .dh-nav a:hover{color:var(--portal-blue);background:rgba(12,120,164,.1)}
-  @media(min-width:981px){.portal-meu-litoral .desk-header-inner{justify-content:center;position:relative}.portal-meu-litoral .desk-header .dh-logo{display:none!important}.portal-meu-litoral .desk-header .dh-nav{flex:1 1 auto;width:100%;justify-content:space-between;gap:0}.portal-meu-litoral .desk-header .dh-nav a{flex:1 1 0;text-align:center;padding-left:8px;padding-right:8px}.portal-meu-litoral .desk-header .dh-nav a[href="/turismo/"]{display:none!important}.portal-meu-litoral .desk-header .dh-cta{display:none!important}.portal-meu-litoral .page-footer .ftr-col-brand .ftr-brand-lockup{align-items:center;width:250px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center}.portal-meu-litoral .page-footer .ftr-brand-lockup .hero-brand-name{font-size:clamp(28px,2.8vw,38px)!important;line-height:.95;white-space:normal}.portal-meu-litoral .page-footer .ftr-brand-lockup .hero-brand-tagline{font-size:7px}}
+  .portal-meu-litoral a[href="/sobre/"]{display:none!important}
+  @media(min-width:981px){.portal-meu-litoral .desk-header-inner{justify-content:center;position:relative}.portal-meu-litoral .desk-header .dh-logo{display:none!important}.portal-meu-litoral .desk-header .dh-nav{flex:1 1 auto;width:100%;justify-content:space-between;gap:0}.portal-meu-litoral .desk-header .dh-nav a{flex:1 1 0;text-align:center;padding-left:8px;padding-right:8px}.portal-meu-litoral .desk-header .dh-nav a[href="/turismo/"],.portal-meu-litoral .desk-header .dh-nav a[href="/sobre/"]{display:none!important}.portal-meu-litoral .desk-header .dh-cta{display:none!important}.portal-meu-litoral .page-footer .ftr-col-brand .ftr-brand-lockup{align-items:center;width:250px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center}.portal-meu-litoral .page-footer .ftr-brand-lockup .hero-brand-name{font-size:clamp(28px,2.8vw,38px)!important;line-height:.95;white-space:normal}.portal-meu-litoral .page-footer .ftr-brand-lockup .hero-brand-tagline{font-size:7px}}
   .portal-meu-litoral .vpc2-btn,.portal-meu-litoral .dest-ver-btn{background:var(--portal-gold);border-color:var(--portal-gold);color:#fff}
   .portal-meu-litoral .navq-arrow,.portal-meu-litoral .bcid-go,.portal-meu-litoral .pcred-go{color:var(--portal-blue)}
   .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
@@ -102,6 +103,7 @@ export async function onRequest(context) {
   const { request, next } = context;
   const url = new URL(request.url);
   const path = url.pathname;
+  if (isPortalMeuLitoral(url) && (path === '/sobre' || path === '/sobre/')) return Response.redirect(new URL('/', url), 301);
   const legacyTarget = LEGACY_REDIRECTS[path];
   if (legacyTarget) return Response.redirect(new URL(legacyTarget, url), 301);
 
