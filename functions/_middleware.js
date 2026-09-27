@@ -34,6 +34,7 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
   .portal-meu-litoral .desk-header .dh-logo img{display:none}
   .portal-meu-litoral #view-home .hero{background-image:url('/img/branding/portal-meu-litoral-hero.jpg')!important;background-position:center 56%;background-size:cover}
+  .portal-meu-litoral #view-home > .qr-sec,.portal-meu-litoral #view-home > #pcred-sec-sec{display:none!important}
   @media(max-width:768px){.portal-meu-litoral #view-home .hero{background-position:center 58%;background-size:cover}}
 </style>`;
 
