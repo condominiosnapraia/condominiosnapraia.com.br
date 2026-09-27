@@ -35,6 +35,8 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral .desk-header .dh-logo img{display:none}
   .portal-meu-litoral #view-home .hero{background-image:url('/img/branding/portal-meu-litoral-hero.jpg')!important;background-position:center 56%;background-size:cover}
   .portal-meu-litoral #view-home > .qr-sec,.portal-meu-litoral #view-home > #pcred-sec-sec{display:none!important}
+  .portal-meu-litoral #view-home .qfilter-bg[data-foto-card="filtro-fora-condominio"]{background-image:url('/img/mapas-condominios/5-CasaHermosa.webp')!important;background-size:cover!important;background-position:center!important}
+  .portal-meu-litoral #view-home .qfilter-bg[data-foto-card="filtro-apartamentos"]{background-image:url('/img/hero-imoveis.jpg')!important;background-size:cover!important;background-position:center!important}
   @media(max-width:768px){.portal-meu-litoral #view-home .hero{background-position:center 58%;background-size:cover}}
 </style>`;
 
