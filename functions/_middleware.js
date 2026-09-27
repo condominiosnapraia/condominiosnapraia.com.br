@@ -173,7 +173,7 @@ export async function onRequest(context) {
   const { request, next } = context;
   const url = new URL(request.url);
   const path = url.pathname;
-  if (isAtlantidaNegocios(url) && (path === '/alison-portela' || path === '/alison-portela/')) {
+  if (isAtlantidaNegocios(url) && new Set(['/alison-portela', '/alison-portela/', '/alisson-portela', '/alisson-portela/', '/alisson-portella', '/alisson-portella/']).has(path)) {
     const target = new URL('/corretor/alisson-portella/', url);
     target.search = url.search;
     return fetch(new Request(target, request));
