@@ -1502,6 +1502,9 @@ if(_savedToken && _savedUser){
         <div class="ed-section" style="margin-top:18px">🏢 Apartamentos em destaque <span style="font-size:10px;color:var(--t3);font-weight:400;letter-spacing:0">até 12</span></div>
         <input class="dest-pick-filter" placeholder="Filtrar apartamentos..." oninput="destFilter(this)" aria-label="Filtrar apartamentos em destaque">
         <div id="dest-apartamento-list" class="dest-pick-grid"></div>
+        <div class="ed-section" style="margin-top:18px">🏠 Casas e sobrados fora de condomínio <span style="font-size:10px;color:var(--t3);font-weight:400;letter-spacing:0">até 12</span></div>
+        <input class="dest-pick-filter" placeholder="Filtrar casas fora de condomínio..." oninput="destFilter(this)" aria-label="Filtrar casas e sobrados fora de condomínio">
+        <div id="dest-casa-fora-list" class="dest-pick-grid"></div>
       </div>
       <div>
         <div class="ed-section">🌳 Terrenos em destaque <span style="font-size:10px;color:var(--t3);font-weight:400;letter-spacing:0">até 12</span></div>
@@ -7108,6 +7111,7 @@ async function buildDestaques(){
   const selXangri = await carrega('destaques_xangri', 'cnp_featured_xangri');
   const selImov   = await carrega('destaques_imov',   'cnp_featured_imov');
   const selApartamento = await carrega('destaques_apartamentos', 'cnp_featured_apartamentos');
+  const selCasaFora = await carrega('destaques_casas_fora', 'cnp_featured_casas_fora');
   const selTerreno= await carrega('destaques_terreno','cnp_featured_terreno');
 
   function cardHtml(c, sel){
@@ -7152,6 +7156,7 @@ async function buildDestaques(){
     </label>`;
   }
   const casas    = DB.im.filter(i=>!ehTerreno(i)&&!ehApartamento(i)&&!ehFora(i));
+  const casasFora = DB.im.filter(i=>!ehTerreno(i)&&!ehApartamento(i)&&ehFora(i));
   const apartamentos = DB.im.filter(i=>ehApartamento(i)&&!ehFora(i));
   const terrenos = DB.im.filter(i=> ehTerreno(i));
   const imovList = document.getElementById('dest-imov-list');
@@ -7165,6 +7170,12 @@ async function buildDestaques(){
     aptList.innerHTML = apartamentos.length===0
       ? '<div class="dest-pick-empty">Nenhum apartamento cadastrado</div>'
       : apartamentos.map(i=>cardImov(i, selApartamento)).join('');
+  }
+  const casaForaList = document.getElementById('dest-casa-fora-list');
+  if(casaForaList){
+    casaForaList.innerHTML = casasFora.length===0
+      ? '<div class="dest-pick-empty">Nenhuma casa ou sobrado fora de condomínio</div>'
+      : casasFora.map(i=>cardImov(i, selCasaFora)).join('');
   }
   const terrList = document.getElementById('dest-terreno-list');
   if(terrList){
@@ -7185,7 +7196,7 @@ function destFilter(input){
 function destUpdate(ev){
   // Cada lista é totalmente independente. Se uma exceder o limite,
   // desmarca o último item marcado DAQUELA lista (não afeta as outras).
-  const limites = [['dest-geral-list',10,'Destaques Gerais'],['dest-capao-list',4,'Destaques Capão'],['dest-xangri-list',4,'Destaques Xangri-lá'],['dest-imov-list',12,'Casas & Sobrados'],['dest-apartamento-list',12,'Apartamentos'],['dest-terreno-list',12,'Terrenos']];
+  const limites = [['dest-geral-list',10,'Destaques Gerais'],['dest-capao-list',4,'Destaques Capão'],['dest-xangri-list',4,'Destaques Xangri-lá'],['dest-imov-list',12,'Casas & Sobrados'],['dest-apartamento-list',12,'Apartamentos'],['dest-casa-fora-list',12,'Casas fora de condomínio'],['dest-terreno-list',12,'Terrenos']];
   // descobre em qual lista o clique aconteceu
   const alvo = ev && ev.target;
   for(const [id,max,nome] of limites){
@@ -7213,12 +7224,14 @@ async function destSave(){
   const selXangri = get('dest-xangri-list');
   const selImov   = get('dest-imov-list');
   const selApartamento = get('dest-apartamento-list');
+  const selCasaFora = get('dest-casa-fora-list');
   const selTerreno= get('dest-terreno-list');
   localStorage.setItem('cnp_featured_cond',   JSON.stringify(selGeral));
   localStorage.setItem('cnp_featured_capao',  JSON.stringify(selCapao));
   localStorage.setItem('cnp_featured_xangri', JSON.stringify(selXangri));
   localStorage.setItem('cnp_featured_imov',   JSON.stringify(selImov));
   localStorage.setItem('cnp_featured_apartamentos', JSON.stringify(selApartamento));
+  localStorage.setItem('cnp_featured_casas_fora', JSON.stringify(selCasaFora));
   localStorage.setItem('cnp_featured_terreno',JSON.stringify(selTerreno));
   try{
     await sb.setConfig('destaques_cond',   selGeral);
@@ -7226,8 +7239,9 @@ async function destSave(){
     await sb.setConfig('destaques_xangri', selXangri);
     await sb.setConfig('destaques_imov',   selImov);
     await sb.setConfig('destaques_apartamentos', selApartamento);
+    await sb.setConfig('destaques_casas_fora', selCasaFora);
     await sb.setConfig('destaques_terreno',selTerreno);
-    toast(`✓ Destaques salvos! Casas ${selImov.length}, Apartamentos ${selApartamento.length}, Terrenos ${selTerreno.length}, Condomínios ${selGeral.length}`,'success');
+    toast(`✓ Destaques salvos! Casas ${selImov.length}, Apartamentos ${selApartamento.length}, Casas fora ${selCasaFora.length}, Terrenos ${selTerreno.length}, Condomínios ${selGeral.length}`,'success');
   }catch(e){ toast('Erro: '+e.message,'error'); }
 }
 

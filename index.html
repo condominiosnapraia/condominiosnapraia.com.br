@@ -1934,11 +1934,11 @@ let _homeConfigPromise = null;
 function agendarConfigHome(){
   const job=function(){
     if(_homeConfigPromise) return;
-    const CHAVES=['destaques_cond','destaques_imov','destaques_apartamentos','destaques_terreno','destaques_capao','destaques_xangri','site_config','turismo_config','fotos_site'];
+    const CHAVES=['destaques_cond','destaques_imov','destaques_apartamentos','destaques_casas_fora','destaques_terreno','destaques_capao','destaques_xangri','site_config','turismo_config','fotos_site'];
     _homeConfigPromise=sbSite.get('configuracoes','?chave=in.('+CHAVES.join(',')+')&select=chave,valor').then(function(rows){
       const cfg={}; (Array.isArray(rows)?rows:[]).forEach(function(c){cfg[c.chave]=c.valor;});
       if(!_siteCache) return;
-      _siteCache.destCond=cfg.destaques_cond||[]; _siteCache.destImov=cfg.destaques_imov||[]; _siteCache.destApartamento=cfg.destaques_apartamentos||[]; _siteCache.destTerreno=cfg.destaques_terreno||[];
+      _siteCache.destCond=cfg.destaques_cond||[]; _siteCache.destImov=cfg.destaques_imov||[]; _siteCache.destApartamento=cfg.destaques_apartamentos||[]; _siteCache.destCasaFora=cfg.destaques_casas_fora||[]; _siteCache.destTerreno=cfg.destaques_terreno||[];
       _siteCache.destCapao=cfg.destaques_capao||[]; _siteCache.destXangri=cfg.destaques_xangri||[];
       _siteCache.siteCfg=cfg.site_config||{}; _siteCache.turismoCfg=cfg.turismo_config||{}; window._fotosSiteMap=cfg.fotos_site||null;
       // As capas chegam em modo adiado; reaplica as fotos depois que o mapa estiver disponível.
@@ -2028,6 +2028,7 @@ async function fetchSiteData(){
     const destCond   = _cfg['destaques_cond']   || [];
     const destImov   = _cfg['destaques_imov']   || [];
     const destApartamento = _cfg['destaques_apartamentos'] || [];
+    const destCasaFora = _cfg['destaques_casas_fora'] || [];
     const destTerreno= _cfg['destaques_terreno']|| [];
     const destCapao  = _cfg['destaques_capao']  || [];
     const destXangri = _cfg['destaques_xangri'] || [];
@@ -2054,6 +2055,8 @@ async function fetchSiteData(){
       imoveis: todosImoveis,
       destCond: destCond || [],
       destImov: destImov || [],
+      destApartamento: destApartamento || [],
+      destCasaFora: destCasaFora || [],
       destTerreno: destTerreno || [],
       destCapao: destCapao || [],
       destXangri: destXangri || [],
@@ -3435,6 +3438,7 @@ function renderImoveisDaSemana(lista){
 function buildHomeDestaques(){
   const destCond=_siteCache?.destCond||[];
   const destImov=_siteCache?.destImov||[];
+  const destCasaFora=_siteCache?.destCasaFora||[];
 
   getDataResolved().then(condos=>{
     const semanaImoveis = (_siteCache && Array.isArray(_siteCache.imoveis) && _siteCache.imoveis.length)
@@ -3517,7 +3521,7 @@ function buildHomeDestaques(){
 
     renderHomeGrid('home-imov-grid', pickDestaques(casasCondominio, destImov, 8), '🏠', 'Cadastre casas e sobrados em condomínio no CRM para exibi-los aqui');
     renderHomeGrid('home-apartamento-grid', pickDestaques(apartamentos, destApartamento, 8), '🏢', 'Nenhum apartamento publicado disponível no momento');
-    renderHomeGrid('home-fora-grid', casasFora.slice(0,8), '🏡', 'Cadastre casas e sobrados fora de condomínio no CRM para exibi-los aqui');
+    renderHomeGrid('home-fora-grid', pickDestaques(casasFora, destCasaFora, 8), '🏡', 'Cadastre casas e sobrados fora de condomínio no CRM para exibi-los aqui');
     renderHomeGrid('home-terreno-grid', pickDestaques(terrenosCondominio, destTerreno, 6), '🌳', 'Cadastre terrenos em condomínio no CRM para exibi-los aqui');
     // Se a secção já estiver próxima, o observer pode ter disparado antes do render.
     const homePhotoSection=document.getElementById('sec-imoveis')||document.getElementById('sec-condominios');
