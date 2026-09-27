@@ -154,7 +154,7 @@ function card(property, compact = false, interestBase = '', brokerName = '') {
   </article>`;
 }
 
-function layout({ site, properties, slug, requestPath, topCondos, verticalCondos = [], publicBase = BASE, publicPrefix = '' }) {
+function layout({ site, properties, slug, requestPath, topCondos, verticalCondos = [], launchCards = [], publicBase = BASE, publicPrefix = '' }) {
   const isRodrigo = slug === 'rodrigo-carvalho';
   const isAlisson = slug === 'alisson-portella';
   const name = isRodrigo ? 'Rodrigo Carvalho' : (site.nome || 'Corretor parceiro');
@@ -198,6 +198,11 @@ function layout({ site, properties, slug, requestPath, topCondos, verticalCondos
     const ameniStr = (c.amenities || []).slice(0, 3).join(' · ');
     return `<a class="condo-card" href="${url}"><div class="condo-photo">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" decoding="async">` : '<div class="condo-photo-empty">Imagem em atualização</div>'}<span class="condo-count">${c.count} ${c.count === 1 ? 'imóvel' : 'imóveis'}</span></div><div class="condo-body"><h3>${esc(c.name)}</h3><p class="condo-city">📍 ${esc(c.city || 'Rio Grande do Sul')}</p>${ameniStr ? `<p class="condo-amenities">${esc(ameniStr)}</p>` : ''}</div></a>`;
   };
+  const launchCard = (item) => {
+    const href = String(item.url || '').startsWith('http') ? item.url : `${publicBase}/${String(item.url || '').replace(/^\/+/, '')}`;
+    const photo = item.foto || item.imagem || '';
+    return `<a class="condo-card launch-card" href="${esc(href)}"><div class="condo-photo">${photo ? `<img src="${esc(photo)}" alt="${esc(item.titulo || 'Lançamento')}" loading="lazy" decoding="async">` : '<div class="condo-photo-empty">Imagem em atualização</div>'}<span class="condo-count">Lançamento</span></div><div class="condo-body"><p class="condo-city">${esc(item.cidade || '')}</p><h3>${esc(item.titulo || 'Novo lançamento')}</h3><p class="condo-amenities">${esc(item.resumo || '')}</p><p class="section-more-btn">Ver oportunidade →</p></div></a>`;
+  };
   const condosSection = (!isAlisson && topCondos && topCondos.length) ? `<section class="condos-section" id="condominios"><div class="section-head"><div><span class="eyebrow">🏛 Empreendimentos</span><h2>Condomínios<small>Os mais procurados da carteira</small></h2></div></div><div class="condos-grid">${topCondos.map(condoCard).join('')}</div><div class="section-more"><a class="section-more-btn" href="${condosUrl}">Ver todos os condomínios<span aria-hidden="true">→</span></a></div></section>` : '';
   // Mantém o nome “Imóveis da Semana”, mas mostra os 12 imóveis
   // cadastrados mais recentemente na carteira publicada do corretor.
@@ -205,7 +210,7 @@ function layout({ site, properties, slug, requestPath, topCondos, verticalCondos
     return property && property.status !== 'vendido';
   }).sort((a, b) => Date.parse(b.createdAt || 0) - Date.parse(a.createdAt || 0)).slice(0, 12);
   const weeklySection = `<section class="property-section" id="sec-imoveis-semana"><div class="section-head"><div><span class="eyebrow">Novidades no catálogo</span><h2>Imóveis da Semana<small>Os últimos imóveis cadastrados</small></h2></div><a class="section-more-btn" href="${fullListingUrl}">Ver todos <span aria-hidden="true">→</span></a></div>${weeklyProperties.length ? `<div class="property-grid">${weeklyProperties.map((item) => card(item, false, wpp, name)).join('')}</div>` : `<div class="empty">Novos imóveis serão exibidos aqui assim que entrarem no catálogo.</div>`}<div class="section-more"><a class="section-more-btn" href="${fullListingUrl}">Ver todos os imóveis<span aria-hidden="true">→</span></a></div></section>`;
-  const launchSection = isAlisson ? `<section class="condos-section section-tone-soft" id="sec-lancamentos"><div class="section-head"><div><span class="eyebrow">✨ Empreendimentos em destaque</span><h2>Lançamentos<small>Aura, Vientos e outros condomínios</small></h2></div><a class="section-more-btn" href="${condosUrl}">Ver todos <span aria-hidden="true">→</span></a></div>${topCondos?.length ? `<div class="condos-grid">${topCondos.map(condoCard).join('')}</div>` : `<div class="empty">Novos lançamentos serão exibidos aqui assim que forem selecionados.</div>`}<div class="section-more"><a class="section-more-btn" href="${condosUrl}">Ver todos os condomínios<span aria-hidden="true">→</span></a></div></section>` : '';
+  const launchSection = isAlisson ? `<section class="condos-section section-tone-soft" id="sec-lancamentos"><div class="section-head"><div><span class="eyebrow">🚀 Novos empreendimentos</span><h2>Lançamentos<small>Os novos empreendimentos do litoral</small></h2></div><a class="section-more-btn" href="${publicBase}/lancamentos/">Ver todos <span aria-hidden="true">→</span></a></div>${launchCards.length ? `<div class="condos-grid">${launchCards.map(launchCard).join('')}</div>` : `<div class="empty">Novos lançamentos serão exibidos aqui assim que forem cadastrados.</div>`}<div class="section-more"><a class="section-more-btn" href="${publicBase}/lancamentos/">Ver todos os lançamentos<span aria-hidden="true">→</span></a></div></section>` : '';
   const verticalSection = isAlisson ? `<section class="condos-section" id="sec-edificios-verticais"><div class="section-head"><div><span class="eyebrow">🏢 Condomínios verticais</span><h2>Edifícios para morar<small>Condomínios verticais em destaque</small></h2></div><a class="section-more-btn" href="${condosUrl}">Ver todos <span aria-hidden="true">→</span></a></div>${verticalCondos.length ? `<div class="condos-grid">${verticalCondos.map(condoCard).join('')}</div>` : `<div class="empty">Edifícios verticais em destaque serão exibidos aqui.</div>`}</section>` : '';
   const sectionMarkup = orderedSections.map((section, index) => {
     const items = properties.filter((property) => property.category === section.category).sort((a, b) => Number(b.featured) - Number(a.featured) || a.displayOrder - b.displayOrder || Date.parse(b.createdAt || 0) - Date.parse(a.createdAt || 0)).slice(0, section.limit);
@@ -432,6 +437,7 @@ export async function onRequest(context) {
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url,brand_color,accent_color&limit=1`, cfg);
   if (!Array.isArray(sites) || !sites[0]) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><style>body{font-family:Arial;padding:48px;max-width:680px;margin:auto;color:#0d3b54}a{color:#0d5c86}.mobile-dock{display:none}@media(max-width:760px){body{padding-bottom:76px}.mobile-dock{position:fixed;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;left:12px;right:12px;bottom:12px;z-index:100;padding:8px;border:1px solid rgba(255,255,255,.22);border-radius:22px;background:rgba(7,35,48,.94);box-shadow:0 14px 40px rgba(0,0,0,.28);backdrop-filter:blur(16px)}.mobile-dock a{display:flex;min-height:48px;align-items:center;justify-content:center;gap:6px;border:1px solid rgba(255,255,255,.22);border-radius:15px;color:#fff!important;font:700 11px/1 Outfit,Arial,sans-serif;text-decoration:none;text-align:center}.mobile-dock a:first-child{background:#f4bf61;border-color:#f4bf61;color:#173743!important}.mobile-dock a:hover{transform:translateY(-1px)}.mobile-dock-icon{font-size:16px;line-height:1}.site-header,.header,.topbar{padding-bottom:0}}</style><h1>Site ainda não publicado</h1><p>Esta landing não está ativa ou o endereço foi digitado incorretamente.</p><a href="https://condominiosnapraia.com.br/">Voltar para Condomínios na Praia</a>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
   const site = sites[0];
+  const launchCards = publicSlug === 'alisson-portella' ? await getJson('lancamentos?ativo=eq.true&select=titulo,cidade,resumo,foto,imagem,url,tag&order=created_at.desc&limit=12', cfg) : [];
   const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${site.id}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,updated_at,imovel:imoveis(id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,bairro_end,fora_condominio,cond_id,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,corretor,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar,created_at)&order=destaque.desc,ordem.asc&limit=1000`, cfg);
   const listingRows = (Array.isArray(rows) ? rows : []).filter((row) => row.imovel && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido');
   let sourceRows = listingRows;
@@ -445,6 +451,13 @@ export async function onRequest(context) {
   }
   const condIds = [...new Set(sourceRows.map((row) => row.imovel?.cond_id).filter(Boolean))];
   const condMap = {};
+  let verticalCatalog = [];
+  if (publicSlug === 'alisson-portella') {
+    const allCondos = await getJson('condominios?select=id,slug,nome,cidade,descricao,amenidades,orientacao,perfil,fotos_no_site,fotos,fotos_para_site&limit=1000', cfg);
+    verticalCatalog = (Array.isArray(allCondos) ? allCondos : [])
+      .filter((cond) => /vertical/i.test(`${cond.orientacao || ''} ${cond.perfil || ''}`))
+      .map((cond) => ({ id: cond.id, slug: slugify(cond.slug || cond.nome || cond.id) || String(cond.id), name: cond.nome || '', city: cond.cidade || '', orientation: cond.orientacao || '', profile: cond.perfil || '', amenities: Array.isArray(cond.amenidades) ? cond.amenidades : [], photo: firstPhoto(cond), count: 0 }));
+  }
   if (condIds.length) {
     const condos = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,slug,nome,cidade,descricao,amenidades,orientacao,perfil,fotos_no_site,fotos,fotos_para_site&limit=1000`, cfg);
     (Array.isArray(condos) ? condos : []).forEach((cond) => { condMap[cond.id] = cond; });
@@ -473,8 +486,10 @@ export async function onRequest(context) {
   });
   const condoList = Object.values(condoStats).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
   const topCondos = condoList.slice(0, 8);
-  const verticalCondos = condoList.filter((condo) => /vertical/i.test(`${condo.orientation || ''} ${condo.profile || ''}`)).slice(0, 8);
-  return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos, verticalCondos, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+  const verticalCondos = [...verticalCatalog, ...condoList.filter((condo) => /vertical/i.test(`${condo.orientation || ''} ${condo.profile || ''}`))]
+    .filter((condo, index, list) => list.findIndex((item) => String(item.id) === String(condo.id)) === index)
+    .slice(0, 8);
+  return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos, verticalCondos, launchCards, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
 
 export { propertySlug, propertyUrl, normalizeListing, card, siteSlugInfo, cityKey, cityLabel, getJson };
