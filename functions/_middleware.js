@@ -175,10 +175,12 @@ function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
 
 function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
-  const isPartnerPage = /^\/(?:corretor|parceiro)\//.test(pageUrl.pathname);
+  const isPartnerPage = /^\/(?:corretor|parceiro)\//.test(pageUrl.pathname)
+    || /^\/alisson[-]?portella(?:\/|$)/.test(pageUrl.pathname);
   rewriter
     .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} atlantida-negocios`.trim()); } })
     .on('a', { element(element) {
+      if (isPartnerPage) return;
       const href = element.getAttribute('href');
       if (!href) return;
       const updated = href
@@ -197,7 +199,7 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
     .on('a.navq-card[href="/contemplado-imoveis/"]', { element(element) { element.remove(); } })
     .on('a.navq-card[href="/refinanciamento-imobiliario/"]', { element(element) { element.remove(); } })
     .on('head', { element(element) { element.append(ATLANTIDA_NEGOCIOS_STYLE, { html: true }); } })
-    .on('body', { element(element) { element.append(ATLANTIDA_WHATSAPP_SCRIPT, { html: true }); } });
+    .on('body', { element(element) { if (!isPartnerPage) element.append(ATLANTIDA_WHATSAPP_SCRIPT, { html: true }); } });
   if (!isPartnerPage) {
     rewriter
       .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | Imóveis no Litoral Norte'); } })
