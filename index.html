@@ -3286,7 +3286,7 @@ function urlHomeImovel(i){
   return '/imovel/'+encodeURIComponent(slug||i.id)+'/';
 }
 function buildImovCard(i){
-  const foto=i.fotos&&i.fotos.find(f=>f&&(f.startsWith('data:')||f.startsWith('http')));
+  const foto=homeFirstPhoto(i);
   const brl=v=>{try{return Number(String(v||0).replace(/\D/g,'')).toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:0});}catch{return'Consulte';}};
   const condo=i._c?`${i._c.nome} · ${i._c.localizacao||i._c.cidade||''}`:(i.condominioNome|| [i.bairro_end||i.bairroEnd, i.cidade_end||i.cidadeEnd].filter(Boolean).join(' · ') || '');
   const sc=i.status==='Disponível'?'stv':i.status==='Reservado'?'str':'stv';
@@ -3598,7 +3598,14 @@ function buildHomeBlog(){
 // somente os dados necessários para texto, filtros e ordenação no primeiro carregamento.
 let _homePhotoPromise=null;
 function homeFirstPhoto(row){
-  const listas=[row&&row.fotos_no_site,row&&row.fotos].filter(Array.isArray);
+  const normalizar=valor=>{
+    if(Array.isArray(valor)) return valor;
+    if(typeof valor==='string'){
+      try{const parsed=JSON.parse(valor);return Array.isArray(parsed)?parsed:[valor];}catch(_){return [valor];}
+    }
+    return [];
+  };
+  const listas=[normalizar(row&&row.fotos_no_site),normalizar(row&&row.fotos)];
   for(const lista of listas){
     const foto=lista.find(f=>f&&typeof f==='string'&&!f.startsWith('idb:'));
     if(foto)return foto;
