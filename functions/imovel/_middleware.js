@@ -193,7 +193,7 @@ function schemaImovel(im, canonicalUrl, title, description, image, city) {
   return result;
 }
 
-function ssrBlock(im, cond, title, description, image, canonicalUrl, city) {
+function ssrBlock(im, cond, title, description, image, canonicalUrl, city, siteOrigin = SITE) {
   const price = precoPublico(im?.preco);
   const broker = String(im?.corretor || 'Condomínios na Praia').trim();
   const condName = String(cond?.nome || '').trim();
@@ -205,7 +205,7 @@ function ssrBlock(im, cond, title, description, image, canonicalUrl, city) {
     (im?.area || im?.area_privativa || im?.area_construida) ? `<div><span>Área</span><strong>${esc(im.area || im.area_privativa || im.area_construida)} m²</strong></div>` : ''
   ].filter(Boolean).join('');
   return `<article id="ssr-imovel" class="ip-ssr" data-ssr="true">
-    <nav class="crumb" aria-label="Breadcrumb"><a href="${SITE}/">Início</a> › <a href="${SITE}/imoveis/">Imóveis</a> › <span>${esc(city)}</span></nav>
+    <nav class="crumb" aria-label="Breadcrumb"><a href="${siteOrigin}/">Início</a> › <a href="${siteOrigin}/imoveis/">Imóveis</a> › <span>${esc(city)}</span></nav>
     <h1 class="ip-title">${esc(title)}</h1>
     <p class="ip-ssr-location">${esc(city)} · Condomínios na Praia</p>
     <img class="ip-ssr-image" src="${esc(image)}" width="1200" height="800" loading="eager" fetchpriority="high" decoding="async" alt="${esc(title)}">
@@ -214,13 +214,14 @@ function ssrBlock(im, cond, title, description, image, canonicalUrl, city) {
     <div class="ip-desc"><h2>Sobre este imóvel</h2><p>${esc(description)}</p></div>
     ${condName ? `<section class="ip-ssr-cond"><h2>Informações do condomínio</h2><p><strong>${esc(condName)}</strong>${condCity ? ` · ${esc(condCity)}` : ''}</p>${cond?.descricao ? `<p>${esc(descricaoPublica(cond.descricao))}</p>` : ''}${Array.isArray(cond?.amenidades) && cond.amenidades.length ? `<p><strong>Infraestrutura:</strong> ${esc(cond.amenidades.slice(0, 8).join(', '))}</p>` : ''}</section>` : ''}
     <section class="ip-ssr-broker"><h2>Corretor responsável</h2><p><strong>${esc(broker)}</strong> · CRECI-RS 72.386</p><p>Atendimento personalizado para compra e visita ao imóvel.</p><p><a href="https://wa.me/5551997698450?text=${encodeURIComponent(`Olá! Gostaria de receber mais informações sobre este imóvel.\n\nCódigo: ${im?.codigo || im?.ref || 'Não informado'}\nImóvel: ${title}${condName ? `\nCondomínio: ${condName}` : ''}\nPreço: ${precoPublico(im?.preco) || 'Consulte o valor'}.\n\nPodem me informar a disponibilidade, as condições e as opções para agendar uma visita?`)}">Falar no WhatsApp</a></p></section>
-    <p class="ip-ssr-cta"><a href="${SITE}/contato/">Fale com um consultor</a></p>
+    <p class="ip-ssr-cta"><a href="${siteOrigin}/contato/">Fale com um consultor</a></p>
   </article>`;
 }
 
 export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
+  const siteOrigin = url.origin;
   const pathMatch = url.pathname.match(/^\/imovel\/([^/]+)\/?$/i);
   const pathRef = pathMatch ? decodeURIComponent(pathMatch[1]) : '';
   const legacyRef = url.searchParams.get('id') || '';
@@ -244,10 +245,10 @@ export async function onRequest(context) {
 
   const canonicalSlug = slugPublico(im);
   if (legacyRef && legacyRef !== canonicalSlug) {
-    return Response.redirect(`${SITE}/imovel/${encodeURIComponent(canonicalSlug)}/`, 301);
+    return Response.redirect(`${siteOrigin}/imovel/${encodeURIComponent(canonicalSlug)}/`, 301);
   }
   if (pathRef && pathRef !== canonicalSlug) {
-    return Response.redirect(`${SITE}/imovel/${encodeURIComponent(canonicalSlug)}/`, 301);
+    return Response.redirect(`${siteOrigin}/imovel/${encodeURIComponent(canonicalSlug)}/`, 301);
   }
 
   // URLs canônicas sempre recebem SSR; a URL legada só é mantida para humanos quando não há redirect.
@@ -259,7 +260,7 @@ export async function onRequest(context) {
   const ogTitle = `${title}${city ? ` — ${city}` : ''}`;
   const description = (descricaoPublica(im.descricao) || `${title} no Litoral Norte Gaúcho. Confira fotos, valor e detalhes.`).slice(0, 160);
   const image = fotoPrincipal(im);
-  const canonicalUrl = `${SITE}/imovel/${encodeURIComponent(canonicalSlug)}/`;
+  const canonicalUrl = `${siteOrigin}/imovel/${encodeURIComponent(canonicalSlug)}/`;
       const schema = schemaImovel(im, canonicalUrl, title, description, image, city);
 
   const html = await response.text();
@@ -275,7 +276,7 @@ export async function onRequest(context) {
     `\n<meta name="twitter:image" content="${esc(image)}">` +
     '\n<meta name="twitter:card" content="summary_large_image">' +
     '\n<style id="ip-ssr-style">.ip-ssr{padding:20px 0 48px}.ip-ssr-image{display:block;width:100%;height:auto;max-height:560px;object-fit:cover;border-radius:16px;margin:18px 0}.ip-ssr-location{color:#5b7585;font-size:14px}.ip-ssr-facts{display:flex;flex-wrap:wrap;gap:1px;background:rgba(31,181,196,.18);border:1px solid rgba(31,181,196,.18);border-radius:12px;overflow:hidden;margin:24px 0}.ip-ssr-facts div{background:#fff;padding:14px 18px;min-width:130px}.ip-ssr-facts span{display:block;color:#5b7585;font-size:10px;letter-spacing:.12em;text-transform:uppercase}.ip-ssr-facts strong{display:block;color:#0d3b54;margin-top:3px}.ip-ssr .ip-desc h2,.ip-ssr-cond h2,.ip-ssr-broker h2{font-family:Fraunces,serif;color:#0d3b54;margin:30px 0 8px}.ip-ssr .ip-desc p,.ip-ssr-cond p,.ip-ssr-broker p{color:#2e4654;line-height:1.75}.ip-ssr-broker,.ip-ssr-cond{padding:18px 20px;border:1px solid rgba(31,181,196,.18);border-radius:14px;margin-top:22px;background:#f7fbfc}.ip-ssr-broker a{color:#0a7d32;font-weight:700}.ip-ssr-cta a{display:inline-flex;background:#0d3b54;color:#fff;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600}</style>';
-  const content = ssrBlock(im, cond, title, description, image, canonicalUrl, city);
+  const content = ssrBlock(im, cond, title, description, image, canonicalUrl, city, siteOrigin);
   const transformed = html
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${htmlTitle}</title>`)
     .replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${htmlDesc}">`)
