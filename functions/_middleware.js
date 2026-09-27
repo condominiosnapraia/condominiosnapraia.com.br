@@ -33,6 +33,8 @@ const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   .portal-meu-litoral .navq-arrow,.portal-meu-litoral .bcid-go,.portal-meu-litoral .pcred-go{color:var(--portal-blue)}
   .portal-meu-litoral .desk-header .dh-logo{width:218px;height:50px;background:url('/img/branding/portal-meu-litoral-logo.jpg') center left/contain no-repeat}
   .portal-meu-litoral .desk-header .dh-logo img{display:none}
+  .portal-meu-litoral #view-home .hero{background-image:url('/img/branding/portal-meu-litoral-hero.jpg')!important;background-position:center 56%;background-size:cover}
+  @media(max-width:768px){.portal-meu-litoral #view-home .hero{background-position:center 58%;background-size:cover}}
 </style>`;
 
 const PORTAL_MEULITORAL_HOME_ORDER = `<script id="portal-meu-litoral-home-order">
