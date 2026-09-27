@@ -73,6 +73,19 @@ const PORTAL_MEULITORAL_HOME_ORDER = `<script id="portal-meu-litoral-home-order"
   }());
 </script>`;
 
+const ATLANTIDA_NEGOCIOS_HOME_ORDER = `<script id="atlantida-negocios-home-order">
+  (function(){
+    function arrangeAtlantidaHome(){
+      var home=document.getElementById('view-home');
+      if(!home) return;
+      ['qfilter2','qr-sec','pcred-sec-sec','sec-blog-preview','viver-intro-sec','viver-lagoa','viver-mar','viver-cidade','guias-cidades','guias-decisao'].forEach(function(id){var section=document.getElementById(id);if(section&&section.parentElement===home)section.remove();});
+      var order=['sec-fora-cond','sec-apartamentos','sec-imoveis','sec-terrenos','sec-condominios-verticais','sec-condominios','sec-imoveis-semana','lch-sec-sec'];
+      order.forEach(function(id){var section=document.getElementById(id);if(section&&section.parentElement===home)home.appendChild(section);});
+    }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',arrangeAtlantidaHome,{once:true});else arrangeAtlantidaHome();
+  }());
+</script>`;
+
 const ATLANTIDA_NEGOCIOS_STYLE = `<style id="atlantida-negocios-theme">
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
   .atlantida-negocios{--atl-navy:#25313a;--atl-gold:#b58b45;font-family:'Montserrat',Outfit,Arial,sans-serif}
@@ -141,6 +154,7 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
     .on('.hero-brand-tagline', { element(element) { element.setInnerContent('Imóveis e oportunidades no Litoral Norte'); } })
     .on('.ftr-brand-lockup .hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
     .on('.dh-logo', { element(element) { element.setAttribute('aria-label', 'Atlântida Negócios — início'); } })
+    .on('#sec-condominios-verticais', { element(element) { element.removeAttribute('hidden'); } })
     .on('a.navq-card[href="/financiamento-imobiliario/"]', { element(element) { element.remove(); } })
     .on('a.navq-card[href="/contemplado-imoveis/"]', { element(element) { element.remove(); } })
     .on('a.navq-card[href="/refinanciamento-imobiliario/"]', { element(element) { element.remove(); } })
@@ -189,7 +203,7 @@ export async function onRequest(context) {
   }
   if (isAtlantidaNegocios(url)) applyAtlantidaNegociosBrand(rewriter, url);
   if (isAtlantidaNegocios(url) && (path === '/' || path === '/index.html')) {
-    rewriter.on('body', { element(element) { element.append(PORTAL_MEULITORAL_HOME_ORDER, { html: true }); } });
+    rewriter.on('body', { element(element) { element.append(ATLANTIDA_NEGOCIOS_HOME_ORDER, { html: true }); } });
   }
   if (needsFavorites) {
     rewriter.on('head', {
