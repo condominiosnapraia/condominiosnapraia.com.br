@@ -76,14 +76,21 @@ const PORTAL_MEULITORAL_HOME_ORDER = `<script id="portal-meu-litoral-home-order"
 const ATLANTIDA_NEGOCIOS_STYLE = `<style id="atlantida-negocios-theme">
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
   .atlantida-negocios{--atl-navy:#25313a;--atl-gold:#b58b45;font-family:'Montserrat',Outfit,Arial,sans-serif}
-  .atlantida-negocios .desk-header .dh-logo{width:220px;height:54px;background:url('/assets/atlantida-negocios-logo-crop.png') center/contain no-repeat;background-color:#fff;border-radius:8px}
-  .atlantida-negocios .desk-header .dh-logo img{display:none}
-  .atlantida-negocios #view-home .hero-brand-lockup{background:rgba(255,255,255,.94);border-radius:18px;padding:18px 28px 16px;box-shadow:0 12px 32px rgba(0,0,0,.18);width:min(520px,calc(100vw - 34px));height:154px;box-sizing:border-box;background-image:url('/assets/atlantida-negocios-logo-crop.png');background-repeat:no-repeat;background-position:center;background-size:contain}
-  .atlantida-negocios #view-home .hero-brand-lockup>*{visibility:hidden}
-  .atlantida-negocios .page-footer .ftr-brand-lockup{background:#fff;border-radius:10px;padding:12px 18px;width:250px;box-sizing:border-box;background-image:url('/assets/atlantida-negocios-logo-crop.png');background-repeat:no-repeat;background-position:center;background-size:contain;min-height:88px}
+  .atlantida-negocios .desk-header-inner{justify-content:center;position:relative}
+  .atlantida-negocios .desk-header .dh-logo{display:none!important}
+  .atlantida-negocios .desk-header .dh-nav{flex:1 1 auto;width:100%;justify-content:space-between;gap:0}
+  .atlantida-negocios .desk-header .dh-nav a{flex:1 1 0;text-align:center;padding-left:8px;padding-right:8px}
+  .atlantida-negocios .desk-header .dh-nav a[href="/turismo/"],.atlantida-negocios .desk-header .dh-nav a[href="/sobre/"]{display:none!important}
+  .atlantida-negocios .desk-header .dh-cta{display:none!important}
+  .atlantida-negocios a[href="/sobre/"]{display:none!important}
+  .atlantida-negocios #view-home .hero-brand-lockup{background:transparent;box-shadow:none;width:max-content;height:auto;padding:0}
+  .atlantida-negocios #view-home .hero-brand-lockup>*{visibility:visible}
+  .atlantida-negocios #view-home .hero-brand-name{font-family:'Cormorant Garamond',Fraunces,Georgia,serif;font-size:clamp(58px,9vw,110px);font-weight:600;letter-spacing:-.025em;color:#fff7e8;text-shadow:0 3px 18px rgba(7,40,62,.45),0 1px 3px rgba(7,40,62,.55)}
+  .atlantida-negocios .page-footer .ftr-brand-lockup{align-items:center;width:220px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center;background:#fff;border-radius:8px;padding:10px 14px;box-sizing:border-box;background-image:url('/assets/atlantida-logo-alternative.png');background-repeat:no-repeat;background-position:center;background-size:contain;min-height:76px}
   .atlantida-negocios .page-footer .ftr-brand-lockup>*{visibility:hidden}
   .atlantida-negocios .sectit-sub,.atlantida-negocios .eyebrow{color:var(--atl-gold)}
-  @media(max-width:600px){.atlantida-negocios #view-home .hero-brand-lockup{height:112px;padding:12px 18px}.atlantida-negocios .page-footer .ftr-brand-lockup{width:220px;min-height:76px}}
+  @media(min-width:981px){.atlantida-negocios .page-footer .ftr-col-brand .ftr-brand-lockup{align-items:center;width:220px;max-width:100%;margin-left:auto;margin-right:auto;text-align:center}}
+  @media(max-width:600px){.atlantida-negocios #view-home .hero-brand-name{font-size:clamp(40px,12.4vw,54px)}.atlantida-negocios .page-footer .ftr-brand-lockup{width:200px;min-height:70px}}
 </style>`;
 
 function adminNotFound() {
@@ -141,7 +148,7 @@ export async function onRequest(context) {
   const { request, next } = context;
   const url = new URL(request.url);
   const path = url.pathname;
-  if (isPortalMeuLitoral(url) && (path === '/sobre' || path === '/sobre/')) return Response.redirect(new URL('/', url), 301);
+  if ((isPortalMeuLitoral(url) || isAtlantidaNegocios(url)) && (path === '/sobre' || path === '/sobre/')) return Response.redirect(new URL('/', url), 301);
   const legacyTarget = LEGACY_REDIRECTS[path];
   if (legacyTarget) return Response.redirect(new URL(legacyTarget, url), 301);
 
