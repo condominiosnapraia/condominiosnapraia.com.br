@@ -377,6 +377,10 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 .category-nav{display:block!important;width:100%!important}.category-nav-heading{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;flex:none!important;clear:both!important;text-align:center!important}.category-nav-heading strong{width:100%!important;text-align:center!important}.category-nav-links{display:flex!important;flex-wrap:nowrap!important;width:100%!important;clear:both!important}
 @media(max-width:760px){.category-nav-links{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;flex-wrap:initial!important}.mob-footer-items{gap:0!important;padding:0!important}.mob-footer-btn,.mob-footer-btn:nth-child(1),.mob-footer-btn:nth-child(2),.mob-footer-btn:nth-child(3),.mob-footer-btn:nth-child(4){margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#aaa!important;filter:none!important;transform:none!important}.mob-footer-btn.wpp-btn,.mob-footer-btn:nth-child(5){background:transparent!important;color:#25d366!important}.mob-footer-btn:hover,.mob-footer-btn.active{background:transparent!important;color:#0c4a6e!important;filter:none!important}.mob-footer-btn.wpp-btn:hover,.mob-footer-btn.wpp-btn.active{color:#25d366!important}}
 </style>
+<style id="partner-navigation-spacing">
+.category-nav-heading{margin-bottom:22px!important;padding-bottom:2px}.category-nav-links{padding-top:4px!important}
+@media(max-width:760px){.category-nav-heading{margin-bottom:20px!important;padding-bottom:3px}.category-nav-links{row-gap:12px!important;padding-top:4px!important}}
+</style>
 </head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
