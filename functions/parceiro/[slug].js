@@ -154,7 +154,7 @@ function card(property, compact = false, interestBase = '', brokerName = '') {
   </article>`;
 }
 
-function layout({ site, properties, slug, requestPath, topCondos, publicBase = BASE, publicPrefix = '' }) {
+function layout({ site, properties, slug, requestPath, topCondos, verticalCondos = [], publicBase = BASE, publicPrefix = '' }) {
   const isRodrigo = slug === 'rodrigo-carvalho';
   const isAlisson = slug === 'alisson-portella';
   const name = isRodrigo ? 'Rodrigo Carvalho' : (site.nome || 'Corretor parceiro');
@@ -206,7 +206,6 @@ function layout({ site, properties, slug, requestPath, topCondos, publicBase = B
   }).sort((a, b) => Date.parse(b.createdAt || 0) - Date.parse(a.createdAt || 0)).slice(0, 12);
   const weeklySection = `<section class="property-section" id="sec-imoveis-semana"><div class="section-head"><div><span class="eyebrow">Novidades no catálogo</span><h2>Imóveis da Semana<small>Os últimos imóveis cadastrados</small></h2></div><a class="section-more-btn" href="${fullListingUrl}">Ver todos <span aria-hidden="true">→</span></a></div>${weeklyProperties.length ? `<div class="property-grid">${weeklyProperties.map((item) => card(item, false, wpp, name)).join('')}</div>` : `<div class="empty">Novos imóveis serão exibidos aqui assim que entrarem no catálogo.</div>`}<div class="section-more"><a class="section-more-btn" href="${fullListingUrl}">Ver todos os imóveis<span aria-hidden="true">→</span></a></div></section>`;
   const launchSection = isAlisson ? `<section class="condos-section section-tone-soft" id="sec-lancamentos"><div class="section-head"><div><span class="eyebrow">✨ Empreendimentos em destaque</span><h2>Lançamentos<small>Aura, Vientos e outros condomínios</small></h2></div><a class="section-more-btn" href="${condosUrl}">Ver todos <span aria-hidden="true">→</span></a></div>${topCondos?.length ? `<div class="condos-grid">${topCondos.map(condoCard).join('')}</div>` : `<div class="empty">Novos lançamentos serão exibidos aqui assim que forem selecionados.</div>`}<div class="section-more"><a class="section-more-btn" href="${condosUrl}">Ver todos os condomínios<span aria-hidden="true">→</span></a></div></section>` : '';
-  const verticalCondos = (topCondos || []).filter((condo) => /vertical/i.test(`${condo.orientation || ''} ${condo.profile || ''}`));
   const verticalSection = isAlisson ? `<section class="condos-section" id="sec-edificios-verticais"><div class="section-head"><div><span class="eyebrow">🏢 Condomínios verticais</span><h2>Edifícios para morar<small>Condomínios verticais em destaque</small></h2></div><a class="section-more-btn" href="${condosUrl}">Ver todos <span aria-hidden="true">→</span></a></div>${verticalCondos.length ? `<div class="condos-grid">${verticalCondos.map(condoCard).join('')}</div>` : `<div class="empty">Edifícios verticais em destaque serão exibidos aqui.</div>`}</section>` : '';
   const sectionMarkup = orderedSections.map((section, index) => {
     const items = properties.filter((property) => property.category === section.category).sort((a, b) => Number(b.featured) - Number(a.featured) || a.displayOrder - b.displayOrder || Date.parse(b.createdAt || 0) - Date.parse(a.createdAt || 0)).slice(0, section.limit);
@@ -474,7 +473,8 @@ export async function onRequest(context) {
   });
   const condoList = Object.values(condoStats).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
   const topCondos = condoList.slice(0, 8);
-  return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+  const verticalCondos = condoList.filter((condo) => /vertical/i.test(`${condo.orientation || ''} ${condo.profile || ''}`)).slice(0, 8);
+  return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos, verticalCondos, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
 
 export { propertySlug, propertyUrl, normalizeListing, card, siteSlugInfo, cityKey, cityLabel, getJson };
