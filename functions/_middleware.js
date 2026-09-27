@@ -190,11 +190,13 @@ export async function onRequest(context) {
     const response = await fetch(new Request(target, { method: forwarded.method, headers }));
     const internalPrefix = 'https://condominiosnapraia.com.br/corretor/alisson-portella';
     const publicPrefix = `${url.origin}${alissonAlias}`;
-    const mobileStyle = `<style id="atlantida-partner-mobile-parity">.mob-footer-btn,.mobile-dock a{background:transparent!important;color:#aaa!important;border:0!important;border-radius:0!important;margin:0!important}.mob-footer-btn.wpp-btn,.mobile-dock a:nth-child(5){background:transparent!important;color:#25d366!important;border:0!important}</style>`;
+    const whatsappSvg = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.9c0 2.1.5 4.1 1.6 5.9L.2 24l6.4-1.7a11.9 11.9 0 0 0 5.5 1.4h.1c6.5 0 11.8-5.3 11.8-11.9 0-3.1-1.3-6.1-3.5-8.3Zm-8.4 18.2h-.1a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 0 1-1.5-5.2c0-5.4 4.4-9.9 9.9-9.9a9.8 9.8 0 0 1 7 2.9 9.9 9.9 0 0 1 2.9 7c0 5.4-4.4 9.9-9.8 9.9Zm5.4-7.4c-.3-.2-1.7-.9-2-.9-.3-.1-.5 0-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.6-.8-2.7-1.5-3.7-3.3-.3-.5.3-.6.8-1.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-1-2.2-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.2.2 2 3.1 4.9 4.3.7.3 1.3.6 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-1.4.2-.7.1-1.2.1-1.4-.1-.1-.3-.3-.6-.4Z"/></svg>`;
+    const mobileStyle = `<style id="atlantida-partner-mobile-parity">.mob-footer-btn,.mobile-dock a{background:transparent!important;color:#aaa!important;border:0!important;border-radius:0!important;margin:0!important}.mob-footer-btn.wpp-btn,.mobile-dock a:nth-child(5){background:transparent!important;color:#25d366!important;border:0!important}.mob-footer-ico svg{width:20px;height:20px;display:block;fill:currentColor}</style>`;
     return new HTMLRewriter()
       .on('a', { element(element) { const href = element.getAttribute('href'); if (href && href.startsWith(internalPrefix)) element.setAttribute('href', `${publicPrefix}${href.slice(internalPrefix.length)}`); } })
       .on('link[rel="canonical"]', { element(element) { const href = element.getAttribute('href'); if (href && href.startsWith(internalPrefix)) element.setAttribute('href', `${publicPrefix}${href.slice(internalPrefix.length)}`); } })
       .on('meta[property="og:url"]', { element(element) { const content = element.getAttribute('content'); if (content && content.startsWith(internalPrefix)) element.setAttribute('content', `${publicPrefix}${content.slice(internalPrefix.length)}`); } })
+      .on('.mob-footer-btn.wpp-btn .mob-footer-ico', { element(element) { element.setInnerContent(whatsappSvg, { html: true }); } })
       .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | Alisson Portella'); } })
       .on('head', { element(element) { element.append(mobileStyle, { html: true }); } })
       .transform(response);
