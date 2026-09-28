@@ -197,7 +197,7 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
         .replace(/(\bWPP\s*=\s*['"])\d+(['"])/g, `$1${ATLANTIDA_WHATSAPP}$2`)
         .replace(/(\b(?:phone|telephone)\s*["']?\s*:\s*["']\+?)\d+/ig, `$1${ATLANTIDA_WHATSAPP}`)
         .replaceAll('5551997698450', ATLANTIDA_WHATSAPP);
-      if (updated !== text.text) text.replace(updated);
+      if (updated !== text.text) text.replace(updated, { html: true });
     } })
     .on('.hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
     .on('.hero-brand-tagline', { element(element) { element.setInnerContent('Imóveis e oportunidades no Litoral Norte'); } })
