@@ -1633,15 +1633,17 @@ if(_savedToken && _savedUser){
       <div class="mht" id="usu-mo-title">Editar Usuário</div>
       <div style="display:flex;gap:8px">
         <button class="btn bg bsm" onclick="cMo('usu-mo')">✕</button>
+        <button class="btn bd2b bsm" id="usu-delete-btn" onclick="dUsuario()">🗑 Excluir</button>
         <button class="btn bs" onclick="savUsuario()">💾 Salvar</button>
       </div>
     </div>
     <div class="mb" style="display:flex;flex-direction:column;gap:12px">
       <input type="hidden" id="usu-id">
-      <div class="fg"><label class="fl" for="usu-nome">Nome</label><input class="fi" id="usu-nome" disabled style="opacity:.7" aria-label="Usu Nome"></div>
-      <div class="fg"><label class="fl" for="usu-email">E-mail</label><input class="fi" id="usu-email" disabled style="opacity:.7" aria-label="Usu Email"></div>
+      <div class="fg"><label class="fl" for="usu-nome">Nome</label><input class="fi" id="usu-nome" aria-label="Usu Nome"></div>
+      <div class="fg"><label class="fl" for="usu-email">E-mail de acesso</label><input class="fi" id="usu-email" disabled style="opacity:.6" aria-label="Usu Email"><small style="color:var(--t3)">O e-mail de autenticação não pode ser alterado por este painel.</small></div>
+      <div class="fg"><label class="fl" for="usu-telefone">Telefone</label><input class="fi" id="usu-telefone" placeholder="(51) 99999-9999" aria-label="Usu Telefone"></div>
       <div class="fgg">
-        <div class="fg"><label class="fl" for="usu-creci">CRECI</label><input class="fi" id="usu-creci" disabled style="opacity:.7" aria-label="Usu Creci"></div>
+        <div class="fg"><label class="fl" for="usu-creci">CRECI</label><input class="fi" id="usu-creci" aria-label="Usu Creci"></div>
         <div class="fg"><label class="fl" for="usu-role">Perfil</label>
           <select class="fse" id="usu-role" aria-label="Usu Role">
             <option value="visualizador">Visualizador</option>
@@ -6320,7 +6322,7 @@ async function buildUsuarios(){
             ${u.creci?`<span style="font-size:9px;color:var(--t3)">${u.creci}</span>`:''}
           </div>
         </div>
-        <button class="btn bg bxs" onclick="eUsuario('${u.id}')">✏</button>
+        <div style="display:flex;gap:5px;flex-shrink:0"><button class="btn bg bxs" onclick="eUsuario('${u.id}')" title="Editar usuário">✏</button><button class="btn bd2b bxs" onclick="dUsuario('${u.id}')" title="Excluir usuário">🗑</button></div>
       </div>`).join('') + '</div>';
   }catch(e){ body.innerHTML=`<div class="empty"><div class="empty-ico">⚠️</div><p>Erro: ${e.message}</p></div>`; }
 }
@@ -6332,6 +6334,7 @@ async function eUsuario(id){
     document.getElementById('usu-id').value = u.id;
     document.getElementById('usu-nome').value = u.nome||'';
     document.getElementById('usu-email').value = u.email||'';
+    document.getElementById('usu-telefone').value = u.telefone||'';
     document.getElementById('usu-creci').value = u.creci||'';
     document.getElementById('usu-role').value = u.role||'consultor';
     document.getElementById('usu-ativo').value = u.ativo?'1':'0';
@@ -6342,14 +6345,37 @@ async function eUsuario(id){
 
 async function savUsuario(){
   const id = document.getElementById('usu-id').value;
+  const nome = (document.getElementById('usu-nome').value||'').trim();
+  const telefone = (document.getElementById('usu-telefone').value||'').trim();
+  const creci = (document.getElementById('usu-creci').value||'').trim();
   const role = document.getElementById('usu-role').value;
   const ativo = document.getElementById('usu-ativo').value === '1';
+  if(!nome){ toast('Informe o nome do usuário.','error'); return; }
   try{
-    await sb.patch('usuarios', id, {role, ativo, updated_at:new Date().toISOString()});
+    await sb.patch('usuarios', id, {nome, telefone, creci, role, ativo, updated_at:new Date().toISOString()});
     logAtividade('editou','usuario',id,'');
     cMo('usu-mo'); buildUsuarios();
     toast('Usuário atualizado!','success');
   }catch(e){ toast('Erro: '+e.message,'error'); }
+}
+async function dUsuario(id){
+  const targetId = id || document.getElementById('usu-id').value;
+  if(!targetId) return;
+  if(targetId === (_authProfile||{}).id){ toast('Não é possível excluir o próprio usuário administrador.','error'); return; }
+  try{
+    const users = await sb.get('usuarios', `?id=eq.${encodeURIComponent(targetId)}&select=id,nome,role`);
+    const u = users[0]; if(!u) return;
+    if(u.role==='admin'){
+      const admins = await sb.get('usuarios', '?role=eq.admin&ativo=eq.true&select=id&limit=2');
+      if(admins.length<=1){ toast('O último administrador ativo não pode ser excluído.','error'); return; }
+    }
+    if(!confirm(`Excluir o usuário "${u.nome||'sem nome'}"?\n\nO perfil será removido e ele perderá o acesso ao CRM. Esta ação não pode ser desfeita.`)) return;
+    await sb.delete('usuarios', targetId);
+    logAtividade('excluiu','usuario',targetId,u.nome||'');
+    cMo('usu-mo');
+    toast('Usuário excluído.','success');
+    buildUsuarios();
+  }catch(e){ toast('Erro ao excluir: '+(e.message||e),'error'); }
 }
 
 // ── CRIAR NOVO USUÁRIO (apenas admin) ──
