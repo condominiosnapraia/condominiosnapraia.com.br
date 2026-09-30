@@ -138,6 +138,37 @@ const ATLANTIDA_NEGOCIOS_STYLE = `<style id="atlantida-negocios-theme">
   @media(max-width:600px){.atlantida-negocios #view-home .hero-brand-name{font-size:clamp(40px,12.4vw,54px)}.atlantida-negocios .page-footer .ftr-brand-lockup{width:200px;min-height:70px}}
 </style>`;
 
+const ATLANTIDA_CRM_STYLE = `<style id="atlantida-crm-theme">
+  :root{--bg:#f4f1eb!important;--sf:#fffdf9!important;--s2:#f6f1e9!important;--s3:#eee7dc!important;--bd:#e4d9c9!important;--bd2:#cdbda8!important;--ac:#9b7138!important;--acd:rgba(155,113,56,.12)!important;--go:#b08242!important;--tx:#23333a!important;--t2:#66747a!important;--t3:#9b9b91!important}
+  body{background:linear-gradient(135deg,#f5f0e8 0%,#ebe4d9 100%)!important;color:#23333a!important}
+  #login-screen{background:radial-gradient(circle at 15% 15%,rgba(190,151,88,.22),transparent 34%),linear-gradient(135deg,#172b32 0%,#243e42 52%,#102127 100%)!important}
+  .login-shell{border:1px solid rgba(224,190,130,.3)!important;box-shadow:0 28px 80px rgba(12,25,29,.38)!important;border-radius:26px!important;overflow:hidden!important}
+  .login-aside{background:linear-gradient(155deg,#25454b 0%,#173138 52%,#102328 100%)!important}
+  .login-brandmark{display:none!important}
+  .login-aside-mid h2{font-family:'DM Serif Display',Georgia,serif!important;font-size:34px!important;letter-spacing:-.02em!important;color:#fff!important}
+  .login-aside-mid p{color:#dce5e1!important}
+  .login-aside-foot{color:#d8c39d!important;letter-spacing:.08em!important}
+  .login-box{background:#fffdf9!important}
+  #lv-login .login-logo{font-size:0!important;color:#23333a!important;letter-spacing:-.02em}
+  #lv-login .login-logo:after{content:'Atlântida Negócios';font-size:30px;display:block}
+  .login-sub{color:#a17a43!important;letter-spacing:.18em!important}
+  .login-input{background:#fbf8f3!important;border-color:#dfd2c0!important;border-radius:12px!important}
+  .login-input:focus{border-color:#b08242!important;box-shadow:0 0 0 3px rgba(176,130,66,.13)!important}
+  .login-btn{background:linear-gradient(100deg,#a9793d,#c49a5d)!important;border-radius:999px!important;box-shadow:0 10px 22px rgba(160,116,57,.24)!important}
+  .login-link a{color:#9b7138!important}
+  .login-footer{color:#9b9b91!important;font-size:0!important}
+  .login-footer:after{content:'Atlântida Negócios · Litoral Norte';font-size:11px}
+  .brand{font-size:0!important;color:#9b7138!important;letter-spacing:.02em}
+  .brand:after{content:'Atlântida CRM';font:600 17px 'DM Sans',sans-serif}
+  .topbar{background:#fffdf9!important;border-bottom-color:#e4d9c9!important}
+  .sidebar,.rail{background:#fffdf9!important;border-color:#e4d9c9!important}
+  .panel{background:transparent!important}
+  .pht{color:#23333a!important}
+  .btn.bp{background:#9b7138!important}.btn.bp:hover{background:#805b2d!important}
+  .tbb-go{background:#9b7138!important}.tbb-go:hover{background:#805b2d!important}
+  @media(max-width:900px){.login-shell{border-radius:20px!important}.login-aside{display:none!important}.login-box{width:100%!important}.brand:after{font-size:15px}}
+</style>`;
+
 function adminNotFound() {
   return new Response('Not Found', {
     status: 404,
@@ -175,6 +206,7 @@ function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
 
 function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
+  const isCrmPage = pageUrl.pathname === '/crm' || pageUrl.pathname.startsWith('/crm/');
   const isPartnerPage = /^\/(?:corretor|parceiro)\//.test(pageUrl.pathname)
     || /^\/alisson[-]?portella(?:\/|$)/.test(pageUrl.pathname);
   rewriter
@@ -210,6 +242,17 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
     .on('a.navq-card[href="/refinanciamento-imobiliario/"]', { element(element) { element.remove(); } })
     .on('head', { element(element) { element.append(ATLANTIDA_NEGOCIOS_STYLE, { html: true }); } })
     .on('body', { element(element) { if (!isPartnerPage) element.append(ATLANTIDA_WHATSAPP_SCRIPT, { html: true }); } });
+  if (isCrmPage) {
+    rewriter
+      .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | CRM'); } })
+      .on('.login-aside-mid h2', { element(element) { element.setInnerContent('Gestão imobiliária com visão premium.'); } })
+      .on('.login-aside-mid p', { element(element) { element.setInnerContent('Organize imóveis, clientes e oportunidades do Litoral Norte em um só lugar.'); } })
+      .on('.login-aside-foot', { element(element) { element.setInnerContent('Litoral Norte · Gestão imobiliária'); } })
+      .on('#lv-login .login-logo', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
+      .on('.login-footer', { element(element) { element.setInnerContent('Atlântida Negócios · Litoral Norte'); } })
+      .on('.brand', { element(element) { element.setInnerContent('Atlântida CRM'); } })
+      .on('head', { element(element) { element.append(ATLANTIDA_CRM_STYLE, { html: true }); } });
+  }
   if (!isPartnerPage) {
     rewriter
       .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | Imóveis no Litoral Norte'); } })
