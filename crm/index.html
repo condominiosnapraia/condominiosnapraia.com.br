@@ -6322,7 +6322,7 @@ async function buildUsuarios(){
             ${u.creci?`<span style="font-size:9px;color:var(--t3)">${u.creci}</span>`:''}
           </div>
         </div>
-        <div style="display:flex;gap:5px;flex-shrink:0"><button class="btn bg bxs" onclick="eUsuario('${u.id}')" title="Editar usuário">✏</button><button class="btn bd2b bxs" onclick="dUsuario('${u.id}')" title="Excluir usuário">🗑</button></div>
+        <div style="display:flex;gap:6px;flex-shrink:0;align-items:center"><button class="btn bg bsm" onclick="eUsuario('${u.id}')" title="Editar usuário">✏ Editar</button><button class="btn bd2b bsm" onclick="dUsuario('${u.id}')" title="Excluir usuário">🗑 Excluir</button></div>
       </div>`).join('') + '</div>';
   }catch(e){ body.innerHTML=`<div class="empty"><div class="empty-ico">⚠️</div><p>Erro: ${e.message}</p></div>`; }
 }
