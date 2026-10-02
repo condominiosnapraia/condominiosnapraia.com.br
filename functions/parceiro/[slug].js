@@ -432,6 +432,7 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 #sec-lancamentos .launch-card .condo-photo{background:#e8f0ee}
 #sec-lancamentos .launch-card .condo-body{min-height:138px}
 @media(max-width:760px){#sec-lancamentos .condos-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#sec-lancamentos .launch-card{border-radius:14px}#sec-lancamentos .launch-card .condo-photo{aspect-ratio:1.18}#sec-lancamentos .launch-card .condo-count{right:7px;bottom:7px;padding:4px 7px;font-size:9px}#sec-lancamentos .launch-card .condo-body{min-height:126px;padding:11px 10px;gap:4px}#sec-lancamentos .launch-card .condo-body h3{font-size:15px;line-height:1.12}#sec-lancamentos .launch-card .condo-city{font-size:10px}#sec-lancamentos .launch-card .condo-amenities{font-size:10px;line-height:1.25}#sec-lancamentos .launch-card .section-more-btn{font-size:10px;margin-top:auto}}
+.alisson-hero-wave.partner-hero::after{display:block!important;visibility:visible!important;content:""!important}
 </style></head>
 <body>
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${contactUrl}">Contato</a><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
