@@ -62,7 +62,7 @@ function clientCardMarkup(property) { const location = [property.neighborhood, p
 function page({ site, properties, slug, publicBase = BASE, publicPrefix = '' }) {
   const name = site.nome || 'Corretor parceiro';
   const isAlisson = slug === 'alisson-portella';
-  const cover = site.capa_url || `${BASE}/img/parceiro-capa-desktop.jpg`;
+  const cover = isAlisson ? `${BASE}/img/branding/atlantida-negocios-hero.jpg` : (site.capa_url || `${BASE}/img/parceiro-capa-desktop.jpg`);
   const phone = digits(site.whatsapp || site.telefone);
   const wpp = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
   const landingUrl = `${publicBase}${publicPrefix || `/corretor/${encodeURIComponent(slug)}`}/`;
