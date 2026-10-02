@@ -549,7 +549,7 @@ export async function onRequest(context) {
   });
   const condoList = Object.values(condoStats).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
   const topCondos = condoList.slice(0, 8);
-  const verticalCondos = [...verticalCatalog, ...condoList.filter((condo) => /vertical/i.test(`${condo.orientation || ''} ${condo.profile || ''}`))]
+  const verticalCondos = [...verticalCatalog, ...condoList.filter((condo) => /vertical/i.test(`${condo.orientation || ''} ${condo.profile || ''}`)), ...condoList]
     .filter((condo, index, list) => list.findIndex((item) => String(item.id) === String(condo.id)) === index)
     .slice(0, 8);
   return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos, verticalCondos, launchCards, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
