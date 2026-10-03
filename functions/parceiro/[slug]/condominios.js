@@ -38,6 +38,7 @@ function layout({ site, slug, condos }) {
   const logo = `<span class="brand-name">${esc(name)}</span><span class="brand-sub">Corretor de imóveis${site.creci ? ` · CRECI ${esc(site.creci)}` : ''}</span>`;
   const canonical = `${BASE}/${segment}/${encodeURIComponent(slug)}/condominios/`;
   const cities = [...new Set(condos.map((c) => cityLabel(c.city)).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  const condoOptions = [...condos].filter((c) => c && c.name).sort((a, b) => String(a.name).localeCompare(String(b.name), 'pt-BR'));
 
   const condoCard = (c) => {
     const condoPublicSlug = slugify(c.slug || c.name || c.id) || String(c.id);
@@ -51,7 +52,7 @@ function layout({ site, slug, condos }) {
 .site-header{position:fixed!important;top:0;left:0;right:0;z-index:20;background:rgba(6,28,38,.18)!important;backdrop-filter:none!important;border-bottom:1px solid rgba(255,255,255,.2)}.nav{width:min(1180px,100%);margin:auto;padding:14px 24px;display:flex;align-items:center;gap:14px}.brand{display:flex;flex-direction:column;justify-content:center;gap:1px;line-height:1.1}.brand-name{font:700 16px/1.15 Fraunces,serif;color:var(--brand);letter-spacing:-.01em;white-space:nowrap}.brand-sub{font:600 9px/1.2 Outfit,sans-serif;color:var(--muted);letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}.nav-links{margin-left:auto;display:flex;align-items:center;gap:18px;color:var(--muted);font-size:13px}.nav-cta{padding:9px 14px;border-radius:999px;background:var(--brand);color:#fff;font-weight:600}
 .page-hero{position:relative;background:linear-gradient(180deg,rgba(6,28,38,.2),rgba(6,28,38,.82)),var(--condos-cover),linear-gradient(140deg,var(--brand),#0e8a99);background-size:cover;background-position:center 52%;color:#fff;padding:54px 24px 40px}.page-hero-inner{position:relative;z-index:1;width:min(1180px,100%);margin:auto}.page-hero .eyebrow{text-transform:uppercase;letter-spacing:.19em;color:var(--accent);font-size:11px;font-weight:700}.page-hero h1{margin:12px 0 8px;font:600 clamp(32px,5vw,52px)/1 Fraunces,serif;letter-spacing:-.03em}.page-hero p{margin:0;max-width:620px;color:rgba(255,255,255,.9);font-size:15px;line-height:1.6}.crumb{margin-bottom:14px;font-size:12px;color:rgba(255,255,255,.8)}.crumb a{color:#fff}
 .main{width:min(1180px,100%);margin:auto;padding:26px 24px 90px}
-.filter-panel{position:sticky;top:74px;z-index:10;background:#fff;border:1px solid rgba(13,59,84,.1);border-radius:18px;padding:14px;box-shadow:0 14px 34px rgba(13,59,84,.1);margin-bottom:22px;display:grid;grid-template-columns:1.4fr .9fr .9fr auto;gap:10px}.filter-panel input,.filter-panel select{width:100%;min-height:46px;border:1px solid #dbe6e8;border-radius:12px;background:#f8fbfb;color:var(--ink);padding:12px 13px;font:14px Outfit,sans-serif;outline:none}.filter-panel input:focus,.filter-panel select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(13,92,134,.1);background:#fff}.filter-clear{border:1px solid rgba(13,92,134,.2);border-radius:12px;background:#fff;color:var(--brand);font:700 13px Outfit,sans-serif;cursor:pointer;padding:0 18px;white-space:nowrap}.filter-clear:hover{background:var(--soft)}
+.filter-panel{position:sticky;top:74px;z-index:10;background:#fff;border:1px solid rgba(13,59,84,.1);border-radius:18px;padding:14px;box-shadow:0 14px 34px rgba(13,59,84,.1);margin-bottom:22px;display:grid;grid-template-columns:1.35fr 1fr 1fr .9fr auto;gap:10px}.filter-panel input,.filter-panel select{width:100%;min-height:46px;border:1px solid #dbe6e8;border-radius:12px;background:#f8fbfb;color:var(--ink);padding:12px 13px;font:14px Outfit,sans-serif;outline:none}.filter-panel input:focus,.filter-panel select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(13,92,134,.1);background:#fff}.filter-clear{border:1px solid rgba(13,92,134,.2);border-radius:12px;background:#fff;color:var(--brand);font:700 13px Outfit,sans-serif;cursor:pointer;padding:0 18px;white-space:nowrap}.filter-clear:hover{background:var(--soft)}
 .results-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:16px}.results-head h2{margin:0;font:600 clamp(22px,3vw,30px)/1 Fraunces,serif}.results-count{color:var(--muted);font-size:13px}
 .condos-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .condo-card{display:flex;flex-direction:column;background:#fff;border:1px solid rgba(13,59,84,.1);border-radius:20px;overflow:hidden;box-shadow:0 12px 30px rgba(13,59,84,.07);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}.condo-card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(13,59,84,.13);border-color:rgba(13,92,134,.2)}.condo-photo{position:relative;aspect-ratio:16/11;background:linear-gradient(135deg,#d9e5e7,#b2c8cf);overflow:hidden}.condo-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .22s ease}.condo-card:hover .condo-photo img{transform:scale(1.04)}.condo-photo-empty{height:100%;display:grid;place-items:center;color:var(--muted);font-size:12px}.condo-count{position:absolute;right:11px;bottom:11px;padding:5px 11px;border-radius:999px;background:rgba(9,47,71,.86);color:#fff;font-size:11px;font-weight:700;letter-spacing:.02em}.condo-body{padding:15px;display:flex;flex-direction:column;gap:5px}.condo-body h3{margin:0;font:600 19px/1.15 Fraunces,serif;color:var(--ink)}.condo-city{margin:0;color:var(--muted);font-size:12px}.condo-amenities{margin:4px 0 0;color:#477282;font-size:11px;line-height:1.4}
@@ -108,7 +109,7 @@ footer:before,.footer:before{content:'';position:absolute;inset:0;pointer-events
 <header class="site-header"><nav class="nav"><div class="nav-links"><a href="${landingUrl}">Início</a><a href="${fullListingUrl}">Imóveis</a><a href="${canonical}">Condomínios</a><a href="${contactUrl}">Contato</a><div class="footer-title footer-quick-title">Acesso rápido</div><div class="footer-quick-links"><a href="${landingUrl}">Início do corretor</a><a href="${landingUrl}imoveis/?cat=casa-condominio">Casas e sobrados</a><a href="${landingUrl}imoveis/?cat=terreno-condominio">Lotes em condomínio</a><a href="${landingUrl}imoveis/?cat=apartamento">Apartamentos</a><a href="${landingUrl}imoveis/?cat=comercial">Lojas e salas</a></div><a class="nav-cta" href="${esc(wpp)}" target="_blank" rel="noopener nofollow">WhatsApp</a></div></nav></header>
 <section class="page-hero" style="--condos-cover:url('${esc(cover)}')"><div class="page-hero-inner"><nav class="crumb"><a href="${landingUrl}">Início</a> › <span>Condomínios</span></nav><span class="eyebrow">🏛 Empreendimentos</span><h1>Condomínios</h1><p>Todos os condomínios e empreendimentos com imóveis disponíveis na carteira de ${esc(name)}.</p></div></section>
 <main class="main">
-<form class="filter-panel" id="condo-filter"><input id="c-query" type="search" placeholder="Buscar por nome do condomínio" autocomplete="off"><select id="c-city"><option value="">Todas as cidades</option>${cities.map((c) => `<option value="${esc(cityKey(c))}">${esc(c)}</option>`).join('')}</select><select id="c-order"><option value="count">Mais imóveis primeiro</option><option value="name">Nome (A–Z)</option></select><button type="button" class="filter-clear" id="c-clear">Limpar</button></form>
+<form class="filter-panel" id="condo-filter"><input id="c-query" type="search" placeholder="Buscar por nome do condomínio" autocomplete="off"><select id="c-condo" aria-label="Selecionar condomínio"><option value="">Todos os condomínios</option>${condoOptions.map((condo) => `<option value="${esc(cityKey(condo.name))}">${esc(condo.name)}</option>`).join('')}</select><select id="c-city"><option value="">Todas as cidades</option>${cities.map((c) => `<option value="${esc(cityKey(c))}">${esc(c)}</option>`).join('')}</select><select id="c-order"><option value="count">Mais imóveis primeiro</option><option value="name">Nome (A–Z)</option></select><button type="button" class="filter-clear" id="c-clear">Limpar</button></form>
 <div class="results-head"><h2 id="c-title">Todos os condomínios</h2><span class="results-count" id="c-count">${condos.length} ${condos.length === 1 ? 'condomínio' : 'condomínios'}</span></div>
 <div class="condos-grid" id="condos-grid">${condos.length ? condos.map(condoCard).join('') : '<div class="empty">Nenhum condomínio com imóveis publicados ainda.</div>'}</div>
 </main>
@@ -118,15 +119,17 @@ footer:before,.footer:before{content:'';position:absolute;inset:0;pointer-events
 (function(){
   var grid=document.getElementById('condos-grid');
   var cards=[].slice.call(grid.querySelectorAll('.condo-card'));
-  var q=document.getElementById('c-query'),city=document.getElementById('c-city'),order=document.getElementById('c-order'),clear=document.getElementById('c-clear'),count=document.getElementById('c-count'),title=document.getElementById('c-title');
+  var q=document.getElementById('c-query'),condo=document.getElementById('c-condo'),city=document.getElementById('c-city'),order=document.getElementById('c-order'),clear=document.getElementById('c-clear'),count=document.getElementById('c-count'),title=document.getElementById('c-title');
   function apply(){
     var term=(q.value||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
     var ci=city.value;
+    var co=condo.value;
     var shown=0;
     cards.forEach(function(card){
       var okName=!term||(card.dataset.name||'').indexOf(term)>-1;
       var okCity=!ci||card.dataset.city===ci;
-      var vis=okName&&okCity;
+      var okCondo=!co||card.dataset.name===co;
+      var vis=okName&&okCity&&okCondo;
       card.style.display=vis?'':'none';
       if(vis)shown++;
     });
@@ -138,12 +141,12 @@ footer:before,.footer:before{content:'';position:absolute;inset:0;pointer-events
     });
     visibleCards.forEach(function(c){grid.appendChild(c);});
     count.textContent=shown+(shown===1?' condomínio':' condomínios');
-    title.textContent=(term||ci)?'Resultado da busca':'Todos os condomínios';
+    title.textContent=(term||ci||co)?'Resultado da busca':'Todos os condomínios';
     if(!shown&&!grid.querySelector('.empty-dynamic')){var e=document.createElement('div');e.className='empty empty-dynamic';e.textContent='Nenhum condomínio encontrado.';grid.appendChild(e);}
     var ed=grid.querySelector('.empty-dynamic');if(ed)ed.style.display=shown?'none':'';
   }
-  q.addEventListener('input',apply);city.addEventListener('change',apply);order.addEventListener('change',apply);
-  clear.addEventListener('click',function(){q.value='';city.value='';order.value='count';apply();});
+  q.addEventListener('input',apply);condo.addEventListener('change',apply);city.addEventListener('change',apply);order.addEventListener('change',apply);
+  clear.addEventListener('click',function(){q.value='';condo.value='';city.value='';order.value='count';apply();});
   apply();
 })();
 </script>
