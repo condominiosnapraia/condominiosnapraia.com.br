@@ -121,7 +121,7 @@ export async function onRequest(context) {
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><h1>Site ainda não publicado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
   // Buscar pelo slug publicado e também pelo formato legado usado por alguns cards (condominio-<slug>).
-  const condoSlugCandidates = [...new Set([condoParam, condoParam.replace(/^condominio-/, '')].filter(Boolean))];
+  const condoSlugCandidates = [...new Set([condoParam, condoParam.replace(/^condominio-/, ''), condoParam.endsWith('-') ? condoParam : `${condoParam}-`, condoParam.replace(/^condominio-/, '').replace(/-?$/, '-')].filter(Boolean))];
   const condoSelect = 'id,slug,nome,cidade,bairro,descricao,amenidades,ano,padrao,incorporadora,area_total_m2,fotos,fotos_no_site,fotos_para_site';
   let condos = [];
   for (const candidate of condoSlugCandidates) {
