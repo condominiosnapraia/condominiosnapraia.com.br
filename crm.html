@@ -6509,23 +6509,39 @@ async function novoUsuario(){
   if(((_authProfile||{}).role)!=='admin'){ showErr('Apenas administradores podem criar usuários.'); return; }
   btn.disabled=true; btn.textContent='Criando...';
   try{
-    // 1) cria o usuário no Supabase Auth (signup)
-    var data = await sbAuth('/signup', {email, password:pass, data:{nome}});
-    if(data.error || data.error_description || data.msg){
-      showErr(data.error_description || data.msg || data.error || 'Erro ao criar usuário');
-      btn.disabled=false; btn.textContent='💾 Criar usuário'; return;
-    }
-    var uid = (data.user && data.user.id) || (data.id);
-    if(!uid){
-      showErr('Não foi possível obter o ID do novo usuário. Verifique se o e-mail já existe.');
-      btn.disabled=false; btn.textContent='💾 Criar usuário'; return;
-    }
-    // 2) cria o perfil usando a sessão real do administrador.
-    // A chave anônima não tem permissão para inserir em public.usuarios.
+    // 1) cria o usuário no Supabase Auth (signup). Se a conta já existir,
+    // tenta recuperá-la com a senha informada para reparar o perfil ausente.
     var adminToken = sessionStorage.getItem('cnp_crm_token') || '';
-    var profileResp = await fetch(SB_URL+'/rest/v1/usuarios',{
+    var profileToken = adminToken;
+    var data = await sbAuth('/signup', {email, password:pass, data:{nome}});
+    var uid = (data.user && data.user.id) || (data.id);
+    if(data.error || data.error_description || data.msg){
+      var duplicate = /already|registered|exists|já existe|cadastr/i.test(String(data.error_description || data.msg || data.error || ''));
+      if(duplicate){
+        var existing = await sbAuth('/token?grant_type=password', {email, password:pass});
+        if(existing && existing.access_token && existing.user){
+          uid = existing.user.id;
+          // O token do novo usuário identifica a conta; a gravação usa
+          // a sessão administrativa, que tem permissão de gerenciamento.
+          profileToken = adminToken;
+        } else {
+          showErr('Este e-mail já existe. Informe a senha atual da conta para reparar o perfil.');
+          btn.disabled=false; btn.textContent='💾 Criar usuário'; return;
+        }
+      } else {
+        showErr(data.error_description || data.msg || data.error || 'Erro ao criar usuário');
+        btn.disabled=false; btn.textContent='💾 Criar usuário'; return;
+      }
+    }
+    if(!uid){
+      showErr('Não foi possível obter o ID do usuário.');
+      btn.disabled=false; btn.textContent='💾 Criar usuário'; return;
+    }
+    // 2) cria ou repara o perfil. O on_conflict por id também corrige um
+    // cadastro parcial sem gerar outro usuário.
+    var profileResp = await fetch(SB_URL+'/rest/v1/usuarios?on_conflict=id',{
       method:'POST',
-      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+adminToken,'Content-Type':'application/json','Prefer':'return=minimal,resolution=merge-duplicates'},
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+profileToken,'Content-Type':'application/json','Prefer':'return=minimal,resolution=merge-duplicates'},
       body:JSON.stringify({id:uid, nome, email, creci, role, ativo:true})
     });
     if(!profileResp.ok){
