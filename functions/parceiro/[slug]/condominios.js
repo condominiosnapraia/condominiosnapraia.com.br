@@ -27,22 +27,22 @@ async function getJson(path, cfg) {
   return [];
 }
 
-function layout({ site, slug, condos }) {
+function layout({ site, slug, condos, publicBase = BASE }) {
   const segment = 'corretor';
   const name = site.nome || 'Corretor parceiro';
   const wpp = `https://wa.me/${String(site.whatsapp || site.telefone || '').replace(/\D/g, '')}`;
-  const landingUrl = `${BASE}/${segment}/${encodeURIComponent(slug)}/`;
-  const fullListingUrl = `${BASE}/${segment}/${encodeURIComponent(slug)}/imoveis/`;
-  const contactUrl = `${BASE}/${segment}/${encodeURIComponent(slug)}/contato/`;
+  const landingUrl = `${publicBase}/${segment}/${encodeURIComponent(slug)}/`;
+  const fullListingUrl = `${publicBase}/${segment}/${encodeURIComponent(slug)}/imoveis/`;
+  const contactUrl = `${publicBase}/${segment}/${encodeURIComponent(slug)}/contato/`;
   const cover = slug === 'alisson-portella' ? `${BASE}/img/branding/atlantida-negocios-hero.jpg` : `${BASE}/img/parceiro-capa-desktop.jpg`;
   const logo = `<span class="brand-name">${esc(name)}</span><span class="brand-sub">Corretor de imóveis${site.creci ? ` · CRECI ${esc(site.creci)}` : ''}</span>`;
-  const canonical = `${BASE}/${segment}/${encodeURIComponent(slug)}/condominios/`;
+  const canonical = `${publicBase}/${segment}/${encodeURIComponent(slug)}/condominios/`;
   const cities = [...new Set(condos.map((c) => cityLabel(c.city)).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
   const condoOptions = [...condos].filter((c) => c && c.name).sort((a, b) => String(a.name).localeCompare(String(b.name), 'pt-BR'));
 
   const condoCard = (c) => {
     const condoPublicSlug = slugify(c.slug || c.name || c.id) || String(c.id);
-    const url = `${BASE}/${segment}/${encodeURIComponent(slug)}/condominio/${encodeURIComponent(condoPublicSlug)}/`;
+    const url = `${publicBase}/${segment}/${encodeURIComponent(slug)}/condominio/${encodeURIComponent(condoPublicSlug)}/`;
     const ameniStr = (c.amenities || []).slice(0, 3).join(' · ');
     return `<a class="condo-card" href="${url}" data-name="${esc(cityKey(c.name))}" data-city="${esc(cityKey(c.city))}" data-count="${c.count}"><div class="condo-photo">${c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.name)}" loading="lazy" decoding="async">` : '<div class="condo-photo-empty">Imagem em atualização</div>'}<span class="condo-count">${c.count} ${c.count === 1 ? 'imóvel' : 'imóveis'}</span></div><div class="condo-body"><h3>${esc(c.name)}</h3><p class="condo-city">📍 ${esc(cityLabel(c.city) || 'Rio Grande do Sul')}</p>${ameniStr ? `<p class="condo-amenities">${esc(ameniStr)}</p>` : ''}<span class="condo-view">Ver condomínio <span aria-hidden="true">→</span></span></div></a>`;
   };
@@ -171,7 +171,7 @@ export async function onRequest(context) {
   const counts = {};
   listingRows.forEach((row) => { const id = row.imovel.cond_id; if (id) counts[id] = (counts[id] || 0) + 1; });
   const condIds = Object.keys(counts);
-  if (!condIds.length) return new Response(layout({ site, slug: publicSlug, condos: [] }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300' } });
+  if (!condIds.length) return new Response(layout({ site, slug: publicSlug, condos: [], publicBase: new URL(context.request.url).origin }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300' } });
 
   const condosRaw = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,slug,nome,cidade,amenidades,fotos_no_site,fotos,fotos_para_site&limit=1000`, cfg);
   const condos = (Array.isArray(condosRaw) ? condosRaw : []).map((c) => ({
@@ -184,5 +184,5 @@ export async function onRequest(context) {
     count: counts[c.id] || 0,
   })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
 
-  return new Response(layout({ site, slug: publicSlug, condos }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+  return new Response(layout({ site, slug: publicSlug, condos, publicBase: new URL(context.request.url).origin }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
