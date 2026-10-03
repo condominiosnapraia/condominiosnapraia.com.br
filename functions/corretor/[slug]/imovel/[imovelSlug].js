@@ -190,9 +190,10 @@ function page({ site, imovel, cond, siteSlug, relatedRows, cfg, requestUrl, publ
   const phone = digits(site.whatsapp || site.telefone);
   const wppBase = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
   const wppText = encodeURIComponent(`Olá! Gostaria de receber mais informações sobre este imóvel.\n\nCódigo: ${codeLabel || 'Não informado'}\nImóvel: ${title}${cond?.nome ? `\nCondomínio: ${cond.nome}` : ''}\nPreço: ${money(imovel.preco)}.\n\nPodem me informar a disponibilidade, as condições e as opções para agendar uma visita?`);
-  const canonical = propertyUrl(siteSlug, imovel, publicBase, publicPrefix);
-  const contactUrl = `${publicBase}${publicPrefix}/contato/`;
-  const landingUrl = `${publicBase}${publicPrefix}/`;
+  const routePrefix = siteSlug === 'alisson-portella' ? `/corretor/${encodeURIComponent(siteSlug)}` : publicPrefix;
+  const canonical = propertyUrl(siteSlug, imovel, publicBase, routePrefix);
+  const contactUrl = `${publicBase}${routePrefix}/contato/`;
+  const landingUrl = `${publicBase}${routePrefix}/`;
   const fullListingUrl = `${landingUrl}imoveis/`;
   let backHref = fullListingUrl;
   let backLabel = '← Voltar aos imóveis';
@@ -216,7 +217,7 @@ function page({ site, imovel, cond, siteSlug, relatedRows, cfg, requestUrl, publ
   const condoAllPhotos = [...toArray(cond?.fotos_no_site), ...toArray(cond?.fotos)].map((value) => publicPhoto(value, storageBase)).filter(Boolean);
   const condoPhotos = condoAllPhotos;
   const condoGalleryMarkup = condoPhotos.length ? `<div class="condo-gallery-shell" id="condo-gallery" aria-label="Fotos de ${esc(cond?.nome || 'Empreendimento')}"><div class="condo-gallery-track">${condoPhotos.map((photo, index) => `<figure class="condo-gallery-slide${index === 0 ? ' is-active' : ''}" data-condo-gallery-index="${index}"><img src="${esc(photo)}" alt="${esc(cond?.nome || 'Empreendimento')} — infraestrutura ${index + 1}" loading="${index === 0 ? 'eager' : 'lazy'}" decoding="async"></figure>`).join('')}</div>${condoPhotos.length > 1 ? `<button type="button" class="gallery-arrow condo-gallery-prev" data-condo-gallery-prev aria-label="Foto anterior do empreendimento">‹</button><button type="button" class="gallery-arrow condo-gallery-next" data-condo-gallery-next aria-label="Próxima foto do empreendimento">›</button><span class="gallery-counter condo-gallery-counter" data-condo-gallery-counter>1/${condoPhotos.length}</span>` : ''}</div>` : '';
-  const related = selectRelated(relatedRows, { ...imovel, _derivedCondo: context.condo, _derivedCity: context.city, _derivedType: context.type }, cond, siteSlug, publicBase, publicPrefix);
+  const related = selectRelated(relatedRows, { ...imovel, _derivedCondo: context.condo, _derivedCity: context.city, _derivedType: context.type }, cond, siteSlug, publicBase, routePrefix);
   const relatedMarkup = (condoName ? relatedSection(`Mais imóveis no ${condoName}`, 'Opções da mesma tipologia dentro deste condomínio ou empreendimento.', related.sameCondo, condoName, storageBase) : '') + relatedSection('Imóveis semelhantes', 'Mesma tipologia, com dormitórios e valores próximos ao imóvel consultado.', related.similar, '', storageBase) + relatedSection(`Imóveis em ${city}`, 'Outras oportunidades da mesma tipologia na mesma cidade.', related.sameCity, city, storageBase);
   const schema = { '@context': 'https://schema.org', '@type': 'RealEstateListing', name: title, description, url: canonical, image: photos.slice(0, 8), itemOffered: { '@type': /apartamento/i.test(imovel.tipo || '') ? 'Apartment' : 'Residence', name: title, address: { '@type': 'PostalAddress', addressLocality: city, addressRegion: 'RS', addressCountry: 'BR' } }, seller: { '@type': 'RealEstateAgent', name: broker, telephone: phone ? `+${phone}` : undefined } };
   if (Number(imovel.preco) > 0) schema.offers = { '@type': 'Offer', price: Number(imovel.preco), priceCurrency: 'BRL', availability: 'https://schema.org/InStock', url: canonical };
