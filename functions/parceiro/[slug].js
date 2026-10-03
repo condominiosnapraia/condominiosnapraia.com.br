@@ -536,7 +536,7 @@ export async function onRequest(context) {
   if (publicSlug === 'alisson-portella') {
     const allCondos = await getJson('condominios?select=id,slug,nome,cidade,descricao,amenidades,orientacao,perfil,fotos_no_site,fotos,fotos_para_site&limit=1000', cfg);
     verticalCatalog = (Array.isArray(allCondos) ? allCondos : [])
-      .filter((cond) => /vertical/i.test(`${cond.orientacao || ''} ${cond.perfil || ''}`))
+      .filter((cond) => /vertical/i.test(`${cond.orientacao || ''} ${cond.perfil || ''}`) && !/lynemar\s+business/i.test(String(cond.nome || '')))
       .map((cond) => ({ id: cond.id, slug: slugify(cond.slug || cond.nome || cond.id) || String(cond.id), name: cond.nome || '', city: cond.cidade || '', orientation: cond.orientacao || '', profile: cond.perfil || '', amenities: Array.isArray(cond.amenidades) ? cond.amenidades : [], photo: firstPhoto(cond), count: 0 }));
   }
   if (condIds.length) {
@@ -567,7 +567,7 @@ export async function onRequest(context) {
   });
   const condoList = Object.values(condoStats).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
   const topCondos = condoList.slice(0, 8);
-  const verticalCondos = [...verticalCatalog, ...condoList.filter((condo) => /vertical/i.test(`${condo.orientation || ''} ${condo.profile || ''}`))]
+  const verticalCondos = [...verticalCatalog, ...condoList.filter((condo) => /vertical/i.test(`${condo.orientation || ''} ${condo.profile || ''}`) && !/lynemar\s+business/i.test(String(condo.name || '')))]
     .filter((condo, index, list) => list.findIndex((item) => String(item.id) === String(condo.id)) === index)
     .slice(0, 8);
   return new Response(layout({ site, properties, slug: publicSlug, requestPath, topCondos, verticalCondos, launchCards, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
