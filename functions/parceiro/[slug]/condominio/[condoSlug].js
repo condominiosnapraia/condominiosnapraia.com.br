@@ -120,9 +120,15 @@ export async function onRequest(context) {
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade&limit=1`, cfg);
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><h1>Site ainda não publicado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
-  // buscar condomínio por slug sem diferenciar maiúsculas/minúsculas (ou por id como fallback)
-  let condos = await getJson(`condominios?slug=ilike.${encodeURIComponent(condoParam)}&select=id,slug,nome,cidade,bairro,descricao,amenidades,ano,padrao,incorporadora,area_total_m2,fotos,fotos_no_site,fotos_para_site&limit=1`, cfg);
-  if (!Array.isArray(condos) || !condos.length) { condos = await getJson(`condominios?id=eq.${encodeURIComponent(condoParam)}&select=id,slug,nome,cidade,bairro,descricao,amenidades,ano,padrao,incorporadora,area_total_m2,fotos,fotos_no_site,fotos_para_site&limit=1`, cfg); }
+  // Buscar pelo slug publicado e também pelo formato legado usado por alguns cards (condominio-<slug>).
+  const condoSlugCandidates = [...new Set([condoParam, condoParam.replace(/^condominio-/, '')].filter(Boolean))];
+  const condoSelect = 'id,slug,nome,cidade,bairro,descricao,amenidades,ano,padrao,incorporadora,area_total_m2,fotos,fotos_no_site,fotos_para_site';
+  let condos = [];
+  for (const candidate of condoSlugCandidates) {
+    condos = await getJson(`condominios?slug=ilike.${encodeURIComponent(candidate)}&select=${condoSelect}&limit=1`, cfg);
+    if (Array.isArray(condos) && condos.length) break;
+  }
+  if (!Array.isArray(condos) || !condos.length) { condos = await getJson(`condominios?id=eq.${encodeURIComponent(condoParam)}&select=${condoSelect}&limit=1`, cfg); }
   const condo = Array.isArray(condos) ? condos[0] : null;
   if (!condo) return new Response('<!doctype html><meta charset="utf-8"><title>Condomínio não encontrado</title><h1>Condomínio não encontrado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
   // imóveis DESTE corretor NESTE condomínio
