@@ -926,7 +926,19 @@ async function doLogin(){
     const profs = await profResp.json();
     const prof = profs[0];
     if(!prof){
-      // Perfil inexistente nunca recebe privilégios automaticamente.
+      // Repara cadastros antigos que criaram o usuário no Auth, mas não gravaram
+      // a linha em public.usuarios por falta do token na requisição original.
+      const meta = data.user.user_metadata || {};
+      const repairResp = await fetch(SB_URL+'/rest/v1/usuarios',{
+        method:'POST',
+        headers:{'apikey':SB_ANON,'Authorization':'Bearer '+data.access_token,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({id:data.user.id,nome:meta.nome||data.user.email||'Consultor',email:data.user.email||'',role:'consultor',ativo:false})
+      });
+      if(!repairResp.ok){
+        loginAlert('login-error','Seu cadastro existe, mas o perfil ainda não foi criado. Solicite a liberação ao administrador.');
+        btn.disabled=false;btn.textContent='Entrar';
+        return;
+      }
       showLoginView('lv-pending');
       btn.disabled=false;btn.textContent='Entrar';
       return;
@@ -984,12 +996,18 @@ async function doRegister(){
     // Create auth user
     const data = await sbAuth('/signup',{email,password:pass,data:{nome}});
     if(data.error){loginAlert('reg-error',data.error_description||data.error);btn.disabled=false;btn.textContent='Solicitar acesso';return;}
-    // Create profile (inactive - waiting admin approval)
-    await fetch(SB_URL+'/rest/v1/usuarios',{
+    // Create profile (inactive - waiting admin approval). When email confirmation
+    // is disabled, use the session token returned by signup so RLS accepts the insert.
+    const signupToken = data.access_token || data.session?.access_token || '';
+    const profileResp = await fetch(SB_URL+'/rest/v1/usuarios',{
       method:'POST',
-      headers:{'apikey':SB_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},
+      headers:{'apikey':SB_ANON,...(signupToken ? {'Authorization':'Bearer '+signupToken} : {}),'Content-Type':'application/json','Prefer':'return=minimal'},
       body:JSON.stringify({id:data.user.id,nome,email,telefone:tel,creci,role:'consultor',ativo:false})
     });
+    if(!profileResp.ok && profileResp.status!==409){
+      loginAlert('reg-error','Conta criada, mas não foi possível criar o perfil. Tente entrar novamente ou solicite a liberação ao administrador.');
+      btn.disabled=false;btn.textContent='Solicitar acesso';return;
+    }
     showLoginView('lv-pending');
     btn.disabled=false;btn.textContent='Solicitar acesso';
   }catch(e){
@@ -6501,12 +6519,19 @@ async function novoUsuario(){
       showErr('Não foi possível obter o ID do novo usuário. Verifique se o e-mail já existe.');
       btn.disabled=false; btn.textContent='💾 Criar usuário'; return;
     }
-    // 2) cria o perfil na tabela usuarios JÁ ATIVO (admin está criando)
-    await fetch(SB_URL+'/rest/v1/usuarios',{
+    // 2) cria o perfil usando a sessão real do administrador.
+    // A chave anônima não tem permissão para inserir em public.usuarios.
+    var adminToken = sessionStorage.getItem('cnp_crm_token') || '';
+    var profileResp = await fetch(SB_URL+'/rest/v1/usuarios',{
       method:'POST',
-      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+SB_ANON,'Content-Type':'application/json','Prefer':'return=minimal,resolution=merge-duplicates'},
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+adminToken,'Content-Type':'application/json','Prefer':'return=minimal,resolution=merge-duplicates'},
       body:JSON.stringify({id:uid, nome, email, creci, role, ativo:true})
     });
+    if(!profileResp.ok){
+      var profileError = await profileResp.text();
+      showErr('Usuário criado no Auth, mas o perfil não foi salvo: '+profileError);
+      btn.disabled=false; btn.textContent='💾 Criar usuário'; return;
+    }
     logAtividade('criou','usuario',uid,nome);
     cMo('novo-usu-mo');
     toast('Usuário "'+nome+'" criado e ativado!','success');
