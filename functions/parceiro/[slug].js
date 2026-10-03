@@ -483,7 +483,7 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 .alisson-main .section-head h2{font-size:30px!important;line-height:1.04!important;overflow-wrap:anywhere!important}
 .alisson-main .section-head h2 small{font-size:10px!important;letter-spacing:.12em!important;line-height:1.25!important;white-space:normal!important}
 .alisson-main .property-grid,.alisson-main .condos-grid{width:100%!important;max-width:100%!important;min-width:0!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;column-gap:24px!important;row-gap:30px!important}
-.alisson-main .property-card,.alisson-main .condo-card{min-width:0!important;width:100%!important;max-width:100%!important;overflow:hidden!important;border-radius:17px!important;box-shadow:0 10px 24px rgba(11,39,51,.09)!important}
+.alisson-main .property-card,.alisson-main .condo-card{min-width:0!important;width:100%!important;max-width:100%!important;overflow:hidden!important;border-radius:17px!important;box-shadow:0 10px 24px rgba(11,39,51,.09)!important}.alisson-main .property-sections>.property-section:first-child .property-card{width:calc(100% - 10px)!important;justify-self:center!important}
 .alisson-main .property-body,.alisson-main .condo-body{min-width:0!important;padding:13px!important}
 .alisson-main .property-body h3,.alisson-main .condo-body h3{font-size:16px!important;line-height:1.12!important;overflow-wrap:anywhere!important}
 .alisson-main .property-actions{grid-template-columns:1fr!important;gap:7px!important}
