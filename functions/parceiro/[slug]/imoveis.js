@@ -157,6 +157,15 @@ export async function onRequest(context) {
   const condos = await getJson('condominios?select=id,nome,cidade&limit=2000');
   (Array.isArray(condos) ? condos : []).forEach((cond) => { if (condIds.has(String(cond.id))) condMap[String(cond.id)] = cond; });
   let properties = listingRows.map((row) => normalizeListing(row, condMap, publicSlug, publicBase, publicPrefix));
+  const condoCatalog = (Array.isArray(condos) ? condos : []).filter((cond) => cond && cond.nome);
+  if (condoCatalog.length) {
+    properties = properties.map((property) => {
+      if (property.cond?.name) return property;
+      const title = String(property.title || '').toLocaleLowerCase('pt-BR');
+      const match = condoCatalog.filter((cond) => title.includes(String(cond.nome).toLocaleLowerCase('pt-BR'))).sort((a, b) => String(b.nome).length - String(a.nome).length)[0];
+      return match ? { ...property, cond: { id: match.id, name: match.nome, city: match.cidade || '' } } : property;
+    });
+  }
   if (!properties.length) properties = await getPublicFeedProperties(publicSlug);
   return new Response(page({ site, properties, slug: publicSlug, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
