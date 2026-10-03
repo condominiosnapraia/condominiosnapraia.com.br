@@ -142,13 +142,13 @@ const ATLANTIDA_CRM_STYLE = `<style id="atlantida-crm-theme">
   :root{--bg:#f4f1eb!important;--sf:#fffdf9!important;--s2:#f6f1e9!important;--s3:#eee7dc!important;--bd:#e4d9c9!important;--bd2:#cdbda8!important;--ac:#9b7138!important;--acd:rgba(155,113,56,.12)!important;--go:#b08242!important;--tx:#23333a!important;--t2:#66747a!important;--t3:#9b9b91!important}
   body{background:linear-gradient(135deg,#f5f0e8 0%,#ebe4d9 100%)!important;color:#23333a!important}
   #login-screen{background:radial-gradient(circle at 15% 15%,rgba(190,151,88,.22),transparent 34%),linear-gradient(135deg,#172b32 0%,#243e42 52%,#102127 100%)!important}
-  .login-shell{border:1px solid rgba(224,190,130,.3)!important;box-shadow:0 28px 80px rgba(12,25,29,.38)!important;border-radius:26px!important;overflow:hidden!important}
-  .login-aside{background:linear-gradient(155deg,#25454b 0%,#173138 52%,#102328 100%)!important}
+  .login-shell{display:block!important;width:min(520px,calc(100% - 32px))!important;min-height:0!important;max-height:none!important;margin:auto!important;border:1px solid rgba(224,190,130,.3)!important;box-shadow:0 28px 80px rgba(12,25,29,.38)!important;border-radius:26px!important;overflow:hidden!important}
+  .login-aside{display:none!important}
   .login-brandmark{display:none!important}
   .login-aside-mid h2{font-family:'DM Serif Display',Georgia,serif!important;font-size:34px!important;letter-spacing:-.02em!important;color:#fff!important}
   .login-aside-mid p{color:#dce5e1!important}
   .login-aside-foot{color:#d8c39d!important;letter-spacing:.08em!important}
-  .login-box{background:#fffdf9!important}
+  .login-box{background:#fffdf9!important;min-height:520px!important;padding:54px 48px!important}
   #lv-login .login-logo{font-size:0!important;color:#23333a!important;letter-spacing:-.02em}
   #lv-login .login-logo:after{content:'Atlântida Negócios';font-size:30px;display:block}
   .login-sub{color:#a17a43!important;letter-spacing:.18em!important}
@@ -166,7 +166,8 @@ const ATLANTIDA_CRM_STYLE = `<style id="atlantida-crm-theme">
   .pht{color:#23333a!important}
   .btn.bp{background:#9b7138!important}.btn.bp:hover{background:#805b2d!important}
   .tbb-go{background:#9b7138!important}.tbb-go:hover{background:#805b2d!important}
-  @media(max-width:900px){.login-shell{border-radius:20px!important}.login-aside{display:none!important}.login-box{width:100%!important}.brand:after{font-size:15px}}
+  @media(max-width:900px){#login-screen{padding:16px!important}.login-shell{width:min(480px,100%)!important;border-radius:20px!important}.login-box{width:100%!important;min-height:0!important;padding:42px 28px!important}.brand:after{font-size:15px}}
+  @media(max-width:480px){#login-screen{padding:10px!important}.login-shell{width:100%!important}.login-box{padding:34px 22px!important}}
 </style>`;
 
 function adminNotFound() {
@@ -245,9 +246,6 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
   if (isCrmPage) {
     rewriter
       .on('title', { element(element) { element.setInnerContent('Atlântida Negócios | CRM'); } })
-      .on('.login-aside-mid h2', { element(element) { element.setInnerContent('Gestão imobiliária com visão premium.'); } })
-      .on('.login-aside-mid p', { element(element) { element.setInnerContent('Organize imóveis, clientes e oportunidades do Litoral Norte em um só lugar.'); } })
-      .on('.login-aside-foot', { element(element) { element.setInnerContent('Litoral Norte · Gestão imobiliária'); } })
       .on('#lv-login .login-logo', { element(element) { element.setInnerContent('Atlântida Negócios'); } })
       .on('.login-footer', { element(element) { element.setInnerContent('Atlântida Negócios · Litoral Norte'); } })
       .on('.brand', { element(element) { element.setInnerContent('Atlântida CRM'); } })
