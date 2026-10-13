@@ -1,4 +1,3 @@
-import { marciaStaticListings, marciaStaticProperty } from '../../../_data/marciaCatalog.js';
 const SB_URL_FALLBACK = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const BASE = 'https://condominiosnapraia.com.br';
@@ -394,7 +393,6 @@ export async function onRequest(context) {
   const cfg = sbConfig(context.env);
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&or=(status.eq.active,slug.eq.marcia-anzolin)&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`, cfg);
   let site = sites[0] || null;
-  if (!site && publicSlug === 'marcia-anzolin') site = { id: 'marcia-anzolin-restored', slug: 'marcia-anzolin', nome: 'Márcia Anzolin', cidade: 'Rio Grande do Sul', logo_url: `${BASE}/img/corretores/marcia-anzolin-perfil.jpeg` };
   if (!site) {
     feed = await getPartnerFeed(publicSlug);
     site = feed?.site ? { id: '', slug: dbSlug, nome: feed.site.name, creci: feed.site.creci, telefone: feed.site.phone, whatsapp: feed.site.whatsapp, email: feed.site.email, cidade: feed.site.city, bio: feed.site.bio, logo_url: feed.site.logo_url, capa_url: feed.site.cover_url } : null;
@@ -430,14 +428,6 @@ export async function onRequest(context) {
   if (!row?.imovel && site.id) {
     rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${propertySelect})&order=destaque.desc,ordem.asc&limit=1000`, cfg);
     row = (Array.isArray(rows) ? rows : []).find((candidate) => isPublishedRow(candidate) && matchesPropertyRef(candidate.imovel || {}, imovelRef));
-  }
-  if (!row?.imovel && publicSlug === 'marcia-anzolin') {
-    const staticItem = marciaStaticProperty(imovelRef) || { slug: imovelRef, id: imovelRef, code: '', title: 'Imóvel disponível', type: 'Imóvel', city: 'Litoral Norte', price: '', description: 'Consulte detalhes e disponibilidade com a corretora.', photo: '/img/hero-imoveis.webp', status: 'Disponível' };
-    if (staticItem) {
-      const staticListings = marciaStaticListings(new URL(context.request.url).origin, '');
-      row = { id: staticItem.id, ordem: 0, destaque: false, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: staticItem.id, slug: staticItem.slug, codigo: staticItem.code, titulo: staticItem.title, tipo: staticItem.type, cidade_end: staticItem.city, preco: staticItem.price, descricao: staticItem.description, fotos_no_site: [staticItem.photo], fotos: [staticItem.photo], fotos_para_site: [], status: staticItem.status, publicar: true } };
-      rows = staticListings.map((item) => ({ id: item.id, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: item.id, slug: item.slug, codigo: item.code, titulo: item.title, tipo: item.type, cidade_end: item.city, preco: item.price, descricao: item.description, fotos_no_site: [item.photo], fotos: [item.photo], fotos_para_site: [], status: item.status, publicar: true } }));
-    }
   }
   if (!row?.imovel) return notFound();
   if (!rows.length) {

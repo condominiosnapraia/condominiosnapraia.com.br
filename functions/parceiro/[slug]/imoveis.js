@@ -1,4 +1,3 @@
-import { marciaStaticListings } from '../../_data/marciaCatalog.js';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const BASE = 'https://condominiosnapraia.com.br';
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
@@ -171,6 +170,5 @@ export async function onRequest(context) {
     });
   }
   if (!properties.length) properties = await getPublicFeedProperties(publicSlug);
-  if (publicSlug === 'marcia-anzolin') properties = marciaStaticListings(publicBase, publicPrefix);
   return new Response(page({ site, properties, slug: publicSlug, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }

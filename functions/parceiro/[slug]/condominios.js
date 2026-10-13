@@ -1,4 +1,3 @@
-import { marciaStaticListings } from '../../_data/marciaCatalog.js';
 const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const BASE = 'https://condominiosnapraia.com.br';
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
@@ -172,18 +171,11 @@ export async function onRequest(context) {
 
   const counts = {};
   listingRows.forEach((row) => { const id = row.imovel.cond_id; if (id) counts[id] = (counts[id] || 0) + 1; });
-  if (!Object.keys(counts).length && publicSlug === 'marcia-anzolin') {
-    const staticItems = marciaStaticListings(new URL(context.request.url).origin, '');
-    staticItems.forEach((item) => { if (item.condo?.name) { const key = item.condo.id; counts[key] = (counts[key] || 0) + 1; } });
-  }
   const condIds = Object.keys(counts);
   if (!condIds.length) return new Response(layout({ site, slug: publicSlug, condos: [], publicBase: new URL(context.request.url).origin }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300' } });
 
   const condosRaw = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,slug,nome,cidade,amenidades,fotos_no_site,fotos,fotos_para_site&limit=1000`, cfg);
-  const staticItems = publicSlug === 'marcia-anzolin' ? marciaStaticListings(new URL(context.request.url).origin, '') : [];
-  const staticCondos = [...new Map(staticItems.filter((item) => item.condo?.name).map((item) => [item.condo.id, { id: item.condo.id, slug: item.condo.id, nome: item.condo.name, cidade: item.condo.city, amenidades: [], fotos_no_site: [], fotos: [], fotos_para_site: [] }])).values()];
-  const condoSource = Array.isArray(condosRaw) && condosRaw.length ? condosRaw : staticCondos;
-  const condos = condoSource.map((c) => ({
+  const condos = (Array.isArray(condosRaw) ? condosRaw : []).map((c) => ({
     id: c.id,
     slug: slugify(c.slug || c.nome) || String(c.id),
     name: c.nome || 'Condomínio',
