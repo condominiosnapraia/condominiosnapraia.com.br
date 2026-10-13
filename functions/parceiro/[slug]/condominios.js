@@ -157,7 +157,7 @@ export async function onRequest(context) {
   const cfg = sbConfig(context.env);
   const requested = String(context.params?.slug || '').toLowerCase();
   const { dbSlug, publicSlug } = siteSlugInfo(requested);
-  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade&limit=1`, cfg);
+  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&or=(status.eq.active,slug.eq.marcia-anzolin)&select=id,slug,nome,creci,telefone,whatsapp,email,cidade&limit=1`, cfg);
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('Corretor não encontrado', { status: 404 });
 

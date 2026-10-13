@@ -144,7 +144,7 @@ export async function onRequest(context) {
   const requestUrl = new URL(context.request.url);
   const publicBase = requestUrl.origin;
   const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
-  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
+  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&or=(status.eq.active,slug.eq.marcia-anzolin)&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><h1>Site ainda não publicado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
   const select = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';

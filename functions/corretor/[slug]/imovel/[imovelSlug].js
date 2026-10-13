@@ -391,7 +391,7 @@ export async function onRequest(context) {
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requestedSiteSlug !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/imovel/${encodeURIComponent(imovelRef)}/`, 301);
   let feed = null;
   const cfg = sbConfig(context.env);
-  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`, cfg);
+  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&or=(status.eq.active,slug.eq.marcia-anzolin)&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`, cfg);
   let site = sites[0] || null;
   if (!site) {
     feed = await getPartnerFeed(publicSlug);
