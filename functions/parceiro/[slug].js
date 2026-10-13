@@ -564,7 +564,7 @@ export async function onRequest(context) {
     (Array.isArray(condos) ? condos : []).forEach((cond) => { condMap[cond.id] = cond; });
   }
   let properties = sourceRows.map((row) => normalizeListing(row, condMap, publicSlug, publicBase, publicPrefix));
-  if (publicSlug === 'marcia-anzolin' && !properties.length) properties = marciaStaticListings(publicBase, publicPrefix);
+  if (publicSlug === 'marcia-anzolin') properties = marciaStaticListings(publicBase, publicPrefix);
   const globalConfig = await getJson('configuracoes?chave=in.(destaques_imov,destaques_apartamentos,destaques_casas_fora,destaques_terreno)&select=chave,valor&limit=10', cfg);
   const globalIds = new Map();
   (Array.isArray(globalConfig) ? globalConfig : []).forEach((item) => {

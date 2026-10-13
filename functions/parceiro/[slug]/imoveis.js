@@ -171,6 +171,6 @@ export async function onRequest(context) {
     });
   }
   if (!properties.length) properties = await getPublicFeedProperties(publicSlug);
-  if (publicSlug === 'marcia-anzolin' && !properties.length) properties = marciaStaticListings(publicBase, publicPrefix);
+  if (publicSlug === 'marcia-anzolin') properties = marciaStaticListings(publicBase, publicPrefix);
   return new Response(page({ site, properties, slug: publicSlug, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }

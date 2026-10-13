@@ -432,7 +432,7 @@ export async function onRequest(context) {
     row = (Array.isArray(rows) ? rows : []).find((candidate) => isPublishedRow(candidate) && matchesPropertyRef(candidate.imovel || {}, imovelRef));
   }
   if (!row?.imovel && publicSlug === 'marcia-anzolin') {
-    const staticItem = marciaStaticProperty(imovelRef);
+    const staticItem = marciaStaticProperty(imovelRef) || { slug: imovelRef, id: imovelRef, code: '', title: 'Imóvel disponível', type: 'Imóvel', city: 'Litoral Norte', price: '', description: 'Consulte detalhes e disponibilidade com a corretora.', photo: '/img/hero-imoveis.webp', status: 'Disponível' };
     if (staticItem) {
       const staticListings = marciaStaticListings(new URL(context.request.url).origin, '');
       row = { id: staticItem.id, ordem: 0, destaque: false, titulo_personalizado: '', chamada_personalizada: '', imovel: { id: staticItem.id, slug: staticItem.slug, codigo: staticItem.code, titulo: staticItem.title, tipo: staticItem.type, cidade_end: staticItem.city, preco: staticItem.price, descricao: staticItem.description, fotos_no_site: [staticItem.photo], fotos: [staticItem.photo], fotos_para_site: [], status: staticItem.status, publicar: true } };
