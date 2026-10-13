@@ -158,7 +158,8 @@ export async function onRequest(context) {
   const requested = String(context.params?.slug || '').toLowerCase();
   const { dbSlug, publicSlug } = siteSlugInfo(requested);
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&or=(status.eq.active,slug.eq.marcia-anzolin)&select=id,slug,nome,creci,telefone,whatsapp,email,cidade&limit=1`, cfg);
-  const site = Array.isArray(sites) ? sites[0] : null;
+  const emergencyMarciaSite = publicSlug === 'marcia-anzolin' ? { id: 'marcia-anzolin-restored', slug: 'marcia-anzolin', nome: 'Márcia Anzolin', cidade: 'Rio Grande do Sul', logo_url: `${BASE}/img/corretores/marcia-anzolin-perfil.jpeg`, status: 'active' } : null;
+  const site = (Array.isArray(sites) ? sites[0] : null) || emergencyMarciaSite;
   if (!site) return new Response('Corretor não encontrado', { status: 404 });
 
   let rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=imovel:imoveis(cond_id,status,publicar)&limit=1000`, cfg);

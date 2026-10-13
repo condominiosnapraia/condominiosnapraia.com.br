@@ -145,7 +145,8 @@ export async function onRequest(context) {
   const publicBase = requestUrl.origin;
   const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
   const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&or=(status.eq.active,slug.eq.marcia-anzolin)&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
-  const site = Array.isArray(sites) ? sites[0] : null;
+  const emergencyMarciaSite = publicSlug === 'marcia-anzolin' ? { id: 'marcia-anzolin-restored', slug: 'marcia-anzolin', nome: 'Márcia Anzolin', cidade: 'Rio Grande do Sul', logo_url: `${BASE}/img/corretores/marcia-anzolin-perfil.jpeg`, status: 'active' } : null;
+  const site = (Array.isArray(sites) ? sites[0] : null) || emergencyMarciaSite;
   if (!site) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><h1>Site ainda não publicado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
   const select = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
   const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${select})&order=destaque.desc,ordem.asc&limit=1000`);

@@ -107,6 +107,8 @@ export async function onRequest(context) {
   if (!sites[0] && requested !== dbSlug) {
     sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(requested)}&or=(status.eq.active,slug.eq.marcia-anzolin)&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
   }
-  if (!sites[0]) return notFound();
-  return new Response(page({ site: sites[0], slug: publicSlug }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+  const emergencyMarciaSite = publicSlug === 'marcia-anzolin' ? { id: 'marcia-anzolin-restored', slug: 'marcia-anzolin', nome: 'Márcia Anzolin', cidade: 'Rio Grande do Sul', logo_url: `${BASE}/img/corretores/marcia-anzolin-perfil.jpeg`, status: 'active' } : null;
+  const site = sites[0] || emergencyMarciaSite;
+  if (!site) return notFound();
+  return new Response(page({ site, slug: publicSlug }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
