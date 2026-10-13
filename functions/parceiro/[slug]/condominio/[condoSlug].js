@@ -1,3 +1,4 @@
+import { marciaStaticListings } from '../../../_data/marciaCatalog.js';
 const SB_URL_FALLBACK = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const BASE = 'https://condominiosnapraia.com.br';
@@ -129,14 +130,20 @@ export async function onRequest(context) {
     if (Array.isArray(condos) && condos.length) break;
   }
   if (!Array.isArray(condos) || !condos.length) { condos = await getJson(`condominios?id=eq.${encodeURIComponent(condoParam)}&select=${condoSelect}&limit=1`, cfg); }
-  const condo = Array.isArray(condos) ? condos[0] : null;
+  let condo = Array.isArray(condos) ? condos[0] : null;
+  if (!condo && publicSlug === 'marcia-anzolin') {
+    const staticItems = marciaStaticListings(new URL(context.request.url).origin, '');
+    const match = staticItems.find((item) => item.condo && (item.condo.id === condoParam || item.condo.id === condoParam.replace(/^condominio-/, '') || slugify(item.condo.name) === condoParam || slugify(item.condo.name) === condoParam.replace(/^condominio-/, '')));
+    if (match?.condo) condo = { id: match.condo.id, slug: match.condo.id, nome: match.condo.name, cidade: match.condo.city, descricao: '', amenidades: [], fotos_no_site: [], fotos: [], fotos_para_site: [] };
+  }
   if (!condo) return new Response('<!doctype html><meta charset="utf-8"><title>Condomínio não encontrado</title><h1>Condomínio não encontrado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
   // imóveis DESTE corretor NESTE condomínio
   const select = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,area,area_privativa,area_construida,fotos,fotos_no_site,fotos_para_site,status,publicar';
   const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=destaque,titulo_personalizado,imovel:imoveis(${select})&order=destaque.desc,ordem.asc&limit=1000`, cfg);
   const condoOrigin = condo.slug || condoParam;
-  const properties = (Array.isArray(rows) ? rows : [])
+  let properties = (Array.isArray(rows) ? rows : [])
     .filter((row) => row.imovel && String(row.imovel.cond_id) === String(condo.id) && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido')
     .map((row) => { const im = row.imovel; const propertyPath = `${BASE}/${segment}/${encodeURIComponent(publicSlug)}/imovel/${encodeURIComponent(propertySlug(im))}/`; return { id: im.id, url: `${propertyPath}?origem=condominio&condominio=${encodeURIComponent(condoOrigin)}`, title: row.titulo_personalizado || im.titulo || 'Imóvel disponível', type: im.tipo || 'Imóvel', price: im.preco, bedrooms: im.quartos, suites: im.suites, area: im.area || im.area_privativa || im.area_construida, photo: firstPhoto(im), featured: Boolean(row.destaque), status: String(im.status || '').toLowerCase(), code: im.codigo || im.ref || '' }; });
+  if (!properties.length && publicSlug === 'marcia-anzolin') properties = marciaStaticListings(new URL(context.request.url).origin, '').filter((item) => item.condo && String(item.condo.id) === String(condo.id)).map((item) => ({ id: item.id, url: item.url + `?origem=condominio&condominio=${encodeURIComponent(condoOrigin)}`, title: item.title, type: item.type, price: item.price, bedrooms: item.bedrooms, suites: item.suites, area: item.area, photo: item.photo, featured: false, status: 'disponível', code: item.code }));
   return new Response(layout({ site, condo, properties, slug: publicSlug, segment }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }

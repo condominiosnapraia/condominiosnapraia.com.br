@@ -1,3 +1,4 @@
+import { marciaStaticListings } from './_data/marciaCatalog.js';
 const SB_URL_FALLBACK = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const BASE = 'https://condominiosnapraia.com.br';
@@ -563,6 +564,7 @@ export async function onRequest(context) {
     (Array.isArray(condos) ? condos : []).forEach((cond) => { condMap[cond.id] = cond; });
   }
   let properties = sourceRows.map((row) => normalizeListing(row, condMap, publicSlug, publicBase, publicPrefix));
+  if (publicSlug === 'marcia-anzolin' && !properties.length) properties = marciaStaticListings(publicBase, publicPrefix);
   const globalConfig = await getJson('configuracoes?chave=in.(destaques_imov,destaques_apartamentos,destaques_casas_fora,destaques_terreno)&select=chave,valor&limit=10', cfg);
   const globalIds = new Map();
   (Array.isArray(globalConfig) ? globalConfig : []).forEach((item) => {
