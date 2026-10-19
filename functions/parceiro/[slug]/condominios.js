@@ -157,11 +157,12 @@ export async function onRequest(context) {
   const cfg = sbConfig(context.env);
   const requested = String(context.params?.slug || '').toLowerCase();
   const { dbSlug, publicSlug } = siteSlugInfo(requested);
-  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade&limit=1`, cfg);
+  const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.386', telefone: '51995731944', whatsapp: '51995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', status: 'active' };
+  const sites = publicSlug === 'fabio-adolfo' ? [FABIO_STATIC_SITE] : await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade&limit=1`, cfg);
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('Corretor não encontrado', { status: 404 });
 
-  let rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=imovel:imoveis(cond_id,status,publicar)&limit=1000`, cfg);
+  let rows = publicSlug === 'fabio-adolfo' ? [] : await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=imovel:imoveis(cond_id,status,publicar)&limit=1000`, cfg);
   if (site && dbSlug) {
     const generalRows = await getJson('imoveis?publicar=eq.true&status=neq.Vendido&select=cond_id,status,publicar&limit=5000', cfg);
     rows = (Array.isArray(generalRows) ? generalRows : []).map((imovel) => ({ imovel }));

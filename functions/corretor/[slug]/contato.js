@@ -103,7 +103,8 @@ export async function onRequest(context) {
   const { dbSlug, publicSlug } = siteSlugInfo(requested);
   const requestPath = new URL(context.request.url).pathname;
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requested !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/contato/`, 301);
-  let sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
+  const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.386', telefone: '51995731944', whatsapp: '51995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', status: 'active' };
+  let sites = publicSlug === 'fabio-adolfo' ? [FABIO_STATIC_SITE] : await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
   if (!sites[0] && requested !== dbSlug) {
     sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(requested)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
   }

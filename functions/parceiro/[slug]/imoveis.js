@@ -144,13 +144,14 @@ export async function onRequest(context) {
   const requestUrl = new URL(context.request.url);
   const publicBase = requestUrl.origin;
   const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
-  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
+  const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.386', telefone: '51995731944', whatsapp: '51995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', status: 'active' };
+  const sites = publicSlug === 'fabio-adolfo' ? [FABIO_STATIC_SITE] : await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><h1>Site ainda não publicado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
   const select = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,area,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
-  const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${select})&order=destaque.desc,ordem.asc&limit=1000`);
+  const rows = publicSlug === 'fabio-adolfo' ? [] : await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada,imovel:imoveis(${select})&order=destaque.desc,ordem.asc&limit=1000`);
   let listingRows = (Array.isArray(rows) ? rows : []).filter((row) => row.imovel && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido');
-  if (site && dbSlug) {
+  if (site && dbSlug && publicSlug !== 'fabio-adolfo') {
     const generalRows = await getJson(`imoveis?publicar=eq.true&status=neq.Vendido&select=${select}&order=updated_at.desc&limit=1000`);
     listingRows = (Array.isArray(generalRows) ? generalRows : []).filter((imovel) => imovel && imovel.publicar !== false && String(imovel.status || '').toLowerCase() !== 'vendido').map((imovel, index) => ({ id: `catalogo-${imovel.id}`, ordem: index, destaque: false, titulo_personalizado: '', chamada_personalizada: '', imovel }));
   }
