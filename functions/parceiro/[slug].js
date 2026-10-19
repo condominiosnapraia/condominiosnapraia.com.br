@@ -190,7 +190,7 @@ function layout({ site, properties, slug, requestPath, topCondos, verticalCondos
   const fullListingUrl = `${publicBase}${routePrefix}/imoveis/`;
   const ogSlugs = new Set(['cassio-lopes','felipe-ranzolin','fernando-trevisol','jeferson-gimenez','juliano-machado','marcelo-bereta','marcos-selbach','rodrigo-carvalho']);
   const ogSlug = ogSlugs.has(slug) ? slug : 'parceiro-padrao';
-  const socialImage = isAlisson ? `${BASE}/img/corretores/alisson-portella-perfil.jpg?v=20260927` : `${BASE}/img/corretores/og/${encodeURIComponent(ogSlug)}.jpg?v=20260919-photos`;
+  const socialImage = isAlisson ? `${BASE}/img/corretores/alisson-portella-perfil.jpg?v=20260927` : (slug === 'fabio-adolfo' ? `${BASE}/img/corretores/fabio-adolfo-perfil.jpg?v=20261019` : `${BASE}/img/corretores/og/${encodeURIComponent(ogSlug)}.jpg?v=20260919-photos`);
   const socialSiteName = isAlisson ? 'Atlântida Negócios Imobiliários' : name;
   const socialTitle = isAlisson ? 'Alisson Portella' : pageTitle;
   const condosUrl = `${publicBase}${routePrefix}/condominios/`;
