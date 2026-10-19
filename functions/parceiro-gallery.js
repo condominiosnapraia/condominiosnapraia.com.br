@@ -31,7 +31,7 @@ export async function onRequest(context) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSiteSlug) || !/^[0-9a-f-]{8,}$/i.test(propertyId)) return json({ error: 'invalid_request' }, 400);
   const token = String(context.request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '').trim();
   if (!token || !(await authenticatedUser(token))) return json({ error: 'login_required', message: 'Faça login para ver as fotos adicionais.' }, 401, { 'www-authenticate': 'Bearer' });
-  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(siteSlug)}&or=(status.eq.active,slug.eq.marcia-anzolin)&select=id&limit=1`);
+  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(siteSlug)}&status=eq.active&select=id&limit=1`);
   if (!sites[0]) return json({ error: 'site_not_published' }, 404);
   const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(sites[0].id)}&imovel_id=eq.${encodeURIComponent(propertyId)}&publicado=eq.true&select=imovel:imoveis(id,cond_id,fotos,fotos_no_site,fotos_para_site)&limit=1`);
   if (!rows[0]?.imovel) return json({ error: 'property_not_published' }, 404);

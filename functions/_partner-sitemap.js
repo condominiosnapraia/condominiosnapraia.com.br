@@ -39,7 +39,7 @@ async function getJson(path) {
 async function partnerExists(slug) {
   const candidates = [slug, SITE_SLUG_ALIASES[slug]].filter(Boolean);
   for (const candidate of candidates) {
-    const rows = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(candidate)}&or=(status.eq.active,slug.eq.marcia-anzolin)&select=id,slug,updated_at&limit=1`);
+    const rows = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(candidate)}&status=eq.active&select=id,slug,updated_at&limit=1`);
     if (Array.isArray(rows) && rows[0]) return rows[0];
   }
   return null;
