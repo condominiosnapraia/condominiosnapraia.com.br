@@ -157,7 +157,7 @@ export async function onRequest(context) {
   const cfg = sbConfig(context.env);
   const requested = String(context.params?.slug || '').toLowerCase();
   const { dbSlug, publicSlug } = siteSlugInfo(requested);
-  const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.386', telefone: '5551995731944', whatsapp: '5551995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', status: 'active' };
+  const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.611', telefone: '5551995731944', whatsapp: '5551995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', status: 'active' };
   const sites = publicSlug === 'fabio-adolfo' ? [FABIO_STATIC_SITE] : await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade&limit=1`, cfg);
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('Corretor não encontrado', { status: 404 });
