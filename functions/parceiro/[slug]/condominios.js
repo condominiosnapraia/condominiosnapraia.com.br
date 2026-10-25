@@ -181,7 +181,7 @@ export async function onRequest(context) {
     name: c.nome || 'Condomínio',
     city: c.cidade || '',
     amenities: Array.isArray(c.amenidades) ? c.amenidades : [],
-    photo: '',
+    photo: firstPhoto(cond),
     count: counts[c.id] || 0,
   })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
 

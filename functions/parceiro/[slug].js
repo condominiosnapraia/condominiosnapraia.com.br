@@ -114,7 +114,7 @@ function normalizeListing(row, condMap, siteSlug, base = BASE, publicPrefix = ''
     bathrooms: imovel.banheiros,
     parking: imovel.vagas,
     area: imovel.area || imovel.area_privativa || imovel.area_construida,
-    photo: '',
+    photo: firstPhoto(imovel),
     featured: Boolean(row.destaque),
     displayOrder: Number.isFinite(Number(row.ordem)) ? Number(row.ordem) : 999999,
     status: String(imovel.status || '').trim().toLowerCase(),
@@ -556,7 +556,7 @@ export async function onRequest(context) {
     const allCondos = await getJson('condominios?select=id,slug,nome,cidade,descricao,amenidades,orientacao,perfil,fotos_no_site,fotos,fotos_para_site&limit=1000', cfg);
     verticalCatalog = (Array.isArray(allCondos) ? allCondos : [])
       .filter((cond) => /vertical/i.test(`${cond.orientacao || ''} ${cond.perfil || ''}`) && !/lynemar\s+business/i.test(String(cond.nome || '')))
-      .map((cond) => ({ id: cond.id, slug: slugify(cond.slug || cond.nome || cond.id) || String(cond.id), name: cond.nome || '', city: cond.cidade || '', orientation: cond.orientacao || '', profile: cond.perfil || '', amenities: Array.isArray(cond.amenidades) ? cond.amenidades : [], photo: '', count: 0 }));
+      .map((cond) => ({ id: cond.id, slug: slugify(cond.slug || cond.nome || cond.id) || String(cond.id), name: cond.nome || '', city: cond.cidade || '', orientation: cond.orientacao || '', profile: cond.perfil || '', amenities: Array.isArray(cond.amenidades) ? cond.amenidades : [], photo: firstPhoto(cond), count: 0 }));
   }
   if (condIds.length) {
     const condos = await getJson(`condominios?id=in.(${condIds.map(encodeURIComponent).join(',')})&select=id,slug,nome,cidade,descricao,amenidades,orientacao,perfil,fotos_no_site,fotos,fotos_para_site&limit=1000`, cfg);
@@ -580,7 +580,7 @@ export async function onRequest(context) {
     if (!c || !c.id) return;
     if (!condoStats[c.id]) {
       const raw = condMap[c.id] || {};
-      condoStats[c.id] = { id: c.id, slug: slugify(c.slug || c.name || c.id) || String(c.id), name: c.name || '', city: c.city || '', orientation: raw.orientacao || '', profile: raw.perfil || '', amenities: Array.isArray(c.amenities) ? c.amenities : [], photo: '', count: 0 };
+      condoStats[c.id] = { id: c.id, slug: slugify(c.slug || c.name || c.id) || String(c.id), name: c.name || '', city: c.city || '', orientation: raw.orientacao || '', profile: raw.perfil || '', amenities: Array.isArray(c.amenities) ? c.amenities : [], photo: firstPhoto(raw), count: 0 };
     }
     condoStats[c.id].count += 1;
   });
