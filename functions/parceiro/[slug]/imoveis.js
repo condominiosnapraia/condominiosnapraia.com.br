@@ -144,7 +144,7 @@ export async function onRequest(context) {
   const requestUrl = new URL(context.request.url);
   const publicBase = requestUrl.origin;
   const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
-  const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.386', telefone: '51995731944', whatsapp: '51995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', status: 'active' };
+  const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.386', telefone: '5551995731944', whatsapp: '5551995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', status: 'active' };
   const sites = publicSlug === 'fabio-adolfo' ? [FABIO_STATIC_SITE] : await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`);
   const site = Array.isArray(sites) ? sites[0] : null;
   if (!site) return new Response('<!doctype html><meta charset="utf-8"><title>Site não encontrado</title><h1>Site ainda não publicado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
