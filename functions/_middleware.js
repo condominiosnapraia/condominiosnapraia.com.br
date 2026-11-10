@@ -173,6 +173,12 @@ const MARCOS_SELBACH_REFINEMENT = `<style id="marcos-selbach-refinement">
   @media(max-width:600px){.marcos-selbach .hero-broker-name{font-size:clamp(46px,14vw,64px)}.marcos-selbach .hero-title-clean{font-size:28px}.marcos-selbach .section-head h2{font-size:38px}}
 </style>`;
 
+const MARCOS_SELBACH_RESPONSIVE = `<style id="marcos-selbach-responsive">
+  @media(min-width:981px){.marcos-selbach .hero{min-height:620px}.marcos-selbach .hero-photo-overlay{inset:0 0 0 45%;background-position:68% center}.marcos-selbach .hero-grid{min-height:620px;padding:120px 34px 70px;grid-template-columns:minmax(0,470px) 1fr;gap:48px}.marcos-selbach .hero-broker-name{font-size:clamp(48px,5.2vw,70px)}.marcos-selbach .hero-title-clean{font-size:clamp(24px,2.7vw,37px)}.marcos-selbach .main{padding-top:55px}.marcos-selbach .search-panel{margin-top:-82px}.marcos-selbach .property-grid,.marcos-selbach .condos-grid{gap:24px}}
+  @media(max-width:980px){.marcos-selbach .hero{min-height:620px}.marcos-selbach .hero-photo-overlay{inset:0 0 44% 0;background-position:center 20%}.marcos-selbach .hero-grid{min-height:620px;padding:286px 22px 45px}.marcos-selbach .hero:before{display:none}.marcos-selbach .search-panel{margin-top:-62px}.marcos-selbach .main{padding-top:52px}}
+  @media(max-width:600px){.marcos-selbach .hero{min-height:570px}.marcos-selbach .hero-photo-overlay{inset:0 0 43% 0;background-position:center 18%}.marcos-selbach .hero-grid{min-height:570px;padding:256px 20px 34px}.marcos-selbach .hero-broker-name{font-size:clamp(44px,13vw,60px);line-height:.96}.marcos-selbach .hero-title-clean{font-size:26px;line-height:1.08;margin-top:18px!important}.marcos-selbach .hero-whatsapp{margin-top:20px;padding:12px 16px}.marcos-selbach .main{padding:46px 16px 110px}.marcos-selbach .search-panel{margin-top:-50px;padding:20px 16px}.marcos-selbach .search-head h2{font-size:29px}.marcos-selbach .property-section.section-tone-soft{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}.marcos-selbach .section-head h2{font-size:35px}.marcos-selbach .property-grid,.marcos-selbach .condos-grid{gap:18px}}
+</style>`;
+
 const ATLANTIDA_CRM_STYLE = `<style id="atlantida-crm-theme">
   :root{--bg:#f4f1eb!important;--sf:#fffdf9!important;--s2:#f6f1e9!important;--s3:#eee7dc!important;--bd:#e4d9c9!important;--bd2:#cdbda8!important;--ac:#9b7138!important;--acd:rgba(155,113,56,.12)!important;--go:#b08242!important;--tx:#23333a!important;--t2:#66747a!important;--t3:#9b9b91!important}
   body{background:linear-gradient(135deg,#f5f0e8 0%,#ebe4d9 100%)!important;color:#23333a!important}
@@ -314,7 +320,7 @@ function applyMarcosSelbachBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
   rewriter
     .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} marcos-selbach`.trim()); } })
-    .on('head', { element(element) { element.append(MARCOS_SELBACH_STYLE, { html: true }); element.append(MARCOS_SELBACH_REFINEMENT, { html: true }); } })
+    .on('head', { element(element) { element.append(MARCOS_SELBACH_STYLE, { html: true }); element.append(MARCOS_SELBACH_REFINEMENT, { html: true }); element.append(MARCOS_SELBACH_RESPONSIVE, { html: true }); } })
     .on('title', { element(element) { element.setInnerContent('Marco Selbach | Imóveis no Litoral Norte'); } })
     .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Marco Selbach'); } })
     .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Marco Selbach | Imóveis no Litoral Norte'); } })
