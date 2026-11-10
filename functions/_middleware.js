@@ -236,9 +236,7 @@ function isMarcosSelbach(url) {
 
 function marcoInternalPath(pathname) {
   if (pathname === '/' || pathname === '/index.html') return '/corretor/marcos-selbach/';
-  if (/^\/imoveis\/?$/.test(pathname)) return '/corretor/marcos-selbach/imoveis/';
-  if (/^\/condominios\/?$/.test(pathname)) return '/corretor/marcos-selbach/condominios/';
-  if (/^\/contato\/?$/.test(pathname)) return '/corretor/marcos-selbach/contato/';
+  if (/^\/(?:imoveis|condominios|contato)\/?$/.test(pathname)) return '/corretor/marcos-selbach/';
   if (/^\/imovel\//.test(pathname)) return `/corretor/marcos-selbach${pathname}`;
   if (/^\/condominio\//.test(pathname)) return `/corretor/marcos-selbach${pathname}`;
   return null;
