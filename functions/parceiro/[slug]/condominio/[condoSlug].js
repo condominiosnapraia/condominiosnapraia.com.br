@@ -30,10 +30,11 @@ function propertyCard(p) {
   const details = [p.bedrooms && `${p.bedrooms} quartos`, p.suites && `${p.suites} suítes`, p.area && `${p.area} m²`].filter(Boolean).join(' · ');
   return `<article class="listing-card"><a class="listing-photo-link" href="${esc(p.url)}"><div class="listing-photo">${p.photo ? `<img src="${esc(p.photo)}" alt="${esc(p.title)}" loading="lazy" decoding="async">` : '<div class="listing-photo-empty">Imagem em atualização</div>'}<span class="listing-status">${esc(badgeLabel(p))}</span></div></a><div class="listing-body"><span class="listing-type">${esc(p.type || 'Imóvel')}</span><h3><a href="${esc(p.url)}">${esc(p.title)}</a></h3>${details ? `<p class="listing-details">${esc(details)}</p>` : ''}${p.code ? `<p class="listing-code">Código ${esc(p.code)}</p>` : ''}<strong>${esc(money(p.price))}</strong><a class="listing-button" href="${esc(p.url)}">Ver imóvel</a></div></article>`;
 }
-function layout({ site, condo, properties, slug, segment }) {
+function layout({ site, condo, properties, slug, segment, publicBase = BASE, publicPrefix = '' }) {
   const name = site.nome || 'Corretor parceiro';
   const wpp = `https://wa.me/${digits(site.whatsapp || site.telefone)}`;
-  const landingUrl = `${BASE}/${segment}/${encodeURIComponent(slug)}/`;
+  const routePrefix = publicPrefix || `/${segment}/${encodeURIComponent(slug)}`;
+  const landingUrl = `${publicBase}${routePrefix}/`;
   const listingUrl = `${landingUrl}imoveis/`;
   const condosUrl = `${landingUrl}condominios/`;
   const contactUrl = `${landingUrl}contato/`;
@@ -137,6 +138,9 @@ export async function onRequest(context) {
   const condoOrigin = condo.slug || condoParam;
   const properties = (Array.isArray(rows) ? rows : [])
     .filter((row) => row.imovel && String(row.imovel.cond_id) === String(condo.id) && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido')
-    .map((row) => { const im = row.imovel; const propertyPath = `${BASE}/${segment}/${encodeURIComponent(publicSlug)}/imovel/${encodeURIComponent(propertySlug(im))}/`; return { id: im.id, url: `${propertyPath}?origem=condominio&condominio=${encodeURIComponent(condoOrigin)}`, title: row.titulo_personalizado || im.titulo || 'Imóvel disponível', type: im.tipo || 'Imóvel', price: im.preco, bedrooms: im.quartos, suites: im.suites, area: im.area || im.area_privativa || im.area_construida, photo: firstPhoto(im), featured: Boolean(row.destaque), status: String(im.status || '').toLowerCase(), code: im.codigo || im.ref || '' }; });
-  return new Response(layout({ site, condo, properties, slug: publicSlug, segment }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+    .map((row) => { const im = row.imovel; const propertyPath = `${publicBase}${publicPrefix || `/${segment}/${encodeURIComponent(publicSlug)}`}/imovel/${encodeURIComponent(propertySlug(im))}/`; return { id: im.id, url: `${propertyPath}?origem=condominio&condominio=${encodeURIComponent(condoOrigin)}`, title: row.titulo_personalizado || im.titulo || 'Imóvel disponível', type: im.tipo || 'Imóvel', price: im.preco, bedrooms: im.quartos, suites: im.suites, area: im.area || im.area_privativa || im.area_construida, photo: firstPhoto(im), featured: Boolean(row.destaque), status: String(im.status || '').toLowerCase(), code: im.codigo || im.ref || '' }; });
+  const publicUrl = new URL(context.request.url);
+  const publicBase = publicUrl.origin;
+  const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
+  return new Response(layout({ site, condo, properties, slug: publicSlug, segment, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
