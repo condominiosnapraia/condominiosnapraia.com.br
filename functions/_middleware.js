@@ -322,9 +322,9 @@ function applyMarcosSelbachBrand(rewriter, pageUrl) {
   rewriter
     .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} marcos-selbach`.trim()); } })
     .on('head', { element(element) { element.append(MARCOS_SELBACH_STYLE, { html: true }); element.append(MARCOS_SELBACH_REFINEMENT, { html: true }); element.append(MARCOS_SELBACH_RESPONSIVE, { html: true }); } })
-    .on('title', { element(element) { element.setInnerContent('Marco Selbach | Imóveis no Litoral Norte'); } })
-    .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Marco Selbach'); } })
-    .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Marco Selbach | Imóveis no Litoral Norte'); } })
+    .on('title', { element(element) { element.setInnerContent('Marcos Selbach | Imóveis no Litoral Norte'); } })
+    .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Marcos Selbach'); } })
+    .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Marcos Selbach | Imóveis no Litoral Norte'); } })
     .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', canonicalUrl); } })
     .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', canonicalUrl); } });
 }
