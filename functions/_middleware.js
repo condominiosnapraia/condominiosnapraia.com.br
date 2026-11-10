@@ -23,6 +23,10 @@ const ATLANTIDA_NEGOCIOS_HOSTS = new Set([
   'atlantidanegocios.com.br',
   'www.atlantidanegocios.com.br',
 ]);
+const MARCOS_SELBACH_HOSTS = new Set([
+  'marcosselbach.com.br',
+  'www.marcosselbach.com.br',
+]);
 const ATLANTIDA_WHATSAPP = '5551981348907';
 const ATLANTIDA_WHATSAPP_SCRIPT = `<script id="atlantida-whatsapp-routing">
   (function(){
@@ -189,6 +193,20 @@ function isAtlantidaNegocios(url) {
   return ATLANTIDA_NEGOCIOS_HOSTS.has(url.hostname.toLowerCase());
 }
 
+function isMarcosSelbach(url) {
+  return MARCOS_SELBACH_HOSTS.has(url.hostname.toLowerCase());
+}
+
+function marcoInternalPath(pathname) {
+  if (pathname === '/' || pathname === '/index.html') return '/corretor/marcos-selbach/';
+  if (/^\/imoveis\/?$/.test(pathname)) return '/corretor/marcos-selbach/imoveis/';
+  if (/^\/condominios\/?$/.test(pathname)) return '/corretor/marcos-selbach/condominios/';
+  if (/^\/contato\/?$/.test(pathname)) return '/corretor/marcos-selbach/contato/';
+  if (/^\/imovel\//.test(pathname)) return `/corretor/marcos-selbach${pathname}`;
+  if (/^\/condominio\//.test(pathname)) return `/corretor/marcos-selbach${pathname}`;
+  return null;
+}
+
 function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
   rewriter
@@ -265,6 +283,16 @@ export async function onRequest(context) {
   const { request, next } = context;
   const url = new URL(request.url);
   const path = url.pathname;
+  if (isMarcosSelbach(url)) {
+    const internalPath = marcoInternalPath(path);
+    if (internalPath) {
+      const target = new URL(internalPath, url);
+      target.search = url.search;
+      const headers = new Headers(request.headers);
+      headers.set('x-public-partner-prefix', '/');
+      return fetch(new Request(target, { method: request.method, headers, body: request.method === 'GET' || request.method === 'HEAD' ? undefined : request.body }));
+    }
+  }
   const alissonAlias = ['/alisonportela', '/alissonportela'].find((alias) => path === alias || path.startsWith(`${alias}/`));
   if (isAtlantidaNegocios(url) && alissonAlias && (path === alissonAlias || path === `${alissonAlias}/` || path.startsWith(`${alissonAlias}/imoveis`) || path.startsWith(`${alissonAlias}/contato`) || path.startsWith(`${alissonAlias}/condominios`) || path.startsWith(`${alissonAlias}/imovel/`))) {
     const suffix = path.slice(alissonAlias.length) || '/';
