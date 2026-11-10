@@ -10,7 +10,7 @@ function digits(value) { return String(value || '').replace(/\D/g, ''); }
 function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; const publicSlug = Object.entries(SITE_SLUG_ALIASES).find(([, alias]) => alias === requested)?.[0] || requested; return { requested, dbSlug, publicSlug }; }
 async function getJson(path) { try { const response = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HEADERS }); return response.ok ? await response.json() : []; } catch (_) { return []; } }
 function notFound() { return new Response('<!doctype html><meta charset="utf-8"><title>Contato não encontrado</title><meta name="robots" content="noindex"><style>body{font-family:Arial;padding:48px;max-width:700px;margin:auto;color:#0d3b54}a{color:#0d5c86;font-weight:bold}</style><h1>Contato não encontrado</h1><p>Este site parceiro não está publicado.</p><a href="https://condominiosnapraia.com.br/">Voltar para Condomínios na Praia</a>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } }); }
-function page({ site, slug }) {
+function page({ site, slug, publicBase = BASE, publicPrefix = '' }) {
   const isAlisson = slug === 'alisson-portella';
   const isRodrigo = slug === 'rodrigo-carvalho';
   const isJuliano = slug === 'juliano-machado';
@@ -21,7 +21,7 @@ function page({ site, slug }) {
   const phone = digits(site.whatsapp || site.telefone);
   const whatsapp = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
   const whatsappText = encodeURIComponent(`Olá, ${name}! Gostaria de falar sobre imóveis e atendimento.`);
-  const landing = `${BASE}/corretor/${encodeURIComponent(slug)}/`;
+  const landing = `${publicBase}${publicPrefix || `/corretor/${encodeURIComponent(slug)}`}/`;
   const contactUrl = `${landing}contato/`;
   const cover = isAlisson ? `${BASE}/img/branding/atlantida-negocios-hero.jpg` : (site.capa_url || DEFAULT_COVER);
   const profileImage = isRodrigo ? `${BASE}/img/corretores/rodrigo-carvalho-perfil.jpeg` : (isJuliano ? `${BASE}/img/corretores/juliano-machado-perfil.jpeg` : (isMarcos ? `${BASE}/img/corretores/marcos-selbach-perfil.jpeg` : (site.logo_url || '')));
@@ -110,5 +110,8 @@ export async function onRequest(context) {
   }
   const site = sites[0];
   if (!site) return notFound();
-  return new Response(page({ site, slug: publicSlug }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
+  const publicUrl = new URL(context.request.url);
+  const publicBase = publicUrl.origin;
+  const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
+  return new Response(page({ site, slug: publicSlug, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
