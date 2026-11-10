@@ -142,6 +142,66 @@ const ATLANTIDA_NEGOCIOS_STYLE = `<style id="atlantida-negocios-theme">
   @media(max-width:600px){.atlantida-negocios #view-home .hero-brand-name{font-size:clamp(40px,12.4vw,54px)}.atlantida-negocios .page-footer .ftr-brand-lockup{width:200px;min-height:70px}}
 </style>`;
 
+const MARCOS_SELBACH_STYLE = `<style id="marcos-selbach-theme">
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+  .marcos-selbach{--marcos-ink:#173536;--marcos-deep:#0e2c30;--marcos-teal:#1f6460;--marcos-sand:#f4efe6;--marcos-paper:#fffdf9;--marcos-copper:#b7784f;--marcos-line:rgba(23,53,54,.13);font-family:'DM Sans',Arial,sans-serif;background:var(--marcos-sand)!important;color:var(--marcos-ink)}
+  .marcos-selbach .site-header{background:rgba(14,44,48,.9)!important;border-bottom:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px)!important}
+  .marcos-selbach .site-header .nav{max-width:1240px;padding:16px 30px}
+  .marcos-selbach .site-header .brand-name{font-family:'DM Serif Display',Georgia,serif;color:#fff8ec;font-size:20px;letter-spacing:.01em}
+  .marcos-selbach .site-header .brand-sub{color:#d9b28e;letter-spacing:.16em}
+  .marcos-selbach .site-header .nav-links{gap:8px}
+  .marcos-selbach .site-header .nav-links>a{border-color:rgba(255,255,255,.24);background:transparent;border-radius:5px;color:#fff8ec;text-shadow:none}
+  .marcos-selbach .site-header .nav-links>a:hover{background:#d9a178;border-color:#d9a178;color:#173536}
+  .marcos-selbach .site-header .nav-links>.nav-cta{background:#d9a178;border-color:#d9a178;color:#173536;box-shadow:none}
+  .marcos-selbach .hero{min-height:590px;background:var(--marcos-deep);isolation:isolate}
+  .marcos-selbach .hero:before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,31,34,.9),rgba(7,31,34,.55) 44%,rgba(7,31,34,.18));z-index:1}
+  .marcos-selbach .hero:after{background:linear-gradient(0deg,rgba(7,31,34,.72),transparent 48%);z-index:1}
+  .marcos-selbach .hero-grid{max-width:1240px;padding:130px 30px 72px;grid-template-columns:minmax(0,1fr) 310px;gap:70px}
+  .marcos-selbach .hero-copy{max-width:760px}
+  .marcos-selbach .hero-kicker{color:#e0ae82;letter-spacing:.24em;font-size:11px}
+  .marcos-selbach .hero-kicker i{background:#e0ae82}
+  .marcos-selbach .hero-broker-name{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(52px,7vw,94px);line-height:.93;letter-spacing:-.045em;color:#fff8ec;text-wrap:balance}
+  .marcos-selbach .hero-broker-meta{color:#e0ae82;letter-spacing:.2em;font-size:12px}
+  .marcos-selbach .hero-title-clean{max-width:600px;margin-top:20px!important;font-family:'DM Serif Display',Georgia,serif;font-size:clamp(27px,3.5vw,48px);line-height:1.04;color:#fff8ec}
+  .marcos-selbach .hero-title-clean span+span{color:#e0ae82}
+  .marcos-selbach .hero-broker-photo-wrap{align-self:end;justify-self:end;width:270px;height:340px;padding:9px;border:1px solid rgba(224,174,130,.72);border-radius:150px 150px 18px 18px;background:rgba(255,255,255,.08);transform:rotate(2deg)}
+  .marcos-selbach .hero-broker-photo,.marcos-selbach .hero-broker-photo-empty{border-radius:140px 140px 12px 12px}
+  .marcos-selbach .hero-whatsapp{border-radius:4px;background:#e0ae82;color:#173536;box-shadow:0 14px 30px rgba(0,0,0,.2)}
+  .marcos-selbach .main{max-width:1240px;padding:54px 30px 120px}
+  .marcos-selbach .search-panel{margin:-78px 0 34px;border:1px solid rgba(23,53,54,.14);border-radius:5px;background:var(--marcos-paper);box-shadow:0 24px 60px rgba(23,53,54,.14);padding:25px}
+  .marcos-selbach .search-head h2,.marcos-selbach .section-head h2,.marcos-selbach .sr-title{font-family:'DM Serif Display',Georgia,serif;color:var(--marcos-ink);letter-spacing:-.03em}
+  .marcos-selbach .search-head h2{font-size:34px}
+  .marcos-selbach .search-form input,.marcos-selbach .search-form select{border-radius:3px;background:#faf7f1;border-color:var(--marcos-line)}
+  .marcos-selbach .search-form button{border-radius:3px;background:var(--marcos-teal);box-shadow:none}
+  .marcos-selbach .category-chip{border-radius:4px;background:rgba(255,253,249,.9);box-shadow:none}
+  .marcos-selbach .category-chip>span{border-radius:4px;background:#e6eee8}
+  .marcos-selbach .property-section{padding:58px 0 48px}
+  .marcos-selbach .property-section.section-tone-soft{margin-left:-30px;margin-right:-30px;padding:58px 30px 52px;border-radius:0;background:rgba(255,253,249,.64);border-top:1px solid var(--marcos-line);border-bottom:1px solid var(--marcos-line)}
+  .marcos-selbach .section-head{margin-bottom:26px}
+  .marcos-selbach .section-head h2{font-size:clamp(34px,4.7vw,58px)}
+  .marcos-selbach .section-head h2 small{color:var(--marcos-copper);letter-spacing:.2em}
+  .marcos-selbach .eyebrow{color:var(--marcos-copper);letter-spacing:.22em}
+  .marcos-selbach .property-grid,.marcos-selbach .condos-grid{gap:22px}
+  .marcos-selbach .property-card,.marcos-selbach .condo-card{border-radius:5px;background:var(--marcos-paper);border-color:var(--marcos-line);box-shadow:0 12px 28px rgba(23,53,54,.08)}
+  .marcos-selbach .property-card:hover,.marcos-selbach .condo-card:hover{transform:translateY(-5px);box-shadow:0 20px 38px rgba(23,53,54,.14);border-color:rgba(183,120,79,.55)}
+  .marcos-selbach .property-photo,.marcos-selbach .condo-photo{aspect-ratio:4/3;background:#dfe8e4}
+  .marcos-selbach .property-badge{border-radius:3px;background:#e0ae82;color:#173536}
+  .marcos-selbach .property-body h3,.marcos-selbach .condo-body h3{font-family:'DM Serif Display',Georgia,serif;font-size:23px;color:var(--marcos-ink)}
+  .marcos-selbach .property-body strong{color:var(--marcos-teal);font-size:18px}
+  .marcos-selbach .property-link{border-radius:3px;background:var(--marcos-teal);color:#fff8ec}
+  .marcos-selbach .property-interest,.marcos-selbach .section-more-btn{border-radius:3px;color:var(--marcos-teal);border-color:rgba(31,100,96,.35);background:transparent}
+  .marcos-selbach .section-more-btn:hover{background:var(--marcos-teal);color:#fff8ec}
+  .marcos-selbach footer{background:var(--marcos-deep);color:#f7efe4}
+  .marcos-selbach footer a{color:#e0ae82}
+  .marcos-selbach .footer-logo,.marcos-selbach .footer-title{font-family:'DM Serif Display',Georgia,serif;color:#fff8ec}
+  .marcos-selbach .footer-bottom{border-top-color:rgba(255,255,255,.14)}
+  .marcos-selbach .floating-wpp{background:#d9a178;color:#173536}
+  .marcos-selbach .mob-footer-nav{background:rgba(14,44,48,.96);border-top-color:rgba(224,174,130,.3);box-shadow:0 -8px 24px rgba(7,31,34,.22)}
+  .marcos-selbach .mob-footer-btn{color:#d5dedb!important}.marcos-selbach .mob-footer-btn.active,.marcos-selbach .mob-footer-btn:hover{color:#e0ae82!important}
+  @media(max-width:980px){.marcos-selbach .hero{min-height:570px}.marcos-selbach .hero-grid{grid-template-columns:1fr;gap:22px;padding:112px 22px 42px}.marcos-selbach .hero-broker-photo-wrap{width:160px;height:205px;justify-self:start;order:-1}.marcos-selbach .main{padding-left:18px;padding-right:18px}.marcos-selbach .search-panel{margin-top:-55px}.marcos-selbach .property-section.section-tone-soft{margin-left:-18px;margin-right:-18px;padding-left:18px;padding-right:18px}}
+  @media(max-width:600px){.marcos-selbach .site-header{display:none!important}.marcos-selbach .hero-broker-name{font-size:clamp(48px,16vw,74px)}.marcos-selbach .hero-title-clean{font-size:31px}.marcos-selbach .search-head{display:block}.marcos-selbach .search-head p{margin-top:8px}.marcos-selbach .property-grid,.marcos-selbach .condos-grid{grid-template-columns:1fr;gap:18px}.marcos-selbach .property-section{padding-top:44px}.marcos-selbach .section-head h2{font-size:42px}.marcos-selbach .property-card,.marcos-selbach .condo-card{border-radius:4px}}
+</style>`;
+
 const ATLANTIDA_CRM_STYLE = `<style id="atlantida-crm-theme">
   :root{--bg:#f4f1eb!important;--sf:#fffdf9!important;--s2:#f6f1e9!important;--s3:#eee7dc!important;--bd:#e4d9c9!important;--bd2:#cdbda8!important;--ac:#9b7138!important;--acd:rgba(155,113,56,.12)!important;--go:#b08242!important;--tx:#23333a!important;--t2:#66747a!important;--t3:#9b9b91!important}
   body{background:linear-gradient(135deg,#f5f0e8 0%,#ebe4d9 100%)!important;color:#23333a!important}
@@ -279,6 +339,18 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
   }
 }
 
+function applyMarcosSelbachBrand(rewriter, pageUrl) {
+  const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
+  rewriter
+    .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} marcos-selbach`.trim()); } })
+    .on('head', { element(element) { element.append(MARCOS_SELBACH_STYLE, { html: true }); } })
+    .on('title', { element(element) { element.setInnerContent('Marco Selbach | Imóveis no Litoral Norte'); } })
+    .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Marco Selbach'); } })
+    .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Marco Selbach | Imóveis no Litoral Norte'); } })
+    .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', canonicalUrl); } })
+    .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', canonicalUrl); } });
+}
+
 export async function onRequest(context) {
   const { request, next } = context;
   const url = new URL(request.url);
@@ -360,6 +432,7 @@ export async function onRequest(context) {
   if (isAtlantidaNegocios(url) && (path === '/' || path === '/index.html')) {
     rewriter.on('body', { element(element) { element.append(ATLANTIDA_NEGOCIOS_HOME_ORDER, { html: true }); } });
   }
+  if (isMarcosSelbach(url)) applyMarcosSelbachBrand(rewriter, url);
   if (needsFavorites) {
     rewriter.on('head', {
       element(element) {
