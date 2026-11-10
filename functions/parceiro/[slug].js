@@ -60,7 +60,7 @@ function propertySlug(imovel) {
   return code && !base.endsWith(code) ? `${base}-${code}` : base || slugify(imovel?.id) || 'imovel';
 }
 function propertyUrl(siteSlug, imovel, base = BASE, publicPrefix = '') {
-  const prefix = publicPrefix || `/corretor/${encodeURIComponent(siteSlug)}`;
+  const prefix = publicPrefix === '__root__' ? '' : (publicPrefix || `/corretor/${encodeURIComponent(siteSlug)}`);
   return `${base}${prefix}/imovel/${encodeURIComponent(propertySlug(imovel))}/`;
 }
 const SITE_SLUG_ALIASES = Object.freeze({});
@@ -183,7 +183,7 @@ function layout({ site, properties, slug, requestPath, topCondos, verticalCondos
   const profileImage = isRodrigo ? `${BASE}/img/corretores/rodrigo-carvalho-perfil.jpeg` : (site.logo_url || '');
   const heroStyle = cover ? ` style="background-image:url('${esc(cover)}');--partner-cover-desktop:url('${esc(cover)}');--partner-cover-mobile:url('${esc(mobileCover)}')"` : '';
   const segment = requestPath.startsWith('/corretor/') ? 'corretor' : 'parceiro';
-  const routePrefix = publicPrefix || `/${segment}/${encodeURIComponent(slug)}`;
+  const routePrefix = publicPrefix === '__root__' ? '' : (publicPrefix || `/${segment}/${encodeURIComponent(slug)}`);
   const canonical = `${publicBase}${routePrefix}/`;
   const landingUrl = canonical;
   const contactUrl = `${publicBase}${routePrefix}/contato/`;
@@ -527,7 +527,8 @@ export async function onRequest(context) {
   const requestUrl = new URL(context.request.url);
   const requestPath = requestUrl.pathname;
   const publicBase = requestUrl.origin;
-  const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
+  const rawPublicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '');
+  const publicPrefix = rawPublicPrefix === '/' ? '__root__' : rawPublicPrefix.replace(/\/+$/, '');
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requestedSlug !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/`, 301);
   const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.611', telefone: '5551995731944', whatsapp: '5551995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', brand_color: '#0d5c86', accent_color: '#d5aa57', status: 'active' };
   const MARCO_STATIC_SITE = { id: 'marcos-selbach-static', slug: 'marcos-selbach', nome: 'Marco Selbach', creci: '50.112', telefone: '5551997008877', whatsapp: '5551997008877', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar imóveis no Litoral Norte.', logo_url: `${BASE}/assets/marco-selbach.png`, capa_url: '', brand_color: '#073b56', accent_color: '#f0c68c', status: 'active' };
