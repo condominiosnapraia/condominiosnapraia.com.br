@@ -144,7 +144,7 @@ const ATLANTIDA_NEGOCIOS_STYLE = `<style id="atlantida-negocios-theme">
 
 const MARCOS_SELBACH_STYLE = `<style id="marcos-selbach-theme">
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
-  .marcos-selbach{--marcos-ink:#182b2d;--marcos-deep:#102326;--marcos-teal:#225b59;--marcos-sand:#eee9e0;--marcos-paper:#fbfaf7;--marcos-copper:#bd8058;--marcos-line:rgba(24,43,45,.14);font-family:'DM Sans',Arial,sans-serif;background:var(--marcos-sand)!important;color:var(--marcos-ink)}
+  .marcos-selbach{--marcos-ink:#182b2d;--marcos-deep:#102326;--marcos-teal:#225b59;--marcos-sand:#ffffff;--marcos-paper:#fbfaf7;--marcos-copper:#bd8058;--marcos-line:rgba(24,43,45,.14);font-family:'DM Sans',Arial,sans-serif;background:var(--marcos-sand)!important;color:var(--marcos-ink)}
   .marcos-selbach .site-header{background:#102326!important;border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 10px 30px rgba(16,35,38,.12)}
   .marcos-selbach .site-header .nav{max-width:1320px;padding:19px 34px}
   .marcos-selbach .site-header .brand-name,.marcos-selbach .footer-logo,.marcos-selbach .footer-title{font-family:'DM Serif Display',Georgia,serif;color:#f8f2e9}
