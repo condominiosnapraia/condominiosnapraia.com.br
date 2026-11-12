@@ -132,6 +132,9 @@ export async function onRequest(context) {
   if (!Array.isArray(condos) || !condos.length) { condos = await getJson(`condominios?id=eq.${encodeURIComponent(condoParam)}&select=${condoSelect}&limit=1`, cfg); }
   const condo = Array.isArray(condos) ? condos[0] : null;
   if (!condo) return new Response('<!doctype html><meta charset="utf-8"><title>Condomínio não encontrado</title><h1>Condomínio não encontrado</h1>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } });
+  const publicUrl = new URL(context.request.url);
+  const publicBase = publicUrl.origin;
+  const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
   // imóveis DESTE corretor NESTE condomínio
   const select = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,area,area_privativa,area_construida,fotos,fotos_no_site,fotos_para_site,status,publicar';
   const rows = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&publicado=eq.true&select=destaque,titulo_personalizado,imovel:imoveis(${select})&order=destaque.desc,ordem.asc&limit=1000`, cfg);
@@ -139,8 +142,5 @@ export async function onRequest(context) {
   const properties = (Array.isArray(rows) ? rows : [])
     .filter((row) => row.imovel && String(row.imovel.cond_id) === String(condo.id) && row.imovel.publicar !== false && String(row.imovel.status || '').toLowerCase() !== 'vendido')
     .map((row) => { const im = row.imovel; const propertyPath = `${publicBase}${publicPrefix || `/${segment}/${encodeURIComponent(publicSlug)}`}/imovel/${encodeURIComponent(propertySlug(im))}/`; return { id: im.id, url: `${propertyPath}?origem=condominio&condominio=${encodeURIComponent(condoOrigin)}`, title: row.titulo_personalizado || im.titulo || 'Imóvel disponível', type: im.tipo || 'Imóvel', price: im.preco, bedrooms: im.quartos, suites: im.suites, area: im.area || im.area_privativa || im.area_construida, photo: firstPhoto(im), featured: Boolean(row.destaque), status: String(im.status || '').toLowerCase(), code: im.codigo || im.ref || '' }; });
-  const publicUrl = new URL(context.request.url);
-  const publicBase = publicUrl.origin;
-  const publicPrefix = String(context.request.headers.get('x-public-partner-prefix') || '').replace(/\/+$/, '');
   return new Response(layout({ site, condo, properties, slug: publicSlug, segment, publicBase, publicPrefix }), { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600' } });
 }
