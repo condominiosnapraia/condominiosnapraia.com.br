@@ -360,7 +360,7 @@ export async function onRequest(context) {
       return fetch(new Request(target, { method: request.method, headers, body: request.method === 'GET' || request.method === 'HEAD' ? undefined : request.body }));
     }
   }
-  const alissonAlias = ['/alisonportela', '/alissonportela'].find((alias) => path === alias || path.startsWith(`${alias}/`));
+  if (isAtlantidaNegocios(url) && /^\/(?:corretor|parceiro)\/marcos-selbach(?:\/|$)/i.test(path)) { return Response.redirect(new URL('/', url), 302); } const alissonAlias = ['/alisonportela', '/alissonportela'].find((alias) => path === alias || path.startsWith(`${alias}/`));
   if (isAtlantidaNegocios(url) && alissonAlias && (path === alissonAlias || path === `${alissonAlias}/` || path.startsWith(`${alissonAlias}/imoveis`) || path.startsWith(`${alissonAlias}/contato`) || path.startsWith(`${alissonAlias}/condominios`) || path.startsWith(`${alissonAlias}/imovel/`))) {
     const suffix = path.slice(alissonAlias.length) || '/';
     const target = new URL(`/corretor/alisson-portella${suffix}`, url);
