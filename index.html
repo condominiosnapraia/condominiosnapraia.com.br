@@ -3119,20 +3119,25 @@ async function applyTurismoConfig(t){
 // ── BUILD COND CARD ──
 function buildCondCard(c){
   const loc=c.localizacao||c.cidade||'';
-  // Na homepage, cada card usa até três fotos; a galeria completa permanece na página do condomínio.
-  const todas=(c.fotos||[]).slice(0,3);
+  // Na homepage, cada card usa até três fotos; se a capa do condomínio estiver obsoleta,
+  // aproveita apenas fotos reais dos imóveis associados, sem alterar qualquer dado.
+  const fotosAssociadas=(c.imoveis||[]).flatMap(i=>Array.isArray(i.fotos)?i.fotos:[]);
+  const todas=[...(c.fotos||[]),...fotosAssociadas]
+    .filter(Boolean)
+    .filter((foto,index,lista)=>lista.indexOf(foto)===index);
   // Normaliza primeiro: os campos podem conter caminhos relativos do Storage que o CDN converte.
-  const fotos=todas.map(fotoPublica).filter(Boolean);
+  const fotos=todas.map(fotoPublica).filter(Boolean).slice(0,3);
+  const extras=todas.map(fotoPublica).filter(Boolean).slice(3);
   // diagnóstico: veja no console (F12) quantas fotos cada card recebeu
   if(window._DEBUG_FOTOS) console.log('[card]',c.nome,'| fotos recebidas:',todas.length,'| válidas p/ carrossel:',fotos.length, todas.length&&!fotos.length?'(⚠ todas em formato não suportado: '+String(todas[0]).slice(0,12)+'…)':'');
   let imgH;
   if(fotos.length>1){
     // carrossel automático de imagens
-    const slides=fotos.map((f,i)=>fotoTag(f,c.nome,{fallbacks:fotos.slice(i+1),className:`ci-slide${i===0?' ativa':''}`,sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384})).join('');
+    const slides=fotos.map((f,i)=>fotoTag(f,c.nome,{fallbacks:[...fotos.slice(i+1),...extras],className:`ci-slide${i===0?' ativa':''}`,sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384})).join('');
     const dots=fotos.map((f,i)=>`<span class="ci-dot${i===0?' ativa':''}"></span>`).join('');
     imgH=`<div class="ci-carousel" data-total="${fotos.length}">${slides}<div class="ci-dots">${dots}</div></div>`;
   } else if(fotos.length===1){
-    imgH=fotoTag(fotos[0],c.nome,{fallbacks:(c.fotos||[]).slice(3).map(fotoPublica).filter(Boolean),sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
+    imgH=fotoTag(fotos[0],c.nome,{fallbacks:extras,sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
   } else {
     imgH=`<div class="ci-grad ${GI[loc]||'g-ot'}">${GE[loc]||'🏠'}</div>`;
   }
