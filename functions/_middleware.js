@@ -27,7 +27,7 @@ const MARCOS_SELBACH_HOSTS = new Set([
   'marcosselbach.com.br',
   'www.marcosselbach.com.br',
 ]);
-const ATLANTIDA_WHATSAPP = '5551981348907';
+const ATLANTIDA_WHATSAPP = '5551997698450';
 const ATLANTIDA_WHATSAPP_SCRIPT = `<script id="atlantida-whatsapp-routing">
   (function(){
     var numero='${ATLANTIDA_WHATSAPP}';

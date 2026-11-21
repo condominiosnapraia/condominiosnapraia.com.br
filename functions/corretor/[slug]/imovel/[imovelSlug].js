@@ -39,7 +39,10 @@ function propertySlug(imovel) {
   const code = slugify(imovel?.codigo || imovel?.ref || '');
   return code && !base.endsWith(code) ? `${base}-${code}` : base || slugify(imovel?.id) || 'imovel';
 }
-function propertyUrl(siteSlug, imovel, publicBase = BASE, publicPrefix = '') { return publicPrefix ? `${publicBase}${publicPrefix}/imovel/${encodeURIComponent(propertySlug(imovel))}/` : `${publicBase}/corretor/${encodeURIComponent(siteSlug)}/imovel/${encodeURIComponent(propertySlug(imovel))}/`; }
+function propertyUrl(siteSlug, imovel, publicBase = BASE, publicPrefix = '') {
+  if (siteSlug === 'portal' && !publicPrefix) return `${publicBase}/imovel/${encodeURIComponent(propertySlug(imovel))}/`;
+  return publicPrefix ? `${publicBase}${publicPrefix}/imovel/${encodeURIComponent(propertySlug(imovel))}/` : `${publicBase}/corretor/${encodeURIComponent(siteSlug)}/imovel/${encodeURIComponent(propertySlug(imovel))}/`;
+}
 function normalizedPropertyRef(value) { return String(value || '').trim().toLowerCase().replace(/^\/+|\/+$/g, ''); }
 function propertyRefs(imovel) {
   return [imovel?.slug, imovel?.id, imovel?.codigo, imovel?.ref, propertySlug(imovel)]
@@ -387,13 +390,15 @@ export async function onRequest(context) {
   const imovelRef = String(context.params?.imovelSlug || '').toLowerCase();
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSiteSlug) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(imovelRef)) return notFound();
   const { dbSlug, publicSlug } = siteSlugInfo(requestedSiteSlug);
+  const isOfficialPortal = context.request.headers.get('x-public-portal') === 'atlantida-negocios' && publicSlug === 'portal';
   const requestPath = new URL(context.request.url).pathname;
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requestedSiteSlug !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/imovel/${encodeURIComponent(imovelRef)}/`, 301);
   let feed = null;
   const cfg = sbConfig(context.env);
   const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.611', telefone: '5551995731944', whatsapp: '5551995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', status: 'active' };
-  const sites = await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`, cfg);
-  let site = publicSlug === 'fabio-adolfo' ? FABIO_STATIC_SITE : (sites[0] || null);
+  const OFFICIAL_PORTAL_SITE = { id: '', slug: 'portal', nome: 'Condomínios na Praia', creci: '', telefone: '5551997698450', whatsapp: '5551997698450', email: null, cidade: 'Rio Grande do Sul', bio: 'Portal oficial de imóveis e condomínios no litoral.', logo_url: '', capa_url: '', status: 'active' };
+  const sites = isOfficialPortal ? [] : await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`, cfg);
+  let site = isOfficialPortal ? OFFICIAL_PORTAL_SITE : (publicSlug === 'fabio-adolfo' ? FABIO_STATIC_SITE : (sites[0] || null));
   if (!site) {
     feed = await getPartnerFeed(publicSlug);
     site = feed?.site ? { id: '', slug: dbSlug, nome: feed.site.name, creci: feed.site.creci, telefone: feed.site.phone, whatsapp: feed.site.whatsapp, email: feed.site.email, cidade: feed.site.city, bio: feed.site.bio, logo_url: feed.site.logo_url, capa_url: feed.site.cover_url } : null;
@@ -402,11 +407,11 @@ export async function onRequest(context) {
   const propertySelect = 'id,slug,codigo,ref,titulo,tipo,cidade_end,bairro,fora_condominio,cond_id,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,corretor,descricao,fotos,fotos_no_site,fotos_para_site,status,publicar';
   let rows = [];
   let row = null;
-  if (site.id) {
+  if (isOfficialPortal || site.id) {
     const directProperties = await getJson(`imoveis?slug=eq.${encodeURIComponent(imovelRef)}&select=${propertySelect}&limit=1`, cfg);
     const directProperty = Array.isArray(directProperties) ? directProperties[0] : null;
     if (directProperty?.id) {
-      const directLinks = await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&imovel_id=eq.${encodeURIComponent(directProperty.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada&limit=1`, cfg);
+      const directLinks = site.id ? await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&imovel_id=eq.${encodeURIComponent(directProperty.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada&limit=1`, cfg) : [];
       if (directLinks[0]) row = { ...directLinks[0], imovel: directProperty };
       // A página do Felipe usa o catálogo geral publicado como vitrine. Permitir a abertura dos anúncios públicos mesmo sem vínculo exclusivo, sem alterar a autoria no CRM.
       if (!row?.imovel && site && directProperty.publicar !== false && String(directProperty.status || '').toLowerCase() !== 'vendido') {
@@ -414,7 +419,7 @@ export async function onRequest(context) {
       }
     }
   }
-  if (!row?.imovel && site && site.id) {
+  if (!row?.imovel && site && (isOfficialPortal || site.id)) {
     const generalRows = await getJson(`imoveis?publicar=eq.true&status=neq.Vendido&select=${propertySelect}&limit=1000`, cfg);
     const generalProperty = (Array.isArray(generalRows) ? generalRows : []).find((candidate) => candidate && candidate.publicar !== false && String(candidate.status || '').toLowerCase() !== 'vendido' && propertySlug(candidate) === imovelRef);
     if (generalProperty?.id) row = { id: `catalogo-${generalProperty.id}`, ordem: 0, destaque: false, titulo_personalizado: '', chamada_personalizada: '', imovel: generalProperty };
