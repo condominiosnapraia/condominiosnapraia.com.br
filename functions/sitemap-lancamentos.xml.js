@@ -47,7 +47,7 @@ export async function onRequest(context) {
   FIXED_URLS.forEach(path => entries.set(path, { path, lastmod: '' }));
   let error = null;
   try {
-    const response = await fetch(SB_URL + '/rest/v1/lancamentos?ativo=eq.true&select=*&limit=2000', {
+    const response = await fetch(SB_URL + '/rest/v1/condominios?ativo=eq.true&select=*&limit=2000', {
       headers: { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON }
     });
     if (!response.ok) error = 'HTTP ' + response.status;

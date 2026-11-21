@@ -1984,7 +1984,7 @@ if(_savedToken && _savedUser){
 <!-- PAINEL LANÇAMENTOS -->
 <div class="panel" id="panel-lancamentos">
   <div class="ph">
-    <div><div class="pht">🏗 Lançamentos</div><div class="phs">Empreendimentos e oportunidades exibidos na página /lancamentos</div></div>
+    <div><div class="pht">🏗 Lançamentos</div><div class="phs">Empreendimentos e oportunidades exibidos na página /condominios</div></div>
     <div class="phr">
       <button class="btn bd2b" onclick="limparDuplicadosLanc()" title="Remove lançamentos duplicados do banco, mantendo apenas um de cada">🧹 Limpar duplicados</button>
       <button class="btn bg" onclick="migrarFotosStorage()" title="Move as fotos antigas (base64) para o Supabase Storage, deixando o site muito mais rápido">⚡ Migrar fotos p/ Storage</button>
@@ -5427,7 +5427,7 @@ const BLOG_KEY='cnp_blog_posts';
 // Cache local dos posts
 let _blogCache=null;
 
-// ── LANÇAMENTOS (empreendimentos exibidos em /lancamentos) ──
+// ── LANÇAMENTOS (empreendimentos exibidos em /condominios) ──
 let _lancCache=null;
 // Lançamentos pré-cadastrados (seeds) — aparecem no CRM mesmo sem estar no Supabase.
 // Ao editar e salvar (ex: adicionar foto), são gravados no banco.
@@ -7462,7 +7462,7 @@ footer .fs{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5
 <nav class="mob-footer-nav">
   <div class="mob-footer-items">
     <a class="mob-footer-btn" href="/"><span class="mob-footer-ico">&#128269;</span><span class="mob-footer-lbl">Explorar</span></a>
-    <a class="mob-footer-btn" href="/lancamentos"><span class="mob-footer-ico">&#128640;</span><span class="mob-footer-lbl">Lançamentos</span></a>
+    <a class="mob-footer-btn" href="/condominios"><span class="mob-footer-ico">&#128640;</span><span class="mob-footer-lbl">Lançamentos</span></a>
     <a class="mob-footer-btn wpp-btn" href="https://wa.me/5551982868888" rel="nofollow"><span class="mob-footer-ico">&#128241;</span><span class="mob-footer-lbl">WhatsApp</span></a>
     <a class="mob-footer-btn" href="/imoveis"><span class="mob-footer-ico">&#127960;</span><span class="mob-footer-lbl">Imóveis</span></a>
     <a class="mob-footer-btn active" href="/condominios"><span class="mob-footer-ico">&#127958;</span><span class="mob-footer-lbl">Condomínios</span></a>
@@ -7789,7 +7789,7 @@ ${fotos.length?`<div class="galeria-full">${fotos.slice(0,3).map((f,ix)=>`<img s
       <a class="ftr-wpp" href="${wpp}" rel="nofollow">Falar no WhatsApp</a>
     </div>
     <div class="ftr-col"><div class="ftr-tit">Navegar</div>
-      <a href="/condominios">Condomínios</a><a href="/casas-em-condominio">Casas em Condomínio</a><a href="/terrenos-em-condominio">Terrenos em Condomínio</a><a href="/imoveis-de-luxo">Imóveis de Luxo</a><a href="/imoveis">Imóveis</a><a href="/lancamentos">Lançamentos</a><a href="/contemplado-imoveis/">Crédito Contemplado</a><a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/contato">Contato</a>
+      <a href="/condominios">Condomínios</a><a href="/casas-em-condominio">Casas em Condomínio</a><a href="/terrenos-em-condominio">Terrenos em Condomínio</a><a href="/imoveis-de-luxo">Imóveis de Luxo</a><a href="/imoveis">Imóveis</a><a href="/condominios">Lançamentos</a><a href="/contemplado-imoveis/">Crédito Contemplado</a><a href="/financiamento-imobiliario">Financiamento</a><a href="/seguro-fianca">Seguro Fiança</a><a href="/contato">Contato</a>
     </div>
     <div class="ftr-col"><div class="ftr-tit">Descobrir</div>
       <a href="/blog">Blog &amp; Notícias</a><a href="/o-que-fazer-em-xangri-la">Turismo no Litoral</a><a href="/politica-privacidade">Política de Privacidade</a>
@@ -7810,7 +7810,7 @@ ${fotos.length?`<div class="galeria-full">${fotos.slice(0,3).map((f,ix)=>`<img s
 <nav class="mob-footer-nav">
   <div class="mob-footer-items">
     <a class="mob-footer-btn" href="/"><span class="mob-footer-ico">&#128269;</span><span class="mob-footer-lbl">Explorar</span></a>
-    <a class="mob-footer-btn" href="/lancamentos"><span class="mob-footer-ico">&#128640;</span><span class="mob-footer-lbl">Lancamentos</span></a>
+    <a class="mob-footer-btn" href="/condominios"><span class="mob-footer-ico">&#128640;</span><span class="mob-footer-lbl">Lancamentos</span></a>
     <a class="mob-footer-btn wpp-btn" href="${wpp}" rel="nofollow"><span class="mob-footer-ico">&#128241;</span><span class="mob-footer-lbl">WhatsApp</span></a>
     <a class="mob-footer-btn active" href="/imoveis"><span class="mob-footer-ico">&#127960;</span><span class="mob-footer-lbl">Imoveis</span></a>
     <a class="mob-footer-btn" href="/condominios"><span class="mob-footer-ico">&#127958;</span><span class="mob-footer-lbl">Condominios</span></a>

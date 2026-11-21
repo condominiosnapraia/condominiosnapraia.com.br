@@ -562,7 +562,7 @@ function sfcTab(btn,tipo){
   if(tipo==='lancamentos'){
     // aba Lançamentos: leva direto à página de lançamentos
     if(lab) lab.textContent='Lançamentos e Oportunidades';
-    if(inp){ inp.placeholder='Veja todos os lançamentos do litoral'; inp.value=''; inp.readOnly=true; inp.style.cursor='pointer'; inp.onclick=function(){ window.location='/lancamentos'; }; }
+    if(inp){ inp.placeholder='Veja todos os lançamentos do litoral'; inp.value=''; inp.readOnly=true; inp.style.cursor='pointer'; inp.onclick=function(){ window.location='/condominios'; }; }
     if(lab2) lab2.textContent='Empreendimento';
     sfcPreencherLista();
     return;
@@ -618,7 +618,7 @@ function sfcBuscar(){
       'Vientos Resort':'/vientos-resort-xangri-la',
       'Condomínio Alegro':'/condominio-alegro-curumim'
     };
-    window.location = mapa[sel] || '/lancamentos';
+    window.location = mapa[sel] || '/condominios';
     return;
   }
   // agora existem páginas dedicadas: leva o visitante direto para elas, com os filtros na URL

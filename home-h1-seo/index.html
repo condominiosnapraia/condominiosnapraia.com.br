@@ -1115,7 +1115,7 @@ footer{position:relative;background:linear-gradient(165deg,#0c4a6e 0%,#0e7490 60
 @keyframes cctaShake{0%,92%,100%{transform:translateX(0)}94%{transform:translateX(-2px)}96%{transform:translateX(2px)}98%{transform:translateX(-1px)}}
 .ccard:hover .ccta{animation-play-state:paused;background:var(--om)}
 
-/* ══ LANÇAMENTOS NA HOME (mesmo card da página /lancamentos) ══ */
+/* ══ LANÇAMENTOS NA HOME (mesmo card da página /condominios) ══ */
 .lch-sec{background:#fff;padding:56px 44px}
 .lch-inner{max-width:1140px;margin:0 auto}
 .lch-head{text-align:center;margin-bottom:30px}
@@ -1629,7 +1629,7 @@ body{padding-top:56px}
       <a href="/" onclick="if(window.irParaBusca){irParaBusca();return false;}">Início</a>
       <a href="/imoveis/">Imóveis</a>
       <a href="/condominios/">Condomínios</a>
-      <a href="/lancamentos/">Lançamentos</a>
+      <a href="/condominios/">Lançamentos</a>
       <a href="/refinanciamento-imobiliario/">Crédito</a>
       <a href="/turismo/">Turismo</a>
       <a href="/sobre/">Sobre</a>
@@ -1698,7 +1698,7 @@ body{padding-top:56px}
           <span class="navq-s">Anuncie seu imóvel com a gente</span>
                   <span class="navq-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
-        <a class="navq-card" href="/lancamentos/">
+        <a class="navq-card" href="/condominios/">
           <span class="navq-t">Lançamentos</span>
           <span class="navq-s">Os novos empreendimentos do litoral</span>
                   <span class="navq-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -1856,7 +1856,7 @@ body{padding-top:56px}
         </a>
       </div>
       <div class="lch-ver">
-        <a class="lch-btn" href="/lancamentos/">
+        <a class="lch-btn" href="/condominios/">
           Ver todos os lançamentos
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
@@ -2051,7 +2051,7 @@ body{padding-top:56px}
         <div class="qfilter-bg" data-foto-card="filtro-lotes" style="background:linear-gradient(160deg,#0e7490,#1fb5c4)"></div>
         <div class="qfilter-body"><span class="qfilter-ico">📐</span><span class="qfilter-lbl">Lotes em condomínios</span><span class="qfilter-go">Ver lotes →</span></div>
       </a>
-      <a class="qfilter-card" href="/lancamentos/">
+      <a class="qfilter-card" href="/condominios/">
         <div class="qfilter-bg" data-foto-card="filtro-lancamentos" style="background:linear-gradient(160deg,#0d3b54,#0e7490)"></div>
         <div class="qfilter-body"><span class="qfilter-ico">🚀</span><span class="qfilter-lbl">Lançamentos</span><span class="qfilter-go">Ver lançamentos →</span></div>
       </a>
@@ -3103,7 +3103,7 @@ function sfcTab(btn,tipo){
   if(tipo==='lancamentos'){
     // aba Lançamentos: leva direto à página de lançamentos
     if(lab) lab.textContent='Lançamentos & Oportunidades';
-    if(inp){ inp.placeholder='Veja todos os lançamentos do litoral'; inp.value=''; inp.readOnly=true; inp.style.cursor='pointer'; inp.onclick=function(){ window.location='/lancamentos'; }; }
+    if(inp){ inp.placeholder='Veja todos os lançamentos do litoral'; inp.value=''; inp.readOnly=true; inp.style.cursor='pointer'; inp.onclick=function(){ window.location='/condominios'; }; }
     if(lab2) lab2.textContent='Empreendimento';
     sfcPreencherLista();
     return;
@@ -3159,7 +3159,7 @@ function sfcBuscar(){
       'Vientos Resort':'/vientos-resort-xangri-la',
       'Condomínio Alegro':'/condominio-alegro-curumim'
     };
-    window.location = mapa[sel] || '/lancamentos';
+    window.location = mapa[sel] || '/condominios';
     return;
   }
   // agora existem páginas dedicadas: leva o visitante direto para elas, com os filtros na URL
@@ -5139,7 +5139,7 @@ async function renderContempladasCards(targetId){
       <span class="mob-footer-ico">🔍</span>
       <span class="mob-footer-lbl">Explorar</span>
     </button>
-    <a class="mob-footer-btn" id="mfn-lanc" href="/lancamentos/">
+    <a class="mob-footer-btn" id="mfn-lanc" href="/condominios/">
       <span class="mob-footer-ico">🚀</span>
       <span class="mob-footer-lbl">Lançamentos</span>
     </a>
@@ -5172,7 +5172,7 @@ async function renderContempladasCards(targetId){
       <div class="ftr-links-grid">
       <a href="/condominios/">Condomínios</a>
       <a href="/imoveis/" onclick="showAllImov();return false">Imóveis</a>
-      <a href="/lancamentos/">Lançamentos</a>
+      <a href="/condominios/">Lançamentos</a>
       <a href="/contemplado-imoveis/">Crédito Contemplado</a>
       <a href="/financiamento-imobiliario/">Financiamento</a><a href="/seguro-fianca/">Seguro Fiança</a><a href="/refinanciamento-imobiliario/">Refinanciamento</a><a href="/exclusividade-imobiliaria/">Venda seu Imóvel</a><a href="/contato/">Contato</a><a href="/sobre/">Sobre</a><a href="/politica-privacidade/">Política de Privacidade</a><a href="/termos/">Termos de Uso</a>
     </div>
