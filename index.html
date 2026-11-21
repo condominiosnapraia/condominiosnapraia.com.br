@@ -1756,6 +1756,25 @@ function fotoTag(raw, alt, options = {}) {
   return `<img class="${escapeAttr(className)}"${srcAttr}${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority}${fallback} alt="${escapeAttr(alt)}">`;
 }
 
+// Alguns browsers adiam o evento onerror de imagens lazy fora da viewport.
+// Esta verificação complementar evita que um card fique visualmente vazio:
+// só actua quando a imagem terminou de carregar sem dimensões e nunca altera
+// a origem no Supabase nem remove qualquer fotografia válida.
+function verificarFalhasImagensHome(root=document){
+  root.querySelectorAll('.ci img, .icimg img').forEach(img=>{
+    if(!img.complete || img.naturalWidth>0 || img.classList.contains('foto-fallback-generica')) return;
+    const container=img.closest('.icimg')||img.closest('.ci');
+    if(!container) return;
+    const fallback=container.classList.contains('icimg')?'/img/hero-imoveis.jpg':'/img/hero-condominios.jpg';
+    img.onerror=null;
+    img.classList.add('foto-fallback-generica');
+    img.removeAttribute('srcset');
+    img.removeAttribute('sizes');
+    img.src=fallback;
+  });
+}
+window.verificarFalhasImagensHome=verificarFalhasImagensHome;
+
 function fotoTagBlog(raw, alt, options = {}) {
   const value = String(raw || '').trim();
   const fallback = '/img/og-home-social.jpg';
@@ -3386,6 +3405,7 @@ function buildHomeDestaques(){
     const cg=document.getElementById('home-cond-grid');
     if(cg) cg.innerHTML=showCond.map(buildCondCard).join('');
     if(window.iniciarCarrosseisCards)iniciarCarrosseisCards();
+    setTimeout(()=>verificarFalhasImagensHome(),900);
 
     // Usar a lista COMPLETA de imóveis (inclui os sem condomínio vinculado),
     // para que destaques marcados no CRM sempre apareçam.
@@ -3576,6 +3596,7 @@ function carregarFotosHomeCards(){
     const imovMap={};(result[1]||[]).forEach(function(row){imovMap[String(row.id)]=row;});
     condEls.forEach(function(el){const id=el.getAttribute('data-home-cond-img');const row=condMap[String(id)];if(row)aplicarFotoHome(el,row,el.querySelector('.cbadge')?.textContent||'Condomínio','cond');});
     imovEls.forEach(function(el){const id=el.getAttribute('data-home-imov-img');const row=imovMap[String(id)];if(row)aplicarFotoHome(el,row,'Imóvel','imov');});
+    setTimeout(()=>verificarFalhasImagensHome(),900);
   });
   return _homePhotoPromise;
 }
