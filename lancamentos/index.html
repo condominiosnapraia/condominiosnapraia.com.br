@@ -444,12 +444,27 @@ function imageTransform(u,w,format){
   path=path.split('?')[0];
   return '/cdn-fotos/'+path+'?w='+w+'&q=70&fmt='+(format||'webp');
 }
-function pictureMarkup(url,alt){
-  var sizes='(max-width:560px) 100vw, (max-width:900px) 50vw, 33vw';
-  var src=function(w,fmt){return imageTransform(url,w,fmt);};
-  var set=function(fmt){return src(480,fmt)+' 480w, '+src(768,fmt)+' 768w, '+src(1280,fmt)+' 1280w';};
-  return '<picture class="card-picture"><source type="image/avif" srcset="'+escImage(set('avif'))+'" sizes="'+sizes+'"><source type="image/webp" srcset="'+escImage(set('webp'))+'" sizes="'+sizes+'"><img src="'+escImage(src(768,'jpeg'))+'" srcset="'+escImage(set('jpeg'))+'" sizes="'+sizes+'" alt="'+escImage(alt||'Imagem do lançamento imobiliário')+'" loading="lazy" decoding="async" width="768" height="432"></picture>';
-}
+	function pictureMarkup(url,alt){
+	  var sizes='(max-width:560px) 100vw, (max-width:900px) 50vw, 33vw';
+	  var src=function(w,fmt){return imageTransform(url,w,fmt);};
+	  var set=function(fmt){return src(480,fmt)+' 480w, '+src(768,fmt)+' 768w, '+src(1280,fmt)+' 1280w';};
+	  return '<picture class="card-picture"><source type="image/avif" srcset="'+escImage(set('avif'))+'" sizes="'+sizes+'"><source type="image/webp" srcset="'+escImage(set('webp'))+'" sizes="'+sizes+'"><img src="'+escImage(src(768,'jpeg'))+'" srcset="'+escImage(set('jpeg'))+'" sizes="'+sizes+'" alt="'+escImage(alt||'Imagem do lançamento imobiliário')+'" loading="lazy" decoding="async" width="768" height="432"></picture>';
+	}
+	var capasLocais={origem:'/img/mapas/origem-mapa.webp',lamarina:'/img/mapas/lamarina-mapa.webp',aura:'/img/mapas/aura-mapa.webp',bravia:'/img/mapas/bravia-mapa.webp',mirador:'/img/mapas/mirador-mapa.webp',vivendas:'/img/mapas/vivendas-mapa.webp',enseada:'/img/mapas/enseada-mapa.webp',cyano:'/img/mapas/cyano-mapa.webp',monaco:'/img/mapas/monaco-mapa.webp',vientos:'/img/mapas/vientos-mapa.webp',alegro:'/img/mapas/alegro-mapa.webp'};
+	function activarFallback(el,slug,alt){
+	  var fallback=capasLocais[slug];
+	  if(!fallback||el.dataset.fallbackAplicado==='1')return;
+	  el.dataset.fallbackAplicado='1';
+	  var tag=el.querySelector('.card-tag');
+	  el.style.background='none'; el.style.backgroundImage='none';
+	  el.innerHTML=pictureMarkup(fallback,alt||'Mapa de implantação do lançamento');
+	  if(tag)el.appendChild(tag);
+	}
+	function observarFalhaImagem(el,slug,alt){
+	  var img=el.querySelector('img');
+	  if(!img)return;
+	  img.addEventListener('error',function(){activarFallback(el,slug,alt);},{once:true});
+	}
 
 (async function(){
   try{
@@ -471,14 +486,15 @@ function pictureMarkup(url,alt){
         dados.forEach(function(l){
           var url=l.url||('/'+(l.slug||''));
           if(existentes[norm(url)]) return; // já está fixo no HTML, não duplica
-          var foto=l.foto?pictureMarkup(l.foto,(l.titulo||'Lançamento')+' em '+(l.cidade||'Litoral Norte')):'';
+			var foto=l.foto?pictureMarkup(l.foto,(l.titulo||'Lançamento')+' em '+(l.cidade||'Litoral Norte')):'';
           var cidadeBusca=normSlug(l.cidade||l.localizacao||'');
           var tagsValor=Array.isArray(l.tags)?l.tags.join(' '):(l.tags||l.perfil||l.tag||'');
           var html='<a class="card" href="'+escH(url)+'" data-city="'+escH(cidadeBusca)+'" data-tags="'+escH(String(tagsValor).toLowerCase())+'">'+
             '<div class="card-foto" '+(l.seed?('data-foto="'+escH(l.seed)+'" '):'')+'>'+foto+'<span class="card-tag">'+escH(l.tag||'Lançamento')+'</span></div>'+
             '<div class="card-body">'+
             '<div class="card-city">'+escH(l.cidade||'')+'</div>'+'<div class="card-tit">'+escH(l.titulo||'')+'</div>'+'<div class="card-res">'+escH(l.resumo||'')+'</div>'+'<div class="card-link">Ver oportunidade →</div>'+'</div></a>';
-          grid.insertAdjacentHTML('beforeend', html);
+			grid.insertAdjacentHTML('beforeend', html);
+			if(foto)observarFalhaImagem(grid.lastElementChild.querySelector('.card-foto'),l.seed||'',(l.titulo||'Lançamento')+' em '+(l.cidade||'Litoral Norte'));
           existentes[norm(url)]=true;
         });
       }
@@ -494,17 +510,22 @@ function pictureMarkup(url,alt){
           grid.querySelectorAll('.card-foto[data-foto]').forEach(function(el){
             var slug=el.getAttribute('data-foto');
             var url=fotos[slug+'__1'];
-            if(url){
-              var card=el.closest('.card');
+			if(url){
+				var card=el.closest('.card');
               var titleNode=card&&card.querySelector('.card-tit');
               var cityNode=card&&card.querySelector('.card-city');
               var alt=[titleNode&&titleNode.textContent,cityNode&&cityNode.textContent].filter(Boolean).join(' em ');
               var tag=el.querySelector('.card-tag');
               el.style.background='none';
               el.style.backgroundImage='none';
-              el.innerHTML=pictureMarkup(url,alt||'Imagem do lançamento imobiliário');
-              if(tag) el.appendChild(tag);
-            }
+				el.innerHTML=pictureMarkup(url,alt||'Imagem do lançamento imobiliário');
+				if(tag) el.appendChild(tag);
+				observarFalhaImagem(el,slug,alt);
+			} else {
+				var cardSemFoto=el.closest('.card');
+				var altSemFoto=[cardSemFoto&&cardSemFoto.querySelector('.card-tit'),cardSemFoto&&cardSemFoto.querySelector('.card-city')].filter(Boolean).map(function(n){return n.textContent;}).join(' em ');
+				activarFallback(el,slug,altSemFoto);
+			}
           });
         }
       }
