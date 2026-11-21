@@ -1662,8 +1662,8 @@ try{ if(location.search.indexOf('debugfotos')>-1) window._DEBUG_FOTOS=true; }cat
 const SITE_CACHE_TTL = 180000; // 3 minutos
 // Recuperar cache da sessão (navegação entre páginas fica instantânea)
 try{
-  const _cached = sessionStorage.getItem('_siteCacheV2');
-  const _cachedTs = parseInt(sessionStorage.getItem('_siteCacheTsV2')||'0');
+  const _cached = sessionStorage.getItem('_siteCacheV3');
+  const _cachedTs = parseInt(sessionStorage.getItem('_siteCacheTsV3')||'0');
   if(_cached && (Date.now()-_cachedTs) < SITE_CACHE_TTL){
     const _parsed = JSON.parse(_cached);
     const _hasVerticalFields = Array.isArray(_parsed?.condominios) && _parsed.condominios.every(c => Object.prototype.hasOwnProperty.call(c,'orientacao') && Object.prototype.hasOwnProperty.call(c,'perfil'));
@@ -1671,8 +1671,8 @@ try{
       _siteCache = _parsed;
       _siteCacheTs = _cachedTs;
     }else{
-      sessionStorage.removeItem('_siteCacheV2');
-      sessionStorage.removeItem('_siteCacheTsV2');
+      sessionStorage.removeItem('_siteCacheV3');
+      sessionStorage.removeItem('_siteCacheTsV3');
     }
   }
 }catch(e){}
@@ -1794,12 +1794,12 @@ function ativarImagensAdidas(root = document) {
 }
 
 const HOME_COND_SELECT_MIN = [
-  'id','slug','nome','cidade','descricao','amenidades','ativo','orientacao','perfil','fotos_no_site'
+  'id','slug','nome','cidade','descricao','amenidades','ativo','orientacao','perfil','fotos_no_site','fotos'
 ].join(',');
 
 const HOME_IMOV_SELECT_MIN = [
   'id','slug','codigo','titulo','cond_id','fora_condominio','status','publicar',
-  'tipo','preco','quartos','suites','banheiros','vagas','area','area_privativa','fotos_no_site',
+  'tipo','preco','quartos','suites','banheiros','vagas','area','area_privativa','fotos_no_site','fotos',
   'area_construida','terreno','cidade_end','bairro_end','created_at'
 ].join(',');
 
@@ -1967,8 +1967,8 @@ async function fetchSiteData(){
     agendarConfigHome();
     // Persistir na sessão para navegação instantânea entre páginas
     try{
-      sessionStorage.setItem('_siteCacheV2', JSON.stringify(_siteCache));
-      sessionStorage.setItem('_siteCacheTsV2', String(now));
+      sessionStorage.setItem('_siteCacheV3', JSON.stringify(_siteCache));
+      sessionStorage.setItem('_siteCacheTsV3', String(now));
     }catch(e){ /* quota excedida (fotos base64 grandes) — ignora silenciosamente */ }
     // Aplica configurações do site
     if(siteCfg && Object.keys(siteCfg).length && typeof applySiteConfigObj==="function") applySiteConfigObj(siteCfg);
