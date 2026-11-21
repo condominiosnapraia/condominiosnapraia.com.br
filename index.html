@@ -1746,7 +1746,8 @@ function fotoTag(raw, alt, options = {}) {
   const srcAttr = deferLoad ? ` data-lazy-src="${escapeAttr(src)}"` : ` src="${escapeAttr(src)}"`;
   const srcsetAttr = srcset ? `${deferLoad ? ' data-lazy-srcset' : ' srcset'}="${escapeAttr(srcset)}" sizes="${escapeAttr(sizes)}"` : '';
   const alternativas = Array.isArray(options.fallbacks) ? options.fallbacks.map(fotoPublica).filter(Boolean) : [];
-  const fallback = alternativas.length ? ` data-fallbacks="${escapeAttr(alternativas.join('|'))}" onerror="var n=(this.dataset.fallbacks||'').split('|').filter(Boolean);if(n.length){this.dataset.fallbacks=n.slice(1).join('|');this.removeAttribute('srcset');this.removeAttribute('sizes');this.src=n[0]}else{this.onerror=null}"` : '';
+  const placeholder = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22640%22 height=%22384%22 viewBox=%220 0 640 384%22%3E%3Crect width=%22640%22 height=%22384%22 fill=%22%23e8f7f8%22/%3E%3Ctext x=%22320%22 y=%22192%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 font-family=%22Arial,sans-serif%22 font-size=%2220%22 fill=%22%235b7585%22%3EFoto indispon%C3%ADvel%3C/text%3E%3C/svg%3E';
+  const fallback = alternativas.length ? ` data-fallbacks="${escapeAttr(alternativas.join('|'))}" onerror="var n=(this.dataset.fallbacks||'').split('|').filter(Boolean);if(n.length){this.dataset.fallbacks=n.slice(1).join('|');this.removeAttribute('srcset');this.removeAttribute('sizes');this.src=n[0]}else{this.onerror=null;this.removeAttribute('srcset');this.removeAttribute('sizes');this.src='${placeholder}'}` : ` onerror="this.onerror=null;this.removeAttribute('srcset');this.removeAttribute('sizes');this.src='${placeholder}'"`;
   return `<img class="${escapeAttr(className)}"${srcAttr}${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority}${fallback} alt="${escapeAttr(alt)}">`;
 }
 
