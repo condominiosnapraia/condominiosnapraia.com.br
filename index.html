@@ -1924,19 +1924,29 @@ async function fetchSiteData(){
     const turismoCfg = _cfg['turismo_config']   || {};
     // guardar as fotos do site (evita outra requisição depois)
     try{ window._fotosSiteMap = _cfg['fotos_site'] || null; }catch(e){}
-    // Monta estrutura compatível: imoveis aninhados nos condominios
+    // Monta estrutura compatível: combina os dois campos sem deixar uma lista inválida bloquear a outra.
+    const combinarFotos = (a, b) => {
+      const normalizar = valor => {
+        if (Array.isArray(valor)) return valor;
+        if (typeof valor === 'string') {
+          try { const parsed = JSON.parse(valor); return Array.isArray(parsed) ? parsed : [valor]; } catch (_) { return [valor]; }
+        }
+        return [];
+      };
+      return [...normalizar(a), ...normalizar(b)].filter((foto, index, lista) => foto && lista.indexOf(foto) === index);
+    };
     const condMap = {};
     condominios.forEach(c => {
-      condMap[c.id] = {...c, localizacao: c.cidade, imoveis: [], fotos: c.fotos_no_site||c.fotos||[], seoData:c.seo_data||{} };
+      condMap[c.id] = {...c, localizacao: c.cidade, imoveis: [], fotos: combinarFotos(c.fotos_no_site, c.fotos), seoData:c.seo_data||{} };
     });
     imoveis.forEach(im => {
       const c = condMap[im.cond_id];
-      if(c) c.imoveis.push({...im, condId:im.cond_id, fotos:im.fotos_no_site||im.fotos||[], seoData:im.seo_data||{}, areaTotalM2:im.area_total_m2, condTaxa:im.cond_taxa, areaConstruida:im.area_construida, areaPrivativa:im.area_privativa});
+      if(c) c.imoveis.push({...im, condId:im.cond_id, fotos:combinarFotos(im.fotos_no_site, im.fotos), seoData:im.seo_data||{}, areaTotalM2:im.area_total_m2, condTaxa:im.cond_taxa, areaConstruida:im.area_construida, areaPrivativa:im.area_privativa});
     });
     // Guardar TODOS os imóveis (mesmo os sem condomínio vinculado) para a home poder exibir destaques
     const todosImoveis = imoveis.map(im => {
       const c = condMap[im.cond_id];
-      return {...im, condId:im.cond_id, _c:c||null, fotos:im.fotos_no_site||im.fotos||[], seoData:im.seo_data||{}, areaTotalM2:im.area_total_m2, condTaxa:im.cond_taxa, areaConstruida:im.area_construida, areaPrivativa:im.area_privativa};
+      return {...im, condId:im.cond_id, _c:c||null, fotos:combinarFotos(im.fotos_no_site, im.fotos), seoData:im.seo_data||{}, areaTotalM2:im.area_total_m2, condTaxa:im.cond_taxa, areaConstruida:im.area_construida, areaPrivativa:im.area_privativa};
     });
     _siteCache = {
       condominios: Object.values(condMap),
@@ -3297,6 +3307,10 @@ async function carregarCapasDecisao(){
   try{
     const grid=document.getElementById('decisao-grid');
     if(!grid) return;
+    grid.querySelectorAll('.guia-card-top[data-capa]').forEach(el=>{
+      const fallback=GUIA_FOTOS_FALLBACK[el.getAttribute('data-capa')];
+      if(fallback) aplicarFoto(el,fallback);
+    });
     await carregarDadosExtras();
     const capas = window._capasDecisao || [];
     if(!Array.isArray(capas)) return;
@@ -3304,7 +3318,7 @@ async function carregarCapasDecisao(){
     capas.forEach(c=>{ if(c.slug && c.foto_url) mapa[c.slug]=c.foto_url; });
     grid.querySelectorAll('.guia-card-top[data-capa]').forEach(el=>{
       const slug=el.getAttribute('data-capa');
-      const url=mapa[slug];
+      const url=mapa[slug] ? fotoPublica(mapa[slug]) : '';
       if(url){
         el.style.backgroundImage=`linear-gradient(to top,rgba(12,48,73,.55),rgba(12,48,73,.05)),url("${url}")`;
         el.style.backgroundSize='cover';
@@ -4189,6 +4203,14 @@ async function renderContempladasCards(targetId){
   });
 
   // ── ATIVADOR DE FOTOS DOS CARDS ──
+  // As referências antigas de fotos_site podem apontar para objectos removidos.
+  // Estes fallbacks são ficheiros já publicados no próprio site; não alteram o CRM.
+  var GUIA_FOTOS_FALLBACK = {
+    'filtro-casas':'/img/hero-imoveis.jpg','filtro-lotes':'/img/hero-imoveis.jpg','filtro-lancamentos':'/img/hero-lancamentos.jpg','filtro-condominios':'/img/hero-condominios.jpg','filtro-fora-condominio':'/img/hero-imoveis.jpg','filtro-apartamentos':'/img/hero-imoveis.jpg',
+    'xangri-la':'/img/blog/costa-litoral-norte.jpg','capao-da-canoa':'/img/blog/capao-da-canoa-praia.jpg','osorio':'/img/blog/lagoa-farol-litoral-norte.jpg','maquine':'/img/blog/lagoas-litoral-norte.jpg',
+    'xangri-la-ou-capao-da-canoa':'/img/blog/comparativo-litoral-norte.jpg','condominio-nautico-ou-frente-mar':'/img/blog/hero-condominio-litoral.jpg','comprar-na-planta-ou-pronto':'/img/hero-condominios.jpg','financiamento-ou-consorcio':'/img/blog/hero-condominio-litoral.jpg','condominio-fechado-ou-casa-avulsa':'/img/hero-imoveis.jpg',
+    'o-que-fazer-em-capao-da-canoa__1':'/img/blog/capao-da-canoa-orla.jpg','lagoa-dos-quadros':'/img/blog/lagoas-litoral-norte.jpg','marina-park':'/img/blog/hero-condominio-litoral.jpg','praca-do-mini-golf__1':'/img/blog/capao-da-canoa-orla.jpg','praia-de-capao-da-canoa__1':'/img/blog/capao-da-canoa-praia.jpg','o-que-fazer-em-xangri-la__1':'/img/blog/costa-litoral-norte.jpg','plataforma-de-atlantida':'/img/blog/capao-da-canoa-praia.jpg','praia-de-atlantida':'/img/blog/capao-da-canoa-praia.jpg','marina-de-xangri-la__1':'/img/blog/lagoa-farol-litoral-norte.jpg','paradouros-a-beira-mar__1':'/img/blog/capao-da-canoa-pordosol.jpg','o-que-fazer-em-osorio__1':'/img/blog/lagoa-farol-litoral-norte.jpg','morro-da-borussia':'/img/blog/lagoa-farol-litoral-norte.jpg','lagoa-dos-barros__1':'/img/blog/lagoas-litoral-norte.jpg','parque-eolico-de-osorio':'/img/blog/costa-litoral-norte.jpg','mirantes-de-osorio__1':'/img/blog/lagoa-farol-litoral-norte.jpg','o-que-fazer-em-maquine__1':'/img/blog/lagoas-litoral-norte.jpg','cascata-do-garapia':'/img/blog/lagoas-litoral-norte.jpg','cascata-da-forqueta':'/img/blog/lagoas-litoral-norte.jpg','trilha-do-garapia-ecoturismo__1':'/img/blog/lagoas-litoral-norte.jpg'
+  };
   // Para cada [data-foto-card], carrega a imagem apenas quando o card se
   // aproxima da viewport; isso evita descarregar todas as capas abaixo da dobra.
   var _cardFotoObserver = null;
@@ -4230,6 +4252,7 @@ async function renderContempladasCards(targetId){
       el.style.setProperty('--card-img', 'url("'+url+'")');
     }
     el.classList.add('tem-foto');
+    el.classList.remove('fallback-foto');
   }
   function carregarComRetry(el, url, tentativa){
     var test = new Image();
@@ -4249,17 +4272,22 @@ async function renderContempladasCards(targetId){
   var _fotosSiteMap = null;
   function ativarFotosCards(){
     document.querySelectorAll('[data-foto-card]').forEach(function(el){
-      if(el.classList.contains('tem-foto')) return; // já carregada, não refaz
+      if(el.classList.contains('tem-foto') && !el.classList.contains('fallback-foto')) return;
       var slug = el.getAttribute('data-foto-card');
       if(!slug) return;
       // 1ª opção: foto enviada pelo CRM (URL do Supabase). 2ª: pasta /img.
       var _mapa = _fotosSiteMap || window._fotosSiteMap;
+      var fallback = GUIA_FOTOS_FALLBACK[slug];
+      if(fallback && !el.classList.contains('tem-foto')){
+        aplicarFoto(el, fallback);
+        el.classList.add('fallback-foto');
+      }
       var urlCRM = _mapa && _mapa[slug];
       if(urlCRM){
+        urlCRM = fotoPublica(urlCRM);
         agendarFotoCard(el,function(){carregarComRetry(el, urlCRM, 1);});
       }
-      // sem foto no CRM: mantém o placeholder (nada de buscar /img/card-*.jpg,
-      // esses arquivos não existem e geravam ~180 requisições 404 por visita)
+      // sem foto CRM, o fallback local mantém o card com uma imagem útil.
     });
     // cards de Lançamentos na home: usam a foto-hero ({slug}__1) enviada pelo CRM
     var _mapaLch = _fotosSiteMap || window._fotosSiteMap;

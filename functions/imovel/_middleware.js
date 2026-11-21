@@ -80,11 +80,12 @@ function cidadePublica(im) {
 }
 
 function parseFotos(im) {
-  let fotos = im?.fotos_no_site || im?.fotos || [];
-  if (typeof fotos === 'string') {
-    try { fotos = JSON.parse(fotos); } catch (_) { fotos = [fotos]; }
-  }
-  return Array.isArray(fotos) ? fotos : [];
+  const toArray = value => {
+    if (Array.isArray(value)) return value;
+    if (typeof value === 'string') { try { const parsed = JSON.parse(value); return Array.isArray(parsed) ? parsed : [value]; } catch (_) { return [value]; } }
+    return [];
+  };
+  return [...toArray(im?.fotos_no_site), ...toArray(im?.fotos)];
 }
 
 function fotoPrincipal(im) {

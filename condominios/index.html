@@ -795,7 +795,7 @@ details[open] .dec-faq-q:after{content:"−"}
 <script>
 const SB_URL='https://cddgkhkzcnyzzcllgzoz.supabase.co', SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4LzXZ3bIE';
 const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
-const CAT_COND_SELECT='id,slug,nome,cidade,bairro,perfil,tipo,descricao,amenidades,fotos_no_site,ativo';
+const CAT_COND_SELECT='id,slug,nome,cidade,bairro,perfil,tipo,descricao,amenidades,fotos_no_site,fotos,ativo';
 const STORAGE_PUBLIC=SB_URL+'/storage/v1/object/public/';
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
 function fotoPublica(raw){
@@ -806,7 +806,8 @@ function fotoPublica(raw){
   return v;
 }
 async function sbGet(t,p=''){const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});if(!r.ok)throw new Error('Supabase '+r.status);return await r.json();}
-function fotos(a){return (a||[]).map(fotoPublica).filter(Boolean);}
+function listaFotos(v){if(Array.isArray(v))return v;if(typeof v==='string'){try{var p=JSON.parse(v);return Array.isArray(p)?p:[v];}catch(e){return [v];}}return [];}
+function fotos(a,b){return listaFotos(a).concat(listaFotos(b)).map(fotoPublica).filter(Boolean).filter(function(f,i,self){return self.indexOf(f)===i;});}
 function thumb(u,w,format){
   try{
     w=w||400;
@@ -937,7 +938,7 @@ function render(lista){
   grid.setAttribute('aria-busy','true');
   grid.innerHTML=visible.map(function(c){
     var cidade=publicCondoCity(c);
-    var f=fotos(c.fotos_no_site||c.fotos);
+    var f=fotos(c.fotos_no_site,c.fotos);
     var img=f.length?pictureCard(f[0],(c.nome||'Condomínio')+' em '+(cidade||'Litoral Norte Gaúcho'),f.slice(1)):'&#127963;';
     var perfilBadge=c.perfil&&PERFIL_LBL[c.perfil]?'<span class="cl-badge perfil">'+esc(PERFIL_LBL[c.perfil])+'</span>':'';
     var oferta=imoveisVendaCount(c);

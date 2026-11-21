@@ -59,8 +59,12 @@ export async function onRequest(context) {
     ? String(cond.descricao).slice(0, 160)
     : `${nome} no Litoral Norte Gaúcho. Conheça a estrutura, as fotos e os imóveis disponíveis.`);
 
-  let fotos = cond.fotos_no_site || cond.fotos || [];
-  if (typeof fotos === "string") { try { fotos = JSON.parse(fotos); } catch { fotos = [fotos]; } }
+  const toArray = value => {
+    if (Array.isArray(value)) return value;
+    if (typeof value === 'string') { try { const parsed = JSON.parse(value); return Array.isArray(parsed) ? parsed : [value]; } catch { return [value]; } }
+    return [];
+  };
+  const fotos = [...toArray(cond.fotos_no_site), ...toArray(cond.fotos)];
   const ogImage = Array.isArray(fotos) && fotos.length ? fotoPublica(fotos[0]) : OG_FALLBACK;
   const ogUrl = `${SITE}/condominio?id=${encodeURIComponent(id)}`;
 

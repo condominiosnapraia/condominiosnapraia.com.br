@@ -64,11 +64,12 @@ async function buscarCondominio(ref, key) {
 }
 
 function firstPhoto(cond) {
-  let photos = cond.fotos_no_site || cond.fotos || [];
-  if (typeof photos === 'string') {
-    try { photos = JSON.parse(photos); } catch (_) { photos = [photos]; }
-  }
-  if (!Array.isArray(photos)) photos = [photos];
+  const toArray = value => {
+    if (Array.isArray(value)) return value;
+    if (typeof value === 'string') { try { const parsed = JSON.parse(value); return Array.isArray(parsed) ? parsed : [value]; } catch (_) { return [value]; } }
+    return [];
+  };
+  const photos = [...toArray(cond.fotos_no_site), ...toArray(cond.fotos)];
   for (const photo of photos) {
     const value = typeof photo === 'string' ? photo : photo?.url;
     if (value) return fotoPublica(value);
