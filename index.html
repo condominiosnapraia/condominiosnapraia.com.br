@@ -1745,7 +1745,9 @@ function fotoTag(raw, alt, options = {}) {
   const src = base.startsWith('/cdn-fotos/') ? fotoVariante(base, width, 'jpeg') : base;
   const srcAttr = deferLoad ? ` data-lazy-src="${escapeAttr(src)}"` : ` src="${escapeAttr(src)}"`;
   const srcsetAttr = srcset ? `${deferLoad ? ' data-lazy-srcset' : ' srcset'}="${escapeAttr(srcset)}" sizes="${escapeAttr(sizes)}"` : '';
-  return `<img class="${escapeAttr(className)}"${srcAttr}${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority} alt="${escapeAttr(alt)}">`;
+  const alternativas = Array.isArray(options.fallbacks) ? options.fallbacks.map(fotoPublica).filter(Boolean) : [];
+  const fallback = alternativas.length ? ` data-fallbacks="${escapeAttr(alternativas.join('|'))}" onerror="var n=(this.dataset.fallbacks||'').split('|').filter(Boolean);if(n.length){this.dataset.fallbacks=n.slice(1).join('|');this.removeAttribute('srcset');this.removeAttribute('sizes');this.src=n[0]}else{this.onerror=null}"` : '';
+  return `<img class="${escapeAttr(className)}"${srcAttr}${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority}${fallback} alt="${escapeAttr(alt)}">`;
 }
 
 function fotoTagBlog(raw, alt, options = {}) {
@@ -2709,8 +2711,11 @@ function buildGallery(fotos){
   const nome=currentCond?currentCond.nome:'';
   grid.innerHTML=fotos.slice(0,show).map((f,i)=>{
     const isLast=i===show-1&&total>show;
+    const foto=fotoPublica(f);
+    const restantes=fotos.slice(i+1).map(fotoPublica).filter(Boolean);
+    const fallback=restantes.length?` data-fallbacks="${escapeAttr(restantes.join('|'))}" onerror="var n=(this.dataset.fallbacks||'').split('|').filter(Boolean);if(n.length){this.dataset.fallbacks=n.slice(1).join('|');this.src=n[0]}else{this.onerror=null}"`:'';
     return `<div class="mi" onclick="openLightbox(${i})">
-      <img src="${f}" alt="${nome} — foto ${i+1}" loading="${i===0?'eager':'lazy'}">
+      <img src="${escapeAttr(foto)}"${fallback} alt="${escapeAttr(nome)} — foto ${i+1}" loading="${i===0?'eager':'lazy'}">
       <div class="mi-overlay"></div>
       ${isLast?`<div class="mi-more"><span>+${total-show+1}</span><p>Ver todas</p></div>`:''}
     </div>`;
@@ -3504,9 +3509,15 @@ function homeFirstPhoto(row){
   return '';
 }
 function aplicarFotoHome(el, row, titulo, tipo){
-  const foto=homeFirstPhoto(row);
+  const listas=[];
+  [row&&row.fotos_no_site,row&&row.fotos].forEach(function(valor){
+    const lista=Array.isArray(valor)?valor:(typeof valor==='string'?(()=>{try{const p=JSON.parse(valor);return Array.isArray(p)?p:[valor];}catch(_){return [valor];}})():[]);
+    listas.push.apply(listas,lista);
+  });
+  const fotosValidas=listas.filter(function(f){return f&&typeof f==='string'&&!f.startsWith('idb:');});
+  const foto=fotosValidas[0]||homeFirstPhoto(row);
   if(!foto||!el)return;
-  const img=fotoTag(foto,titulo||'Imagem do imóvel',{sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
+  const img=fotoTag(foto,titulo||'Imagem do imóvel',{fallbacks:fotosValidas.slice(1),sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
   if(!img)return;
   if(tipo==='cond'){
     const placeholder=el.querySelector('.ci-grad');
@@ -3944,18 +3955,18 @@ const _carousels = {};
 function buildCarousel(containerId, fotos, autoplay){
   const container = document.getElementById(containerId);
   if(!container) return;
-  const valid = (fotos||[]).filter(f=>f && (f.startsWith('data:')||f.startsWith('http')));
+  const valid = (fotos||[]).map(fotoPublica).filter(f=>f && (f.startsWith('data:')||f.startsWith('http')||f.startsWith('/cdn-fotos/')));
   
   if(!valid.length){
     container.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;background:var(--sl,#e8eef0)">🏘</div>';
     return;
   }
   if(valid.length === 1){
-    container.innerHTML = `<img src="${valid[0]}" style="width:100%;height:100%;object-fit:cover;background:#0c2733;display:block" alt="foto">`;
+    container.innerHTML = `<img src="${escapeAttr(valid[0])}" style="width:100%;height:100%;object-fit:cover;background:#0c2733;display:block" alt="foto">`;
     return;
   }
 
-  const slides = valid.map((f,i)=>`<div class="carousel-slide"><img src="${f}" alt="foto ${i+1}" loading="${i===0?'eager':'lazy'}"></div>`).join('');
+  const slides = valid.map((f,i)=>{const restantes=valid.slice(i+1);const fallback=restantes.length?` data-fallbacks="${escapeAttr(restantes.join('|'))}" onerror="var n=(this.dataset.fallbacks||'').split('|').filter(Boolean);if(n.length){this.dataset.fallbacks=n.slice(1).join('|');this.src=n[0]}else{this.onerror=null}"`:'';return `<div class="carousel-slide"><img src="${escapeAttr(f)}"${fallback} alt="foto ${i+1}" loading="${i===0?'eager':'lazy'}"></div>`;}).join('');
   const dots = valid.map((_,i)=>`<span class="carousel-dot ${i===0?'active':''}" onclick="carouselGo('${containerId}',${i})"></span>`).join('');
   
   container.innerHTML = `
