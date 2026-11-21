@@ -4296,6 +4296,13 @@ async function renderContempladasCards(targetId){
       }
       // sem foto CRM, o fallback local mantém o card com uma imagem útil.
     });
+    // Os cards de decisão usam data-capa em vez de data-foto-card.
+    // Aplicar já o fallback local evita que permaneçam no gradiente enquanto o CRM responde.
+    document.querySelectorAll('.guia-card-top[data-capa]').forEach(function(el){
+      if(el.classList.contains('tem-foto')) return;
+      var fallback=GUIA_FOTOS_FALLBACK[el.getAttribute('data-capa')];
+      if(fallback){ aplicarFoto(el, fallback); el.classList.add('fallback-foto'); }
+    });
     // cards de Lançamentos na home: usam a foto-hero ({slug}__1) enviada pelo CRM
     var _mapaLch = _fotosSiteMap || window._fotosSiteMap;
     if(_mapaLch){
