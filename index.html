@@ -578,6 +578,8 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #view-home .icard:hover .icimg img{transform:scale(1.06)!important}
 #view-home .ccard:hover .ci img,
 #view-home .ccard:hover .ci-slide.ativa{transform:scale(1.04)!important}
+#view-home .ci:has(img.foto-fallback-generica)::after,
+#view-home .icimg:has(img.foto-fallback-generica)::after{content:'Imagem ilustrativa';position:absolute;left:12px;bottom:12px;z-index:6;padding:5px 9px;border-radius:999px;background:rgba(13,59,84,.82);color:#fff;font:600 10px/1 'Outfit',sans-serif;letter-spacing:.04em;text-transform:uppercase;pointer-events:none}
 @media(max-width:768px){
   #view-home > #sec-imoveis-comerciais.sec-onda::before,
   #view-home > #sec-condominios-verticais.sec-onda::before{top:-36px!important;height:72px!important}
@@ -1747,7 +1749,10 @@ function fotoTag(raw, alt, options = {}) {
   const srcsetAttr = srcset ? `${deferLoad ? ' data-lazy-srcset' : ' srcset'}="${escapeAttr(srcset)}" sizes="${escapeAttr(sizes)}"` : '';
   const alternativas = Array.isArray(options.fallbacks) ? options.fallbacks.map(fotoPublica).filter(Boolean) : [];
   const placeholder = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22640%22 height=%22384%22 viewBox=%220 0 640 384%22%3E%3Crect width=%22640%22 height=%22384%22 fill=%22%23e8f7f8%22/%3E%3Ctext x=%22320%22 y=%22192%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 font-family=%22Arial,sans-serif%22 font-size=%2220%22 fill=%22%235b7585%22%3EFoto indispon%C3%ADvel%3C/text%3E%3C/svg%3E';
-  const fallback = alternativas.length ? ` data-fallbacks="${escapeAttr(alternativas.join('|'))}" onerror="var n=(this.dataset.fallbacks||'').split('|').filter(Boolean);if(n.length){this.dataset.fallbacks=n.slice(1).join('|');this.removeAttribute('srcset');this.removeAttribute('sizes');this.src=n[0]}else{this.onerror=null;this.removeAttribute('srcset');this.removeAttribute('sizes');this.src='${placeholder}'}` : ` onerror="this.onerror=null;this.removeAttribute('srcset');this.removeAttribute('sizes');this.src='${placeholder}'"`;
+  const finalFallback = options.fallbackFinal ? String(options.fallbackFinal) : placeholder;
+  const finalClass = options.fallbackClass ? `this.classList.add('${escapeAttr(options.fallbackClass)}');` : '';
+  const finalAction = `${finalClass}this.onerror=null;this.removeAttribute('srcset');this.removeAttribute('sizes');this.src='${escapeAttr(finalFallback)}'`;
+  const fallback = alternativas.length ? ` data-fallbacks="${escapeAttr(alternativas.join('|'))}" onerror="var n=(this.dataset.fallbacks||'').split('|').filter(Boolean);if(n.length){this.dataset.fallbacks=n.slice(1).join('|');this.removeAttribute('srcset');this.removeAttribute('sizes');this.src=n[0]}else{${finalAction}}"` : ` onerror="${finalAction}"`;
   return `<img class="${escapeAttr(className)}"${srcAttr}${srcsetAttr} width="${width}" height="${height}" loading="${loading}" decoding="async"${priority}${fallback} alt="${escapeAttr(alt)}">`;
 }
 
@@ -3134,13 +3139,13 @@ function buildCondCard(c){
   let imgH;
   if(fotos.length>1){
     // carrossel automático de imagens
-    const slides=fotos.map((f,i)=>fotoTag(f,c.nome,{fallbacks:[...fotos.slice(i+1),...extras],className:`ci-slide${i===0?' ativa':''}`,sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384})).join('');
+    const slides=fotos.map((f,i)=>fotoTag(f,c.nome,{fallbacks:[...fotos.slice(i+1),...extras],fallbackFinal:'/img/hero-condominios.jpg',fallbackClass:'foto-fallback-generica',className:`ci-slide${i===0?' ativa':''}`,sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384})).join('');
     const dots=fotos.map((f,i)=>`<span class="ci-dot${i===0?' ativa':''}"></span>`).join('');
     imgH=`<div class="ci-carousel" data-total="${fotos.length}">${slides}<div class="ci-dots">${dots}</div></div>`;
   } else if(fotos.length===1){
-    imgH=fotoTag(fotos[0],c.nome,{fallbacks:extras,sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
+    imgH=fotoTag(fotos[0],c.nome,{fallbacks:extras,fallbackFinal:'/img/hero-condominios.jpg',fallbackClass:'foto-fallback-generica',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
   } else {
-    imgH=`<div class="ci-grad ${GI[loc]||'g-ot'}">${GE[loc]||'🏠'}</div>`;
+    imgH=`<img class="foto-fallback-generica" src="/img/hero-condominios.jpg" alt="Imagem ilustrativa de condomínios — ${escapeAttr(c.nome)}" width="640" height="384" loading="lazy" decoding="async">`;
   }
   const imd=(c.imoveis||[]).filter(i=>i.status==='Disponível');
   const condUrl=c.slug?('/condominio/?id='+encodeURIComponent(c.slug)):('/condominio/?id='+encodeURIComponent(c.id));
@@ -3210,7 +3215,7 @@ function buildImovCard(i){
     i.vagas?`🚗 ${i.vagas} ${i.vagas==1?'vaga':'vagas'}`:null
   ].filter(Boolean).map(s=>`<span class="icspec">${s}</span>`).join('');
   return`<a class="icard vis" href="${urlHomeImovel(i)}" style="text-decoration:none;color:inherit">
-    <div class="icimg"${!foto?` data-home-imov-img="${escapeAttr(i.id)}"`:''}>${foto?fotoTag(foto,i.titulo,{fallbacks:fotos.slice(1),sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384}):'🏠'}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
+    <div class="icimg"${!foto?` data-home-imov-img="${escapeAttr(i.id)}"`:''}>${foto?fotoTag(foto,i.titulo,{fallbacks:fotos.slice(1),fallbackFinal:'/img/hero-imoveis.jpg',fallbackClass:'foto-fallback-generica',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384}):`<img class="foto-fallback-generica" src="/img/hero-imoveis.jpg" alt="Imagem ilustrativa de imóveis — ${escapeAttr(i.titulo||'Imóvel')}" width="640" height="384" loading="lazy" decoding="async">`}<div class="icst ${sc}">${i.status||'Disponível'}</div>${i.codigo?`<div class="iccod">${i.codigo}</div>`:''}</div>
     <div class="icbody">
       <div class="ictipo">${i.tipo||'Imóvel'}</div>
       <div class="ictit">${i.titulo||'—'}</div>
@@ -3538,11 +3543,13 @@ function aplicarFotoHome(el, row, titulo, tipo){
   const fotosValidas=listas.filter(function(f){return f&&typeof f==='string'&&!f.startsWith('idb:');});
   const foto=fotosValidas[0]||homeFirstPhoto(row);
   if(!foto||!el)return;
-  const img=fotoTag(foto,titulo||'Imagem do imóvel',{fallbacks:fotosValidas.slice(1),sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
+  const img=fotoTag(foto,titulo||'Imagem do imóvel',{fallbacks:fotosValidas.slice(1),fallbackFinal:tipo==='cond'?'/img/hero-condominios.jpg':'/img/hero-imoveis.jpg',fallbackClass:'foto-fallback-generica',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 320px',width:640,height:384});
   if(!img)return;
   if(tipo==='cond'){
     const placeholder=el.querySelector('.ci-grad');
     if(placeholder)placeholder.remove();
+    const generic=el.querySelector('.foto-fallback-generica');
+    if(generic)generic.remove();
     el.insertAdjacentHTML('afterbegin',img);
     el.removeAttribute('data-home-cond-img');
   }else{
