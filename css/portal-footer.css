@@ -381,3 +381,11 @@ footer.page-footer .ftr-bottom-r {
     text-align: center;
   }
 }
+
+/* Padrão único da página inicial aplicado também às páginas de imóveis. */
+footer.page-footer {
+  background: linear-gradient(135deg, #102f3b 0%, #164c59 100%);
+  border-top: 4px solid #b78442;
+}
+footer.page-footer > .ftr-wave { display: none !important; }
+footer.page-footer > .ftr-main { padding-top: 54px; }
