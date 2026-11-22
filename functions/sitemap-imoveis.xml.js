@@ -6,10 +6,10 @@ const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SITE = 'https://condominiosnapraia.com.br';
 const PUBLIC_SLUG_ALIASES = {
   'XAN-018': 'lote-a-venda-monaco-yacht-club-xangri-la',
-  'XAN-019': 'lote-a-venda-monaco-yacht-club-xangri-la-2',
-  'XAN-277': 'apartamento-a-venda-livin-resort-02-dormitorios-01-suite-mobiliado-xan-277',
-  'XAN-278': '03-dormitorios-01-suite-03-mobiliado-e-decorado-xan-278'
+  'XAN-019': 'lote-a-venda-monaco-yacht-club-xangri-la-2'
 };
+// Registros publicados no CRM, mas sem rota pública 200 no portal.
+const UNSUPPORTED_PUBLIC_CODES = new Set(['XAN-277', 'XAN-278']);
 function slugifyPublicImovel(value) {
   return String(value || '')
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -67,6 +67,7 @@ export async function onRequest(context) {
   const validos = (Array.isArray(imoveis) ? imoveis : []).filter(im => {
     if (im.publicar === false) return false;
     if (im.status === 'Vendido' || im.status === 'Inativo') return false;
+    if (UNSUPPORTED_PUBLIC_CODES.has(String(im.codigo || '').toUpperCase())) return false;
     return Boolean(im.slug || im.codigo || im.id);
   });
 
