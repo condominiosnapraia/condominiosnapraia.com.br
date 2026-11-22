@@ -472,7 +472,7 @@ export async function onRequest(context) {
   let feed = null;
   const cfg = sbConfig(context.env);
   const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.611', telefone: '5551995731944', whatsapp: '5551995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', status: 'active' };
-  const OFFICIAL_PORTAL_SITE = { id: '', slug: 'portal', nome: 'Condomínios na Praia', creci: '', telefone: '5551997698450', whatsapp: '5551997698450', email: null, cidade: 'Rio Grande do Sul', bio: 'Portal oficial de imóveis e condomínios no litoral.', logo_url: '', capa_url: '', status: 'active' };
+  const OFFICIAL_PORTAL_SITE = { id: '', slug: 'portal', nome: 'Felipe Ranzolin', creci: '72.386', telefone: '5551999442252', whatsapp: '5551999442252', email: null, cidade: 'Rio Grande do Sul', bio: 'Portal oficial de imóveis e condomínios no litoral.', logo_url: '', capa_url: '', status: 'active' };
   const sites = isOfficialPortal ? [] : await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`, cfg);
   let site = isOfficialPortal ? OFFICIAL_PORTAL_SITE : (publicSlug === 'fabio-adolfo' ? FABIO_STATIC_SITE : (sites[0] || null));
   if (!site) {
