@@ -96,8 +96,13 @@ export async function onRequestGet(context) {
     });
   }
   if (!upstream.ok) {
-    return new Response('Foto não encontrada', {
-      status: upstream.status === 404 ? 404 : 502
+    // O Supabase Storage responde 400 com NoSuchKey para objetos removidos.
+    // Não transformar essa ausência em 502: 502 sugere falha da CDN e faz
+    // o navegador tratar a resposta como indisponibilidade transitória.
+    const missing = upstream.status === 400 || upstream.status === 404 || upstream.status === 410;
+    return new Response(missing ? 'Foto não encontrada' : 'Falha ao carregar a foto', {
+      status: missing ? 404 : 502,
+      headers: { 'Cache-Control': 'no-store' }
     });
   }
 
