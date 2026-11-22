@@ -382,34 +382,11 @@ footer.page-footer .ftr-bottom-r {
   }
 }
 
-/* Padrão único da página inicial aplicado também às páginas de imóveis. */
+
+/* Mesmo acabamento da home aplicado às páginas de imóveis. */
 footer.page-footer {
-  background: linear-gradient(135deg, #102f3b 0%, #164c59 100%);
+  background: linear-gradient(160deg, #0c4a6e, #0e7490);
   border-top: 4px solid #b78442;
 }
 footer.page-footer > .ftr-wave { display: none !important; }
 footer.page-footer > .ftr-main { padding-top: 54px; }
-
-/* Grade do padrão da home: marca em sua própria coluna e links em três colunas iguais. */
-footer.page-footer .ftr-main {
-  grid-template-columns: minmax(340px, 2fr) repeat(3, minmax(0, 1fr));
-}
-footer.page-footer .ftr-main > .ftr-col:first-child {
-  max-width: none;
-}
-footer.page-footer .ftr-brand-lockup .hero-brand-name {
-  font-size: clamp(34px, 3.2vw, 46px);
-}
-@media (max-width: 900px) {
-  footer.page-footer .ftr-main {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media (max-width: 600px) {
-  footer.page-footer .ftr-main {
-    grid-template-columns: 1fr;
-  }
-  footer.page-footer .ftr-brand-lockup .hero-brand-name {
-    font-size: clamp(26px, 8.5vw, 42px);
-  }
-}
