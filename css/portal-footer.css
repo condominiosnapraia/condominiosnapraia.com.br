@@ -170,6 +170,28 @@ footer .ftr-wpp:hover {
   }
 }
 
+/* Lockup da marca contido no rodapé mobile, sem corte horizontal. */
+@media (max-width: 600px) {
+  footer .ftr-logo.ftr-brand-lockup {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  footer .ftr-brand-lockup .hero-brand-name {
+    max-width: 100%;
+    font-size: clamp(26px, 8.5vw, 42px);
+    line-height: .96;
+    letter-spacing: -.06em;
+    white-space: nowrap;
+    text-align: center;
+  }
+  footer .ftr-brand-lockup .hero-brand-kicker,
+  footer .ftr-brand-lockup .hero-brand-tagline {
+    max-width: 100%;
+    text-align: center;
+  }
+}
+
 
 /* Navegação móvel: contraste legível e foco visível em fundos claros */
 .mob-footer-nav .mob-footer-btn {
