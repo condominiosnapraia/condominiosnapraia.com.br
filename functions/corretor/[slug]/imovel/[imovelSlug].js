@@ -7,6 +7,7 @@ function sbConfig(env) {
   return { url, key, headers: { apikey: key, Authorization: `Bearer ${key}` } };
 }
 const SITE_SLUG_ALIASES = Object.freeze({ 'fernando-trvisol': 'fernando-trevisol' });
+const PUBLIC_PROPERTY_SLUG_ALIASES = Object.freeze({ 'XAN-277': 'apartamento-a-venda-livin-resort-02-dormitorios-01-suite-mobiliado-xan-277' });
 function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; const publicSlug = dbSlug; return { requested, dbSlug, publicSlug }; }
 
 function esc(value) {
@@ -34,10 +35,12 @@ function photosOf(imovel, storageBase) {
 function slugify(value) { return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-'); }
 function propertySlug(imovel) {
   const stored = String(imovel?.slug || '').trim().replace(/^\/+|\/+$/g, '');
+  const code = String(imovel?.codigo || imovel?.ref || '').toUpperCase();
+  if (PUBLIC_PROPERTY_SLUG_ALIASES[code]) return PUBLIC_PROPERTY_SLUG_ALIASES[code];
   if (stored && /^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(stored)) return stored.toLowerCase();
   const base = slugify(imovel?.titulo || imovel?.tipo || 'imovel');
-  const code = slugify(imovel?.codigo || imovel?.ref || '');
-  return code && !base.endsWith(code) ? `${base}-${code}` : base || slugify(imovel?.id) || 'imovel';
+  const codeSlug = slugify(imovel?.codigo || imovel?.ref || '');
+  return codeSlug && !base.endsWith(codeSlug) ? `${base}-${codeSlug}` : base || slugify(imovel?.id) || 'imovel';
 }
 function propertyUrl(siteSlug, imovel, publicBase = BASE, publicPrefix = '') {
   if (siteSlug === 'portal' && !publicPrefix) return `${publicBase}/imovel/${encodeURIComponent(propertySlug(imovel))}/`;

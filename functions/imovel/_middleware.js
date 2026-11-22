@@ -8,7 +8,8 @@ const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 // Aliases públicos estáveis: não expõem quadra, lote ou código interno.
 const PUBLIC_SLUG_ALIASES = {
   'XAN-018': 'lote-a-venda-monaco-yacht-club-xangri-la',
-  'XAN-019': 'lote-a-venda-monaco-yacht-club-xangri-la-2'
+  'XAN-019': 'lote-a-venda-monaco-yacht-club-xangri-la-2',
+  'XAN-277': 'apartamento-a-venda-livin-resort-02-dormitorios-01-suite-mobiliado-xan-277'
 };
 
 function isCrawler(ua = '') {
