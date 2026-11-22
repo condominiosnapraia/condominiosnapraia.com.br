@@ -9,13 +9,10 @@
   <sitemap>
     <loc>https://condominiosnapraia.com.br/sitemap-condominios.xml</loc>
   </sitemap>
-    <sitemap>
-      <loc>https://condominiosnapraia.com.br/sitemap-cartas.xml</loc>
-    </sitemap>
-    <sitemap>
-      <loc>https://condominiosnapraia.com.br/sitemap-lancamentos.xml</loc>
-    </sitemap>
-    <sitemap>
-      <loc>https://condominiosnapraia.com.br/sitemap-corretores-index.xml</loc>
-    </sitemap>
+  <sitemap>
+    <loc>https://condominiosnapraia.com.br/sitemap-cartas.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://condominiosnapraia.com.br/sitemap-corretores-index.xml</loc>
+  </sitemap>
 </sitemapindex>

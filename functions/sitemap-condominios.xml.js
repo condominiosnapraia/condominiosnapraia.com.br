@@ -13,7 +13,18 @@ const PUBLIC_SLUG_ALIASES = new Map([
 ]);
 // Registro ativo sem página pública 200; não deve ser exposto no sitemap até existir uma rota canônica.
 const UNSUPPORTED_PUBLIC_SLUGS = new Set([
-  'condominio-atlantida-green-square-xangri-la'
+  'condominio-atlantida-green-square-xangri-la',
+  'bravia-marina-beach-club-maquine',
+  'condominio-alegro-curumim',
+  'cyano-private-resort-osorio',
+  'enseada-lagoa-dos-quadros-capao-da-canoa',
+  'la-marina-reserva-maquine',
+  'mirador-playa-arenas-curumim',
+  'monaco-grand-marina-maquine',
+  'vivendas-da-marina-capao-da-canoa',
+  'vientos-resort-xangri-la',
+  'origem-natureza-habitada-xangri-la',
+  'aura-garden-place-xangri-la'
 ]);
 
 function esc(s) {
