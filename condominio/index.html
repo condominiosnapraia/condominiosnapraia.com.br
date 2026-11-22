@@ -1147,7 +1147,8 @@ async function init() {
   const STATIC_REDIRECTS = {
     'condominio-maquine-la-marina': '/condominio-maquine-la-marina/',
     'condominio-xangri-la-villas-resort': '/condominio-xangri-la-villas-resort/',
-    'sunset-xangri-la': '/sunset-xangri-la/'
+    'sunset-xangri-la': '/sunset-xangri-la/',
+    'zen-concept-resort-xangri-la1': '/condominio/?id=zen-concept-resort-xangri-la'
   };
   if (STATIC_REDIRECTS[condId] && location.pathname === '/condominio/') {
     location.replace(STATIC_REDIRECTS[condId]);
