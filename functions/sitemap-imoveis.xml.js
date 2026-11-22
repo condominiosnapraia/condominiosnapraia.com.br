@@ -9,7 +9,7 @@ const PUBLIC_SLUG_ALIASES = {
   'XAN-019': 'lote-a-venda-monaco-yacht-club-xangri-la-2'
 };
 // Registros publicados no CRM, mas sem rota pública 200 no portal.
-const UNSUPPORTED_PUBLIC_CODES = new Set(['XAN-277', 'XAN-278']);
+const UNSUPPORTED_PUBLIC_CODES = new Set(['XAN-278']);
 function slugifyPublicImovel(value) {
   return String(value || '')
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')

@@ -136,7 +136,18 @@ async function buscarImovel(ref, key) {
     const r = await fetchSupabaseComRetry(query, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
     if (!r || !r.ok) return null;
     const arr = await r.json();
-    return Array.isArray(arr) ? arr[0] || null : null;
+    if (Array.isArray(arr) && arr[0]) return arr[0];
+
+    // Alguns imóveis usam um slug editorial calculado a partir do título e do código,
+    // enquanto o campo slug do CRM permanece vazio ou com o código interno. Resolva
+    // também esse formato para manter válidos os links públicos já distribuídos.
+    const fallbackUrl = `${SUPABASE_URL}/rest/v1/imoveis?publicar=eq.true&status=neq.Vendido&select=id,slug,codigo,titulo,cond_id,tipo,preco,quartos,suites,banheiros,vagas,area,area_privativa,area_construida,cidade_end,bairro_end,fora_condominio,ref_local,corretor,descricao,diferenciais,fotos_no_site,fotos&limit=2000`;
+    const fallbackResponse = await fetchSupabaseComRetry(fallbackUrl, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+    if (!fallbackResponse || !fallbackResponse.ok) return null;
+    const fallbackRows = await fallbackResponse.json();
+    return Array.isArray(fallbackRows)
+      ? fallbackRows.find(candidate => slugPublico(candidate) === String(resolvedRef).toLowerCase()) || null
+      : null;
   } catch (error) {
     console.warn('Falha transitória ao buscar imóvel no Supabase:', String(error));
     return null;
