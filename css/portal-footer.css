@@ -161,6 +161,16 @@ footer .ftr-wpp:hover {
   justify-content: center;
   background: transparent;
 }
+.mob-footer-nav .wpp-btn .mob-footer-ico svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  flex: 0 0 28px;
+}
+.mob-footer-nav .wpp-btn .mob-footer-lbl {
+  display: block;
+  white-space: nowrap;
+}
 @media (max-width: 600px) {
   footer .ftr-wpp {
     width: 100%;
