@@ -337,7 +337,7 @@ footer:before,.footer:before{content:'';position:absolute;inset:0;pointer-events
 @media(max-width:620px){.hero-info h1{font-size:29px;line-height:1.08}}
 </style>
 <style id="property-detail-mobile-title">@media(max-width:620px){.hero-info h1{font-size:24px!important;line-height:1.12!important;max-width:100%!important;display:-webkit-box!important;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}}@media(max-width:420px){.hero-info h1{font-size:22px!important}}</style>
-<link rel="stylesheet" href="/css/portal-footer.css?v=20261122-mobile-footer-3"><style id="property-header-cleanup">
+<link rel="stylesheet" href="/css/portal-footer.css?v=20261122-mobile-footer-4"><style id="property-header-cleanup">
 .header{position:sticky!important;top:0!important;z-index:30!important;min-height:0!important;height:auto!important;background:#fff!important;color:#0d3b54!important;border-bottom:1px solid rgba(13,59,84,.14)!important;box-shadow:0 4px 16px rgba(13,59,84,.08)!important;backdrop-filter:none!important}
 .header .nav{width:min(1180px,100%);height:auto!important;min-height:64px!important;margin:0 auto;padding:12px 22px!important;display:flex;align-items:center;justify-content:space-between!important;gap:14px}
 .header .brand{display:flex;align-items:center;gap:10px;color:#0d3b54!important;font-weight:700}
