@@ -390,3 +390,20 @@ footer.page-footer {
 }
 footer.page-footer > .ftr-wave { display: none !important; }
 footer.page-footer > .ftr-main { padding-top: 54px; }
+
+
+/* O tema de parceiro é injetado globalmente; o rodapé institucional da home tem prioridade. */
+html.marcos-selbach footer.page-footer {
+  background: linear-gradient(160deg, #0c4a6e, #0e7490) !important;
+  border-top: 4px solid #b78442 !important;
+  color: #fff !important;
+}
+html.marcos-selbach footer.page-footer .ftr-links-grid a {
+  color: rgba(255,255,255,.78) !important;
+}
+html.marcos-selbach footer.page-footer .ftr-links-grid a:hover {
+  color: #fff !important;
+}
+html.marcos-selbach footer.page-footer .ftr-bottom {
+  color: rgba(255,255,255,.62) !important;
+}
