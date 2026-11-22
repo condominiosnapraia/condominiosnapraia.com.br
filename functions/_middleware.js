@@ -27,7 +27,7 @@ const MARCOS_SELBACH_HOSTS = new Set([
   'marcosselbach.com.br',
   'www.marcosselbach.com.br',
 ]);
-const ATLANTIDA_WHATSAPP = '5551997698450';
+const ATLANTIDA_WHATSAPP = '5551999442252';
 const ATLANTIDA_WHATSAPP_SCRIPT = `<script id="atlantida-whatsapp-routing">
   (function(){
     var numero='${ATLANTIDA_WHATSAPP}';
@@ -302,7 +302,7 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
         .replace(/(https?:\/\/api\.whatsapp\.com\/send\?phone=)\d+/ig, `$1${ATLANTIDA_WHATSAPP}`)
         .replace(/(\bWPP\s*=\s*['"])\d+(['"])/g, `$1${ATLANTIDA_WHATSAPP}$2`)
         .replace(/(\b(?:phone|telephone)\s*["']?\s*:\s*["']\+?)\d+/ig, `$1${ATLANTIDA_WHATSAPP}`)
-        .replaceAll('5551997698450', ATLANTIDA_WHATSAPP);
+        .replaceAll('5551999442252', ATLANTIDA_WHATSAPP);
       if (updated !== text.text) text.replace(updated, { html: true });
     } })
     .on('.hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })

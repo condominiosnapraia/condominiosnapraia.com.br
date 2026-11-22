@@ -914,7 +914,7 @@ function buildDetail(c){
       var sc2=document.createElement('script');sc2.type='application/ld+json';sc2.id='d-bc-schema';
       sc2.textContent=JSON.stringify(bc);document.head.appendChild(sc2);
 
-      var org={"@context":"https://schema.org","@type":"RealEstateAgent","name":"Condomínios na Praia","alternateName":"Condomínios na Praia","url":location.origin+"/","logo":location.origin+"/img/logo-header.png","image":location.origin+"/img/og-home.jpg","telephone":"+55-51-9769-8450","email":"napraiacondominios@gmail.com","areaServed":["Xangri-lá","Capão da Canoa","Osório","Maquiné","Atlântida","Litoral Norte Gaúcho"],"address":{"@type":"PostalAddress","addressRegion":"RS","addressCountry":"BR","addressLocality":"Litoral Norte Gaúcho"},"knowsAbout":["condomínios fechados","imóveis de alto padrão","casas na praia","terrenos em condomínio","crédito contemplado"],"sameAs":[/* AJUSTAR: cole aqui os links das redes ao criar, ex: "https://www.instagram.com/portalmeulitoral" */]};
+      var org={"@context":"https://schema.org","@type":"RealEstateAgent","name":"Condomínios na Praia","alternateName":"Condomínios na Praia","url":location.origin+"/","logo":location.origin+"/img/logo-header.png","image":location.origin+"/img/og-home.jpg","telephone":"+55-51-99944-2252","email":"napraiacondominios@gmail.com","areaServed":["Xangri-lá","Capão da Canoa","Osório","Maquiné","Atlântida","Litoral Norte Gaúcho"],"address":{"@type":"PostalAddress","addressRegion":"RS","addressCountry":"BR","addressLocality":"Litoral Norte Gaúcho"},"knowsAbout":["condomínios fechados","imóveis de alto padrão","casas na praia","terrenos em condomínio","crédito contemplado"],"sameAs":[/* AJUSTAR: cole aqui os links das redes ao criar, ex: "https://www.instagram.com/portalmeulitoral" */]};
       var sc3=document.createElement('script');sc3.type='application/ld+json';sc3.id='d-org-schema';
       sc3.textContent=JSON.stringify(org);document.head.appendChild(sc3);
     }catch(e){}
@@ -2205,7 +2205,7 @@ async function simGerarPDF(){
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(22, 163, 74);
-  doc.text('WhatsApp: (51) 99769-8450', 28, y+7);
+  doc.text('WhatsApp: (51) 99944-2252', 28, y+7);
   y += 22;
 
   // Section: Dados
@@ -2282,7 +2282,7 @@ async function simGerarPDF(){
   doc.text('FALAR COM FELIPE NO WHATSAPP', 105, y + 10, { align: 'center' });
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text('Clique aqui • (51) 99769-8450', 105, y + 18, { align: 'center' });
+  doc.text('Clique aqui • (51) 99944-2252', 105, y + 18, { align: 'center' });
   y += 34;
 
   // Disclaimer
