@@ -146,13 +146,13 @@ footer .ftr-wpp {
   text-decoration: none;
   transition: background .2s ease, border-color .2s ease, transform .2s ease;
 }
-footer .ftr-wpp svg { color: #25d366; }
+footer .ftr-wpp svg { color: #0c4a6e; }
 footer .ftr-wpp:hover {
   background: #f7eedf;
   border-color: #d9a83f;
   transform: translateY(-1px);
 }
-.mob-footer-nav .wpp-btn { color: #147343 !important; }
+.mob-footer-nav .wpp-btn { color: #0c4a6e !important; }
 .mob-footer-nav .wpp-btn .mob-footer-ico {
   width: 30px;
   height: 30px;
@@ -160,7 +160,7 @@ footer .ftr-wpp:hover {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(37,211,102,.10);
+  background: rgba(12,74,110,.10);
 }
 @media (max-width: 600px) {
   footer .ftr-wpp {
