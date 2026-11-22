@@ -1193,8 +1193,8 @@ async function init() {
     var capa = null;
     for(var i=0;i<fotos.length;i++){
       var f = fotos[i];
-      if(typeof f === 'string' && f.indexOf('http') === 0){ capa = f; break; }
-      if(f && typeof f === 'object' && f.url){ capa = f.url; break; }
+      var url = typeof f === 'string' ? f : (f && typeof f === 'object' ? f.url : '');
+      if(url && /\/fotos\/cond\//i.test(url)){ capa = url; break; }
     }
     if(capa){
       setAttr('cond-og-image', 'content', capa);
@@ -1219,7 +1219,7 @@ async function init() {
     };
     if (descSeo) schema.description = descSeo;
     if (cond.bairro) schema.address.streetAddress = cond.bairro;
-    const cf = (cond.fotos_no_site || cond.fotos || []).filter(f => f && String(f).startsWith('http'));
+    const cf = (cond.fotos_no_site || cond.fotos || []).filter(f => f && /\/fotos\/cond\//i.test(String(f)));
     if (cf.length) schema.photo = cf.slice(0, 5);
     if (Array.isArray(cond.amenidades) && cond.amenidades.length) {
       schema.amenityFeature = cond.amenidades.map(a => ({ "@type": "LocationFeatureSpecification", "name": a, "value": true }));
@@ -1503,7 +1503,8 @@ function buildCondMap(condominio) {
 function condFotosPublicas() {
   const fontes = [cond && cond.fotos_no_site, cond && cond.fotos];
   for (const fonte of fontes) {
-    const validas = dynFotoLista(fonte).map(dynFotoValor).filter(Boolean);
+    const validas = dynFotoLista(fonte).map(dynFotoValor).filter(Boolean)
+      .filter(foto => /\/fotos\/cond\//i.test(foto));
     if (validas.length) return validas;
   }
   return [];

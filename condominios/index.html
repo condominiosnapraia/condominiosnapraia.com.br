@@ -808,12 +808,9 @@ function fotoPublica(raw){
 async function sbGet(t,p=''){const r=await fetch(SB_URL+'/rest/v1/'+t+p,{headers:H});if(!r.ok)throw new Error('Supabase '+r.status);return await r.json();}
 function listaFotos(v){if(Array.isArray(v))return v;if(typeof v==='string'){try{var p=JSON.parse(v);return Array.isArray(p)?p:[v];}catch(e){return [v];}}return [];}
 function fotos(a,b){
-  var todas=listaFotos(a).concat(listaFotos(b)).map(fotoPublica).filter(Boolean).filter(function(f,i,self){return self.indexOf(f)===i;});
-  /* Capas de condomínio devem preferir fotos do próprio condomínio. Alguns
-     registros antigos ainda começam com fotos de imóveis já removidas. */
-  var cond=todas.filter(function(f){return /\/fotos\/cond\//i.test(f);});
-  var outras=todas.filter(function(f){return !/\/fotos\/cond\//i.test(f);});
-  return cond.concat(outras);
+  return listaFotos(a).concat(listaFotos(b)).map(fotoPublica).filter(Boolean)
+    .filter(function(f){return /\/fotos\/cond\//i.test(f);})
+    .filter(function(f,i,self){return self.indexOf(f)===i;});
 }
 function thumb(u,w,format){
   try{
@@ -833,29 +830,14 @@ function thumb(u,w,format){
   }catch(e){return u;}
 }
 function erroImagemCard(img){
-  var n=(img.dataset.fallbacks||'').split('|').filter(Boolean);
   var picture=img.parentElement;
-  if(picture){Array.from(picture.querySelectorAll('source')).forEach(function(source){source.removeAttribute('srcset');});}
-  img.removeAttribute('srcset');
-  img.removeAttribute('sizes');
-  if(n.length){
-    img.dataset.fallbacks=n.slice(1).join('|');
-    img.src=n[0];
-  }else if(img.dataset.finalFallback){
-    img.onerror=null;
-    img.src=img.dataset.finalFallback;
-    img.removeAttribute('data-final-fallback');
-    img.alt=img.dataset.finalAlt||img.alt;
-  }else{
-    img.onerror=null;
-    if(picture) picture.replaceWith(document.createTextNode('🏛️'));
-  }
+  img.onerror=null;
+  if(picture) picture.replaceWith(document.createTextNode('Foto indisponível'));
 }
-function pictureCard(u,alt,alternativas,finalFallback){
+function pictureCard(u,alt){
   var sizes='(max-width:560px) calc(100vw - 48px), (max-width:900px) calc(50vw - 32px), 360px';
   var set=function(fmt){return thumb(u,480,fmt)+' 480w, '+thumb(u,768,fmt)+' 768w, '+thumb(u,1280,fmt)+' 1280w';};
-  var fallback=(Array.isArray(alternativas)?alternativas:[]).filter(function(x){return x&&x!==u;}).map(function(x){return thumb(x,768,'jpeg');}).join('|');
-  var attrs=' onerror=\"erroImagemCard(this)\"'+(fallback?' data-fallbacks=\"'+esc(fallback)+'\"':'')+(finalFallback?' data-final-fallback=\"'+esc(finalFallback)+'\" data-final-alt=\"'+esc(alt||'Imagem do condomínio')+'\"':'');
+  var attrs=' onerror=\"erroImagemCard(this)\"';
   return '<picture class="cl-card-picture"><source type="image/avif" srcset="'+esc(set('avif'))+'" sizes="'+sizes+'"><source type="image/webp" srcset="'+esc(set('webp'))+'" sizes="'+sizes+'"><img src="'+esc(thumb(u,768,'jpeg'))+'" srcset="'+esc(set('jpeg'))+'" sizes="'+sizes+'"'+attrs+' alt="'+esc(alt||'Imagem do condomínio')+'" loading="lazy" decoding="async" width="768" height="432"></picture>';
 }
 const PERFIL_LBL={mar:'Beira-mar',lagoa:'Beira da lagoa',cidade:'Cidade'};
@@ -871,13 +853,6 @@ function ordenarPorOferta(a,b){
   return String(a&&a.nome||'').localeCompare(String(b&&b.nome||''),'pt');
 }
 const STATIC_CONDO_SLUGS=new Set(['aura-garden-place-xangri-la','cyano-private-resort-osorio','bravia-marina-beach-club-maquine','vientos-resort-xangri-la','origem-natureza-habitada-xangri-la','condominio-alegro-curumim','mirador-playa-arenas-curumim','enseada-lagoa-dos-quadros-capao-da-canoa','vivendas-da-marina-capao-da-canoa','la-marina-reserva-maquine','condominio-maquine-la-marina','condominio-xangri-la-villas-resort','sunset-xangri-la','marina-de-xangri-la','marina-park','xangri-la-marina']);
-const CAPAS_ESTAVEIS={
-  'capao-ilhas-resort-capao-da-canoa':'/img/mapas-condominios/13-IlhasResort.webp',
-  'zen-concept-resort-xangri-la':'/img/mapas-condominios/43-Zenmelnik.webp',
-  'wave-home-resort-xangri-la':'/img/mapas-condominios/44-Wave.webp',
-  'lagoa-do-passo-xangri-la':'/img/mapas-condominios/15-LagoadoPasso.webp',
-  'condominio-xangri-la-villas-resort':'/img/mapas-condominios/35-Villasresort.webp'
-};
 let TODOS=[];
 let RESULTADOS=[];
 let VISIBLE_LIMIT=12;
@@ -973,8 +948,7 @@ function render(lista){
     var cidade=publicCondoCity(c);
     var f=fotos(c.fotos_no_site,c.fotos);
     var slugPublico=publicCondoSlug(c);
-    var capaEstavel=CAPAS_ESTAVEIS[slugPublico]||'';
-    var img=f.length?pictureCard(f[0],(c.nome||'Condomínio')+' em '+(cidade||'Litoral Norte Gaúcho'),f.slice(1),capaEstavel):capaEstavel?'<img src="'+capaEstavel+'" alt="'+esc((c.nome||'Condomínio')+' — imagem do empreendimento')+'" loading="lazy" decoding="async" width="768" height="432">':'&#127963;';
+    var img=f.length?pictureCard(f[0],(c.nome||'Condomínio')+' em '+(cidade||'Litoral Norte Gaúcho')):'<span class="cl-no-photo">Foto indisponível</span>';
     var perfilBadge=c.perfil&&PERFIL_LBL[c.perfil]?'<span class="cl-badge perfil">'+esc(PERFIL_LBL[c.perfil])+'</span>':'';
     var oferta=imoveisVendaCount(c);
     var amen=(c.amenidades||[]).slice(0,3);
