@@ -399,9 +399,8 @@ export async function onRequest(context) {
     return adminNotFound();
   }
 
-  // Favoritos só é necessário na página de favoritos e no detalhe de imóvel.
-  // Evita injetar ~10 KiB e iniciar JS extra na homepage, listagens e páginas editoriais.
-  const needsFavorites = path === '/favoritos' || path === '/favoritos/' || path === '/imovel' || path === '/imovel/' || path.startsWith('/imovel/');
+  // O recurso de favoritos fica restrito à página dedicada; não é injetado nos detalhes de imóveis.
+  const needsFavorites = path === '/favoritos' || path === '/favoritos/';
   const response = await next();
   const contentType = response.headers.get('content-type') || '';
   if (!contentType.toLowerCase().includes('text/html')) return response;
