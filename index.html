@@ -3547,7 +3547,7 @@ async function fetchBlogPosts(){
 }
 
 async function fetchBlogPostsLeve(){
-  const params='?publicado=eq.true&order=data.desc&select=id,slug,titulo,resumo,capa,categoria,data,created_at&limit=8';
+  const params='?publicado=eq.true&order=data.desc&select=id,slug,titulo,resumo,capa,categoria,data,created_at&limit=4';
   try{
     const r=await fetch(SUPABASE_URL+'/rest/v1/blog_posts'+params,{headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'}});
     if(!r.ok)return [];
@@ -3574,7 +3574,7 @@ function buildHomeBlog(){
   _blogHomePromise.then(posts=>{
     const grid=document.getElementById('home-blog-grid');
     if(!grid)return;
-    const recent=(posts||[]).filter(p=>p.publicado!==false).slice(0,8);
+    const recent=(posts||[]).filter(p=>p.publicado!==false).slice(0,4);
     if(!recent.length){grid.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">📰</div><p>Nenhum artigo publicado ainda.</p></div>';return;}
     grid.innerHTML=recent.map(p=>{
       const img=p.capa?fotoTagBlog(p.capa,p.titulo,{className:'bpcard-img',sizes:'(max-width: 640px) 100vw, (max-width: 1100px) 33vw, 320px',width:640,height:360}):'<div class="bpcard-img-ph">📰</div>';
