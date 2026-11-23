@@ -747,29 +747,75 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 }
 </style>
 <style id="capas-blog-ajuste-2026">
-/* Capas editoriais e cards de conteúdo: mais presença sem distorção. */
+/* Cards editoriais compactos: mais conteúdo visível sem perder legibilidade. */
+#view-home > #guias-cidades .guias-grid,
+#view-home > #guias-decisao .guias-grid {
+  gap: 14px;
+  margin-top: 24px;
+}
 #view-home > #guias-cidades .guia-card-top,
 #view-home > #guias-decisao .guia-card-top {
-  min-height: 218px !important;
-  aspect-ratio: 16 / 10;
+  min-height: 148px !important;
+  height: 148px !important;
+  aspect-ratio: auto;
   background-size: cover !important;
   background-position: center !important;
 }
-#view-home > #sec-blog-preview .bpcard-img {
+#view-home > #guias-cidades .guia-card-body,
+#view-home > #guias-decisao .guia-card-body {
+  padding: 12px 14px 14px;
+}
+#view-home > #guias-cidades .guia-card-nome,
+#view-home > #guias-decisao .guia-card-nome {
+  font-size: 16px;
+  line-height: 1.2;
+  margin-bottom: 5px;
+}
+#view-home > #guias-cidades .guia-card-desc,
+#view-home > #guias-decisao .guia-card-desc {
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+#view-home > #guias-cidades .guia-card-link,
+#view-home > #guias-decisao .guia-card-link {
+  font-size: 12px;
+}
+#view-home > #sec-blog-preview .blog-preview-grid {
+  gap: 14px;
+}
+#view-home > #sec-blog-preview .bpcard-img,
+#view-home > #sec-blog-preview .bpcard-img-ph {
   display: block;
   width: 100%;
-  height: 218px !important;
+  height: 150px !important;
   object-fit: cover;
   object-position: center;
+}
+#view-home > #sec-blog-preview .bpcard-body {
+  padding: 12px 14px 14px;
+  gap: 5px;
+}
+#view-home > #sec-blog-preview .bpcard-title {
+  font-size: 16px;
+  line-height: 1.22;
+}
+#view-home > #sec-blog-preview .bpcard-resumo {
+  font-size: 11.5px;
+  line-height: 1.45;
 }
 @media (max-width: 768px) {
   #view-home > #guias-cidades .guia-card-top,
   #view-home > #guias-decisao .guia-card-top {
-    min-height: 190px !important;
-    aspect-ratio: 16 / 10;
+    min-height: 126px !important;
+    height: 126px !important;
   }
-  #view-home > #sec-blog-preview .bpcard-img {
-    height: 190px !important;
+  #view-home > #sec-blog-preview .bpcard-img,
+  #view-home > #sec-blog-preview .bpcard-img-ph {
+    height: 124px !important;
+  }
+  #view-home > #sec-blog-preview .bpcard-title {
+    font-size: 15px;
   }
 }
 </style>
