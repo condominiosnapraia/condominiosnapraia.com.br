@@ -128,7 +128,8 @@ footer .ftr-links-grid a {
 @media (min-width: 901px) {
   /* Mantém a marca dentro da primeira coluna e evita invadir Navegar/Descobrir. */
   footer .ftr-logo.ftr-brand-lockup .hero-brand-name {
-    font-size: clamp(36px, 3.5vw, 48px);
+    width: 100%;
+    font-size: 32px;
     max-width: 100%;
   }
 }
