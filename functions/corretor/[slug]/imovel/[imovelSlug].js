@@ -473,13 +473,13 @@ export async function onRequest(context) {
   const imovelRef = String(context.params?.imovelSlug || '').toLowerCase();
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSiteSlug) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(imovelRef)) return notFound();
   const { dbSlug, publicSlug } = siteSlugInfo(requestedSiteSlug);
-  const isOfficialPortal = context.request.headers.get('x-public-portal') === 'atlantida-negocios' && publicSlug === 'portal';
+  const isOfficialPortal = context.request.headers.get('x-public-portal') === 'official' && publicSlug === 'portal';
   const requestPath = new URL(context.request.url).pathname;
   if (requestPath.startsWith('/parceiro/') || (requestPath.startsWith('/corretor/') && requestedSiteSlug !== publicSlug)) return Response.redirect(`${BASE}/corretor/${encodeURIComponent(publicSlug)}/imovel/${encodeURIComponent(imovelRef)}/`, 301);
   let feed = null;
   const cfg = sbConfig(context.env);
   const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.611', telefone: '5551995731944', whatsapp: '5551995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', status: 'active' };
-  const OFFICIAL_PORTAL_SITE = { id: '', slug: 'portal', nome: 'Felipe Ranzolin', creci: '72.386', telefone: '5551999442252', whatsapp: '5551999442252', email: null, cidade: 'Rio Grande do Sul', bio: 'Portal oficial de imóveis e condomínios no litoral.', logo_url: '', capa_url: '', status: 'active' };
+  const OFFICIAL_PORTAL_SITE = { id: '', slug: 'portal', nome: 'Felipe Ranzolin', creci: '72.386', telefone: '5551997698450', whatsapp: '5551997698450', email: null, cidade: 'Rio Grande do Sul', bio: 'Portal oficial de imóveis e condomínios no litoral.', logo_url: '', capa_url: '', status: 'active' };
   const ATLANTIDA_PUBLIC_SITE = { id: '', slug: 'atlantida-negocios', nome: 'Atlântida Negócios', creci: '', telefone: '5551981348907', whatsapp: '5551981348907', email: null, cidade: 'Rio Grande do Sul', bio: 'Imóveis e oportunidades no Litoral Norte.', logo_url: '', capa_url: '', status: 'active' };
   const publicPortal = context.request.headers.get('x-public-portal');
   const publicSite = publicPortal === 'atlantida-negocios' ? ATLANTIDA_PUBLIC_SITE : OFFICIAL_PORTAL_SITE;
