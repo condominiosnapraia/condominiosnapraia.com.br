@@ -1240,6 +1240,48 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   #view-home > #sec-condominios-verticais{background-color:inherit}
 }
 </style>
+<style id="home-property-card-typography">
+/* Cards de lotes, casas, sobrados e terrenos: títulos menores e mais regulares. */
+#view-home .igrid .icard .ictipo{
+  font-family:'Outfit',sans-serif;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:#b98225!important;
+}
+#view-home .igrid .icard .ictit{
+  font-family:'Fraunces',serif;
+  font-size:17px!important;
+  font-weight:500;
+  line-height:1.2!important;
+  letter-spacing:-.012em;
+  color:#103d50!important;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  min-height:2.4em;
+  margin-bottom:8px!important;
+  text-wrap:balance;
+}
+#view-home .igrid .icard .iccond,
+#view-home .igrid .icard .icspec,
+#view-home .igrid .icard .icprice{
+  font-family:'Outfit',sans-serif;
+}
+#view-home .igrid .icard .iccond{
+  font-size:10.5px;
+  line-height:1.35;
+}
+@media(max-width:768px){
+  #view-home .igrid .icard .ictit{
+    font-size:15px!important;
+    line-height:1.2!important;
+    min-height:2.4em;
+  }
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
