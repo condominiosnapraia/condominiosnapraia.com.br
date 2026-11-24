@@ -27,7 +27,9 @@ const MARCOS_SELBACH_HOSTS = new Set([
   'marcosselbach.com.br',
   'www.marcosselbach.com.br',
 ]);
-const ATLANTIDA_WHATSAPP = '5551999442252';
+const PORTAL_MEULITORAL_WHATSAPP = '555197698450';
+const ATLANTIDA_WHATSAPP = '5551981348907';
+const MARCOS_SELBACH_WHATSAPP = '5551997008877';
 const ATLANTIDA_WHATSAPP_SCRIPT = `<script id="atlantida-whatsapp-routing">
   (function(){
     var numero='${ATLANTIDA_WHATSAPP}';
@@ -50,6 +52,47 @@ const ATLANTIDA_WHATSAPP_SCRIPT = `<script id="atlantida-whatsapp-routing">
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',iniciar,{once:true}); else iniciar();
   }());
 </script>`;
+function addDomainContactRouting(rewriter, number) {
+  const rewrite = (value) => String(value || '')
+    .replace(/(https?:\/\/(?:www\.)?wa\.me\/|wa\.me\/)\d+/ig, `$1${number}`)
+    .replace(/(https?:\/\/api\.whatsapp\.com\/send\?phone=|[?&]phone=)\d+/ig, `$1${number}`)
+    .replace(/(^|["'=])tel:\+?\d+/ig, `$1tel:+${number}`)
+    .replace(/(\bWPP\s*=\s*['"])\d+(['"])/g, `$1${number}$2`)
+    .replace(/(\b(?:phone|telephone)\s*["']?\s*:\s*["']\+?)\d+/ig, `$1${number}`);
+  rewriter
+    .on('a', { element(element) {
+      const href = element.getAttribute('href');
+      if (!href) return;
+      const updated = rewrite(href);
+      if (updated !== href) element.setAttribute('href', updated);
+    } })
+    .on('script', { text(text) {
+      if (!text.text) return;
+      const updated = rewrite(text.text).replace(/5551999442252/g, number);
+      if (updated !== text.text) text.replace(updated, { html: true });
+    } });
+}
+function domainContactScript(number, id) {
+  return `<script id="${id}">
+  (function(){
+    var numero='${number}';
+    function corrigir(root){
+      (root||document).querySelectorAll('a[href]').forEach(function(a){
+        var href=a.getAttribute('href'); if(!href) return;
+        var novo=href
+          .replace(/(https?:\\/\\/(?:www\\.)?wa\\.me\\/|wa\\.me\\/)\\d+/ig,'$1'+numero)
+          .replace(/(https?:\\/\\/api\\.whatsapp\\.com\\/send\\?phone=|[?&]phone=)\\d+/ig,'$1'+numero)
+          .replace(/(^|["'=])tel:\\+?\\d+/ig,'$1tel:+'+numero);
+        if(novo!==href) a.setAttribute('href',novo);
+      });
+    }
+    function iniciar(){ corrigir(document); if(!document.documentElement||!window.MutationObserver)return; new MutationObserver(function(){corrigir(document);}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['href']}); }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciar,{once:true});else iniciar();
+  }());
+  </script>`;
+}
+const PORTAL_MEULITORAL_WHATSAPP_SCRIPT = domainContactScript(PORTAL_MEULITORAL_WHATSAPP, 'portal-meu-litoral-contact-routing');
+const MARCOS_SELBACH_WHATSAPP_SCRIPT = domainContactScript(MARCOS_SELBACH_WHATSAPP, 'marcos-selbach-contact-routing');
 
 const PORTAL_MEULITORAL_STYLE = `<style id="portal-meu-litoral-theme">
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
@@ -357,7 +400,11 @@ export async function onRequest(context) {
       target.search = url.search;
       const headers = new Headers(request.headers);
       headers.set('x-public-partner-prefix', '/');
-      return fetch(new Request(target, { method: request.method, headers, body: request.method === 'GET' || request.method === 'HEAD' ? undefined : request.body }));
+      const response = await fetch(new Request(target, { method: request.method, headers, body: request.method === 'GET' || request.method === 'HEAD' ? undefined : request.body }));
+      const contactRewriter = new HTMLRewriter();
+      addDomainContactRouting(contactRewriter, MARCOS_SELBACH_WHATSAPP);
+      contactRewriter.on('body', { element(element) { element.append(MARCOS_SELBACH_WHATSAPP_SCRIPT, { html: true }); } });
+      return contactRewriter.transform(response);
     }
   }
   if (isAtlantidaNegocios(url) && /^\/(?:corretor|parceiro)\/marcos-selbach(?:\/|$)/i.test(path)) { return Response.redirect(new URL('/', url), 302); } const alissonAlias = ['/alisonportela', '/alissonportela'].find((alias) => path === alias || path.startsWith(`${alias}/`));
@@ -418,15 +465,26 @@ export async function onRequest(context) {
         element.setAttribute('aria-label', 'Falar com um consultor pelo WhatsApp sobre esta oportunidade');
       },
     });
-  if (isPortalMeuLitoral(url)) applyPortalMeuLitoralBrand(rewriter, url);
+  if (isPortalMeuLitoral(url)) {
+    applyPortalMeuLitoralBrand(rewriter, url);
+    addDomainContactRouting(rewriter, PORTAL_MEULITORAL_WHATSAPP);
+    rewriter.on('body', { element(element) { element.append(PORTAL_MEULITORAL_WHATSAPP_SCRIPT, { html: true }); } });
+  }
   if (isPortalMeuLitoral(url) && (path === '/' || path === '/index.html')) {
     rewriter.on('body', { element(element) { element.append(PORTAL_MEULITORAL_HOME_ORDER, { html: true }); } });
   }
-  if (isAtlantidaNegocios(url)) applyAtlantidaNegociosBrand(rewriter, url);
+  if (isAtlantidaNegocios(url)) {
+    applyAtlantidaNegociosBrand(rewriter, url);
+    addDomainContactRouting(rewriter, ATLANTIDA_WHATSAPP);
+  }
   if (isAtlantidaNegocios(url) && (path === '/' || path === '/index.html')) {
     rewriter.on('body', { element(element) { element.append(ATLANTIDA_NEGOCIOS_HOME_ORDER, { html: true }); } });
   }
-  if (isMarcosSelbach(url)) applyMarcosSelbachBrand(rewriter, url);
+  if (isMarcosSelbach(url)) {
+    applyMarcosSelbachBrand(rewriter, url);
+    addDomainContactRouting(rewriter, MARCOS_SELBACH_WHATSAPP);
+    rewriter.on('body', { element(element) { element.append(MARCOS_SELBACH_WHATSAPP_SCRIPT, { html: true }); } });
+  }
   if (needsFavorites) {
     rewriter.on('head', {
       element(element) {
