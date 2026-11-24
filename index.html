@@ -1093,6 +1093,52 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   min-height:56px;
 }
 </style>
+<style id="home-all-cards-structure-review">
+/* Revisão global: imagem, corpo e rodapé mantêm uma estrutura comum por grelha. */
+#view-home .igrid > .icard,
+#view-home .cgrid > .ccard,
+#view-home .lch-grid > .lch-card,
+#view-home .pcred-grid > .pcred-card,
+#view-home .guias-grid > .guia-card,
+#view-home .blog-preview-grid > .bpcard{
+  height:100%;
+  min-width:0;
+}
+#view-home .igrid > .icard,
+#view-home .cgrid > .ccard,
+#view-home .lch-grid > .lch-card,
+#view-home .guias-grid > .guia-card,
+#view-home .blog-preview-grid > .bpcard{
+  display:flex!important;
+  flex-direction:column;
+}
+#view-home .igrid > .icard .icbody,
+#view-home .cgrid > .ccard .cbody,
+#view-home .lch-grid > .lch-card .lch-body,
+#view-home .guias-grid > .guia-card .guia-card-body,
+#view-home .blog-preview-grid > .bpcard .bpcard-body{
+  flex:1 1 auto;
+}
+#view-home .igrid > .icard .icfoot,
+#view-home .cgrid > .ccard .cfooter,
+#view-home .lch-grid > .lch-card .lch-link,
+#view-home .guias-grid > .guia-card .guia-card-link,
+#view-home .blog-preview-grid > .bpcard .bpcard-footer{
+  margin-top:auto;
+}
+#view-home .pcred-grid > .pcred-card,
+#view-home .qfilter-grid > .qfilter-card{
+  min-height:100%;
+}
+@media(max-width:768px){
+  #view-home .igrid > .icard,
+  #view-home .cgrid > .ccard,
+  #view-home .lch-grid > .lch-card,
+  #view-home .pcred-grid > .pcred-card,
+  #view-home .guias-grid > .guia-card,
+  #view-home .blog-preview-grid > .bpcard{height:auto;min-height:0}
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
