@@ -65,11 +65,15 @@ function money(value) {
 function cleanDescription(value) {
   return String(value || '')
     .replace(/\b(?:quadra|lote|box|unidade|apartamento|torre|casa)\s*(?:n[ºo°.]?\s*)?[a-z0-9-]+/gi, '')
-    .replace(/\s+/g, ' ')
+    .replace(/\r\n?/g, '\n')
+    .split('\n')
+    .map((line) => line.replace(/[ \t]{2,}/g, ' ').trim())
+    .join('\n')
     .replace(/\s+([,.;])/g, '$1')
     .replace(/([,.;])(?=\S)/g, '$1 ')
     .replace(/\b(?:em|no|na)\s*(?=[,.;]|$)/gi, '')
     .replace(/^[\s,.;:–—-]+/g, '')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
 function qualityDescription(value, title, type, city) {
@@ -476,8 +480,11 @@ export async function onRequest(context) {
   const cfg = sbConfig(context.env);
   const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.611', telefone: '5551995731944', whatsapp: '5551995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', status: 'active' };
   const OFFICIAL_PORTAL_SITE = { id: '', slug: 'portal', nome: 'Felipe Ranzolin', creci: '72.386', telefone: '5551999442252', whatsapp: '5551999442252', email: null, cidade: 'Rio Grande do Sul', bio: 'Portal oficial de imóveis e condomínios no litoral.', logo_url: '', capa_url: '', status: 'active' };
+  const ATLANTIDA_PUBLIC_SITE = { id: '', slug: 'portal', nome: 'Atlântida Negócios', creci: '', telefone: '5551981348907', whatsapp: '5551981348907', email: null, cidade: 'Rio Grande do Sul', bio: 'Imóveis e oportunidades no Litoral Norte.', logo_url: '', capa_url: '', status: 'active' };
+  const publicPortal = context.request.headers.get('x-public-portal');
+  const publicSite = publicPortal === 'atlantida-negocios' ? ATLANTIDA_PUBLIC_SITE : OFFICIAL_PORTAL_SITE;
   const sites = isOfficialPortal ? [] : await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`, cfg);
-  let site = isOfficialPortal ? OFFICIAL_PORTAL_SITE : (publicSlug === 'fabio-adolfo' ? FABIO_STATIC_SITE : (sites[0] || null));
+  let site = isOfficialPortal ? publicSite : (publicSlug === 'fabio-adolfo' ? FABIO_STATIC_SITE : (sites[0] || null));
   if (!site) {
     feed = await getPartnerFeed(publicSlug);
     site = feed?.site ? { id: '', slug: dbSlug, nome: feed.site.name, creci: feed.site.creci, telefone: feed.site.phone, whatsapp: feed.site.whatsapp, email: feed.site.email, cidade: feed.site.city, bio: feed.site.bio, logo_url: feed.site.logo_url, capa_url: feed.site.cover_url } : null;
