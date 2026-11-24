@@ -3343,8 +3343,8 @@ function buildHomeDestaques(){
       return String(a.nome||'').localeCompare(String(b.nome||''),'pt');
     };
     // A prioridade comercial é a oferta disponível; a curadoria manual só desempata.
-    let showCond=condos.filter(c=>c.ativo!==false).sort(ordenarDestaques).slice(0,10);
-    if(!showCond.length) showCond=condos.slice().sort(ordenarDestaques).slice(0,10);
+    let showCond=condos.filter(c=>c.ativo!==false).sort(ordenarDestaques).slice(0,12);
+    if(!showCond.length) showCond=condos.slice().sort(ordenarDestaques).slice(0,12);
 
     const cg=document.getElementById('home-cond-grid');
     if(cg) cg.innerHTML=showCond.map(buildCondCard).join('');
@@ -3404,7 +3404,7 @@ function buildHomeDestaques(){
     renderHomeGrid('home-imov-grid', pickDestaques(casasCondominio, destImov, 8), '🏠', 'Cadastre casas e sobrados em condomínio no CRM para exibi-los aqui');
     renderHomeGrid('home-apartamento-grid', pickDestaques(apartamentos, destApartamento, 8), '🏢', 'Nenhum apartamento publicado disponível no momento');
     renderHomeGrid('home-fora-grid', pickDestaques(casasFora, destCasaFora, 8), '🏡', 'Cadastre casas e sobrados fora de condomínio no CRM para exibi-los aqui');
-    renderHomeGrid('home-terreno-grid', pickDestaques(terrenosCondominio, destTerreno, 6), '🌳', 'Cadastre terrenos em condomínio no CRM para exibi-los aqui');
+    renderHomeGrid('home-terreno-grid', pickDestaques(terrenosCondominio, destTerreno, 8), '🌳', 'Cadastre terrenos em condomínio no CRM para exibi-los aqui');
     // Se a secção já estiver próxima, o observer pode ter disparado antes do render.
     const homePhotoSection=document.getElementById('sec-imoveis')||document.getElementById('sec-condominios');
     if(homePhotoSection && homePhotoSection.getBoundingClientRect().top < window.innerHeight+700 && typeof carregarFotosHomeCards==='function'){
