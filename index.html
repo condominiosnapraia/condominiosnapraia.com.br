@@ -955,7 +955,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 #view-home .pcred-card,
 #view-home .citycard,
 #view-home .viv-editorial-card{
-  border:1px solid rgba(18,63,83,.18)!important;
+  border:1px solid rgba(18,63,83,.28)!important;
   box-shadow:0 5px 18px rgba(18,63,83,.07);
 }
 #view-home .navq-card:hover,
@@ -995,31 +995,31 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
 </style>
 <style id="home-popular-searches-polish">
 /* Pesquisas populares: grelha editorial, mais previsível do que uma fila de pills. */
-#view-home .popsearch{
+.popsearch{
   background:#f7f1e8!important;
   border-top:1px solid rgba(18,63,83,.10);
   border-bottom:1px solid rgba(18,63,83,.10);
 }
-#view-home .popsearch-inner{
+.popsearch-inner{
   max-width:1240px;
   padding:64px clamp(24px,5vw,72px) 68px;
 }
-#view-home .popsearch-tit{
+.popsearch-tit{
   color:var(--home-ink,#123f53);
   margin-bottom:8px;
 }
-#view-home .popsearch-sub{
+.popsearch-sub{
   max-width:620px;
   margin:0 auto 30px;
   line-height:1.55;
 }
-#view-home .popsearch-grid{
+.popsearch-grid{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:12px;
   justify-content:stretch;
 }
-#view-home .popsearch-grid a{
+.popsearch-grid a{
   position:relative;
   display:flex;
   align-items:center;
@@ -1036,7 +1036,7 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   box-shadow:0 3px 10px rgba(18,63,83,.04);
   transition:transform .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease,color .2s ease;
 }
-#view-home .popsearch-grid a::after{
+.popsearch-grid a::after{
   content:'→';
   position:absolute;
   right:14px;
@@ -1045,27 +1045,27 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   line-height:1;
   transition:transform .2s ease,color .2s ease;
 }
-#view-home .popsearch-grid a:hover{
+.popsearch-grid a:hover{
   background:#fffdf8;
   border-color:rgba(217,168,63,.72);
   color:var(--home-ocean,#0d4b62);
   box-shadow:0 9px 20px rgba(18,63,83,.10);
   transform:translateY(-2px);
 }
-#view-home .popsearch-grid a:hover::after{
+.popsearch-grid a:hover::after{
   color:var(--home-ocean,#0d4b62);
   transform:translateX(3px);
 }
 @media(max-width:980px){
-  #view-home .popsearch-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .popsearch-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media(max-width:680px){
-  #view-home .popsearch-inner{padding:48px 20px 52px}
-  #view-home .popsearch-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  #view-home .popsearch-grid a{min-height:60px;padding:12px 34px 12px 13px;font-size:12px}
+  .popsearch-inner{padding:48px 20px 52px}
+  .popsearch-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .popsearch-grid a{min-height:60px;padding:12px 34px 12px 13px;font-size:12px}
 }
 @media(max-width:390px){
-  #view-home .popsearch-grid{grid-template-columns:1fr}
+  .popsearch-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
