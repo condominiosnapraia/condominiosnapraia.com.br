@@ -2,7 +2,7 @@ const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsIn
 const BASE = 'https://condominiosnapraia.com.br';
 const SB_URL = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const HEADERS = { apikey: SB_ANON, Authorization: `Bearer ${SB_ANON}` };
-const SITE_SLUG_ALIASES = Object.freeze({ 'fernando-trevisol': 'fernando-trvisol' });
+const SITE_SLUG_ALIASES = Object.freeze({ 'fernando-trvisol': 'fernando-trevisol' });
 const SECTIONS = [
   { id: 'casa-condominio', category: 'casa-condominio', title: 'Sobrados e casas', subtitle: 'Em condomínio', icon: '🏡' },
   { id: 'casa-fora', category: 'casa-fora', title: 'Sobrados e casas', subtitle: 'Fora de condomínio', icon: '🏠' },
@@ -23,7 +23,7 @@ function toArray(value) { if (Array.isArray(value)) return value; if (typeof val
 function firstPhoto(imovel) { const list = [...toArray(imovel?.fotos_no_site), ...toArray(imovel?.fotos), ...toArray(imovel?.fotos_para_site)]; for (const item of list) { const url = typeof item === 'string' ? item : item?.url || item?.src || item?.publicUrl || item?.public_url; if (url && /^https?:\/\//i.test(url)) return url; } return ''; }
 function money(value) { if (value === null || value === undefined || value === '') return 'Consulte o valor'; if (typeof value === 'string' && /r\$|€|\$/i.test(value)) return value; const normalized = String(value).replace(/[^0-9,.-]/g, '').replace(/\.(?=\d{3}(?:\D|$))/g, '').replace(',', '.'); const number = Number(normalized); return Number.isFinite(number) && number > 0 ? number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'Consulte o valor'; }
 function categoryFor(imovel) { const type = String(imovel?.tipo || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); const outside = imovel?.fora_condominio === true || String(imovel?.fora_condominio).toLowerCase() === 'true'; if (/loja|sala|comercial|ponto|conjunto/.test(type)) return 'comercial'; if (/apart|cobertura|loft|kitnet|flat|studio/.test(type)) return 'apartamento'; if (/terreno|lote/.test(type)) return outside ? 'terreno-fora' : 'terreno-condominio'; return outside ? 'casa-fora' : 'casa-condominio'; }
-function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; const publicSlug = Object.entries(SITE_SLUG_ALIASES).find(([, alias]) => alias === requested)?.[0] || requested; return { dbSlug, publicSlug }; }
+function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; return { dbSlug, publicSlug: requested }; }
 async function getJson(path) { try { const response = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HEADERS }); return response.ok ? await response.json() : []; } catch (_) { return []; } }
 async function getPublicFeedProperties(siteSlug) {
   try {

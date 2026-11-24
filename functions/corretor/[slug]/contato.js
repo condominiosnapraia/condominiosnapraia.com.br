@@ -3,11 +3,11 @@ const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsIn
 const BASE = 'https://condominiosnapraia.com.br';
 const DEFAULT_COVER = `${BASE}/img/parceiro-capa-padrao.webp`;
 const HEADERS = { apikey: SB_ANON, Authorization: `Bearer ${SB_ANON}` };
-const SITE_SLUG_ALIASES = Object.freeze({ 'fernando-trevisol': 'fernando-trvisol' });
+const SITE_SLUG_ALIASES = Object.freeze({ 'fernando-trvisol': 'fernando-trevisol' });
 function esc(value) { return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'); }
 function jsonSafe(value) { return String(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026'); }
 function digits(value) { return String(value || '').replace(/\D/g, ''); }
-function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; const publicSlug = Object.entries(SITE_SLUG_ALIASES).find(([, alias]) => alias === requested)?.[0] || requested; return { requested, dbSlug, publicSlug }; }
+function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; return { requested, dbSlug, publicSlug: requested }; }
 async function getJson(path) { try { const response = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HEADERS }); return response.ok ? await response.json() : []; } catch (_) { return []; } }
 function notFound() { return new Response('<!doctype html><meta charset="utf-8"><title>Contato não encontrado</title><meta name="robots" content="noindex"><style>body{font-family:Arial;padding:48px;max-width:700px;margin:auto;color:#0d3b54}a{color:#0d5c86;font-weight:bold}</style><h1>Contato não encontrado</h1><p>Este site parceiro não está publicado.</p><a href="https://condominiosnapraia.com.br/">Voltar para Condomínios na Praia</a>', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'x-robots-tag': 'noindex' } }); }
 function page({ site, slug, publicBase = BASE, publicPrefix = '' }) {
@@ -15,7 +15,7 @@ function page({ site, slug, publicBase = BASE, publicPrefix = '' }) {
   const isRodrigo = slug === 'rodrigo-carvalho';
   const isJuliano = slug === 'juliano-machado';
   const isMarcos = slug === 'marcos-selbach';
-  const pageTitle = site.slug === 'fernando-trvisol' ? 'Fernando Trevisol - Imóveis de Alto Padrão' : (isRodrigo ? 'Rodrigo Carvalho - Corretor de Imóveis' : (site.nome || 'Corretor parceiro'));
+  const pageTitle = site.slug === 'fernando-trevisol' ? 'Fernando Trevisol - Imóveis de Alto Padrão' : (isRodrigo ? 'Rodrigo Carvalho - Corretor de Imóveis' : (site.nome || 'Corretor parceiro'));
   const name = isRodrigo ? 'Rodrigo Carvalho' : (site.nome || 'Corretor parceiro');
   const bio = isRodrigo ? 'Atuando no mercado imobiliário desde 2012, Rodrigo Carvalho possui ampla experiência e conhecimento nas principais regiões do Rio Grande do Sul, com destaque para a Região Metropolitana, Serra Gaúcha e Litoral.\n\nSeu trabalho é pautado por atendimento personalizado, conhecimento de mercado, segurança e transparência, auxiliando clientes na escolha do imóvel ideal, seja para morar, investir ou realizar um novo negócio.\n\nExperiência que gera confiança. Conhecimento regional que faz a diferença.' : (site.bio || `Atendimento personalizado para compra e venda de imóveis no Rio Grande do Sul.`);
   const phone = digits(site.whatsapp || site.telefone);

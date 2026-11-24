@@ -27,6 +27,10 @@ const MARCOS_SELBACH_HOSTS = new Set([
   'marcosselbach.com.br',
   'www.marcosselbach.com.br',
 ]);
+const TREVISOL_IMOVEIS_HOSTS = new Set([
+  'trevisolimoveis.com.br',
+  'www.trevisolimoveis.com.br',
+]);
 const PORTAL_MEULITORAL_WHATSAPP = '555197698450';
 const ATLANTIDA_WHATSAPP = '5551981348907';
 const MARCOS_SELBACH_WHATSAPP = '5551997008877';
@@ -297,6 +301,20 @@ function isMarcosSelbach(url) {
   return MARCOS_SELBACH_HOSTS.has(url.hostname.toLowerCase());
 }
 
+function isTrevisolImoveis(url) {
+  return TREVISOL_IMOVEIS_HOSTS.has(url.hostname.toLowerCase());
+}
+
+function trevisolInternalPath(pathname) {
+  if (pathname === '/' || pathname === '/index.html') return '/corretor/fernando-trevisol/';
+  if (/^\/imoveis\/?$/.test(pathname)) return '/corretor/fernando-trevisol/imoveis/';
+  if (/^\/condominios\/?$/.test(pathname)) return '/corretor/fernando-trevisol/condominios/';
+  if (/^\/contato\/?$/.test(pathname)) return '/corretor/fernando-trevisol/contato/';
+  if (/^\/imovel\//.test(pathname)) return `/corretor/fernando-trevisol${pathname}`;
+  if (/^\/condominio\//.test(pathname)) return `/corretor/fernando-trevisol${pathname}`;
+  return null;
+}
+
 function marcoInternalPath(pathname) {
   if (pathname === '/' || pathname === '/index.html') return '/corretor/marcos-selbach/';
   if (/^\/imoveis\/?$/.test(pathname)) return '/corretor/marcos-selbach/imoveis/';  if (/^\/condominios\/?$/.test(pathname)) return '/corretor/marcos-selbach/condominios/';  if (/^\/contato\/?$/.test(pathname)) return '/corretor/marcos-selbach/contato/';
@@ -393,6 +411,20 @@ export async function onRequest(context) {
   const { request, next } = context;
   const url = new URL(request.url);
   const path = url.pathname;
+  if (isTrevisolImoveis(url)) {
+    const internalPath = trevisolInternalPath(path);
+    if (internalPath) {
+      const target = new URL(internalPath, url);
+      target.search = url.search;
+      const headers = new Headers(request.headers);
+      headers.set('x-public-partner-prefix', '/');
+      return fetch(new Request(target, {
+        method: request.method,
+        headers,
+        body: request.method === 'GET' || request.method === 'HEAD' ? undefined : request.body,
+      }));
+    }
+  }
   if (isMarcosSelbach(url)) {
     const internalPath = marcoInternalPath(path);
     if (internalPath) {
