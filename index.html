@@ -1068,6 +1068,31 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   .popsearch-grid{grid-template-columns:1fr}
 }
 </style>
+<style id="vertical-card-equal-height">
+/* Edifícios para morar: todos os cards partilham a mesma estrutura vertical. */
+#view-home #home-cond-vertical-grid{
+  align-items:stretch;
+}
+#view-home #home-cond-vertical-grid .ccard{
+  height:100%;
+  min-height:100%;
+  display:flex!important;
+  flex-direction:column;
+}
+#view-home #home-cond-vertical-grid .ccard .cbody{
+  display:flex;
+  flex:1 1 auto;
+  flex-direction:column;
+  min-height:190px;
+}
+#view-home #home-cond-vertical-grid .ccard .cdesc{
+  flex:1 1 auto;
+}
+#view-home #home-cond-vertical-grid .ccard .cfooter{
+  margin-top:auto;
+  min-height:56px;
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
