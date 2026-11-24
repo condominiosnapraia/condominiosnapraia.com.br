@@ -1295,6 +1295,60 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   background:#f5ead6;
 }
 </style>
+<style id="home-property-card-size-and-cta">
+/* Imóveis: mais presença visual e rodapé sempre reservado para preço e Ver. */
+#view-home .igrid .icard{
+  min-height:540px;
+}
+#view-home .igrid .icard .icimg{
+  height:250px!important;
+  min-height:250px!important;
+  flex:0 0 250px;
+}
+#view-home .igrid .icard .icbody{
+  min-height:180px;
+  flex:1 1 auto;
+}
+#view-home .igrid .icard .icfoot{
+  display:flex!important;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-height:62px;
+  flex:0 0 62px;
+  padding:14px 17px 16px!important;
+  overflow:visible!important;
+  position:relative;
+  z-index:3;
+}
+#view-home .igrid .icard .icfoot > span:last-child{
+  display:inline-flex!important;
+  align-items:center;
+  visibility:visible!important;
+  opacity:1!important;
+  color:#0b5a70!important;
+  white-space:nowrap;
+}
+#view-home .igrid .icard .icprice,
+#view-home .igrid .icard .icpreco{
+  font-size:18px;
+  line-height:1.15;
+}
+@media(max-width:768px){
+  #view-home .igrid .icard{min-height:0}
+  #view-home .igrid .icard .icimg{
+    height:190px!important;
+    min-height:190px!important;
+    flex-basis:190px;
+  }
+  #view-home .igrid .icard .icbody{min-height:145px}
+  #view-home .igrid .icard .icfoot{
+    min-height:56px;
+    flex-basis:56px;
+    padding:11px 12px 13px!important;
+  }
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
