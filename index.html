@@ -1349,6 +1349,33 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   }
 }
 </style>
+<style id="home-week-condo-color-separation">
+/* Duas secções distintas: Semana em areia quente; condomínio em azul-mar. */
+#view-home > #sec-imoveis-semana{
+  background:#f3e7d1!important;
+  --wave-from:#f5ead6!important;
+}
+#view-home > #sec-imoveis-semana.sec-onda::before{
+  background:var(--wave-from)!important;
+}
+#view-home > #sec-imoveis-semana .week-kicker,
+#view-home > #sec-imoveis-semana .eyebrow{
+  color:#a56f1d!important;
+}
+#view-home > #sec-imoveis{
+  background:#dfeef2!important;
+  --wave-from:#f3e7d1!important;
+}
+#view-home > #sec-imoveis.sec-onda::before{
+  background:var(--wave-from)!important;
+}
+#view-home > #sec-imoveis .eyebrow{
+  color:#0b5a70!important;
+}
+#view-home > #sec-imoveis .eyebrow::before{
+  background:#2c8da3!important;
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
