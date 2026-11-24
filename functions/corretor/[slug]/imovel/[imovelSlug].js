@@ -480,7 +480,7 @@ export async function onRequest(context) {
   const cfg = sbConfig(context.env);
   const FABIO_STATIC_SITE = { id: 'fabio-adolfo-static', slug: 'fabio-adolfo', nome: 'Fabio Adolfo', creci: '72.611', telefone: '5551995731944', whatsapp: '5551995731944', email: null, cidade: 'Rio Grande do Sul', bio: 'Atendimento imobiliário personalizado para encontrar o imóvel ideal.', logo_url: `${BASE}/img/corretores/fabio-adolfo-perfil.jpg`, capa_url: '', status: 'active' };
   const OFFICIAL_PORTAL_SITE = { id: '', slug: 'portal', nome: 'Felipe Ranzolin', creci: '72.386', telefone: '5551999442252', whatsapp: '5551999442252', email: null, cidade: 'Rio Grande do Sul', bio: 'Portal oficial de imóveis e condomínios no litoral.', logo_url: '', capa_url: '', status: 'active' };
-  const ATLANTIDA_PUBLIC_SITE = { id: '', slug: 'portal', nome: 'Atlântida Negócios', creci: '', telefone: '5551981348907', whatsapp: '5551981348907', email: null, cidade: 'Rio Grande do Sul', bio: 'Imóveis e oportunidades no Litoral Norte.', logo_url: '', capa_url: '', status: 'active' };
+  const ATLANTIDA_PUBLIC_SITE = { id: '', slug: 'atlantida-negocios', nome: 'Atlântida Negócios', creci: '', telefone: '5551981348907', whatsapp: '5551981348907', email: null, cidade: 'Rio Grande do Sul', bio: 'Imóveis e oportunidades no Litoral Norte.', logo_url: '', capa_url: '', status: 'active' };
   const publicPortal = context.request.headers.get('x-public-portal');
   const publicSite = publicPortal === 'atlantida-negocios' ? ATLANTIDA_PUBLIC_SITE : OFFICIAL_PORTAL_SITE;
   const sites = isOfficialPortal ? [] : await getJson(`parceiros_sites?slug=eq.${encodeURIComponent(dbSlug)}&status=eq.active&select=id,slug,nome,creci,telefone,whatsapp,email,cidade,bio,logo_url,capa_url&limit=1`, cfg);
