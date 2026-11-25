@@ -342,6 +342,7 @@ const FOOTER_COMPACT_STYLE = `<style id="global-footer-compact">
   footer .footer-links-grid,footer .footer-quick-links{gap:4px!important}
 }
 footer a[href="/seguro-fianca/"],footer a[href="/refinanciamento-imobiliario/"],footer a[href="/sobre/"]{display:none!important}
+body.property-page .header,body.property-page .site-header,body.property-page .topbar{display:none!important}body.property-page{padding-top:0!important}body.property-page .wrap{padding-top:0!important;margin-top:0!important}
 </style>`;
 function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
