@@ -1529,6 +1529,31 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   background:#fff!important;
 }
 </style>
+<style id="home-tourism-mobile-carousel">
+/* Turismo — Conheça as cidades: carrossel táctil no mobile, grelha preservada no desktop. */
+@media (max-width:768px){
+  #view-home > #guias-cidades .guias-grid{
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:14px!important;
+    margin:24px -20px 0!important;
+    padding:0 20px 10px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+  }
+  #view-home > #guias-cidades .guias-grid::-webkit-scrollbar{display:none}
+  #view-home > #guias-cidades .guia-card{
+    flex:0 0 min(78vw,300px)!important;
+    width:min(78vw,300px)!important;
+    min-width:0!important;
+    scroll-snap-align:start;
+  }
+}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
