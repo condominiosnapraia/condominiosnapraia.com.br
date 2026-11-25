@@ -386,6 +386,7 @@ const MARCOS_SELBACH_CREDIT_STYLE = `<style id="marcos-selbach-credit-theme">
   html.marcos-selbach .page-footer .ftr-wpp{background:#16834a}
   @media(max-width:768px){html.marcos-selbach .hero{padding:28px 16px 48px}html.marcos-selbach .filtros-wrap{top:auto}.marcos-selbach .page-footer .ftr-brand-lockup::before{margin-left:auto;margin-right:auto}}
 </style>`;
+const MARCOS_SELBACH_CREDIT_SCRIPT = `<script id="marcos-selbach-credit-branding">(function(){function fix(){document.querySelectorAll('.seo-credit-faq summary').forEach(function(el){if(/Condomínios na Praia/i.test(el.textContent||''))el.textContent='Como falar com Marcos Selbach?';});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix,{once:true});else fix();}());</script>`;
 function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
   rewriter
@@ -490,6 +491,7 @@ function applyMarcosSelbachBrand(rewriter, pageUrl) {
         if (creditLdIndex === 1) element.setInnerContent(JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Início', item: `${pageUrl.origin}/` }, { '@type': 'ListItem', position: 2, name: 'Cartas de crédito contempladas para imóveis', item: canonicalUrl }] }));
         creditLdIndex += 1;
       } });
+    rewriter.on('body', { element(element) { element.append(MARCOS_SELBACH_CREDIT_SCRIPT, { html: true }); } });
   }
 }
 
