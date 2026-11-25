@@ -437,7 +437,6 @@ export async function onRequest(context) {
       headers.set('x-public-partner-prefix', '/');
       const response = await fetch(new Request(target, { method: request.method, headers, body: request.method === 'GET' || request.method === 'HEAD' ? undefined : request.body }));
       const contactRewriter = new HTMLRewriter();
-      addDomainContactRouting(contactRewriter, MARCOS_SELBACH_WHATSAPP);
       contactRewriter.on('body', { element(element) { element.append(MARCOS_SELBACH_WHATSAPP_SCRIPT, { html: true }); } });
       return contactRewriter.transform(response);
     }
