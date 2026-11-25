@@ -471,18 +471,25 @@ function applyMarcosSelbachBrand(rewriter, pageUrl) {
     .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', canonicalUrl); } })
     .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', canonicalUrl); } });
   if (isCreditPage) {
+    let creditLdIndex = 0;
+    let creditFaqIndex = 0;
     rewriter
       .on('.hdr-brand', { element(element) { element.setInnerContent('Marcos Selbach'); } })
       .on('.hdr-sub', { element(element) { element.setInnerContent('Imóveis no Litoral Norte'); } })
-      .on('.dh-logo', { element(element) { element.setAttribute('aria-label', 'Marcos Selbach — início'); } })
+      .on('a.dh-logo', { element(element) { element.setAttribute('aria-label', 'Marcos Selbach — início'); } })
+      .on('meta[name="twitter:title"]', { element(element) { element.setAttribute('content', pageTitle); } })
       .on('.page-footer', { element(element) { element.setAttribute('aria-label', 'Rodapé Marcos Selbach'); } })
       .on('.page-footer .ftr-brand-kicker', { element(element) { element.setInnerContent('CORRETOR'); } })
       .on('.page-footer .hero-brand-name', { element(element) { element.setInnerContent('Marcos Selbach'); } })
       .on('.page-footer .hero-brand-tagline', { element(element) { element.setInnerContent('Crédito contemplado e imóveis no Litoral Norte'); } })
       .on('.page-footer .ftr-brand-lockup', { element(element) { element.setAttribute('aria-label', 'Marcos Selbach — Crédito contemplado e imóveis no Litoral Norte'); } })
       .on('.page-footer .ftr-bottom span:first-child', { element(element) { element.setInnerContent('© 2025 Marcos Selbach · Todos os direitos reservados'); } })
-      .on('.seo-credit-faq details:last-child summary', { element(element) { element.setInnerContent('Como falar com Marcos Selbach?'); } })
-      .on('script[type="application/ld+json"]', { text(text) { text.replace(text.text.replace(/Condomínios na Praia/g, 'Marcos Selbach').replace(/condominiosnapraia\.com\.br/g, 'marcosselbach.com.br').replace(/5551997698450/g, MARCOS_SELBACH_WHATSAPP)); } });
+      .on('.seo-credit-faq details summary', { element(element) { if (creditFaqIndex === 2) element.setInnerContent('Como falar com Marcos Selbach?'); creditFaqIndex += 1; } })
+      .on('script[type="application/ld+json"]', { element(element) {
+        if (creditLdIndex === 0) element.setInnerContent(JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Carta de Crédito Contemplada para Imóvel', description: 'Catálogo de cartas de crédito contempladas para aquisição de imóveis.', url: canonicalUrl, inLanguage: 'pt-BR', isPartOf: { '@type': 'WebSite', name: 'Marcos Selbach', url: pageUrl.origin + '/' }, provider: { '@type': 'RealEstateAgent', name: 'Marcos Selbach', telephone: `+${MARCOS_SELBACH_WHATSAPP}` } }));
+        if (creditLdIndex === 1) element.setInnerContent(JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Início', item: `${pageUrl.origin}/` }, { '@type': 'ListItem', position: 2, name: 'Cartas de crédito contempladas para imóveis', item: canonicalUrl }] }));
+        creditLdIndex += 1;
+      } });
   }
 }
 
