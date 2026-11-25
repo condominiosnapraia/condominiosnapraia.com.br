@@ -7,7 +7,10 @@ function sbConfig(env) {
   return { url, key, headers: { apikey: key, Authorization: `Bearer ${key}` } };
 }
 const SITE_SLUG_ALIASES = Object.freeze({ 'fernando-trvisol': 'fernando-trevisol' });
-const PUBLIC_PROPERTY_SLUG_ALIASES = Object.freeze({ 'XAN-277': 'apartamento-a-venda-livin-resort-02-dormitorios-01-suite-mobiliado-xan-277' });
+const PUBLIC_PROPERTY_SLUG_ALIASES = Object.freeze({
+  'XAN-277': 'apartamento-a-venda-livin-resort-02-dormitorios-01-suite-mobiliado-xan-277',
+  'XAN-278': '03-dormitorios-01-suite-03-mobiliado-e-decorado-xan-278',
+});
 function siteSlugInfo(value) { const requested = String(value || '').toLowerCase(); const dbSlug = SITE_SLUG_ALIASES[requested] || requested; const publicSlug = dbSlug; return { requested, dbSlug, publicSlug }; }
 
 function esc(value) {
@@ -195,7 +198,9 @@ function page({ site, imovel, cond, siteSlug, relatedRows, cfg, requestUrl, publ
   const totalPhotoCount = photos.length;
   const heroImage = photos[0] || `${BASE}/img/og-home.jpg`;
   const description = qualityDescription(imovel.descricao, title, imovel.tipo, city);
-  const broker = imovel.corretor || site.nome || 'Corretor parceiro';
+  // O portal Atlântida tem identidade própria: nunca reutilizar o corretor
+  // gravado no imóvel para o nome exibido no anúncio público.
+  const broker = site.slug === 'atlantida-negocios' ? site.nome : (imovel.corretor || site.nome || 'Corretor parceiro');
   const codeLabel = imovel.codigo || imovel.ref || '';
   const phone = digits(site.whatsapp || site.telefone);
   const wppBase = phone ? `https://wa.me/${phone}` : `${BASE}/contato/`;
