@@ -445,6 +445,8 @@ body{background:linear-gradient(180deg,#f7faf9 0%,#eef5f3 48%,#f7faf9 100%);font
 .property-page .broker strong{font-size:21px!important;line-height:1.15!important;color:var(--brand-deep);letter-spacing:-.015em}
 .property-page .broker small{font-size:11px!important;margin-top:5px!important}
 .property-page .side-card .wpp{margin-bottom:2px}
+.property-page .side-card .price-label,.property-page .side-card .price{text-align:center;width:100%}
+.property-page .side-card .price{display:block}
 @media(max-width:620px){.property-page .broker-avatar{width:78px!important;height:78px!important;font-size:24px!important}.property-page .broker strong{font-size:19px!important}}
 </style></head><body class="property-page ${site.slug === 'atlantida-negocios' ? 'atlantida-property-page' : 'official-property-page'}"><style id="property-final-overrides">
 .property-page .header{position:fixed!important;top:0!important;left:0!important;right:0!important;z-index:100!important;transition:transform .24s ease,background .24s ease,box-shadow .24s ease!important}
