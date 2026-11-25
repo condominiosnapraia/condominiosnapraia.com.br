@@ -1579,6 +1579,13 @@ footer .ftr-wpp:hover{background:#f7eedf;border-color:#d9a83f;transform:translat
   #view-home .pcred-s{min-height:0}
 }
 </style>
+<style id="home-unified-section-background">
+/* Todas as secções de conteúdo partilham o mesmo fundo suave da Navegação rápida. */
+#view-home{--home-quick-bg:linear-gradient(180deg,#fbfaf7 0%,#f4f7f4 100%);background:#fbfaf7}
+#view-home > section:not(.hero){background:var(--home-quick-bg)!important}
+#view-home > section.sec-onda::before{background:var(--home-quick-bg)!important}
+#view-home > .hero .hero-wave-svg path{fill:#fbfaf7!important}
+</style>
 </head>
 <body>
 <header class="desk-header" id="desk-header">
