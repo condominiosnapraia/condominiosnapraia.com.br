@@ -205,7 +205,7 @@ function layout({ site, properties, slug, requestPath, topCondos, verticalCondos
   const typeOptions = [...new Set(properties.map((property) => String(property.type || '').trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
   const wppText = encodeURIComponent(`Olá! Vi o site de ${name} e gostaria de falar sobre os imóveis disponíveis.`);
   const categoryNav = `<nav class="category-nav" aria-label="Navegação rápida de imóveis"><div class="category-nav-heading"><span class="eyebrow">Navegação rápida</span><strong>O que você está procurando?</strong></div><div class="category-nav-links">${orderedSections.map((section) => `<a class="category-chip" href="${fullListingUrl}?cat=${encodeURIComponent(section.category)}"><span>${section.icon}</span><strong>${section.title}</strong><small>${section.subtitle}</small></a>`).join('')}</div></nav>`;
-  const marcoMobileAbout = isMarco ? `<section class="marco-mobile-about" aria-label="Sobre Marcos Selbach"><span class="eyebrow">Marcos Selbach | Corretor de Imóveis</span><p>Com 15 anos de experiência, Marcos Selbach conecta pessoas às melhores oportunidades no litoral para morar, aproveitar ou investir.</p><p>Atendimento próximo, conhecimento de mercado e compromisso em cada negociação.</p></section>` : '';
+  const marcoMobileAbout = isMarco ? `<section class="marco-mobile-about" aria-label="Sobre Marcos Selbach"><p>Com 15 anos de experiência, Marcos Selbach conecta pessoas às melhores oportunidades no litoral para morar, aproveitar ou investir.</p><p>Atendimento próximo, conhecimento de mercado e compromisso em cada negociação.</p></section>` : '';
   const whatsappIcon = '<svg class="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.9c0 2.1.5 4.1 1.6 5.9L.2 24l6.4-1.7a11.9 11.9 0 0 0 5.5 1.4h.1c6.5 0 11.8-5.3 11.8-11.9 0-3.1-1.3-6.1-3.5-8.3Zm-8.4 18.2h-.1a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 0 1-1.5-5.2c0-5.4 4.4-9.9 9.9-9.9a9.8 9.8 0 0 1 7 2.9 9.9 9.9 0 0 1 2.9 7c0 5.4-4.4 9.9-9.8 9.9Zm5.4-7.4c-.3-.2-1.7-.9-2-.9-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.6-.8-2.7-1.5-3.7-3.3-.3-.5.3-.6.8-1.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-1-2.2-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.2.2 2 3.1 4.9 4.3.7.3 1.3.5 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.2.1-1.4-.1-.1-.3-.2-.6-.3Z"/></svg>';
 
   const condoCard = (c) => {
@@ -361,6 +361,8 @@ footer:before{content:'';position:absolute;inset:0;pointer-events:none;backgroun
 .marcos-hero .hero-kicker{font-size:13px;letter-spacing:.16em}
 .marcos-hero .hero-broker-name{text-transform:uppercase;font-size:clamp(38px,5vw,66px)!important;line-height:.98!important}
 @media(max-width:760px){.marcos-hero .hero-kicker{font-size:10px}.marcos-hero .hero-broker-name{font-size:clamp(30px,10vw,46px)!important;line-height:1!important}}
+.marco-mobile-about p{font-size:20px;line-height:1.65;max-width:820px}
+@media(max-width:760px){.marco-mobile-about p{font-size:18px;line-height:1.6}}
 </style>
 
 <style id="partner-cover-responsive">
