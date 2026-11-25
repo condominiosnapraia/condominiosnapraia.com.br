@@ -359,6 +359,7 @@ const MARCOS_SELBACH_CREDIT_STYLE = `<style id="marcos-selbach-credit-theme">
   html.marcos-selbach .hdr-logo-mark{background:linear-gradient(135deg,#d08d67,#a96546);font-family:'DM Sans',Arial,sans-serif;font-weight:700}
   html.marcos-selbach .hdr-wpp{background:#16834a}
   html.marcos-selbach .hdr-wpp:hover{background:#11683b}
+  html.marcos-selbach .dh-logo{width:42px;height:42px;border-radius:50%;background:url('/img/corretores/marcos-selbach-perfil.jpeg') center/cover no-repeat;box-shadow:0 3px 12px rgba(16,35,38,.18)}
   html.marcos-selbach .hero{padding:44px 24px 36px;min-height:0;background:linear-gradient(180deg,#f8fbfb 0%,#eef5f4 100%);border-bottom:1px solid rgba(22,63,86,.12)}
   html.marcos-selbach .hero-title{color:#163f56}
   html.marcos-selbach .hero-title em{color:#a96546}
@@ -473,12 +474,15 @@ function applyMarcosSelbachBrand(rewriter, pageUrl) {
     rewriter
       .on('.hdr-brand', { element(element) { element.setInnerContent('Marcos Selbach'); } })
       .on('.hdr-sub', { element(element) { element.setInnerContent('Imóveis no Litoral Norte'); } })
+      .on('.dh-logo', { element(element) { element.setAttribute('aria-label', 'Marcos Selbach — início'); } })
       .on('.page-footer', { element(element) { element.setAttribute('aria-label', 'Rodapé Marcos Selbach'); } })
       .on('.page-footer .ftr-brand-kicker', { element(element) { element.setInnerContent('CORRETOR'); } })
       .on('.page-footer .hero-brand-name', { element(element) { element.setInnerContent('Marcos Selbach'); } })
       .on('.page-footer .hero-brand-tagline', { element(element) { element.setInnerContent('Crédito contemplado e imóveis no Litoral Norte'); } })
       .on('.page-footer .ftr-brand-lockup', { element(element) { element.setAttribute('aria-label', 'Marcos Selbach — Crédito contemplado e imóveis no Litoral Norte'); } })
-      .on('.page-footer .ftr-bottom span:first-child', { element(element) { element.setInnerContent('© 2025 Marcos Selbach · Todos os direitos reservados'); } });
+      .on('.page-footer .ftr-bottom span:first-child', { element(element) { element.setInnerContent('© 2025 Marcos Selbach · Todos os direitos reservados'); } })
+      .on('.seo-credit-faq details:last-child summary', { element(element) { element.setInnerContent('Como falar com Marcos Selbach?'); } })
+      .on('script[type="application/ld+json"]', { text(text) { text.replace(text.text.replace(/Condomínios na Praia/g, 'Marcos Selbach').replace(/condominiosnapraia\.com\.br/g, 'marcosselbach.com.br').replace(/5551997698450/g, MARCOS_SELBACH_WHATSAPP)); } });
   }
 }
 
