@@ -474,8 +474,8 @@ body{background:linear-gradient(180deg,#f7faf9 0%,#eef5f3 48%,#f7faf9 100%);font
 .property-page .hero-info .location{margin:0;font-size:14px;line-height:1.45;color:#567078}
 .property-page .gallery-wrap{position:relative;z-index:1}
 .property-page .gallery-wrap .photo-gallery{border-radius:22px}
-@media(max-width:850px){.property-page .hero-info{padding:21px 20px 19px!important;margin-bottom:15px;border-radius:17px}.property-page .hero-info h1{font-size:28px!important}}
-@media(max-width:620px){.property-page .hero-info{padding:18px 16px 17px!important;margin-bottom:12px;border-radius:15px}.property-page .hero-info h1{font-size:22px!important;line-height:1.14!important}.property-page .hero-info .location{font-size:13px}}
+@media(max-width:850px){.property-page .hero-info{padding:21px 20px 19px!important;margin-bottom:15px;border-radius:17px}.property-page .hero-info h1{font-size:26px!important;line-height:1.12!important}}
+@media(max-width:620px){.property-page .hero-info{padding:18px 16px 17px!important;margin-bottom:12px;border-radius:15px}.property-page .hero-info h1{font-size:clamp(18px,5.2vw,21px)!important;line-height:1.16!important;letter-spacing:-.018em!important}.property-page .hero-info .location{font-size:13px}}
 
 </style><style id="property-no-header">
 /* Páginas de imóveis: sem cabeçalho, sem barra fixa e sem espaço reservado. */
