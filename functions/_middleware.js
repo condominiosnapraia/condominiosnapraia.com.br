@@ -350,6 +350,41 @@ const FOOTER_COMPACT_STYLE = `<style id="global-footer-compact">
 footer a[href="/seguro-fianca/"],footer a[href="/refinanciamento-imobiliario/"],footer a[href="/sobre/"]{display:none!important}
 body.property-page .header,body.property-page .site-header,body.property-page .topbar{display:none!important}body.property-page{padding-top:0!important}body.property-page .wrap{padding-top:0!important;margin-top:0!important}
 </style>`;
+const MARCOS_SELBACH_CREDIT_STYLE = `<style id="marcos-selbach-credit-theme">
+  /* A página de crédito tem um sistema próprio; não herdar .hero/.main das landing pages. */
+  html.marcos-selbach,html.marcos-selbach body{background:#f6f8f8!important;color:#18343b}
+  html.marcos-selbach .hdr{background:linear-gradient(135deg,#163f56 0%,#225b59 100%);border-bottom:1px solid rgba(255,255,255,.14);position:sticky;top:0;z-index:200}
+  html.marcos-selbach .hdr-brand{font-family:'DM Sans',Arial,sans-serif;color:#fff;letter-spacing:.01em}
+  html.marcos-selbach .hdr-sub{color:#b9ded6}
+  html.marcos-selbach .hdr-logo-mark{background:linear-gradient(135deg,#d08d67,#a96546);font-family:'DM Sans',Arial,sans-serif;font-weight:700}
+  html.marcos-selbach .hdr-wpp{background:#16834a}
+  html.marcos-selbach .hdr-wpp:hover{background:#11683b}
+  html.marcos-selbach .hero{padding:44px 24px 36px;min-height:0;background:linear-gradient(180deg,#f8fbfb 0%,#eef5f4 100%);border-bottom:1px solid rgba(22,63,86,.12)}
+  html.marcos-selbach .hero-title{color:#163f56}
+  html.marcos-selbach .hero-title em{color:#a96546}
+  html.marcos-selbach .hero-eyebrow{color:#225b59;background:rgba(34,91,89,.08);border-color:rgba(34,91,89,.18)}
+  html.marcos-selbach .hero-guide-step{color:#225b59;border-color:rgba(34,91,89,.16)}
+  html.marcos-selbach .hero-guide-num{background:#a96546}
+  html.marcos-selbach .filtros-wrap{top:62px;background:rgba(255,255,255,.96)}
+  html.marcos-selbach .fbtn,.marcos-selbach .pag-btn.on{background:#225b59;border-color:#225b59}
+  html.marcos-selbach .fbtn:hover,.marcos-selbach .pag-btn.on:hover{background:#163f56}
+  html.marcos-selbach .carta:hover{border-color:#d08d67}
+  html.marcos-selbach .carta-credito,.marcos-selbach .carta-adm-nome,.marcos-selbach .spec-val{color:#163f56}
+  html.marcos-selbach .btn-ver{color:#225b59;border-color:#225b59}
+  html.marcos-selbach .btn-ver:hover,.marcos-selbach .carta:hover .btn-ver{background:#225b59}
+  html.marcos-selbach .cta{background:linear-gradient(135deg,#163f56,#225b59);border-color:rgba(208,141,103,.35)}
+  html.marcos-selbach .cta-title em{color:#e8b293}
+  html.marcos-selbach .cta-btn{background:#d08d67;color:#fff}
+  html.marcos-selbach .cta-btn:hover{background:#a96546}
+  html.marcos-selbach .page-footer{background:linear-gradient(135deg,#102326 0%,#225b59 100%);border-top-color:#d08d67}
+  html.marcos-selbach .page-footer .ftr-brand-lockup{position:relative}
+  html.marcos-selbach .page-footer .ftr-brand-lockup::before{content:'';display:block;width:44px;height:44px;margin:0 0 10px;border-radius:50%;background:url('/img/corretores/marcos-selbach-perfil.jpeg') center/cover no-repeat;box-shadow:0 4px 14px rgba(0,0,0,.22)}
+  html.marcos-selbach .page-footer .hero-brand-name{font-family:'DM Sans',Arial,sans-serif;color:#fff;font-size:clamp(28px,3.5vw,42px);letter-spacing:-.02em}
+  html.marcos-selbach .page-footer .hero-brand-tagline{color:#b9ded6}
+  html.marcos-selbach .page-footer .ftr-brand-kicker{color:#e8b293}
+  html.marcos-selbach .page-footer .ftr-wpp{background:#16834a}
+  @media(max-width:768px){html.marcos-selbach .hero{padding:28px 16px 48px}html.marcos-selbach .filtros-wrap{top:auto}.marcos-selbach .page-footer .ftr-brand-lockup::before{margin-left:auto;margin-right:auto}}
+</style>`;
 function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
   rewriter
@@ -424,14 +459,27 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
 
 function applyMarcosSelbachBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
+  const isCreditPage = /^\/contemplado-imoveis\/?$/i.test(pageUrl.pathname);
+  const pageTitle = isCreditPage ? 'Crédito Contemplado | Marcos Selbach' : 'Marcos Selbach | Imóveis no Litoral Norte';
   rewriter
     .on('html', { element(element) { element.setAttribute('class', `${element.getAttribute('class') || ''} marcos-selbach`.trim()); } })
-    .on('head', { element(element) { element.append(MARCOS_SELBACH_STYLE, { html: true }); element.append(MARCOS_SELBACH_REFINEMENT, { html: true }); element.append(MARCOS_SELBACH_RESPONSIVE, { html: true }); } })
-    .on('title', { element(element) { element.setInnerContent('Marcos Selbach | Imóveis no Litoral Norte'); } })
+    .on('head', { element(element) { if (isCreditPage) element.append(MARCOS_SELBACH_CREDIT_STYLE, { html: true }); else { element.append(MARCOS_SELBACH_STYLE, { html: true }); element.append(MARCOS_SELBACH_REFINEMENT, { html: true }); element.append(MARCOS_SELBACH_RESPONSIVE, { html: true }); } } })
+    .on('title', { element(element) { element.setInnerContent(pageTitle); } })
     .on('meta[property="og:site_name"]', { element(element) { element.setAttribute('content', 'Marcos Selbach'); } })
-    .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', 'Marcos Selbach | Imóveis no Litoral Norte'); } })
+    .on('meta[property="og:title"]', { element(element) { element.setAttribute('content', pageTitle); } })
     .on('link[rel="canonical"]', { element(element) { element.setAttribute('href', canonicalUrl); } })
     .on('meta[property="og:url"]', { element(element) { element.setAttribute('content', canonicalUrl); } });
+  if (isCreditPage) {
+    rewriter
+      .on('.hdr-brand', { element(element) { element.setInnerContent('Marcos Selbach'); } })
+      .on('.hdr-sub', { element(element) { element.setInnerContent('Imóveis no Litoral Norte'); } })
+      .on('.page-footer', { element(element) { element.setAttribute('aria-label', 'Rodapé Marcos Selbach'); } })
+      .on('.page-footer .ftr-brand-kicker', { element(element) { element.setInnerContent('CORRETOR'); } })
+      .on('.page-footer .hero-brand-name', { element(element) { element.setInnerContent('Marcos Selbach'); } })
+      .on('.page-footer .hero-brand-tagline', { element(element) { element.setInnerContent('Crédito contemplado e imóveis no Litoral Norte'); } })
+      .on('.page-footer .ftr-brand-lockup', { element(element) { element.setAttribute('aria-label', 'Marcos Selbach — Crédito contemplado e imóveis no Litoral Norte'); } })
+      .on('.page-footer .ftr-bottom span:first-child', { element(element) { element.setInnerContent('© 2025 Marcos Selbach · Todos os direitos reservados'); } });
+  }
 }
 
 export async function onRequest(context) {
