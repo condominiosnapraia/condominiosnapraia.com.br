@@ -437,7 +437,7 @@ body{background:linear-gradient(180deg,#f7faf9 0%,#eef5f3 48%,#f7faf9 100%);font
 .property-page .header .brand{display:none!important}
 .property-page .header.is-hidden{transform:translateY(-110%)!important}
 .property-page .header.is-revealed{transform:translateY(0)!important}
-.official-property-page .header,.official-property-page .header .nav{background:#0c4a6e!important}
+.official-property-page .header,.official-property-page .header .nav{background:#25313a!important}.official-property-page .header.is-revealed,.official-property-page .header.is-revealed .nav{background:#25313a!important}
 .atlantida-property-page .header,.atlantida-property-page .header .nav{background:#25313a!important}
 .property-page .hero-info h1{font-size:32px!important;line-height:1.14!important;letter-spacing:-.018em!important;max-width:860px!important;margin:13px 0 10px!important;text-wrap:balance!important}
 .property-page .side-card .wpp{background:#25D366!important;color:#063b22!important;border:2px solid rgba(255,255,255,.82)!important;box-shadow:0 12px 26px rgba(37,211,102,.30)!important}
