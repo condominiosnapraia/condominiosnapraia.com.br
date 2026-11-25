@@ -72,7 +72,7 @@ function addDomainContactRouting(rewriter, number) {
     } })
     .on('script', { text(text) {
       if (!text.text) return;
-      const updated = rewrite(text.text).replace(/5551999442252/g, number);
+      const updated = rewrite(text.text).replace(/5551997698450/g, number);
       if (updated !== text.text) text.replace(updated, { html: true });
     } });
 }
@@ -363,7 +363,7 @@ function applyAtlantidaNegociosBrand(rewriter, pageUrl) {
         .replace(/(https?:\/\/api\.whatsapp\.com\/send\?phone=)\d+/ig, `$1${ATLANTIDA_WHATSAPP}`)
         .replace(/(\bWPP\s*=\s*['"])\d+(['"])/g, `$1${ATLANTIDA_WHATSAPP}$2`)
         .replace(/(\b(?:phone|telephone)\s*["']?\s*:\s*["']\+?)\d+/ig, `$1${ATLANTIDA_WHATSAPP}`)
-        .replaceAll('5551999442252', ATLANTIDA_WHATSAPP);
+        .replaceAll('5551997698450', ATLANTIDA_WHATSAPP);
       if (updated !== text.text) text.replace(updated, { html: true });
     } })
     .on('.hero-brand-name', { element(element) { element.setInnerContent('Atlântida Negócios'); } })

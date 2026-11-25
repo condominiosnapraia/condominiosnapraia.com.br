@@ -8,7 +8,7 @@
 
 ## 1. INFORMAÇÕES ESSENCIAIS (não perder)
 
-- **WhatsApp oficial:** (51) 99944-2252 → `wa.me/5551999442252`
+- **WhatsApp oficial:** (51) 99944-2252 → `wa.me/5551997698450`
 - **E-mail oficial:** napraiacondominios@gmail.com
 - **CRECI:** CRECI-RS 72.386 (obrigatório por lei no rodapé — NÃO remover)
 - **Supabase:** URL `https://cddgkhkzcnyzzcllgzoz.supabase.co` (a anon key pública
