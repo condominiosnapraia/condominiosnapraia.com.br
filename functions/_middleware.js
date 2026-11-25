@@ -334,7 +334,10 @@ const FOOTER_COMPACT_STYLE = `<style id="global-footer-compact">
   .page-footer .ftr-links-grid a{font-size:12px;padding:3px 0;line-height:1.3}
   .page-footer .ftr-tit{font-size:10px;margin-bottom:10px}
   .page-footer .hero-brand-name{font-size:clamp(30px,3.5vw,42px)}
-  footer .footer-main,footer .footer-grid,footer .footer-rich{width:min(1180px,100%);gap:28px!important}
+  .page-footer .ftr-col-brand{justify-self:start;padding-right:clamp(44px,5vw,92px)}
+  .page-footer .ftr-col-brand .ftr-brand-lockup{margin-left:0!important;margin-right:auto!important;align-items:flex-start!important;text-align:left!important}
+  .page-footer .ftr-col-brand .ftr-wpp{margin-left:0!important}
+  footer .footer-main,footer .footer-grid,footer .footer-rich{width:min(1180px,100%);gap:40px!important}
   footer .footer-main{padding:40px 32px 26px!important}
   footer .footer-grid,footer .footer-rich{padding:40px 32px 26px!important}
   footer .footer-title,footer .footer-quick>strong{font-size:10px!important;margin-bottom:8px!important}
