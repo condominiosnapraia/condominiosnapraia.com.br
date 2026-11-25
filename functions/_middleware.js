@@ -326,6 +326,23 @@ function marcoInternalPath(pathname) {
   return null;
 }
 
+const FOOTER_COMPACT_STYLE = `<style id="global-footer-compact">
+/* Rodapé global: navegação curta, colunas equilibradas e leitura compacta no desktop. */
+@media (min-width: 981px){
+  .page-footer .ftr-main{width:min(1180px,100%);padding:42px 32px 26px;grid-template-columns:minmax(250px,1.25fr) repeat(3,minmax(0,1fr));gap:28px;align-items:start}
+  .page-footer .ftr-links-grid{gap:4px}
+  .page-footer .ftr-links-grid a{font-size:12px;padding:3px 0;line-height:1.3}
+  .page-footer .ftr-tit{font-size:10px;margin-bottom:10px}
+  .page-footer .hero-brand-name{font-size:clamp(30px,3.5vw,42px)}
+  footer .footer-main,footer .footer-grid,footer .footer-rich{width:min(1180px,100%);gap:28px!important}
+  footer .footer-main{padding:40px 32px 26px!important}
+  footer .footer-grid,footer .footer-rich{padding:40px 32px 26px!important}
+  footer .footer-title,footer .footer-quick>strong{font-size:10px!important;margin-bottom:8px!important}
+  footer .footer-col a,footer .footer-quick a{font-size:12px!important;line-height:1.3!important;padding:3px 0!important}
+  footer .footer-links-grid,footer .footer-quick-links{gap:4px!important}
+}
+footer a[href="/seguro-fianca/"],footer a[href="/refinanciamento-imobiliario/"],footer a[href="/sobre/"]{display:none!important}
+</style>`;
 function applyPortalMeuLitoralBrand(rewriter, pageUrl) {
   const canonicalUrl = `${pageUrl.origin}${pageUrl.pathname === '/index.html' ? '/' : pageUrl.pathname}`;
   rewriter
@@ -421,11 +438,13 @@ export async function onRequest(context) {
       target.search = url.search;
       const headers = new Headers(request.headers);
       headers.set('x-public-partner-prefix', '/');
-      return fetch(new Request(target, {
+      const response = await fetch(new Request(target, {
         method: request.method,
         headers,
         body: request.method === 'GET' || request.method === 'HEAD' ? undefined : request.body,
       }));
+      if (!(response.headers.get('content-type') || '').toLowerCase().includes('text/html')) return response;
+      return new HTMLRewriter().on('head', { element(element) { element.append(FOOTER_COMPACT_STYLE, { html: true }); } }).transform(response);
     }
   }
   if (isMarcosSelbach(url)) {
@@ -437,6 +456,7 @@ export async function onRequest(context) {
       headers.set('x-public-partner-prefix', '/');
       const response = await fetch(new Request(target, { method: request.method, headers, body: request.method === 'GET' || request.method === 'HEAD' ? undefined : request.body }));
       const contactRewriter = new HTMLRewriter();
+      contactRewriter.on('head', { element(element) { element.append(FOOTER_COMPACT_STYLE, { html: true }); } });
       contactRewriter.on('body', { element(element) { element.append(MARCOS_SELBACH_WHATSAPP_SCRIPT, { html: true }); } });
       return contactRewriter.transform(response);
     }
@@ -488,6 +508,7 @@ export async function onRequest(context) {
   if (response.status < 200 || response.status >= 300) return response;
 
   const rewriter = new HTMLRewriter()
+    .on('head', { element(element) { element.append(FOOTER_COMPACT_STYLE, { html: true }); } })
     .on('a.wpp-float', {
       element(element) {
         element.setAttribute('aria-label', 'Falar com um consultor pelo WhatsApp');
