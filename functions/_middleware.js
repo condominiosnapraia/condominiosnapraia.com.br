@@ -74,6 +74,7 @@ function addDomainContactRouting(rewriter, number) {
       if (!text.text) return;
       const updated = rewrite(text.text)
         .replace(/5551997698450/g, number)
+        .replace(new RegExp(`${number}\\d+`, 'g'), number)
         .replace(new RegExp(`${number}{2,}`, 'g'), number);
       if (updated !== text.text) text.replace(updated, { html: true });
     } });
