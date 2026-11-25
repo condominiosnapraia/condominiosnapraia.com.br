@@ -247,6 +247,16 @@ const MARCOS_SELBACH_RESPONSIVE = `<style id="marcos-selbach-responsive">
   .marcos-selbach .category-nav-links .category-chip small{display:block;margin-top:5px;color:#668087;font:400 10px/1.18 'DM Sans',Arial,sans-serif}
   @media(max-width:980px){.marcos-selbach .category-nav{grid-template-columns:1fr;gap:16px;margin:0 0 30px!important;padding:20px 18px!important;border-radius:6px!important}.marcos-selbach .category-nav-heading{padding:0 0 13px;border-right:0;border-bottom:1px solid rgba(7,59,86,.12)}.marcos-selbach .category-nav-heading strong{font-size:25px}.marcos-selbach .category-nav-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px!important}.marcos-selbach .category-nav-links .category-chip{min-height:82px;padding:12px 11px!important}}
   @media(max-width:420px){.marcos-selbach .category-nav{margin-left:0!important;margin-right:0!important;padding:18px 13px!important}.marcos-selbach .category-nav-links{gap:8px!important}.marcos-selbach .category-nav-links .category-chip{grid-template-columns:29px minmax(0,1fr)!important;column-gap:8px!important;min-height:76px;padding:10px 9px!important}.marcos-selbach .category-nav-links .category-chip>span{width:29px!important;height:29px!important;font-size:15px!important}.marcos-selbach .category-nav-links .category-chip strong{font-size:12px}.marcos-selbach .category-nav-links .category-chip small{font-size:9px}}
+  /* Layout dos cards da home alinhado ao padrão editorial do portal oficial. */
+  .marcos-selbach .property-sections .property-grid{gap:18px!important}
+  .marcos-selbach .property-sections .property-card{border-radius:16px!important;box-shadow:0 4px 18px rgba(26,58,74,.08)!important}
+  .marcos-selbach .property-sections .property-card:hover{transform:translateY(-6px)!important;box-shadow:0 22px 50px rgba(26,58,74,.16)!important}
+  .marcos-selbach .property-sections .property-photo{height:230px!important;aspect-ratio:auto!important}
+  .marcos-selbach .property-sections .property-body{padding:18px 18px 14px!important}
+  .marcos-selbach .property-sections .property-body h3{font-size:18px!important;line-height:1.25!important;margin:0 0 7px!important}
+  .marcos-selbach .property-sections .property-actions{gap:7px!important;margin-top:14px!important}
+  @media(max-width:700px){.marcos-selbach .property-sections .property-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}.marcos-selbach .property-sections .property-photo{height:180px!important}.marcos-selbach .property-sections .property-body{padding:14px 12px 12px!important}.marcos-selbach .property-sections .property-body h3{font-size:14px!important;line-height:1.16!important}.marcos-selbach .property-sections .property-actions{grid-template-columns:1fr!important;gap:7px!important}}
+  @media(max-width:430px){.marcos-selbach .property-sections .property-grid{grid-template-columns:1fr!important}.marcos-selbach .property-sections .property-photo{height:210px!important}}
 </style>`;
 
 const ATLANTIDA_CRM_STYLE = `<style id="atlantida-crm-theme">
