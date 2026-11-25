@@ -329,16 +329,16 @@ function marcoInternalPath(pathname) {
 const FOOTER_COMPACT_STYLE = `<style id="global-footer-compact">
 /* Rodapé global: navegação curta, colunas equilibradas e leitura compacta no desktop. */
 @media (min-width: 981px){
-  .page-footer .ftr-main{width:min(1180px,100%);padding:42px 32px 26px;grid-template-columns:minmax(250px,1.25fr) repeat(3,minmax(0,1fr));gap:28px;align-items:start}
+  .page-footer .ftr-main{width:min(1180px,100%);padding:42px 32px 26px;grid-template-columns:minmax(370px,1.7fr) repeat(3,minmax(0,1fr));gap:44px;align-items:start}
   .page-footer .ftr-links-grid{gap:4px}
   .page-footer .ftr-links-grid a{font-size:12px;padding:3px 0;line-height:1.3}
   .page-footer .ftr-tit{font-size:10px;margin-bottom:10px}
   .page-footer .hero-brand-name{font-size:clamp(30px,3.5vw,42px)}
-  .page-footer .ftr-col-brand{justify-self:start;padding-right:clamp(44px,5vw,92px)}
-  .page-footer .ftr-col-brand .ftr-brand-lockup{margin-left:0!important;margin-right:auto!important;align-items:flex-start!important;text-align:left!important}
+  .page-footer .ftr-col-brand{width:100%;justify-self:stretch;padding-right:0}
+  .page-footer .ftr-col-brand .ftr-brand-lockup{width:max-content!important;max-width:100%!important;margin-left:0!important;margin-right:auto!important;align-items:flex-start!important;text-align:left!important}
   .page-footer .ftr-col-brand .ftr-wpp{margin-left:0!important}
-  footer .footer-main,footer .footer-grid,footer .footer-rich{width:min(1180px,100%);gap:40px!important}
-  footer .footer-main> .footer-col:first-child,footer .footer-grid>div:first-child,footer .footer-rich>div:first-child{justify-self:start;padding-right:clamp(44px,5vw,92px)}
+  footer .footer-main,footer .footer-grid,footer .footer-rich{width:min(1180px,100%);gap:48px!important}
+  footer .footer-main> .footer-col:first-child,footer .footer-grid>div:first-child,footer .footer-rich>div:first-child{width:100%;justify-self:stretch;padding-right:clamp(32px,4vw,72px)}
   footer .footer-main> .footer-col:first-child .footer-logo,footer .footer-grid>div:first-child .footer-brand,footer .footer-rich>div:first-child .footer-brand{margin-left:0!important;margin-right:auto!important;text-align:left!important}
   footer .footer-main> .footer-col:first-child .footer-wpp,footer .footer-grid>div:first-child .footer-wpp,footer .footer-rich>div:first-child .footer-wpp{margin-left:0!important}
   footer .footer-main{padding:40px 32px 26px!important}
