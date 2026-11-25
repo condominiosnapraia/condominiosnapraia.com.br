@@ -338,6 +338,9 @@ const FOOTER_COMPACT_STYLE = `<style id="global-footer-compact">
   .page-footer .ftr-col-brand .ftr-brand-lockup{margin-left:0!important;margin-right:auto!important;align-items:flex-start!important;text-align:left!important}
   .page-footer .ftr-col-brand .ftr-wpp{margin-left:0!important}
   footer .footer-main,footer .footer-grid,footer .footer-rich{width:min(1180px,100%);gap:40px!important}
+  footer .footer-main> .footer-col:first-child,footer .footer-grid>div:first-child,footer .footer-rich>div:first-child{justify-self:start;padding-right:clamp(44px,5vw,92px)}
+  footer .footer-main> .footer-col:first-child .footer-logo,footer .footer-grid>div:first-child .footer-brand,footer .footer-rich>div:first-child .footer-brand{margin-left:0!important;margin-right:auto!important;text-align:left!important}
+  footer .footer-main> .footer-col:first-child .footer-wpp,footer .footer-grid>div:first-child .footer-wpp,footer .footer-rich>div:first-child .footer-wpp{margin-left:0!important}
   footer .footer-main{padding:40px 32px 26px!important}
   footer .footer-grid,footer .footer-rich{padding:40px 32px 26px!important}
   footer .footer-title,footer .footer-quick>strong{font-size:10px!important;margin-bottom:8px!important}
