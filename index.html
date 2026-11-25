@@ -2693,17 +2693,9 @@ function goHome(){
   // reativa o carregamento das fotos dos cards ao voltar (caso alguma não tenha carregado)
   try{ if(window.ativarFotosCards) window.ativarFotosCards(); }catch(e){}
 }
-// Leva à home e rola suavemente até a busca rápida (Explorar)
+// Abre directamente o painel de filtros da página oficial de imóveis.
 function irParaBusca(){
-  document.getElementById('view-home').classList.add('on');
-  document.getElementById('view-detail').classList.remove('on');
-  const _vt=document.getElementById('view-turismo');if(_vt)_vt.classList.remove('on');
-  currentCond=null;
-  setTimeout(function(){
-    var el=document.getElementById('busca-rapida');
-    if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
-    else window.scrollTo(0,0);
-  }, 60);
+  window.location.href='/imoveis/#filtros';
 }
 function openTurismo(scroll){
   document.getElementById('view-home').classList.remove('on');
