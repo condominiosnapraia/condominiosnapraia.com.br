@@ -427,7 +427,7 @@ body{background:linear-gradient(180deg,#f7faf9 0%,#eef5f3 48%,#f7faf9 100%);font
 .page-footer .ftr-wave svg path{fill:#0c4a6e!important}
 <style id="property-header-scroll-style">
 .property-page .header{position:fixed!important;top:0;left:0;right:0;background:transparent!important;border-bottom-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;transition:transform .24s ease,background .24s ease,box-shadow .24s ease}
-.property-page .header .nav{background:transparent!important}.property-page .header .brand{display:none!important}.atlantida-property-page .header,.atlantida-property-page .header .nav{background:#25313a!important}.atlantida-property-page .header{border-bottom-color:rgba(255,255,255,.16)!important;box-shadow:0 5px 18px rgba(37,49,58,.22)!important}
+.property-page .header .nav{background:transparent!important}.property-page .header .brand{display:none!important}.atlantida-property-page .header,.atlantida-property-page .header .nav{background:#25313a!important}.atlantida-property-page .header.is-revealed,.atlantida-property-page .header.is-revealed .nav{background:#25313a!important}.atlantida-property-page .header{border-bottom-color:rgba(255,255,255,.16)!important;box-shadow:0 5px 18px rgba(37,49,58,.22)!important}
 .property-page .header.is-hidden{transform:translateY(-110%)}
 .property-page .header.is-revealed{background:rgba(7,59,86,.90)!important;box-shadow:0 5px 18px rgba(8,61,82,.22)!important}
 .property-page .header.is-revealed .nav{background:transparent!important}
