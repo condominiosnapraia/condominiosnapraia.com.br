@@ -7133,7 +7133,7 @@ function renderContempladas(){
         <td><div style="display:flex;gap:4px">
           <button class="btn bg bxs" onclick="eCarta('${c.id}')" title="Editar">✏</button>
           <button class="btn bs bxs" onclick="shareCarta('${c.id}')" title="Enviar carta por e-mail HTML">📧</button>
-          <a class="btn bg bxs" href="https://wa.me/5551997698450?text=${wppMsg}" target="_blank" rel="noopener noreferrer" title="WhatsApp">💬</a>
+          <a class="btn bg bxs" href="https://wa.me/5551999442252?text=${wppMsg}" target="_blank" rel="noopener noreferrer" title="WhatsApp">💬</a>
           <button class="btn bd2b bxs" onclick="dCarta('${c.id}')" title="Excluir">🗑</button>
         </div></td>
       </tr>`;
@@ -7146,7 +7146,7 @@ function renderContempladas(){
       return `<article class="cont-mobile-card">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div><div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:1px">${adm.abrev||adm.nome}</div><strong style="display:block;margin-top:4px;color:var(--ac);font-size:13px">${c.cod||'Carta sem código'}</strong></div><strong style="font-size:18px;color:var(--gn)">${brl0(c.credito)}</strong></div>
         <div class="cont-mobile-meta"><div><small>Parcela</small><strong>${brl0(c.parcela)}</strong></div><div><small>Entrada</small><strong>${brl0(c.entrada)}${c.pct_entrada?` · ${Number(c.pct_entrada).toFixed(1)}%`:''}</strong></div><div><small>Prazo</small><strong>${c.prazo||0} meses</strong></div><div><small>Transferência</small><strong>${brl0(c.transferencia)}</strong></div></div>
-        <div class="cont-mobile-actions"><button class="btn bs" onclick="shareCarta('${c.id}')">📧 Enviar HTML</button><a class="btn bg" href="https://wa.me/5551997698450?text=${wppMsg}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a></div>
+        <div class="cont-mobile-actions"><button class="btn bs" onclick="shareCarta('${c.id}')">📧 Enviar HTML</button><a class="btn bg" href="https://wa.me/5551999442252?text=${wppMsg}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a></div>
         <div style="display:flex;gap:7px;margin-top:8px"><button class="btn bg bxs" onclick="eCarta('${c.id}')">✏ Editar</button><button class="btn bd2b bxs" onclick="dCarta('${c.id}')">🗑 Excluir</button></div>
       </article>`;
     }).join('')
@@ -7271,7 +7271,7 @@ function cartaShareText(){
 }
 function openCartaWhatsApp(){
   if(!_cartaShareAtual) return;
-  window.open('https://wa.me/5551997698450?text='+encodeURIComponent(cartaShareText()),'_blank','noopener,noreferrer');
+  window.open('https://wa.me/5551999442252?text='+encodeURIComponent(cartaShareText()),'_blank','noopener,noreferrer');
 }
 async function sendCartaEmail(){
   if(!requireCrmPermission('contempladas', 'enviar')) return;

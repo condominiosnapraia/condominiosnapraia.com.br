@@ -33,12 +33,12 @@ function num(value) {
 
 function relatedWaUrl(carta) {
   const text = `Olá, Felipe! Tenho interesse na carta ${carta.code || ''} da ${carta.administrator || ''}. Crédito: ${brl(carta.credit)}. Parcela: ${brl(carta.installment)}. Gostaria de receber mais informações.`.trim();
-  return `https://wa.me/5551997698450?text=${encodeURIComponent(text)}`;
+  return `https://wa.me/5551999442252?text=${encodeURIComponent(text)}`;
 }
 
 function waUrl(carta) {
   const text = `Olá, Felipe! Tenho interesse na carta de crédito contemplada ${carta.code || ''} da ${carta.administrator || ''}. Crédito: ${brl(carta.credit)}. Entrada: ${brl(carta.entry)}. Gostaria de receber mais informações.`.trim();
-  return `https://wa.me/5551997698450?text=${encodeURIComponent(text)}`;
+  return `https://wa.me/5551999442252?text=${encodeURIComponent(text)}`;
 }
 
 function field(label, value, className = '') {

@@ -1,5 +1,5 @@
 const SITE = 'https://condominiosnapraia.com.br';
-const WHATSAPP_NUMBER = '5551997698450';
+const WHATSAPP_NUMBER = '5551999442252';
 const SUPABASE_URL_FALLBACK = 'https://cddgkhkzcnyzzcllgzoz.supabase.co';
 const SB_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZGdraGt6Y255enpjbGxnem96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDQ1MzMsImV4cCI6MjA5NTMyMDUzM30.xx6JAPLati0MIId_xrqB-7A8ZWQS4gNLPH4Lz3bIE';
 
