@@ -555,7 +555,14 @@ export async function onRequest(context) {
   let rows = [];
   let row = null;
   if (isOfficialPortal || site.id) {
-    const directProperties = await getJson(`imoveis?slug=eq.${encodeURIComponent(imovelRef)}&select=${propertySelect}&limit=1`, cfg);
+    // Alguns slugs antigos foram publicados com o código do imóvel no final,
+    // mas o campo slug do CRM pode ter sido alterado. Resolver também pelo
+    // código mantém esses links históricos válidos sem criar duplicados.
+    const codeSuffix = (imovelRef.match(/(?:^|-)([a-z]{2,5}-\d{3})$/i) || [])[1];
+    const directFilter = codeSuffix
+      ? `or=(slug.eq.${encodeURIComponent(imovelRef)},codigo.eq.${encodeURIComponent(codeSuffix.toUpperCase())},id.eq.${encodeURIComponent(imovelRef)})`
+      : `slug=eq.${encodeURIComponent(imovelRef)}`;
+    const directProperties = await getJson(`imoveis?${directFilter}&select=${propertySelect}&limit=1`, cfg);
     const directProperty = Array.isArray(directProperties) ? directProperties[0] : null;
     if (directProperty?.id) {
       const directLinks = site.id ? await getJson(`parceiros_sites_imoveis?site_id=eq.${encodeURIComponent(site.id)}&imovel_id=eq.${encodeURIComponent(directProperty.id)}&publicado=eq.true&select=id,ordem,destaque,titulo_personalizado,chamada_personalizada&limit=1`, cfg) : [];
