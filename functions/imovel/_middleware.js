@@ -308,5 +308,9 @@ export async function onRequest(context) {
   // A página é pública e pode ser cacheada por poucos minutos; isso evita repetir a consulta SSR a cada visita.
   headers.set('Cache-Control', 'public, max-age=300, s-maxage=900, stale-while-revalidate=86400');
   headers.set('Vary', 'Accept-Encoding');
-  return new Response(transformed, { status: response.status, statusText: response.statusText, headers });
+  // A página-base /imovel/ pode não existir como ficheiro estático quando o
+  // middleware resolve directamente um imóvel por slug. Nesse caso, o HTML
+  // SSR já é uma resposta válida e não deve herdar o 404 do asset-base.
+  const outputStatus = response.status === 404 ? 200 : response.status;
+  return new Response(transformed, { status: outputStatus, statusText: outputStatus === 200 ? 'OK' : response.statusText, headers });
 }
